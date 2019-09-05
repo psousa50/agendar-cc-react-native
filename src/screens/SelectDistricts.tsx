@@ -8,7 +8,7 @@ import { District, Districts } from "../models"
 import { fetchJson } from "../utils/fetch"
 
 export const SelectDistrictsScreen: React.FunctionComponent<AppScreenProps> = props => (
-  <AppScreen {...props} content={() => <SelectDistrictsContent {...props} />} title="Select a District" />
+  <AppScreen {...props} left={null} content={() => <SelectDistrictsContent {...props} />} title="Select a District" />
 )
 
 export const SelectDistrictsContent: React.FunctionComponent<AppScreenProps> = () => {
