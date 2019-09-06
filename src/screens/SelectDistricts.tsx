@@ -24,7 +24,7 @@ export const SelectDistrictsContent: React.FunctionComponent<AppScreenProps> = (
       <Card>
         <CardItem button onPress={() => undefined}>
           <Body>
-            <Text style={styles.districtText}>{district.districtName}</Text>
+            <Text style={styles.districtText}>{district.name}</Text>
           </Body>
           <Right>
             <Icon name="arrow-forward" />
