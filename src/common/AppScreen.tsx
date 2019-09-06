@@ -120,7 +120,7 @@ export class AppScreen extends React.Component<AppScreenProps> {
           <View>
             <AdMobBanner
               adSize="smartBannerPortrait"
-              adUnitID="ca-app-pub-3940256099942544/6300978111"
+              adUnitID="ca-app-pub-3035879185204310/8884433866"
               didFailToReceiveAdWithError={this.bannerError}
               onAdFailedToLoad={this.props.showError}
             />
