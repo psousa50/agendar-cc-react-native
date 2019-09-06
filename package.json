@@ -20,6 +20,7 @@
     "react-native": "0.60.5",
     "react-native-admob": "^2.0.0-beta.5",
     "react-native-gesture-handler": "^1.4.1",
+    "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.9.1"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@types/lodash": "^4.14.138",
     "@types/react": "^16.9.2",
     "@types/react-native": "^0.60.11",
+    "@types/react-native-vector-icons": "^6.4.1",
     "@types/react-navigation": "^3.0.8",
     "@types/react-test-renderer": "^16.9.0",
     "jest": "^24.9.0",

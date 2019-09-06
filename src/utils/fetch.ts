@@ -1,6 +1,6 @@
 import { pipe } from "fp-ts/lib/pipeable"
 import { chain, swap, tryCatch } from "fp-ts/lib/TaskEither"
-import { actionOf, ActionResult, chainLogTE } from "./actions"
+import { actionOf, ActionResult } from "./actions"
 import * as Errors from "./errors"
 
 export const fetchAction = (input: Request | string, init?: RequestInit): ActionResult<Response> => {
@@ -63,6 +63,6 @@ export const extractJson = (response: Response): ActionResult<any> =>
 export function fetchJson<T>(input: Request | string, init?: RequestInit): ActionResult<T> {
   return pipe(
     fetchAction(input, init),
-    chainLogTE("RR", extractJson),
+    chain(extractJson),
   )
 }
