@@ -4,6 +4,7 @@ import { Animated, Easing, StatusBar } from "react-native"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
 import { createStackNavigator } from "react-navigation"
+import { SelectCountiesScreen } from "./screens/SelectCounties"
 import { SelectDistrictsScreen } from "./screens/SelectDistricts"
 import { appTheme } from "./utils/appTheme"
 
@@ -34,6 +35,7 @@ const transitionConfig = () => {
 export const ContentNavigator = createStackNavigator(
   {
     SelectDistricts: SelectDistrictsScreen,
+    SelectCounties: SelectCountiesScreen,
   },
   {
     initialRouteName: "SelectDistricts",
