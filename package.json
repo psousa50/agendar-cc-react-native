@@ -8,6 +8,7 @@
     "build": "npm run clean && npm run tsc --",
     "start": "react-native start",
     "test": "jest",
+    "test:watch": "npm test -- --watch",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",
     "native-base": "^2.13.7",
+    "ramda": "^0.26.1",
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-admob": "^2.0.0-beta.5",
@@ -31,6 +33,7 @@
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.138",
+    "@types/ramda": "^0.26.21",
     "@types/react": "^16.9.2",
     "@types/react-native": "^0.60.11",
     "@types/react-native-vector-icons": "^6.4.1",

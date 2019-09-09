@@ -1,4 +1,4 @@
-type Time = string
+export type Time = string
 
 export type TimeSlot = {
   date: Date
@@ -36,3 +36,20 @@ export type IrnRepositoryTable = {
   times: Time[]
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]
+
+export type IrnTableSchedule = {
+  date: Date
+  times: Time[]
+}
+export type IrnTableSchedules = IrnTableSchedule[]
+
+export type IrnTableLocation = {
+  serviceId: number
+  county: County
+  locationName: string
+  address: string
+  postalCode: string
+  phone: string
+  schedules: IrnTableSchedule[]
+}
+export type IrnTableLocations = IrnTableLocation[]

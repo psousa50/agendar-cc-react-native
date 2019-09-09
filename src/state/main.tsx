@@ -32,4 +32,4 @@ export const GlobalStateProvider: React.FunctionComponent = ({ children }) => {
   )
 }
 
-export const useStateValue = () => useContext(GlobalState)
+export const useGlobalState = () => useContext(GlobalState)
