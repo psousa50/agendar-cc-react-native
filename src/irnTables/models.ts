@@ -53,3 +53,13 @@ export type IrnTableLocation = {
   schedules: IrnTableSchedule[]
 }
 export type IrnTableLocations = IrnTableLocation[]
+
+export type GetTableParams = Partial<{
+  serviceId: number
+  districtId: number
+  countyId: number
+  startDate: Date
+  endDate: Date
+  startTime: Time
+  endTime: Time
+}>

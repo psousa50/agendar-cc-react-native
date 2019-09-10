@@ -19,7 +19,7 @@ const mergeWithCounties = (districts: Districts) =>
   )
 
 export const InitGlobalState = () => {
-  const [globalState, globalDispatch] = useGlobalState()
+  const [, globalDispatch] = useGlobalState()
 
   useEffect(() => {
     const fetchData = async () => {
