@@ -2,10 +2,9 @@ import { Body, Card, CardItem, Icon, Right, Text, View } from "native-base"
 import React from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { Counties, County } from "../irnTables/models"
+import { County } from "../irnTables/models"
 import { useGlobalState } from "../state/main"
-import { fetchJson } from "../utils/fetch"
-import { useDataApi } from "../utils/fetchApi"
+import { getCounties } from "../state/selectors"
 
 export const SelectCountiesScreen: React.FunctionComponent<AppScreenProps> = props => (
   <AppScreen {...props} content={() => <SelectCountiesContent {...props} />} title="Agendar CC" showAds={false} />
@@ -39,14 +38,14 @@ const SelectCountiesContent: React.FunctionComponent<AppScreenProps> = props => 
   const keyExtractor = (item: County) => {
     return item.countyId.toString()
   }
-  const [state] = useDataApi(
-    () => fetchJson<Counties>(`http://192.168.1.105:3000/api/v1/counties?districtId=${globalState.districtId}`),
-    [] as Counties,
-  )
 
   return (
     <View style={styles.container}>
-      <FlatList renderItem={renderCounty} data={state.data} keyExtractor={keyExtractor} />
+      <FlatList
+        renderItem={renderCounty}
+        data={getCounties(globalState)(globalState.districtId)}
+        keyExtractor={keyExtractor}
+      />
     </View>
   )
 }

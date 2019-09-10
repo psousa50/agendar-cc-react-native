@@ -3,10 +3,9 @@ import { Text, View } from "native-base"
 import React from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { District, Districts } from "../irnTables/models"
+import { District } from "../irnTables/models"
 import { useGlobalState } from "../state/main"
-import { fetchJson } from "../utils/fetch"
-import { useDataApi } from "../utils/fetchApi"
+import { getDistricts } from "../state/selectors"
 
 export const SelectDistrictsScreen: React.FunctionComponent<AppScreenProps> = props => (
   <AppScreen
@@ -19,7 +18,7 @@ export const SelectDistrictsScreen: React.FunctionComponent<AppScreenProps> = pr
 )
 
 const SelectDistrictsContent: React.FunctionComponent<AppScreenProps> = props => {
-  const [, globalDispatch] = useGlobalState()
+  const [globalState, globalDispatch] = useGlobalState()
 
   const onDistrictPress = (districtId: number) => {
     globalDispatch({ type: "SET_DISTRICT_ID", payload: { districtId } })
@@ -47,15 +46,9 @@ const SelectDistrictsContent: React.FunctionComponent<AppScreenProps> = props =>
     return item.districtId.toString()
   }
 
-  const [state] = useDataApi(() => fetchJson<Districts>("http://192.168.1.105:3000/api/v1/districts"), [] as Districts)
-
-  return state.error ? (
-    <View>
-      <Text>{`ERROR: ${state.error}`}</Text>
-    </View>
-  ) : (
+  return (
     <View style={styles.container}>
-      <FlatList renderItem={renderDistrict} data={state.data} keyExtractor={keyExtractor} />
+      <FlatList renderItem={renderDistrict} data={getDistricts(globalState)} keyExtractor={keyExtractor} />
     </View>
   )
 }

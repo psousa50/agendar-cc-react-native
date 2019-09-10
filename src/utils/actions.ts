@@ -1,5 +1,6 @@
 import { left, right } from "fp-ts/lib/Either"
 import { chain, fromEither, TaskEither } from "fp-ts/lib/TaskEither"
+import { debug } from "./debug"
 
 export type ActionResult<R = void> = TaskEither<Error, R>
 export type Action<I = void, R = void> = (i: I) => ActionResult<R>
@@ -16,6 +17,6 @@ export const toAction = <I, R>(f: (i: I) => R): ((i: I) => ActionResult<R>) => i
 
 export const chainLogTE = <I, R>(m: string, action: Action<I, R>) =>
   chain((v: I) => {
-    console.log(`${m}=>`, v)
+    debug(`${m}=>`, v)
     return action(v)
   })

@@ -1,9 +1,25 @@
 import React, { createContext, useContext, useReducer } from "react"
-import { GlobalState, initialGlobalState } from "./models"
+import { Counties, Districts } from "../irnTables/models"
+import { GlobalState as GlobalStateContext, initialGlobalState, StaticDataState } from "./models"
 
-const GlobalState = createContext<[GlobalState, React.Dispatch<StateAction>]>([initialGlobalState, () => undefined])
+const GlobalStateContext = createContext<[GlobalStateContext, React.Dispatch<StateAction>]>([
+  initialGlobalState,
+  () => undefined,
+])
 
 type StateAction =
+  | {
+      type: "FETCH_STATIC_DATA_INIT"
+      payload: {}
+    }
+  | {
+      type: "FETCH_STATIC_DATA_SUCCESS"
+      payload: { districts: Districts; counties: Counties }
+    }
+  | {
+      type: "FETCH_STATIC_DATA_FAILURE"
+      payload: { error: Error }
+    }
   | {
       type: "SET_DISTRICT_ID"
       payload: { districtId: number | undefined }
@@ -13,10 +29,45 @@ type StateAction =
       payload: { countyId: number | undefined }
     }
 
-type GlobalStateReducer = (state: GlobalState, action: StateAction) => GlobalState
+type StaticDataReducer = (state: StaticDataState, action: StateAction) => StaticDataState
+export const staticDataReducer: StaticDataReducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_STATIC_DATA_INIT": {
+      return {
+        ...state,
+        error: null,
+      }
+    }
+    case "FETCH_STATIC_DATA_SUCCESS": {
+      return {
+        ...state,
+        districts: action.payload.districts,
+        counties: action.payload.counties,
+      }
+    }
+    case "FETCH_STATIC_DATA_FAILURE": {
+      return {
+        ...state,
+        error: action.payload.error,
+      }
+    }
+    default: {
+      return state
+    }
+  }
+}
 
+type GlobalStateReducer = (state: GlobalStateContext, action: StateAction) => GlobalStateContext
 export const globalStateReducer: GlobalStateReducer = (state, action) => {
   switch (action.type) {
+    case "FETCH_STATIC_DATA_INIT":
+    case "FETCH_STATIC_DATA_SUCCESS":
+    case "FETCH_STATIC_DATA_FAILURE": {
+      return {
+        ...state,
+        staticData: staticDataReducer(state.staticData, action),
+      }
+    }
     case "SET_DISTRICT_ID": {
       return { ...state, districtId: action.payload.districtId }
     }
@@ -28,8 +79,10 @@ export const globalStateReducer: GlobalStateReducer = (state, action) => {
 
 export const GlobalStateProvider: React.FunctionComponent = ({ children }) => {
   return (
-    <GlobalState.Provider value={useReducer(globalStateReducer, initialGlobalState)}>{children}</GlobalState.Provider>
+    <GlobalStateContext.Provider value={useReducer(globalStateReducer, initialGlobalState)}>
+      {children}
+    </GlobalStateContext.Provider>
   )
 }
 
-export const useGlobalState = () => useContext(GlobalState)
+export const useGlobalState = () => useContext(GlobalStateContext)
