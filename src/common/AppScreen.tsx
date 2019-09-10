@@ -15,7 +15,7 @@ import {
   View,
 } from "native-base"
 import React from "react"
-import { StatusBar, ViewStyle } from "react-native"
+import { Platform, StatusBar, ViewStyle } from "react-native"
 import { AdMobBanner } from "react-native-admob"
 import { NavigationRoute, NavigationScreenProp, NavigationScreenProps } from "react-navigation"
 import { appTheme } from "../utils/appTheme"
@@ -83,7 +83,9 @@ export class AppScreen extends React.Component<AppScreenProps> {
         )
 
     const contentContainerStyle = props.contentContainerStyle || { flex: 1 }
-    StatusBar.setBackgroundColor(appTheme.statusBarColor)
+    if (Platform.OS !== "ios") {
+      StatusBar.setBackgroundColor(appTheme.statusBarColor)
+    }
     return (
       <>
         <Container>

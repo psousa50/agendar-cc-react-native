@@ -1,6 +1,6 @@
 import { Root } from "native-base"
 import React from "react"
-import { Animated, Easing, StatusBar } from "react-native"
+import { Animated, Easing, Platform, StatusBar } from "react-native"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
 import { createStackNavigator } from "react-navigation"
@@ -50,7 +50,9 @@ const AppContainer = createAppContainer(ContentNavigator)
 
 export class RootNavigator extends React.Component {
   public render() {
-    StatusBar.setBackgroundColor(appTheme.statusBarColor)
+    if (Platform.OS !== "ios") {
+      StatusBar.setBackgroundColor(appTheme.statusBarColor)
+    }
     return (
       <Root>
         <AppContainer />
