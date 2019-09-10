@@ -5,6 +5,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { County } from "../irnTables/models"
 import { useGlobalState } from "../state/main"
 import { getCounties } from "../state/selectors"
+import { properCase } from "../utils/formaters"
 
 export const SelectCountiesScreen: React.FunctionComponent<AppScreenProps> = props => (
   <AppScreen {...props} content={() => <SelectCountiesContent {...props} />} title="Agendar CC" showAds={false} />
@@ -25,7 +26,7 @@ const SelectCountiesContent: React.FunctionComponent<AppScreenProps> = props => 
       <Card>
         <CardItem button onPress={() => onCountyPress(county.countyId)}>
           <Body>
-            <Text style={styles.countyText}>{county.name}</Text>
+            <Text style={styles.countyText}>{properCase(county.name)}</Text>
           </Body>
           <Right>
             <Icon name="arrow-forward" />

@@ -17,7 +17,7 @@ const t = (v: number) => `${v < 10 ? 0 : ""}${v}`
 
 export const formatTime = (time: Time) => {
   const date = new Date(`2000-01-01T${time}`)
-  return `${t(date.getHours())}: ${t(date.getMinutes())}`
+  return `${t(date.getHours())}:${t(date.getMinutes())}`
 }
 
 export const properCase = (s: string) =>
