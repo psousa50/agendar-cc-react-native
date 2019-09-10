@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "flex-start",
+    paddingTop: 5,
     paddingLeft: 10,
     paddingRight: 10,
   },
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     padding: 5,
     margin: 5,
-    width: 50,
+    width: 45,
   },
   timeSlot: {
     fontSize: 10,
