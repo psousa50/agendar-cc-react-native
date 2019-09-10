@@ -107,10 +107,12 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   timeSlotContainer: {
+    alignItems: "center",
     backgroundColor: "#d7ebfc",
     borderWidth: StyleSheet.hairlineWidth,
     padding: 5,
     margin: 5,
+    width: 50,
   },
   timeSlot: {
     fontSize: 10,
