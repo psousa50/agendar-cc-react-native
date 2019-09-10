@@ -13,7 +13,7 @@ const buildParams = (params: {}) => {
   return p.length > 0 ? `?${p}` : ""
 }
 
-export const fetchDistricts = fetchJson<Districts>(`${api}/districts`)
+export const fetchDistricts = () => fetchJson<Districts>(`${api}/districts`)
 export const fetchCountries = (districtId?: number) =>
   fetchJson<Counties>(`${api}/counties${isNil(districtId) ? "" : `?districtId=${districtId}`}`)
 export const fetchIrnTables = (params: GetTableParams) =>
