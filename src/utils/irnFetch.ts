@@ -1,9 +1,10 @@
 import { isNil, keys } from "ramda"
 import { Counties, Districts, GetTableParams, IrnRepositoryTables } from "../irnTables/models"
+import { config } from "./config"
 import { fetchJson } from "./fetch"
 
-const HOST = "192.168.1.105"
-const PORT = 3000
+const HOST = config.irnUrl
+const PORT = config.irnPort
 const host = `http://${HOST}:${PORT}`
 const api = `${host}/api/v1`
 
