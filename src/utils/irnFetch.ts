@@ -5,7 +5,7 @@ import { fetchJson } from "./fetch"
 
 const HOST = config.irnUrl
 const PORT = config.irnPort
-const host = `http://${HOST}:${PORT}`
+const host = `${HOST}${PORT ? `:${PORT}` : ""}`
 const api = `${host}/api/v1`
 
 const buildParams = (params: {}) => {

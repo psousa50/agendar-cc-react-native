@@ -1,9 +1,8 @@
-import { Counties, Districts, IrnRepositoryTables } from "../irnTables/models"
+import { Counties, Districts } from "../irnTables/models"
 
 export interface StaticDataState {
   districts: Districts
   counties: Counties
-  irnTables: IrnRepositoryTables
   error: Error | null
 }
 export interface GlobalState {

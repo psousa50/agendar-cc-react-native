@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react"
-import { Counties, Districts, IrnRepositoryTables } from "../irnTables/models"
+import { Counties, Districts } from "../irnTables/models"
 import { GlobalState as GlobalStateContext, initialGlobalState, StaticDataState } from "./models"
 
 const GlobalStateContext = createContext<[GlobalStateContext, React.Dispatch<StateAction>]>([
@@ -14,7 +14,7 @@ type StateAction =
     }
   | {
       type: "FETCH_STATIC_DATA_SUCCESS"
-      payload: { districts: Districts; counties: Counties; irnTables: IrnRepositoryTables }
+      payload: { districts: Districts; counties: Counties }
     }
   | {
       type: "FETCH_STATIC_DATA_FAILURE"

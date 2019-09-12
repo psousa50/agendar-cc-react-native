@@ -2,21 +2,15 @@ import { pipe } from "fp-ts/lib/pipeable"
 import { task } from "fp-ts/lib/Task"
 import { chain, fold, map } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
-import { Counties, Districts } from "./irnTables/models"
+import { Districts } from "./irnTables/models"
 import { useGlobalState } from "./state/main"
 import { debug } from "./utils/debug"
-import { fetchCountries, fetchDistricts, fetchIrnTables } from "./utils/irnFetch"
+import { fetchCountries, fetchDistricts } from "./utils/irnFetch"
 
 const mergeWithCounties = (districts: Districts) =>
   pipe(
     fetchCountries(),
     map(counties => ({ districts, counties })),
-  )
-
-const mergeWithIrnTables = ({ districts, counties }: { districts: Districts; counties: Counties }) =>
-  pipe(
-    fetchIrnTables({}),
-    map(irnTables => ({ districts, counties, irnTables })),
   )
 
 export const GlobalStateInitializer = () => {
@@ -29,7 +23,6 @@ export const GlobalStateInitializer = () => {
       const action = pipe(
         fetchDistricts(),
         chain(mergeWithCounties),
-        chain(mergeWithIrnTables),
         fold(
           error => {
             globalDispatch({ type: "FETCH_STATIC_DATA_FAILURE", payload: { error } })

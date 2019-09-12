@@ -4,10 +4,12 @@ import React from "react"
 import { SectionList, SectionListData, SectionListRenderItem, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { mergeIrnTables, sortTimes } from "../irnTables/main"
-import { IrnTableLocation, IrnTableSchedule, Time } from "../irnTables/models"
+import { IrnRepositoryTables, IrnTableLocation, IrnTableSchedule, Time } from "../irnTables/models"
 import { useGlobalState } from "../state/main"
-import { getCounty, getDistrict, getIrnTables } from "../state/selectors"
+import { getCounty, getDistrict } from "../state/selectors"
+import { useDataApi } from "../utils/fetchApi"
 import { formatDate, formatTime, properCase } from "../utils/formaters"
+import { fetchIrnTables } from "../utils/irnFetch"
 
 export const ShowIrnTablesScreen: React.FunctionComponent<AppScreenProps> = props => (
   <AppScreen {...props} content={() => <ShowIrnTablesContent {...props} />} title="Agendar CC" showAds={false} />
@@ -15,6 +17,10 @@ export const ShowIrnTablesScreen: React.FunctionComponent<AppScreenProps> = prop
 
 const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
   const [globalState] = useGlobalState()
+
+  const { countyId, districtId } = globalState
+  const [state] = useDataApi(() => fetchIrnTables({ districtId, countyId }), [] as IrnRepositoryTables)
+  const irnTables = state.data
 
   const renderIrnTableSection: SectionListRenderItem<IrnTableSchedule> = ({ item }) => (
     <View style={styles.scheduleContainer}>
@@ -42,14 +48,15 @@ const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
 
   const keyExtractor = (_: IrnTableSchedule, index: number) => index.toString()
 
-  const { countyId, districtId } = globalState
-  const irnTables = getIrnTables(globalState)({ countyId, districtId })
-
   const mergedTables = mergeIrnTables(irnTables)
 
   const sections = mergedTables.map(tableLocation => ({ tableLocation, data: tableLocation.schedules }))
 
-  return (
+  return state.isLoading ? (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  ) : (
     <View style={styles.container}>
       <SectionList
         keyExtractor={keyExtractor}
