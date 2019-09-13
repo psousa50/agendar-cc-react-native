@@ -1,61 +1,32 @@
 import { uniq } from "ramda"
-import {
-  IrnRepositoryTable,
-  IrnRepositoryTables,
-  IrnTableLocation,
-  IrnTableLocations,
-  IrnTableSchedule,
-  IrnTableSchedules,
-  Time,
-} from "./models"
+import { mergeCollection, mergeIntoCollection } from "../utils/collections"
+import { IrnRepositoryTable, IrnTableLocation, IrnTableSchedule, Time } from "./models"
 
-const mergeTimes = (times1: Time[], times2: Time[]) => uniq([...times1, ...times2])
+const mergeSchedules = mergeIntoCollection(
+  (ts1: IrnTableSchedule) => (ts2: IrnTableSchedule) => ts1.date === ts2.date,
+  (ts1, ts2?) => ({
+    ...ts1,
+    times: uniq([...ts1.times, ...(ts2 ? ts2.times : [])]),
+  }),
+)
 
-const mergeSchedules = (schedules: IrnTableSchedules, schedule: IrnTableSchedule) => {
-  const dateIndex = schedules.findIndex(s => s.date === schedule.date)
-  return dateIndex >= 0
-    ? schedules.map((d, i) => ({
-        ...d,
-        ...(i === dateIndex ? { times: mergeTimes(d.times, schedule.times) } : {}),
-      }))
-    : [...schedules, schedule]
-}
-
-const match = (irnTable: IrnRepositoryTable) => (irnTableLocation: IrnTableLocation) =>
+const matchByLocation = (irnTable: IrnRepositoryTable) => (irnTableLocation: IrnTableLocation) =>
   irnTableLocation.serviceId === irnTable.serviceId &&
   irnTableLocation.county.districtId === irnTable.county.districtId &&
   irnTableLocation.county.countyId === irnTable.county.countyId &&
   irnTableLocation.locationName === irnTable.locationName
 
-const merge = (irnTableLocations: IrnTableLocations, irnTable: IrnRepositoryTable): IrnTableLocations => {
-  const matchingTableIndex = irnTableLocations.findIndex(match(irnTable))
-  return matchingTableIndex >= 0
-    ? irnTableLocations.map((t, i) => ({
-        ...t,
-        ...(i === matchingTableIndex
-          ? { schedules: mergeSchedules(t.schedules, { date: irnTable.date, times: irnTable.times }) }
-          : {}),
-      }))
-    : [
-        ...irnTableLocations,
-        {
-          serviceId: irnTable.serviceId,
-          county: irnTable.county,
-          locationName: irnTable.locationName,
-          address: irnTable.address,
-          postalCode: irnTable.postalCode,
-          phone: irnTable.phone,
-          schedules: [
-            {
-              date: irnTable.date,
-              times: irnTable.times,
-            },
-          ],
-        },
-      ]
-}
-
-export const mergeIrnTables = (irnTables: IrnRepositoryTables): IrnTableLocations =>
-  irnTables.reduce((acc, cur) => merge(acc, cur), [] as IrnTableLocations)
+export const mergeIrnTablesByLocation = mergeCollection(matchByLocation, (irnTable, irnTableLocation) => ({
+  serviceId: irnTable.serviceId,
+  county: irnTable.county,
+  locationName: irnTable.locationName,
+  address: irnTable.address,
+  postalCode: irnTable.postalCode,
+  phone: irnTable.phone,
+  schedules: mergeSchedules(irnTableLocation ? irnTableLocation.schedules : [], {
+    date: irnTable.date,
+    times: irnTable.times,
+  }),
+}))
 
 export const sortTimes = (t1: Time, t2: Time) => t1.localeCompare(t2)

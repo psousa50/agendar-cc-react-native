@@ -1,4 +1,4 @@
-import { mergeIrnTables } from "../../src/irnTables/main"
+import { mergeIrnTablesByLocation } from "../../src/irnTables/main"
 import { IrnRepositoryTable } from "../../src/irnTables/models"
 
 const makeTable = (irnTable: Partial<IrnRepositoryTable>): IrnRepositoryTable => {
@@ -84,7 +84,7 @@ describe("mergeIrnTables", () => {
         },
       ],
     }
-    const result = mergeIrnTables([aTable, aSimilarTable, aDifferentTable])
+    const result = mergeIrnTablesByLocation([aTable, aSimilarTable, aDifferentTable])
     const expected = [similarTablesMerged, theDifferentTable]
 
     expect(result).toEqual(expected)
@@ -123,7 +123,7 @@ describe("mergeIrnTables", () => {
       ],
     }
 
-    const result = mergeIrnTables([aTable, aSimilarTable])
+    const result = mergeIrnTablesByLocation([aTable, aSimilarTable])
     const expected = [similarTablesMerged]
 
     expect(result).toEqual(expected)

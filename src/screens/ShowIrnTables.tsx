@@ -3,7 +3,7 @@ import { sort } from "ramda"
 import React from "react"
 import { SectionList, SectionListData, SectionListRenderItem, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { mergeIrnTables, sortTimes } from "../irnTables/main"
+import { mergeIrnTablesByLocation, sortTimes } from "../irnTables/main"
 import { IrnRepositoryTables, IrnTableLocation, IrnTableSchedule, Time } from "../irnTables/models"
 import { useGlobalState } from "../state/main"
 import { getCounty, getDistrict } from "../state/selectors"
@@ -48,7 +48,7 @@ const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
 
   const keyExtractor = (_: IrnTableSchedule, index: number) => index.toString()
 
-  const mergedTables = mergeIrnTables(irnTables)
+  const mergedTables = mergeIrnTablesByLocation(irnTables)
 
   const sections = mergedTables.map(tableLocation => ({ tableLocation, data: tableLocation.schedules }))
 
