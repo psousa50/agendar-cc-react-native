@@ -1,10 +1,16 @@
 import { Card, Text, View } from "native-base"
 import { sort } from "ramda"
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { SectionList, SectionListData, SectionListRenderItem, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { mergeIrnTablesByLocation, sortTimes } from "../irnTables/main"
-import { IrnRepositoryTables, IrnTableLocation, IrnTableSchedule, Time } from "../irnTables/models"
+import { mergeIrnTablesByDate, mergeIrnTablesByLocation, sortTimes } from "../irnTables/main"
+import {
+  DaySchedule,
+  IrnRepositoryTables,
+  IrnTableLocationSchedules,
+  LocationSchedule,
+  TimeSlot,
+} from "../irnTables/models"
 import { useGlobalState } from "../state/main"
 import { getCounty, getDistrict } from "../state/selectors"
 import { useDataApi } from "../utils/fetchApi"
@@ -22,35 +28,7 @@ const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
   const [state] = useDataApi(() => fetchIrnTables({ districtId, countyId }), [] as IrnRepositoryTables)
   const irnTables = state.data
 
-  const renderIrnTableSection: SectionListRenderItem<IrnTableSchedule> = ({ item }) => (
-    <View style={styles.scheduleContainer}>
-      <View style={styles.dateContainer}>
-        <Text>{formatDate(item.date)}</Text>
-      </View>
-      <TimesList times={item.times} />
-    </View>
-  )
-
-  const renderSectionHeader = (info: { section: SectionListData<IrnTableSchedule> }) => {
-    const tableLocation: IrnTableLocation = info.section.tableLocation
-    const district = getDistrict(globalState)(tableLocation.county.districtId)!
-    const county = getCounty(globalState)(tableLocation.county.countyId)!
-
-    return (
-      <Card>
-        <View style={styles.districtContainer}>
-          <Text style={styles.districtText}>{`${district.name} - ${properCase(county.name)}`}</Text>
-          <Text style={styles.locationText}>{tableLocation.locationName}</Text>
-        </View>
-      </Card>
-    )
-  }
-
-  const keyExtractor = (_: IrnTableSchedule, index: number) => index.toString()
-
-  const mergedTables = mergeIrnTablesByLocation(irnTables)
-
-  const sections = mergedTables.map(tableLocation => ({ tableLocation, data: tableLocation.schedules }))
+  const groupBy = "date"
 
   return state.isLoading ? (
     <View>
@@ -58,17 +36,98 @@ const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
     </View>
   ) : (
     <View style={styles.container}>
-      <SectionList
-        keyExtractor={keyExtractor}
-        renderItem={renderIrnTableSection}
-        sections={sections}
-        renderSectionHeader={renderSectionHeader}
-      />
+      {groupBy === "date" ? <SectionsByDate irnTables={irnTables} /> : <SectionsByLocation irnTables={irnTables} />}
     </View>
   )
 }
 
-const TimesList: React.FunctionComponent<{ times: Time[] }> = ({ times }) => (
+const SectionsByLocation: FunctionComponent<{ irnTables: IrnRepositoryTables }> = ({ irnTables }) => {
+  const [globalState] = useGlobalState()
+
+  const renderIrnTableSectionByLocation: SectionListRenderItem<DaySchedule> = ({ item }) => (
+    <View style={styles.scheduleContainer}>
+      <View style={styles.dateContainer}>
+        <Text>{formatDate(item.date)}</Text>
+      </View>
+      <TimesList times={item.timeSlots} />
+    </View>
+  )
+
+  const renderSectionHeaderByLocation = (info: { section: SectionListData<DaySchedule> }) => {
+    const tableGroup: IrnTableLocationSchedules = info.section.tableGroup
+    const district = getDistrict(globalState)(tableGroup.county.districtId)!
+    const county = getCounty(globalState)(tableGroup.county.countyId)!
+
+    return (
+      <Card>
+        <View style={styles.districtContainer}>
+          <Text style={styles.districtText}>{`${district.name} - ${properCase(county.name)}`}</Text>
+          <Text style={styles.locationText}>{tableGroup.locationName}</Text>
+        </View>
+      </Card>
+    )
+  }
+
+  const keyExtractor = (_: DaySchedule, index: number) => index.toString()
+
+  const mergedTables = mergeIrnTablesByLocation(irnTables)
+
+  const sections = mergedTables.map(tableGroup => ({ tableGroup, data: tableGroup.daySchedules }))
+
+  return (
+    <SectionList
+      keyExtractor={keyExtractor}
+      renderItem={renderIrnTableSectionByLocation}
+      sections={sections}
+      renderSectionHeader={renderSectionHeaderByLocation}
+    />
+  )
+}
+
+const SectionsByDate: FunctionComponent<{ irnTables: IrnRepositoryTables }> = ({ irnTables }) => {
+  const [globalState] = useGlobalState()
+
+  const renderIrnTableSectionByDate: SectionListRenderItem<LocationSchedule> = ({ item }) => (
+    <View style={styles.scheduleContainer}>
+      <View style={styles.dateContainer}>
+        <Text style={styles.locationText}>{item.locationName}</Text>
+      </View>
+      <TimesList times={item.timeSlots} />
+    </View>
+  )
+
+  const renderSectionHeaderByDate = (info: { section: SectionListData<LocationSchedule> }) => {
+    const tableGroup = info.section.tableGroup
+    const district = getDistrict(globalState)(tableGroup.county.districtId)!
+    const county = getCounty(globalState)(tableGroup.county.countyId)!
+
+    return (
+      <Card>
+        <View style={styles.districtContainer}>
+          <Text style={styles.districtText}>{`${district.name} - ${properCase(county.name)}`}</Text>
+          <Text style={styles.dateText}>{formatDate(tableGroup.date)}</Text>
+        </View>
+      </Card>
+    )
+  }
+
+  const keyExtractor = (_: LocationSchedule, index: number) => index.toString()
+
+  const mergedTables = mergeIrnTablesByDate(irnTables)
+
+  const sections = mergedTables.map(tableGroup => ({ tableGroup, data: tableGroup.locationSchedules }))
+
+  return (
+    <SectionList
+      keyExtractor={keyExtractor}
+      renderItem={renderIrnTableSectionByDate}
+      sections={sections}
+      renderSectionHeader={renderSectionHeaderByDate}
+    />
+  )
+}
+
+const TimesList: React.FunctionComponent<{ times: TimeSlot[] }> = ({ times }) => (
   <View style={styles.timesListContainer}>
     {sort(sortTimes, times).map(time => (
       <TimeSlot key={time} time={time} />
@@ -76,7 +135,7 @@ const TimesList: React.FunctionComponent<{ times: Time[] }> = ({ times }) => (
   </View>
 )
 
-const TimeSlot: React.FunctionComponent<{ time: Time }> = ({ time }) => (
+const TimeSlot: React.FunctionComponent<{ time: TimeSlot }> = ({ time }) => (
   <View style={styles.timeSlotContainer}>
     <Text style={styles.timeSlot}>{formatTime(time)}</Text>
   </View>
@@ -96,6 +155,9 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: 12,
+  },
+  dateText: {
+    fontSize: 15,
   },
   scheduleContainer: {
     padding: 10,

@@ -1,9 +1,4 @@
-export type Time = string
-
-export type TimeSlot = {
-  date: Date
-  hours: readonly Time[]
-}
+export type TimeSlot = string
 
 export type IrnService = {
   id: number
@@ -33,26 +28,37 @@ export type IrnRepositoryTable = {
   postalCode: string
   phone: string
   date: Date
-  times: Time[]
+  times: TimeSlot[]
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]
 
-export type IrnTableSchedule = {
+export type DaySchedule = {
   date: Date
-  times: Time[]
+  timeSlots: TimeSlot[]
 }
-export type IrnTableSchedules = IrnTableSchedule[]
 
-export type IrnTableLocation = {
+export type LocationSchedule = {
+  locationName: string
+  timeSlots: TimeSlot[]
+}
+
+export interface IrnTableGrouped {
   serviceId: number
   county: County
-  locationName: string
   address: string
   postalCode: string
   phone: string
-  schedules: IrnTableSchedule[]
 }
-export type IrnTableLocations = IrnTableLocation[]
+
+export interface IrnTableLocationSchedules extends IrnTableGrouped {
+  locationName: string
+  daySchedules: DaySchedule[]
+}
+
+export interface IrnTableDateSchedules extends IrnTableGrouped {
+  date: Date
+  locationSchedules: LocationSchedule[]
+}
 
 export type GetTableParams = Partial<{
   serviceId: number
@@ -60,6 +66,6 @@ export type GetTableParams = Partial<{
   countyId: number
   startDate: Date
   endDate: Date
-  startTime: Time
-  endTime: Time
+  startTime: TimeSlot
+  endTime: TimeSlot
 }>

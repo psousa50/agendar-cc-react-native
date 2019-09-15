@@ -1,5 +1,5 @@
 import moment from "moment-with-locales-es6"
-import { Time } from "../irnTables/models"
+import { TimeSlot } from "../irnTables/models"
 
 const dayNames = ["Hoje", "Amanhã", "Depois de Amanhã"]
 
@@ -15,7 +15,7 @@ export const formatDate = (date: Date) => {
 
 const t = (v: number) => `${v < 10 ? 0 : ""}${v}`
 
-export const formatTime = (time: Time) => {
+export const formatTime = (time: TimeSlot) => {
   const date = new Date(`2000-01-01T${time}`)
   return `${t(date.getHours())}:${t(date.getMinutes())}`
 }
