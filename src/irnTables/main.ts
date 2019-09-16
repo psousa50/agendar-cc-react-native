@@ -19,20 +19,21 @@ const mergeSchedulesByDate = mergeIntoCollection(
 
 const matchByLocation = (irnTable: IrnRepositoryTable) => (irnTableLocation: IrnTableLocationSchedules) =>
   irnTableLocation.serviceId === irnTable.serviceId &&
-  irnTableLocation.county.districtId === irnTable.county.districtId &&
-  irnTableLocation.county.countyId === irnTable.county.countyId &&
+  irnTableLocation.districtId === irnTable.districtId &&
+  irnTableLocation.countyId === irnTable.countyId &&
   irnTableLocation.locationName === irnTable.locationName
 
 export const mergeIrnTablesByLocation = mergeCollection(matchByLocation, (irnTable, irnTableLocation) => ({
   serviceId: irnTable.serviceId,
-  county: irnTable.county,
+  countyId: irnTable.countyId,
+  districtId: irnTable.districtId,
   locationName: irnTable.locationName,
   address: irnTable.address,
   postalCode: irnTable.postalCode,
   phone: irnTable.phone,
   daySchedules: mergeSchedulesByDate(irnTableLocation ? irnTableLocation.daySchedules : [], {
     date: irnTable.date,
-    timeSlots: irnTable.times,
+    timeSlots: irnTable.timeSlots,
   }),
 }))
 
@@ -46,20 +47,21 @@ const mergeSchedulesByLocation = mergeIntoCollection(
 
 const matchByDate = (irnTable: IrnRepositoryTable) => (irnTableDate: IrnTableDateSchedules) =>
   irnTableDate.serviceId === irnTable.serviceId &&
-  irnTableDate.county.districtId === irnTable.county.districtId &&
-  irnTableDate.county.countyId === irnTable.county.countyId &&
+  irnTableDate.districtId === irnTable.districtId &&
+  irnTableDate.countyId === irnTable.countyId &&
   irnTableDate.date === irnTable.date
 
 export const mergeIrnTablesByDate = mergeCollection(matchByDate, (irnTable, irnTableLocation) => ({
   serviceId: irnTable.serviceId,
-  county: irnTable.county,
+  countyId: irnTable.countyId,
+  districtId: irnTable.districtId,
   date: irnTable.date,
   address: irnTable.address,
   postalCode: irnTable.postalCode,
   phone: irnTable.phone,
   locationSchedules: mergeSchedulesByLocation(irnTableLocation ? irnTableLocation.locationSchedules : [], {
     locationName: irnTable.locationName,
-    timeSlots: irnTable.times,
+    timeSlots: irnTable.timeSlots,
   }),
 }))
 

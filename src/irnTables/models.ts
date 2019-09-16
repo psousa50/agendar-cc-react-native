@@ -1,5 +1,9 @@
 export type TimeSlot = string
 
+export interface GpsLocation {
+  latitude: number
+  longitude: number
+}
 export type IrnService = {
   id: number
   name: string
@@ -9,6 +13,7 @@ export type IrnServices = IrnService[]
 export type District = {
   districtId: number
   name: string
+  gpsLocation?: GpsLocation
 }
 export type Districts = District[]
 
@@ -16,19 +21,21 @@ export type County = {
   districtId: number
   countyId: number
   name: string
+  gpsLocation?: GpsLocation
 }
 export type Counties = County[]
 
 export type IrnRepositoryTable = {
   serviceId: number
-  county: County
+  districtId: number
+  countyId: number
   locationName: string
   tableNumber: string
   address: string
   postalCode: string
   phone: string
   date: Date
-  times: TimeSlot[]
+  timeSlots: TimeSlot[]
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]
 
@@ -44,7 +51,8 @@ export type LocationSchedule = {
 
 export interface IrnTableGrouped {
   serviceId: number
-  county: County
+  districtId: number
+  countyId: number
   address: string
   postalCode: string
   phone: string

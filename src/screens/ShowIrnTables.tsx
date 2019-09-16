@@ -7,6 +7,7 @@ import { mergeIrnTablesByDate, mergeIrnTablesByLocation, sortTimes } from "../ir
 import {
   DaySchedule,
   IrnRepositoryTables,
+  IrnTableDateSchedules,
   IrnTableLocationSchedules,
   LocationSchedule,
   TimeSlot,
@@ -55,8 +56,8 @@ const SectionsByLocation: FunctionComponent<{ irnTables: IrnRepositoryTables }> 
 
   const renderSectionHeaderByLocation = (info: { section: SectionListData<DaySchedule> }) => {
     const tableGroup: IrnTableLocationSchedules = info.section.tableGroup
-    const district = getDistrict(globalState)(tableGroup.county.districtId)!
-    const county = getCounty(globalState)(tableGroup.county.countyId)!
+    const district = getDistrict(globalState)(tableGroup.districtId)!
+    const county = getCounty(globalState)(tableGroup.countyId)!
 
     return (
       <Card>
@@ -97,9 +98,9 @@ const SectionsByDate: FunctionComponent<{ irnTables: IrnRepositoryTables }> = ({
   )
 
   const renderSectionHeaderByDate = (info: { section: SectionListData<LocationSchedule> }) => {
-    const tableGroup = info.section.tableGroup
-    const district = getDistrict(globalState)(tableGroup.county.districtId)!
-    const county = getCounty(globalState)(tableGroup.county.countyId)!
+    const tableGroup: IrnTableDateSchedules = info.section.tableGroup
+    const district = getDistrict(globalState)(tableGroup.districtId)!
+    const county = getCounty(globalState)(tableGroup.countyId)!
 
     return (
       <Card>

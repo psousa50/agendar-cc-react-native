@@ -4,6 +4,7 @@ import { Animated, Easing, Platform, StatusBar } from "react-native"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
 import { createStackNavigator } from "react-navigation"
+import { IrnFiltersScreen } from "./screens/IrnFilters"
 import { SelectCountiesScreen } from "./screens/SelectCounties"
 import { SelectDistrictsScreen } from "./screens/SelectDistricts"
 import { ShowIrnTablesScreen } from "./screens/ShowIrnTables"
@@ -35,6 +36,7 @@ const transitionConfig = () => {
 
 export const ContentNavigator = createStackNavigator(
   {
+    IrnFilters: IrnFiltersScreen,
     SelectDistricts: SelectDistrictsScreen,
     SelectCounties: SelectCountiesScreen,
     ShowIrnTables: ShowIrnTablesScreen,

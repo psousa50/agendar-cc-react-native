@@ -12,11 +12,9 @@ import {
   Right,
   Subtitle,
   Title,
-  View,
 } from "native-base"
 import React from "react"
 import { Platform, StatusBar, ViewStyle } from "react-native"
-import { AdMobBanner } from "react-native-admob"
 import { NavigationRoute, NavigationScreenProp, NavigationScreenProps } from "react-navigation"
 import { appTheme } from "../utils/appTheme"
 import { ButtonIcons, editBackgroundColor } from "./ToolbarIcons"
@@ -118,7 +116,7 @@ export class AppScreen extends React.Component<AppScreenProps> {
           )}
           {footer ? <Footer>{footer()}</Footer> : undefined}
         </Container>
-        {this.props.showAds && (
+        {/* {this.props.showAds && (
           <View>
             <AdMobBanner
               adSize="smartBannerPortrait"
@@ -127,9 +125,9 @@ export class AppScreen extends React.Component<AppScreenProps> {
               onAdFailedToLoad={this.props.showError}
             />
           </View>
-        )}
+        )} */}
       </>
     )
   }
-  private bannerError = () => null
+  // private bannerError = () => null
 }

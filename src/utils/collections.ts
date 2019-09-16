@@ -19,3 +19,5 @@ export const mergeIntoCollection = <S>(criteria: (s1: S) => (s2: S) => boolean, 
   const index = col.findIndex(criteria(toMerge))
   return index >= 0 ? replaceByIndex(col, merge(col[index], toMerge), index) : [...col, toMerge]
 }
+
+export const flatten = <T>(list: T[][]) => list.reduce((acc, cur) => [...acc, ...cur], [] as T[])
