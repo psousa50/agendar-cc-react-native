@@ -9,9 +9,24 @@ type ButtonIcons = {
   [k: string]: (onPress: OnPress) => JSX.Element
 }
 
-const ButtonIcon = (name: string) => (onPress: OnPress, disabled: boolean = false, color?: string) => (
+type IconType =
+  | "AntDesign"
+  | "Entypo"
+  | "EvilIcons"
+  | "Feather"
+  | "FontAwesome"
+  | "FontAwesome5"
+  | "Foundation"
+  | "Ionicons"
+  | "MaterialCommunityIcons"
+  | "MaterialIcons"
+  | "Octicons"
+  | "SimpleLineIcons"
+  | "Zocial"
+const ButtonIcon = (name: string, type?: IconType) => (onPress: OnPress, disabled: boolean = false, color?: string) => (
   <Button transparent disabled={disabled} onPress={onPress}>
     <Icon
+      type={type}
       name={`${name}`}
       ios={`ios-${name}`}
       android={`md-${name}`}
@@ -27,6 +42,7 @@ export const ButtonIcons = {
   Refresh: ButtonIcon("refresh"),
   ArrowBack: ButtonIcon("arrow-back"),
   CancelEdit: ButtonIcon("arrow-back"),
+  Checkmark: ButtonIcon("checkmark"),
 }
 
 export const buttonIcons = (...buttons: ButtonIcons[]) => buttons

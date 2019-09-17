@@ -4,7 +4,6 @@ import { chain, fold, map } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
 import { useGlobalState } from "./GlobalStateProvider"
 import { Districts } from "./irnTables/models"
-import { logDebug } from "./utils/debug"
 import { fetchCounties, fetchDistricts } from "./utils/irnFetch"
 
 const mergeWithCounties = (districts: Districts) =>
@@ -14,7 +13,7 @@ const mergeWithCounties = (districts: Districts) =>
   )
 
 export const GlobalStateInitializer = () => {
-  const [globalState, globalDispatch] = useGlobalState()
+  const [, globalDispatch] = useGlobalState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +40,5 @@ export const GlobalStateInitializer = () => {
     fetchData()
   }, [])
 
-  logDebug("globalState=====>", globalState)
   return null
 }

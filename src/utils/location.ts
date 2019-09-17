@@ -4,7 +4,7 @@ const degreesToRadians = (degrees: number) => {
   return (degrees * Math.PI) / 180
 }
 
-export const distanceInKmBetweenEarthCoordinates = (loc1: GpsLocation, loc2: GpsLocation) => {
+export const calcDistanceInKm = (loc1: GpsLocation, loc2: GpsLocation) => {
   const earthRadiusKm = 6371
 
   const dLat = degreesToRadians(loc2.latitude - loc1.latitude)
@@ -24,9 +24,7 @@ export const getClosestCounty = (counties: Counties) => (location: GpsLocation) 
   counties.reduce(
     (acc, county) => {
       if (acc) {
-        const newDistance = county.gpsLocation
-          ? distanceInKmBetweenEarthCoordinates(county.gpsLocation, location)
-          : null
+        const newDistance = county.gpsLocation ? calcDistanceInKm(county.gpsLocation, location) : null
         return newDistance && newDistance < acc.distance ? { county, distance: newDistance } : acc
       } else {
         return { county, distance: 100000000 }

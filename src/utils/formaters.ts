@@ -1,5 +1,5 @@
 import moment from "moment-with-locales-es6"
-import { TimeSlot } from "../irnTables/models"
+import { County, District, TimeSlot } from "../irnTables/models"
 
 const dayNames = ["Hoje", "Amanhã", "Depois de Amanhã"]
 
@@ -27,3 +27,10 @@ export const properCase = (s: string) =>
     .split(" ")
     .map(w => `${w[0].toUpperCase()}${w.substring(1)}`)
     .join(" ")
+
+export const getCountyName = (county?: County, district?: District) => {
+  const countyName = county ? properCase(county.name) : ""
+  const districtName = district ? properCase(district.name) : ""
+  const countyNamePart = !countyName || districtName === countyName ? "" : ` - ${countyName}`
+  return `${districtName}${countyNamePart}`
+}
