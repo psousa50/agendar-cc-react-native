@@ -1,23 +1,33 @@
 import { Counties, Districts } from "../irnTables/models"
 
 export interface StaticDataState {
-  districts: Districts
   counties: Counties
+  districts: Districts
   error: Error | null
+  loaded: boolean
+  loading: boolean
 }
-export interface GlobalState {
-  staticData: StaticDataState
+
+export interface FilterState {
   countyId: number | undefined
   districtId: number | undefined
+}
+
+export interface GlobalState {
+  staticData: StaticDataState
+  filter: FilterState
 }
 
 export const initialGlobalState = {
   staticData: {
     districts: [],
     counties: [],
-    irnTables: [],
     error: null,
+    loaded: false,
+    loading: false,
   },
-  countyId: undefined,
-  districtId: undefined,
+  filter: {
+    countyId: undefined,
+    districtId: undefined,
+  },
 }

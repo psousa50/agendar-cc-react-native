@@ -3,6 +3,8 @@ import { sort } from "ramda"
 import React, { FunctionComponent } from "react"
 import { SectionList, SectionListData, SectionListRenderItem, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
+import { useDataFetch } from "../dataFetch/useDataFetch"
+import { useGlobalState } from "../GlobalStateProvider"
 import { mergeIrnTablesByDate, mergeIrnTablesByLocation, sortTimes } from "../irnTables/main"
 import {
   DaySchedule,
@@ -12,9 +14,7 @@ import {
   LocationSchedule,
   TimeSlot,
 } from "../irnTables/models"
-import { useGlobalState } from "../state/main"
 import { getCounty, getDistrict } from "../state/selectors"
-import { useDataApi } from "../utils/fetchApi"
 import { formatDate, formatTime, properCase } from "../utils/formaters"
 import { fetchIrnTables } from "../utils/irnFetch"
 
@@ -25,8 +25,8 @@ export const ShowIrnTablesScreen: React.FunctionComponent<AppScreenProps> = prop
 const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
   const [globalState] = useGlobalState()
 
-  const { countyId, districtId } = globalState
-  const [state] = useDataApi(() => fetchIrnTables({ districtId, countyId }), [] as IrnRepositoryTables)
+  const { countyId, districtId } = globalState.filter
+  const { state } = useDataFetch(() => fetchIrnTables({ districtId, countyId }), [] as IrnRepositoryTables)
   const irnTables = state.data
 
   const groupBy = "date"

@@ -6,8 +6,7 @@ const deviceHeight = Dimensions.get("window").height
 const deviceWidth = Dimensions.get("window").width
 const platform = Platform.OS
 const platformStyle = undefined
-const isIphoneX =
-  platform === "ios" && deviceHeight === 812 && deviceWidth === 375
+const isIphoneX = platform === "ios" && deviceHeight === 812 && deviceWidth === 375
 
 export const variable = {
   platformStyle,
@@ -221,7 +220,7 @@ export const variable = {
   tabFontSize: 15,
 
   // Text
-  textColor: "#000",
+  textColor: "#707070",
   inverseTextColor: "#fff",
   noteFontSize: 14,
   get defaultTextColor() {

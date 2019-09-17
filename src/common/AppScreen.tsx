@@ -104,7 +104,7 @@ export class AppScreen extends React.Component<AppScreenProps> {
           {onFabPressed ? (
             <Fab
               direction="up"
-              style={{ backgroundColor: appTheme.brandSecondary }}
+              style={{ backgroundColor: appTheme.btnInfoBg }}
               containerStyle={{ marginRight: 10 }}
               position="bottomRight"
               onPress={onFabPressed}

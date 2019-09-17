@@ -3,8 +3,8 @@ import { Text, View } from "native-base"
 import React from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
+import { useGlobalState } from "../GlobalStateProvider"
 import { District } from "../irnTables/models"
-import { useGlobalState } from "../state/main"
 import { getDistricts } from "../state/selectors"
 
 export const SelectDistrictsScreen: React.FunctionComponent<AppScreenProps> = props => (

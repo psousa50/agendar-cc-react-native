@@ -1,8 +1,8 @@
 import { pipe } from "fp-ts/lib/pipeable"
 import { task } from "fp-ts/lib/Task"
 import { fold } from "fp-ts/lib/TaskEither"
-import { useEffect, useReducer } from "react"
-import { Action } from "./actions"
+import { useCallback, useEffect, useReducer } from "react"
+import { Action } from "../utils/actions"
 
 interface FetchDataApiState<T> {
   data: T
@@ -47,12 +47,14 @@ const dataFetchReducer = <T>(state: FetchDataApiState<T>, action: FetchDataApiAc
   }
 }
 
-export const useDataApi = <T>(fetch: Action<void, T>, initialData: T) => {
+export const useDataFetch = <T>(fetchAction: Action<void, T>, initialData: T) => {
   const [state, dispatch] = useReducer(dataFetchReducer, {
     data: initialData,
     isLoading: false,
     error: null,
   })
+
+  const fetch = useCallback(() => fetchAction(), [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,5 +80,5 @@ export const useDataApi = <T>(fetch: Action<void, T>, initialData: T) => {
     fetchData()
   }, [])
 
-  return [state as FetchDataApiState<T>]
+  return { state: state as FetchDataApiState<T>, fetch }
 }

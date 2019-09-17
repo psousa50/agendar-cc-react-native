@@ -2,8 +2,8 @@ import { Body, Card, CardItem, Icon, Right, Text, View } from "native-base"
 import React from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
+import { useGlobalState } from "../GlobalStateProvider"
 import { County } from "../irnTables/models"
-import { useGlobalState } from "../state/main"
 import { getCounties } from "../state/selectors"
 import { properCase } from "../utils/formaters"
 
@@ -44,7 +44,7 @@ const SelectCountiesContent: React.FunctionComponent<AppScreenProps> = props => 
     <View style={styles.container}>
       <FlatList
         renderItem={renderCounty}
-        data={getCounties(globalState)(globalState.districtId)}
+        data={getCounties(globalState)(globalState.filter.districtId)}
         keyExtractor={keyExtractor}
       />
     </View>

@@ -2,14 +2,14 @@ import { pipe } from "fp-ts/lib/pipeable"
 import { task } from "fp-ts/lib/Task"
 import { chain, fold, map } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
+import { useGlobalState } from "./GlobalStateProvider"
 import { Districts } from "./irnTables/models"
-import { useGlobalState } from "./state/main"
-import { debug as logDebug } from "./utils/debug"
-import { fetchCountries, fetchDistricts } from "./utils/irnFetch"
+import { logDebug } from "./utils/debug"
+import { fetchCounties, fetchDistricts } from "./utils/irnFetch"
 
 const mergeWithCounties = (districts: Districts) =>
   pipe(
-    fetchCountries(),
+    fetchCounties(),
     map(counties => ({ districts, counties })),
   )
 
