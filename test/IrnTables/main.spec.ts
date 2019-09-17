@@ -1,21 +1,18 @@
 import { mergeIrnTablesByLocation } from "../../src/irnTables/main"
-import { IrnRepositoryTable } from "../../src/irnTables/models"
+import { IrnRepositoryTable, IrnTableDateSchedules, IrnTableLocationSchedules } from "../../src/irnTables/models"
 
 const makeTable = (irnTable: Partial<IrnRepositoryTable>): IrnRepositoryTable => {
   const defaultTable = {
     address: "Some Address",
-    county: {
-      countyId: 3,
-      districtId: 2,
-      name: "Some name",
-    },
+    countyId: 20,
+    districtId: 30,
     date: new Date("2000-01-01"),
     locationName: "Some Location Name",
     phone: "some-phone",
     postalCode: "some-code",
-    serviceId: 1,
+    serviceId: 10,
     tableNumber: "1",
-    times: ["12:30"],
+    timeSlots: ["12:30"],
   }
 
   return {
@@ -28,97 +25,103 @@ describe("mergeIrnTables", () => {
   it("merges tables with same service, county and date", () => {
     const date1 = new Date("2010-01-01")
     const date2 = new Date("2010-01-10")
-    const times1 = ["12:30", "12:45"]
-    const times2 = ["15:00", "15:15"]
-    const times3 = ["15:00", "20:15"]
+    const timeSlots1 = ["12:30", "12:45"]
+    const timeSlots2 = ["15:00", "15:15"]
+    const timeSlots3 = ["15:00", "20:15"]
     const aTable = makeTable({
       serviceId: 1,
-      county: { districtId: 2, countyId: 3, name: "some name" },
+      districtId: 2,
+      countyId: 3,
       locationName: "location name 1",
       date: date1,
-      times: times1,
+      timeSlots: timeSlots1,
     })
     const aSimilarTable = {
       ...aTable,
       date: date2,
-      times: times2,
+      timeSlots: timeSlots2,
     }
     const aDifferentTable = makeTable({
       serviceId: 10,
-      county: { districtId: 20, countyId: 40, name: "some other name" },
+      districtId: 20,
+      countyId: 40,
       locationName: "location name 2",
       date: date1,
-      times: times3,
+      timeSlots: timeSlots3,
     })
 
-    const similarTablesMerged = {
+    const similarTablesMerged: IrnTableLocationSchedules = {
       serviceId: aTable.serviceId,
-      county: aTable.county,
+      countyId: aTable.countyId,
+      districtId: aTable.districtId,
       locationName: aTable.locationName,
       address: aTable.address,
       postalCode: aTable.postalCode,
       phone: aTable.phone,
-      schedules: [
+      daySchedules: [
         {
           date: date1,
-          times: times1,
+          timeSlots: timeSlots1,
         },
         {
           date: date2,
-          times: times2,
+          timeSlots: timeSlots2,
         },
       ],
     }
 
-    const theDifferentTable = {
+    const aDifferentTableMerged = {
       serviceId: aDifferentTable.serviceId,
-      county: aDifferentTable.county,
+      countyId: aDifferentTable.countyId,
+      districtId: aDifferentTable.districtId,
       locationName: aDifferentTable.locationName,
       address: aDifferentTable.address,
       postalCode: aDifferentTable.postalCode,
       phone: aDifferentTable.phone,
-      schedules: [
+      daySchedules: [
         {
           date: date1,
-          times: times3,
+          timeSlots: timeSlots3,
         },
       ],
     }
     const result = mergeIrnTablesByLocation([aTable, aSimilarTable, aDifferentTable])
-    const expected = [similarTablesMerged, theDifferentTable]
+    const expected = [similarTablesMerged, aDifferentTableMerged]
 
     expect(result).toEqual(expected)
   })
 
   it("ignores duplicate dates on the tables, merging the times", () => {
     const date1 = new Date("2010-01-01")
-    const times1 = ["12:30", "12:45"]
-    const times2 = ["11:00", "12:45"]
+    const timeSlots1 = ["12:30", "12:45"]
+    const timeSlots2 = ["11:00", "12:45"]
     const aTable = makeTable({
       serviceId: 1,
-      county: { districtId: 2, countyId: 3, name: "some name" },
+      districtId: 2,
+      countyId: 3,
       locationName: "location name 1",
       date: date1,
-      times: times1,
+      timeSlots: timeSlots1,
     })
     const aSimilarTable = {
       ...aTable,
       date: date1,
-      times: times2,
+      timeSlots: timeSlots2,
     }
 
     const uniqueTimes = ["12:30", "12:45", "11:00"]
-    const similarTablesMerged = {
+    const similarTablesMerged: IrnTableLocationSchedules = {
       serviceId: aTable.serviceId,
-      county: aTable.county,
+      countyId: aTable.countyId,
+      districtId: aTable.districtId,
       locationName: aTable.locationName,
       address: aTable.address,
       postalCode: aTable.postalCode,
       phone: aTable.phone,
-      schedules: [
+      daySchedules: [
         {
           date: date1,
-          times: uniqueTimes,
+          timeSlots: uniqueTimes,
         },
       ],
     }
