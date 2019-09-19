@@ -31,6 +31,6 @@ export const properCase = (s: string) =>
 export const getCountyName = (county?: County, district?: District) => {
   const countyName = county ? properCase(county.name) : ""
   const districtName = district ? properCase(district.name) : ""
-  const countyNamePart = !countyName || districtName === countyName ? "" : ` - ${countyName}`
+  const countyNamePart = countyName ? ` - ${countyName}` : ""
   return `${districtName}${countyNamePart}`
 }

@@ -1,5 +1,5 @@
 import { Counties, Districts } from "../irnTables/models"
-import { FilterState, GlobalState, StaticDataState } from "./models"
+import { GlobalState, IrnFilterState, StaticDataState } from "./models"
 
 export type GlobalStateAction =
   | {
@@ -16,7 +16,7 @@ export type GlobalStateAction =
     }
   | {
       type: "SET_FILTER"
-      payload: { filter: FilterState }
+      payload: { filter: IrnFilterState }
     }
   | {
       type: "SET_DISTRICT_ID"
@@ -71,7 +71,7 @@ export const globalStateReducer: GlobalStateReducer = (state, action) => {
       }
     }
     case "SET_FILTER": {
-      return { ...state, filter: { ...state.filter, ...action.payload.filter } }
+      return { ...state, irnFilter: { ...state.irnFilter, ...action.payload.filter } }
     }
     case "SET_DISTRICT_ID": {
       return { ...state, districtId: action.payload.districtId }

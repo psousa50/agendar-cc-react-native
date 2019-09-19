@@ -10,4 +10,4 @@ export const getCounties = (state: GlobalState) => (districtId?: number) =>
 export const getCounty = (state: GlobalState) => (countyId?: number) =>
   state.staticData.counties.find(c => !isNil(countyId) && c.countyId === countyId)
 
-export const getFilter = (state: GlobalState) => state.filter
+export const getFilter = (state: GlobalState) => state.irnFilter

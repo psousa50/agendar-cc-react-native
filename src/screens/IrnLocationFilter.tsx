@@ -1,5 +1,6 @@
 import Geolocation from "@react-native-community/geolocation"
 import { Icon, Text, View } from "native-base"
+import sort from "ramda/es/sort"
 import React from "react"
 import { useEffect, useMemo, useState } from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet, TextInput, TouchableOpacity } from "react-native"
@@ -7,6 +8,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, Districts, GpsLocation } from "../irnTables/models"
+import { IrnFilterState } from "../state/models"
 import { getCounty, getDistrict } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
 import { getClosestCounty } from "../utils/location"
@@ -17,44 +19,76 @@ interface SearchableCounty {
   key: string
   searchText: string
 }
-const buildSearchableCounties = (counties: Counties, districts: Districts): SearchableCounty[] =>
-  counties.map(county => {
+const buildSearchableCounties = (counties: Counties, districts: Districts): SearchableCounty[] => {
+  const countyNames = counties.map(county => {
     const district = districts.find(d => d.districtId === county.districtId)!
-    const searchText = getCountyName(county, district)
+    const countyName = getCountyName(county, district)
     return {
-      countyId: properCase(county.name) === properCase(district.name) ? undefined : county.countyId,
+      countyId: county.countyId,
       districtId: county.districtId,
-      key: searchText,
-      searchText,
+      key: countyName,
+      searchText: countyName,
+    }
+  })
+  const districtNames = districts.map(district => {
+    const districtName = properCase(district.name)
+    return {
+      countyId: undefined,
+      districtId: district.districtId,
+      key: districtName,
+      searchText: districtName,
     }
   })
 
+  return sort((n1, n2) => n1.searchText.localeCompare(n2.searchText), [...districtNames, ...countyNames])
+}
+
+interface IrnLocationFilterScreenState {
+  irnFilter: IrnFilterState
+  locationText: string
+  position: GpsLocation | null
+  hideSearchResults: boolean
+}
+
 export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
-  const [filter, setFilter] = useState(globalState.filter)
-  const updateGlobalFilter = () => {
-    globalDispatch({
-      type: "SET_FILTER",
-      payload: { filter },
-    })
-    props.navigation.goBack()
+
+  const initialState: IrnLocationFilterScreenState = {
+    irnFilter: globalState.irnFilter,
+    hideSearchResults: false,
+    locationText: "",
+    position: null,
   }
 
-  const [locationText, setLocationText] = useState("")
-  const [position, setPosition] = useState(null as GpsLocation | null)
+  const [state, setState] = useState(initialState)
+
+  const updateState = (newState: Partial<IrnLocationFilterScreenState>) =>
+    setState(oldState => ({ ...oldState, ...newState }))
+
+  const { locationText, position } = state
 
   const { counties, districts } = globalState.staticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
 
+  const updateGlobalFilter = () => {
+    globalDispatch({
+      type: "SET_FILTER",
+      payload: { filter: state.irnFilter },
+    })
+    props.navigation.goBack()
+  }
+
   const getCurrentPosition = () => {
     Geolocation.getCurrentPosition(
       pos => {
-        setPosition({
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
+        updateState({
+          position: {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          },
         })
       },
-      () => setPosition(null),
+      () => updateState({ position: null }),
     )
   }
 
@@ -62,7 +96,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
     getCurrentPosition()
   }, [])
 
-  const data =
+  const listItems =
     locationText.length > 1
       ? searchableCounties
           .filter(sc => sc.searchText.toLocaleLowerCase().includes(locationText.toLocaleLowerCase()))
@@ -85,28 +119,29 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   }
 
   const updateFilter = (countyId: number | undefined, districtId: number) => {
-    setFilter({ countyId, districtId })
     const district = getDistrict(globalState)(districtId)
     const county = getCounty(globalState)(countyId)
-    setLocationText(getCountyName(county, district))
+    updateState({
+      irnFilter: { countyId, districtId },
+      locationText: getCountyName(county, district),
+      hideSearchResults: true,
+    })
   }
+
+  const onChangeText = (text: string) => updateState({ locationText: text, hideSearchResults: false })
 
   const renderContent = () => {
     return (
       <View>
-        <TextInput
-          placeholder="Distrito - Concelho"
-          value={locationText}
-          onChangeText={text => setLocationText(text)}
-        ></TextInput>
+        <TextInput placeholder="Distrito - Concelho" value={locationText} onChangeText={onChangeText}></TextInput>
         <View style={styles.currentLocation}>
           <Icon style={styles.currentLocationIcon} type="FontAwesome" name="location-arrow" />
           <Text onPress={setCurrentLocation} style={styles.currentLocationText}>
             Localização actual
           </Text>
         </View>
-        {data.length !== 1 || data[0].searchText.toLocaleLowerCase() !== locationText.toLocaleLowerCase() ? (
-          <FlatList data={data} renderItem={renderItem} ItemSeparatorComponent={Separator} />
+        {!state.hideSearchResults ? (
+          <FlatList data={listItems} renderItem={renderItem} ItemSeparatorComponent={Separator} />
         ) : null}
       </View>
     )

@@ -25,7 +25,7 @@ export const ShowIrnTablesScreen: React.FunctionComponent<AppScreenProps> = prop
 const ShowIrnTablesContent: React.FunctionComponent<AppScreenProps> = () => {
   const [globalState] = useGlobalState()
 
-  const { countyId, districtId } = globalState.filter
+  const { countyId, districtId } = globalState.irnFilter
   const { state } = useDataFetch(() => fetchIrnTables({ districtId, countyId }), [] as IrnRepositoryTables)
   const irnTables = state.data
 

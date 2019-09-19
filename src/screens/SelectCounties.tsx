@@ -44,7 +44,7 @@ const SelectCountiesContent: React.FunctionComponent<AppScreenProps> = props => 
     <View style={styles.container}>
       <FlatList
         renderItem={renderCounty}
-        data={getCounties(globalState)(globalState.filter.districtId)}
+        data={getCounties(globalState)(globalState.irnFilter.districtId)}
         keyExtractor={keyExtractor}
       />
     </View>

@@ -8,17 +8,17 @@ export interface StaticDataState {
   loading: boolean
 }
 
-export interface FilterState {
+export interface IrnFilterState {
   countyId: number | undefined
   districtId: number | undefined
 }
 
 export interface GlobalState {
   staticData: StaticDataState
-  filter: FilterState
+  irnFilter: IrnFilterState
 }
 
-export const initialGlobalState = {
+export const initialGlobalState: GlobalState = {
   staticData: {
     districts: [],
     counties: [],
@@ -26,7 +26,7 @@ export const initialGlobalState = {
     loaded: false,
     loading: false,
   },
-  filter: {
+  irnFilter: {
     countyId: undefined,
     districtId: undefined,
   },
