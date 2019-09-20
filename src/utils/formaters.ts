@@ -1,12 +1,16 @@
-import moment from "moment-with-locales-es6"
+import moment from "moment"
+import momentLoc from "moment-with-locales-es6"
+
 import { County, District, TimeSlot } from "../irnTables/models"
 
 const dayNames = ["Hoje", "Amanhã", "Depois de Amanhã"]
 
 export const formatLocale = (date: Date) => {
-  moment.locale("pt")
-  return moment(date).format("LL")
+  momentLoc.locale("pt")
+  return momentLoc(date).format("LL")
 }
+
+export const formatDateYYYYMMDD = (date: Date) => moment(date).format("YYYY-MM-DD")
 
 export const formatDate = (date: Date) => {
   const diffDays = moment(date).diff(moment.now(), "days")

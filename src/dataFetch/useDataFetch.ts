@@ -4,7 +4,7 @@ import { fold } from "fp-ts/lib/TaskEither"
 import { useCallback, useEffect, useReducer } from "react"
 import { Action } from "../utils/actions"
 
-interface FetchDataApiState<T> {
+interface DataFetchState<T> {
   data: T
   isLoading: boolean
   error: Error | null
@@ -23,7 +23,7 @@ type FetchDataApiActions<T> =
       payload: { error: Error }
     }
 
-const dataFetchReducer = <T>(state: FetchDataApiState<T>, action: FetchDataApiActions<T>): FetchDataApiState<T> => {
+const dataFetchReducer = <T>(state: DataFetchState<T>, action: FetchDataApiActions<T>): DataFetchState<T> => {
   switch (action.type) {
     case "FETCH_INIT":
       return {
@@ -80,5 +80,5 @@ export const useDataFetch = <T>(fetchAction: Action<void, T>, initialData: T) =>
     fetchData()
   }, [])
 
-  return { state: state as FetchDataApiState<T>, fetch }
+  return { state: state as DataFetchState<T>, fetch }
 }

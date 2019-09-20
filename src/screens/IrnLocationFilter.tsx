@@ -9,7 +9,7 @@ import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, Districts, GpsLocation } from "../irnTables/models"
 import { IrnFilterState } from "../state/models"
-import { getCounty, getDistrict } from "../state/selectors"
+import { getCounty, getDistrict, getIrnTablesFilter } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
 import { getClosestCounty } from "../utils/location"
 
@@ -54,7 +54,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const [globalState, globalDispatch] = useGlobalState()
 
   const initialState: IrnLocationFilterScreenState = {
-    irnFilter: globalState.irnFilter,
+    irnFilter: getIrnTablesFilter(globalState),
     hideSearchResults: false,
     locationText: "",
     position: null,
@@ -62,7 +62,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
 
   const [state, setState] = useState(initialState)
 
-  const updateState = (newState: Partial<IrnLocationFilterScreenState>) =>
+  const mergeState = (newState: Partial<IrnLocationFilterScreenState>) =>
     setState(oldState => ({ ...oldState, ...newState }))
 
   const { locationText, position } = state
@@ -72,7 +72,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
 
   const updateGlobalFilter = () => {
     globalDispatch({
-      type: "SET_FILTER",
+      type: "IRN_TABLES_SET_FILTER",
       payload: { filter: state.irnFilter },
     })
     props.navigation.goBack()
@@ -81,14 +81,14 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const getCurrentPosition = () => {
     Geolocation.getCurrentPosition(
       pos => {
-        updateState({
+        mergeState({
           position: {
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
           },
         })
       },
-      () => updateState({ position: null }),
+      () => mergeState({ position: null }),
     )
   }
 
@@ -121,14 +121,14 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const updateFilter = (countyId: number | undefined, districtId: number) => {
     const district = getDistrict(globalState)(districtId)
     const county = getCounty(globalState)(countyId)
-    updateState({
+    mergeState({
       irnFilter: { countyId, districtId },
       locationText: getCountyName(county, district),
       hideSearchResults: true,
     })
   }
 
-  const onChangeText = (text: string) => updateState({ locationText: text, hideSearchResults: false })
+  const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
 
   const renderContent = () => {
     return (
@@ -150,7 +150,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   return (
     <AppScreen
       {...props}
-      content={() => renderContent()}
+      content={renderContent}
       title="Agendar CC"
       showAds={false}
       right={() => ButtonIcons.Checkmark(() => updateGlobalFilter())}

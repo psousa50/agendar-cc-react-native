@@ -1,4 +1,4 @@
-import { Counties, Districts } from "../irnTables/models"
+import { Counties, Districts, IrnRepositoryTables } from "../irnTables/models"
 
 export interface StaticDataState {
   counties: Counties
@@ -9,13 +9,24 @@ export interface StaticDataState {
 }
 
 export interface IrnFilterState {
-  countyId: number | undefined
-  districtId: number | undefined
+  countyId?: number
+  districtId?: number
+  startDate?: Date
+  endDate?: Date
+  selectedDate?: Date
+}
+
+export interface IrnTablesDataState {
+  filter: IrnFilterState
+  lastUsedFilter: IrnFilterState
+  irnTables: IrnRepositoryTables
+  error: Error | null
+  loading: boolean
 }
 
 export interface GlobalState {
   staticData: StaticDataState
-  irnFilter: IrnFilterState
+  irnTablesData: IrnTablesDataState
 }
 
 export const initialGlobalState: GlobalState = {
@@ -26,8 +37,11 @@ export const initialGlobalState: GlobalState = {
     loaded: false,
     loading: false,
   },
-  irnFilter: {
-    countyId: undefined,
-    districtId: undefined,
+  irnTablesData: {
+    filter: {},
+    lastUsedFilter: {},
+    irnTables: [],
+    error: null,
+    loading: false,
   },
 }

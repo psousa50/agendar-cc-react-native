@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react"
 import { useContext } from "react"
-import { GlobalStateAction, globalStateReducer } from "./state/main"
+import { GlobalStateAction } from "./state/actions"
+import { globalStateReducer } from "./state/main"
 import { GlobalState, initialGlobalState } from "./state/models"
 
 export const GlobalStateContext = createContext<[GlobalState, React.Dispatch<GlobalStateAction>]>([

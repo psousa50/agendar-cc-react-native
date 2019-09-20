@@ -1,43 +1,17 @@
-import { Counties, Districts } from "../irnTables/models"
-import { GlobalState, IrnFilterState, StaticDataState } from "./models"
-
-export type GlobalStateAction =
-  | {
-      type: "FETCH_STATIC_DATA_INIT"
-      payload: {}
-    }
-  | {
-      type: "FETCH_STATIC_DATA_SUCCESS"
-      payload: { districts: Districts; counties: Counties }
-    }
-  | {
-      type: "FETCH_STATIC_DATA_FAILURE"
-      payload: { error: Error }
-    }
-  | {
-      type: "SET_FILTER"
-      payload: { filter: IrnFilterState }
-    }
-  | {
-      type: "SET_DISTRICT_ID"
-      payload: { districtId: number | undefined }
-    }
-  | {
-      type: "SET_COUNTY_ID"
-      payload: { countyId: number | undefined }
-    }
+import { GlobalStateAction } from "./actions"
+import { GlobalState, IrnTablesDataState, StaticDataState } from "./models"
 
 type StaticDataReducer = (state: StaticDataState, action: GlobalStateAction) => StaticDataState
 const staticDataReducer: StaticDataReducer = (state, action) => {
   switch (action.type) {
-    case "FETCH_STATIC_DATA_INIT": {
+    case "STATIC_DATA_FETCH_INIT": {
       return {
         ...state,
         error: null,
         loading: true,
       }
     }
-    case "FETCH_STATIC_DATA_SUCCESS": {
+    case "STATIC_DATA_FETCH_SUCCESS": {
       return {
         ...state,
         ...action.payload,
@@ -46,7 +20,7 @@ const staticDataReducer: StaticDataReducer = (state, action) => {
         loading: false,
       }
     }
-    case "FETCH_STATIC_DATA_FAILURE": {
+    case "STATIC_DATA_FETCH_FAILURE": {
       return {
         ...state,
         error: action.payload.error,
@@ -59,25 +33,56 @@ const staticDataReducer: StaticDataReducer = (state, action) => {
   }
 }
 
+type IrnTablesDataReducer = (state: IrnTablesDataState, action: GlobalStateAction) => IrnTablesDataState
+const irnTablesDataReducer: IrnTablesDataReducer = (state, action) => {
+  switch (action.type) {
+    case "IRN_TABLES_FETCH_INIT": {
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      }
+    }
+    case "IRN_TABLES_FETCH_SUCCESS": {
+      return {
+        ...state,
+        ...action.payload,
+        error: null,
+        lastUsedFilter: state.filter,
+        loading: false,
+      }
+    }
+    case "IRN_TABLES_FETCH_FAILURE": {
+      return {
+        ...state,
+        error: action.payload.error,
+        loading: false,
+      }
+    }
+    case "IRN_TABLES_SET_FILTER": {
+      return { ...state, filter: { ...state.filter, ...action.payload.filter } }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
 type GlobalStateReducer = (state: GlobalState, action: GlobalStateAction) => GlobalState
 export const globalStateReducer: GlobalStateReducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_STATIC_DATA_INIT":
-    case "FETCH_STATIC_DATA_SUCCESS":
-    case "FETCH_STATIC_DATA_FAILURE": {
+  switch (true) {
+    case action.type.startsWith("STATIC_DATA"):
       return {
         ...state,
         staticData: staticDataReducer(state.staticData, action),
       }
-    }
-    case "SET_FILTER": {
-      return { ...state, irnFilter: { ...state.irnFilter, ...action.payload.filter } }
-    }
-    case "SET_DISTRICT_ID": {
-      return { ...state, districtId: action.payload.districtId }
-    }
-    case "SET_COUNTY_ID": {
-      return { ...state, countyId: action.payload.countyId }
+    case action.type.startsWith("IRN_TABLES"):
+      return {
+        ...state,
+        irnTablesData: irnTablesDataReducer(state.irnTablesData, action),
+      }
+    default: {
+      return state
     }
   }
 }

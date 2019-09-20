@@ -5,7 +5,6 @@
     "arrow-parens": [false],
     "no-console": [false],
     "no-default-export": true,
-    "no-unused-variable": [true, "react"],
     "no-unused-expression": [true, "allow-fast-null-checks"],
     "object-literal-sort-keys": false,
     "semicolon": [true, "never"],

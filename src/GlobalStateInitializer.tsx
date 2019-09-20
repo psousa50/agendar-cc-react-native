@@ -13,22 +13,24 @@ const mergeWithCounties = (districts: Districts) =>
   )
 
 export const GlobalStateInitializer = () => {
-  const [, globalDispatch] = useGlobalState()
+  const [globalState, globalDispatch] = useGlobalState()
 
   useEffect(() => {
     const fetchData = async () => {
-      globalDispatch({ type: "FETCH_STATIC_DATA_INIT", payload: {} })
+      globalDispatch({ type: "STATIC_DATA_FETCH_INIT" })
 
       const action = pipe(
         fetchDistricts(),
         chain(mergeWithCounties),
         fold(
           error => {
-            globalDispatch({ type: "FETCH_STATIC_DATA_FAILURE", payload: { error } })
+            console.log("error=====>", error)
+            globalDispatch({ type: "STATIC_DATA_FETCH_FAILURE", payload: { error } })
             return task.of(error)
           },
           staticData => {
-            globalDispatch({ type: "FETCH_STATIC_DATA_SUCCESS", payload: staticData })
+            console.log("staticData=====>", staticData)
+            globalDispatch({ type: "STATIC_DATA_FETCH_SUCCESS", payload: staticData })
             return task.of(undefined)
           },
         ),
@@ -40,5 +42,6 @@ export const GlobalStateInitializer = () => {
     fetchData()
   }, [])
 
+  console.log("Global State=====>", globalState.staticData)
   return null
 }

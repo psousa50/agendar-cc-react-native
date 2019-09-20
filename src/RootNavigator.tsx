@@ -6,9 +6,8 @@ import { NavigationSceneRendererProps } from "react-navigation"
 import { createStackNavigator } from "react-navigation"
 import { HomeScreen } from "./screens/Home"
 import { IrnLocationFilterScreen } from "./screens/IrnLocationFilter"
-import { SelectCountiesScreen } from "./screens/SelectCounties"
-import { SelectDistrictsScreen } from "./screens/SelectDistricts"
-import { ShowIrnTablesScreen } from "./screens/ShowIrnTables"
+import { IrnTablesByDateScreen } from "./screens/IrnTablesByDate"
+import { IrnTablesDayScheduleScreen } from "./screens/IrnTablesDaySchedule"
 import { appTheme } from "./utils/appTheme"
 
 const transitionConfig = () => {
@@ -39,12 +38,11 @@ export const ContentNavigator = createStackNavigator(
   {
     Home: HomeScreen,
     IrnLocationFilter: IrnLocationFilterScreen,
-    SelectDistricts: SelectDistrictsScreen,
-    SelectCounties: SelectCountiesScreen,
-    ShowIrnTables: ShowIrnTablesScreen,
+    IrnTablesByDate: IrnTablesByDateScreen,
+    IrnTablesDaySchedule: IrnTablesDayScheduleScreen,
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "IrnTablesByDate",
     headerMode: "none",
     transitionConfig,
   },
