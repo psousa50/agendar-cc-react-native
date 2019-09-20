@@ -5,8 +5,8 @@
   "scripts": {
     "clean": "rimraf lib",
     "prebuild": "npm run clean && npm run lint && npm test",
-    "tsc": "tsc",
-    "build": "npm run tsc --",
+    "tsc": "tsc --project tsconfig.dist.json",
+    "build": "npm run tsc  --",
     "start": "react-native start",
     "test": "jest",
     "test:watch": "npm test -- --watch",

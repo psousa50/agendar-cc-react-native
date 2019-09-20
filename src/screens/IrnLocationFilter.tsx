@@ -70,6 +70,8 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const { counties, districts } = globalState.staticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
 
+  console.log("searchableCounties=====>", searchableCounties)
+
   const updateGlobalFilter = () => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",

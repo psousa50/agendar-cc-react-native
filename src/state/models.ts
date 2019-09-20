@@ -39,7 +39,7 @@ export const initialGlobalState: GlobalState = {
     loading: false,
   },
   irnTablesData: {
-    filter: { districtId: 12 },
+    filter: {},
     irnTables: [],
     error: null,
     loading: false,

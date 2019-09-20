@@ -19,7 +19,7 @@ export const formatDate = (date: Date) => {
 
 const t = (v: number) => `${v < 10 ? 0 : ""}${v}`
 
-export const formatTime = (time: TimeSlot) => {
+export const formatTimeSlot = (time: TimeSlot) => {
   const date = new Date(`2000-01-01T${time}`)
   return `${t(date.getHours())}:${t(date.getMinutes())}`
 }

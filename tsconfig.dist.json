@@ -1,8 +1,7 @@
 {
-  "rootDir": "src",
   "extends": "./tsconfig.base",
   "filesGlob": ["typings/index.d.ts", "src/**/*.ts", "src/**/*.tsx"],
   "types": ["react", "react-native", "jest"],
-  "include": ["src", "test"],
+  "include": ["src"],
   "exclude": ["node_modules", "android", "ios", "build", "babel.config.js", "metro.config.js", "jest.config.js"]
 }

@@ -8,18 +8,19 @@ import { LoadingPage } from "../common/LoadingPage"
 import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import { TimeSlot } from "../irnTables/models"
-import { groupCollection, max } from "../utils/collections"
-import { formatDateYYYYMMDD as formatDateYYYY_MM_DD, formatTime } from "../utils/formaters"
+import { groupCollection, max, min } from "../utils/collections"
+import { formatDateYYYYMMDD, formatDateYYYYMMDD as formatDateYYYY_MM_DD, formatTimeSlot } from "../utils/formaters"
 
 export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = props => {
-  const [globalState, globalDispatch] = useGlobalState()
+  const [, globalDispatch] = useGlobalState()
   const { irnTablesData } = useIrnDataFetch()
-  console.log("IrnTablesByDateScreen state=====>\n", globalState.irnTablesData)
 
   const irnTablesByDate = groupCollection(t => t.date, irnTablesData.irnTables)
   const dates = irnTablesByDate.map(g => g.key)
+  const minDate = min(dates)
   const maxDate = max(dates)
-  const diffMonths = maxDate ? moment(new Date(maxDate)).diff(moment(dates[0]), "month") : 0
+  const currentDate = minDate || new Date(Date.now())
+  const diffMonths = maxDate ? moment(new Date(maxDate)).diff(moment(currentDate), "month") : 0
 
   const markedDates = irnTablesByDate.reduce(
     (acc, cur) => ({
@@ -44,6 +45,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
     ) : (
       <View style={styles.container}>
         <CalendarList
+          current={formatDateYYYYMMDD(currentDate)}
           pastScrollRange={0}
           futureScrollRange={diffMonths}
           markedDates={markedDates}
@@ -59,7 +61,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
 
 const TimeSlot: React.FunctionComponent<{ time: TimeSlot }> = ({ time }) => (
   <View style={styles.timeSlotContainer}>
-    <Text style={styles.timeSlot}>{formatTime(time)}</Text>
+    <Text style={styles.timeSlot}>{formatTimeSlot(time)}</Text>
   </View>
 )
 

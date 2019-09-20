@@ -42,7 +42,7 @@ export const ContentNavigator = createStackNavigator(
     IrnTablesDaySchedule: IrnTablesDayScheduleScreen,
   },
   {
-    initialRouteName: "IrnTablesByDate",
+    initialRouteName: "Home",
     headerMode: "none",
     transitionConfig,
   },

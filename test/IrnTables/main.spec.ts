@@ -1,5 +1,5 @@
-import { mergeIrnTablesByLocation } from "../../src/irnTables/main"
-import { IrnRepositoryTable, IrnTableDateSchedules, IrnTableLocationSchedules } from "../../src/irnTables/models"
+import { mergeIrnTablesByLocation, mergeIrnTablesByTimeSlotAndLocation } from "../../src/irnTables/main"
+import { IrnRepositoryTable } from "../../src/irnTables/models"
 
 const makeTable = (irnTable: Partial<IrnRepositoryTable>): IrnRepositoryTable => {
   const defaultTable = {
@@ -21,114 +21,108 @@ const makeTable = (irnTable: Partial<IrnRepositoryTable>): IrnRepositoryTable =>
   }
 }
 
-describe("mergeIrnTables", () => {
-  it("merges tables with same service, county and date", () => {
-    const date1 = new Date("2010-01-01")
-    const date2 = new Date("2010-01-10")
-    const timeSlots1 = ["12:30", "12:45"]
-    const timeSlots2 = ["15:00", "15:15"]
-    const timeSlots3 = ["15:00", "20:15"]
-    const aTable = makeTable({
-      serviceId: 1,
-      districtId: 2,
-      countyId: 3,
+describe("mergeIrnTablesByLocation", () => {
+  it("merges tables by location", () => {
+    const table1 = makeTable({
+      phone: "123",
       locationName: "location name 1",
-      date: date1,
-      timeSlots: timeSlots1,
     })
-    const aSimilarTable = {
-      ...aTable,
-      date: date2,
-      timeSlots: timeSlots2,
-    }
-    const aDifferentTable = makeTable({
-      serviceId: 10,
-      districtId: 20,
-      countyId: 40,
+    const table2 = makeTable({
+      phone: "456",
       locationName: "location name 2",
-      date: date1,
-      timeSlots: timeSlots3,
+    })
+    const table3 = makeTable({
+      phone: "789",
+      locationName: "location name 1",
     })
 
-    const similarTablesMerged: IrnTableLocationSchedules = {
-      serviceId: aTable.serviceId,
-      countyId: aTable.countyId,
-      districtId: aTable.districtId,
-      locationName: aTable.locationName,
-      address: aTable.address,
-      postalCode: aTable.postalCode,
-      phone: aTable.phone,
-      daySchedules: [
-        {
-          date: date1,
-          timeSlots: timeSlots1,
-        },
-        {
-          date: date2,
-          timeSlots: timeSlots2,
-        },
-      ],
+    const expectedResult = {
+      "location name 1": [table1, table3],
+      "location name 2": [table2],
     }
 
-    const aDifferentTableMerged = {
-      serviceId: aDifferentTable.serviceId,
-      countyId: aDifferentTable.countyId,
-      districtId: aDifferentTable.districtId,
-      locationName: aDifferentTable.locationName,
-      address: aDifferentTable.address,
-      postalCode: aDifferentTable.postalCode,
-      phone: aDifferentTable.phone,
-      daySchedules: [
-        {
-          date: date1,
-          timeSlots: timeSlots3,
-        },
-      ],
-    }
-    const result = mergeIrnTablesByLocation([aTable, aSimilarTable, aDifferentTable])
-    const expected = [similarTablesMerged, aDifferentTableMerged]
+    expect(mergeIrnTablesByLocation([table1, table2, table3])).toEqual(expectedResult)
+  })
+})
 
-    expect(result).toEqual(expected)
+describe("mergeIrnTablesByTimeSlotAndLocation", () => {
+  it("return empty object when there is no table", () => {
+    expect(mergeIrnTablesByTimeSlotAndLocation([])).toEqual({})
   })
 
-  it("ignores duplicate dates on the tables, merging the times", () => {
-    const date1 = new Date("2010-01-01")
-    const timeSlots1 = ["12:30", "12:45"]
-    const timeSlots2 = ["11:00", "12:45"]
-    const aTable = makeTable({
-      serviceId: 1,
-      districtId: 2,
-      countyId: 3,
+  it("merges one table by time slot and then by location", () => {
+    const table = makeTable({
       locationName: "location name 1",
-      date: date1,
-      timeSlots: timeSlots1,
+      timeSlots: ["09:00", "15:15"],
     })
-    const aSimilarTable = {
-      ...aTable,
-      date: date1,
-      timeSlots: timeSlots2,
+
+    const expectedResult = {
+      "09:00": {
+        "location name 1": [table],
+      },
+      "15:15": {
+        "location name 1": [table],
+      },
     }
 
-    const uniqueTimes = ["12:30", "12:45", "11:00"]
-    const similarTablesMerged: IrnTableLocationSchedules = {
-      serviceId: aTable.serviceId,
-      countyId: aTable.countyId,
-      districtId: aTable.districtId,
-      locationName: aTable.locationName,
-      address: aTable.address,
-      postalCode: aTable.postalCode,
-      phone: aTable.phone,
-      daySchedules: [
-        {
-          date: date1,
-          timeSlots: uniqueTimes,
-        },
-      ],
+    expect(mergeIrnTablesByTimeSlotAndLocation([table])).toEqual(expectedResult)
+  })
+
+  it("merges two tables by time slot and then by location", () => {
+    const table1 = makeTable({
+      locationName: "location name 1",
+      timeSlots: ["09:00"],
+      phone: "123",
+    })
+    const table2 = makeTable({
+      locationName: "location name 1",
+      timeSlots: ["09:00"],
+      phone: "456",
+    })
+
+    const expectedResult = {
+      "09:00": {
+        "location name 1": [table1, table2],
+      },
     }
 
-    const result = mergeIrnTablesByLocation([aTable, aSimilarTable])
-    const expected = [similarTablesMerged]
+    expect(mergeIrnTablesByTimeSlotAndLocation([table1, table2])).toEqual(expectedResult)
+  })
 
-    expect(result).toEqual(expected)
+  it("merges three tables by time slot and then by location", () => {
+    const table1 = makeTable({
+      locationName: "location name 1",
+      timeSlots: ["09:00", "15:15"],
+      phone: "table1",
+    })
+    const table2 = makeTable({
+      locationName: "location name 1",
+      timeSlots: ["15:00", "15:15"],
+      phone: "table2",
+    })
+    const table3 = makeTable({
+      locationName: "location name 2",
+      timeSlots: ["10:00", "15:00", "15:15"],
+      phone: "table3",
+    })
+
+    const expectedResult = {
+      "09:00": {
+        "location name 1": [table1],
+      },
+      "15:15": {
+        "location name 1": [table1, table2],
+        "location name 2": [table3],
+      },
+      "15:00": {
+        "location name 1": [table2],
+        "location name 2": [table3],
+      },
+      "10:00": {
+        "location name 2": [table3],
+      },
+    }
+
+    expect(mergeIrnTablesByTimeSlotAndLocation([table1, table2, table3])).toEqual(expectedResult)
   })
 })

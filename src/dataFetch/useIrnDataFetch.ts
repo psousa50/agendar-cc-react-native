@@ -3,14 +3,16 @@ import { task } from "fp-ts/lib/Task"
 import { fold } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
 import { useGlobalState } from "../GlobalStateProvider"
+import { IrnFilterState } from "../state/models"
 import * as selectors from "../state/selectors"
-import { datesEqual } from "../utils/dates"
 import { fetchIrnTables } from "../utils/irnFetch"
+
+const filtersAreIncompatible = (filter1: IrnFilterState, filter2: IrnFilterState) =>
+  filter1.countyId !== filter2.countyId || filter1.districtId !== filter2.districtId
 
 export const useIrnDataFetch = () => {
   const [globalState, globalDispatch] = useGlobalState()
 
-  console.log("useIrnDataFetch state=====>\n", globalState.irnTablesData)
   useEffect(() => {
     const getIrnTables = async () => {
       globalDispatch({ type: "IRN_TABLES_FETCH_INIT" })
@@ -30,18 +32,13 @@ export const useIrnDataFetch = () => {
       )
 
       const filter = selectors.getIrnTablesFilter(globalState)
+      const filterCache = selectors.getIrnTablesFilterCache(globalState)
+
       const irnTablesCache = selectors.getIrnTablesCache(globalState)
-      const lastUsedFilter = selectors.getIrnTablesFilterCache(globalState)
-      console.log("irnTablesCache=====>\n", irnTablesCache, filter.selectedDate)
-      if (lastUsedFilter && irnTablesCache) {
-        const filteredTables = irnTablesCache.filter(
-          t => !filter.selectedDate || datesEqual(t.date, filter.selectedDate),
-        )
-        globalDispatch({ type: "IRN_TABLES_UPDATE", payload: { irnTables: filteredTables } })
-        console.log("filteredTables=====>\n", filteredTables)
-        return task.of(undefined)
+      if (!irnTablesCache || !filterCache || filtersAreIncompatible(filter, filterCache)) {
+        await fetchIrnTablesData()
       } else {
-        return await fetchIrnTablesData()
+        globalDispatch({ type: "IRN_TABLES_UPDATE", payload: { irnTables: irnTablesCache } })
       }
     }
 

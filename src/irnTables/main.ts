@@ -1,68 +1,61 @@
-import { uniq } from "ramda"
-import { mergeCollection, mergeIntoCollection } from "../utils/collections"
-import {
-  DaySchedule,
-  IrnRepositoryTable,
-  IrnTableDateSchedules,
-  IrnTableLocationSchedules,
-  LocationSchedule,
-  TimeSlot,
-} from "./models"
-
-const mergeSchedulesByDate = mergeIntoCollection(
-  (ts1: DaySchedule) => (ts2: DaySchedule) => ts1.date === ts2.date,
-  (ts1, ts2?) => ({
-    ...ts1,
-    timeSlots: uniq([...ts1.timeSlots, ...(ts2 ? ts2.timeSlots : [])]),
-  }),
-)
-
-const matchByLocation = (irnTable: IrnRepositoryTable) => (irnTableLocation: IrnTableLocationSchedules) =>
-  irnTableLocation.serviceId === irnTable.serviceId &&
-  irnTableLocation.districtId === irnTable.districtId &&
-  irnTableLocation.countyId === irnTable.countyId &&
-  irnTableLocation.locationName === irnTable.locationName
-
-export const mergeIrnTablesByLocation = mergeCollection(matchByLocation, (irnTable, irnTableLocation) => ({
-  serviceId: irnTable.serviceId,
-  countyId: irnTable.countyId,
-  districtId: irnTable.districtId,
-  locationName: irnTable.locationName,
-  address: irnTable.address,
-  postalCode: irnTable.postalCode,
-  phone: irnTable.phone,
-  daySchedules: mergeSchedulesByDate(irnTableLocation ? irnTableLocation.daySchedules : [], {
-    date: irnTable.date,
-    timeSlots: irnTable.timeSlots,
-  }),
-}))
-
-const mergeSchedulesByLocation = mergeIntoCollection(
-  (ts1: LocationSchedule) => (ts2: LocationSchedule) => ts1.locationName === ts2.locationName,
-  (ts1, ts2?) => ({
-    ...ts1,
-    timeSlots: uniq([...ts1.timeSlots, ...(ts2 ? ts2.timeSlots : [])]),
-  }),
-)
-
-const matchByDate = (irnTable: IrnRepositoryTable) => (irnTableDate: IrnTableDateSchedules) =>
-  irnTableDate.serviceId === irnTable.serviceId &&
-  irnTableDate.districtId === irnTable.districtId &&
-  irnTableDate.countyId === irnTable.countyId &&
-  irnTableDate.date === irnTable.date
-
-export const mergeIrnTablesByDate = mergeCollection(matchByDate, (irnTable, irnTableLocation) => ({
-  serviceId: irnTable.serviceId,
-  countyId: irnTable.countyId,
-  districtId: irnTable.districtId,
-  date: irnTable.date,
-  address: irnTable.address,
-  postalCode: irnTable.postalCode,
-  phone: irnTable.phone,
-  locationSchedules: mergeSchedulesByLocation(irnTableLocation ? irnTableLocation.locationSchedules : [], {
-    locationName: irnTable.locationName,
-    timeSlots: irnTable.timeSlots,
-  }),
-}))
+import { keys, mergeDeepWith } from "ramda"
+import { IrnRepositoryTable, IrnRepositoryTables, TimeSlot } from "./models"
 
 export const sortTimes = (t1: TimeSlot, t2: TimeSlot) => t1.localeCompare(t2)
+
+export interface IrnTablesByLocation {
+  [locationName: string]: IrnRepositoryTables
+}
+
+interface IrnTablesByTimeSlotAndLocation {
+  [timeSlot: string]: IrnTablesByLocation
+}
+
+interface IrnTablesByTimeSlot {
+  [timeSlot: string]: IrnRepositoryTables
+}
+
+const checkArray = <T>(col?: T[]) => col || []
+
+export const mergeIrnTablesByLocation = (irnTables: IrnRepositoryTables) =>
+  irnTables.reduce(
+    (acc, irnTable) => ({
+      ...acc,
+      [irnTable.locationName]: [...checkArray(acc[irnTable.locationName]), irnTable],
+    }),
+    {} as IrnTablesByLocation,
+  )
+
+const mergeByTimeSlot = (irnTable: IrnRepositoryTable) => (
+  irnTableByTimeSlot: IrnTablesByTimeSlot,
+  timeSlot: TimeSlot,
+) => ({
+  ...irnTableByTimeSlot,
+  [timeSlot]: [...checkArray(irnTableByTimeSlot[timeSlot]), irnTable],
+})
+
+const mergeByLocation = (irnTablesByTimeSlot: IrnTablesByTimeSlot) => (
+  tsal: IrnTablesByTimeSlotAndLocation,
+  timeSlot: string | number,
+) => ({
+  ...tsal,
+  [timeSlot]: mergeIrnTablesByLocation(irnTablesByTimeSlot[timeSlot]),
+})
+
+export const mergeIrnTablesByTimeSlotAndLocation = (irnTables: IrnRepositoryTables) =>
+  irnTables.reduce(
+    (acc, irnTable) => {
+      const irnTablesByTimeSlot = irnTable.timeSlots.reduce(mergeByTimeSlot(irnTable), {} as IrnTablesByTimeSlot)
+      const irnTableByTimeSlotAndLocation = keys(irnTablesByTimeSlot).reduce(
+        mergeByLocation(irnTablesByTimeSlot),
+        {} as IrnTablesByTimeSlotAndLocation,
+      )
+
+      return mergeDeepWith(
+        (t1: IrnRepositoryTables, t2: IrnRepositoryTables) => [...t1, ...t2],
+        acc,
+        irnTableByTimeSlotAndLocation,
+      )
+    },
+    {} as IrnTablesByTimeSlotAndLocation,
+  )

@@ -24,12 +24,10 @@ export const GlobalStateInitializer = () => {
         chain(mergeWithCounties),
         fold(
           error => {
-            console.log("error=====>", error)
             globalDispatch({ type: "STATIC_DATA_FETCH_FAILURE", payload: { error } })
             return task.of(error)
           },
           staticData => {
-            console.log("staticData=====>", staticData)
             globalDispatch({ type: "STATIC_DATA_FETCH_SUCCESS", payload: staticData })
             return task.of(undefined)
           },

@@ -3,8 +3,7 @@ import React from "react"
 import { StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { useGlobalState } from "../GlobalStateProvider"
-import { getCounty, getDistrict, getIrnTablesFilter } from "../state/selectors"
-import { getCountyName } from "../utils/formaters"
+import { getIrnFilterCountyName } from "../state/selectors"
 
 export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => (
   <AppScreen {...props} left={null} content={() => <HomeContent {...props} />} title="Agendar CC" showAds={false} />
@@ -13,14 +12,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => (
 const HomeContent: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState] = useGlobalState()
 
-  const filter = getIrnTablesFilter(globalState)
-  const district = getDistrict(globalState)(filter.districtId)
-  const county = getCounty(globalState)(filter.countyId)
-  const location = getCountyName(county, district) || "Localização"
+  const location = getIrnFilterCountyName(globalState) || "Localização"
   return (
     <View>
       <Text onPress={() => props.navigation.navigate("IrnLocationFilter")}>{location}</Text>
-      <Button style={styles.searchButton} block onPress={() => props.navigation.navigate("ShowIrnTablesByDate")}>
+      <Button style={styles.searchButton} block onPress={() => props.navigation.navigate("IrnTablesByDate")}>
         <Text>{"Mostrar Horãrios"}</Text>
       </Button>
     </View>
