@@ -11,7 +11,7 @@ export const getCounty = (state: GlobalState) => (countyId?: number) =>
   state.staticData.counties.find(c => !isNil(countyId) && c.countyId === countyId)
 
 export const getIrnTablesFilter = (state: GlobalState) => state.irnTablesData.filter
-
-export const getIrnTablesLastUsedFilter = (state: GlobalState) => state.irnTablesData.lastUsedFilter
+export const getIrnTablesFilterCache = (state: GlobalState) => state.irnTablesData.filterCache
 
 export const getIrnTables = (state: GlobalState) => state.irnTablesData.irnTables
+export const getIrnTablesCache = (state: GlobalState) => state.irnTablesData.irnTablesCache

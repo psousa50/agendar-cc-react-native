@@ -13,13 +13,14 @@ export interface IrnFilterState {
   districtId?: number
   startDate?: Date
   endDate?: Date
-  selectedDate?: Date
+  selectedDate?: Date | null
 }
 
 export interface IrnTablesDataState {
   filter: IrnFilterState
-  lastUsedFilter: IrnFilterState
   irnTables: IrnRepositoryTables
+  filterCache?: IrnFilterState
+  irnTablesCache?: IrnRepositoryTables
   error: Error | null
   loading: boolean
 }
@@ -38,8 +39,7 @@ export const initialGlobalState: GlobalState = {
     loading: false,
   },
   irnTablesData: {
-    filter: {},
-    lastUsedFilter: {},
+    filter: { districtId: 12 },
     irnTables: [],
     error: null,
     loading: false,

@@ -5,19 +5,18 @@ import { StyleSheet } from "react-native"
 import { CalendarList, DateObject } from "react-native-calendars"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LoadingPage } from "../common/LoadingPage"
-import { useDataFetch } from "../dataFetch/useDataFetch"
+import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnRepositoryTables, TimeSlot } from "../irnTables/models"
+import { TimeSlot } from "../irnTables/models"
 import { groupCollection, max } from "../utils/collections"
 import { formatDateYYYYMMDD as formatDateYYYY_MM_DD, formatTime } from "../utils/formaters"
-import { fetchIrnTables } from "../utils/irnFetch"
 
 export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = props => {
-  const [, globalDispatch] = useGlobalState()
-  // const { countyId, districtId } = globalState.irnFilter
-  const { state: irnTablesData } = useDataFetch(() => fetchIrnTables({ districtId: 12 }), [] as IrnRepositoryTables)
+  const [globalState, globalDispatch] = useGlobalState()
+  const { irnTablesData } = useIrnDataFetch()
+  console.log("IrnTablesByDateScreen state=====>\n", globalState.irnTablesData)
 
-  const irnTablesByDate = groupCollection(t => t.date, irnTablesData.data)
+  const irnTablesByDate = groupCollection(t => t.date, irnTablesData.irnTables)
   const dates = irnTablesByDate.map(g => g.key)
   const maxDate = max(dates)
   const diffMonths = maxDate ? moment(new Date(maxDate)).diff(moment(dates[0]), "month") : 0
@@ -40,7 +39,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
   }
 
   const renderContent = () => {
-    return irnTablesData.isLoading ? (
+    return irnTablesData.loading ? (
       <LoadingPage />
     ) : (
       <View style={styles.container}>

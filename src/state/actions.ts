@@ -33,6 +33,12 @@ export type GlobalStateAction =
       }
     }
   | {
+      type: "IRN_TABLES_UPDATE"
+      payload: {
+        irnTables: IrnRepositoryTables
+      }
+    }
+  | {
       type: "IRN_TABLES_FETCH_FAILURE"
       payload: {
         error: Error

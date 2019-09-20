@@ -1,16 +1,17 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { useGlobalState } from "../GlobalStateProvider"
-import { getIrnTablesFilter } from "../state/selectors"
+import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 
 export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
-  const [globalState] = useGlobalState()
+  // const [globalState] = useGlobalState()
+  // const { countyId, districtId } = globalState.irnFilter
+  const { irnTablesData } = useIrnDataFetch()
 
   const renderContent = () => {
     return (
       <View>
-        <Text>{getIrnTablesFilter(globalState).selectedDate!.toDateString()}</Text>
+        <Text>{irnTablesData.irnTables.length}</Text>
       </View>
     )
   }
