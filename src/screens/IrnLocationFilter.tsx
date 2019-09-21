@@ -133,12 +133,14 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const renderContent = () => {
     return (
       <View>
-        <TextInput placeholder="Distrito - Concelho" value={locationText} onChangeText={onChangeText} />
-        <View style={styles.currentLocation}>
-          <Icon style={styles.currentLocationIcon} type="FontAwesome" name="location-arrow" />
-          <Text onPress={setCurrentLocation} style={styles.currentLocationText}>
-            Localização actual
-          </Text>
+        <View style={styles.locationContainer}>
+          <TextInput placeholder="Distrito - Concelho" value={locationText} onChangeText={onChangeText} />
+          <Icon
+            onPress={setCurrentLocation}
+            style={styles.currentLocationIcon}
+            type="FontAwesome"
+            name="location-arrow"
+          />
         </View>
         {!state.hideSearchResults ? (
           <FlatList
@@ -166,6 +168,11 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
 const Separator = () => <View style={styles.separator} />
 
 const styles = StyleSheet.create({
+  locationContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   locationText: {
     paddingHorizontal: 30,
     paddingVertical: 10,
