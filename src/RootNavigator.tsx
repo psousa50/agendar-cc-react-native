@@ -1,13 +1,14 @@
 import { Root } from "native-base"
 import React from "react"
 import { Animated, Easing, Platform, StatusBar } from "react-native"
+import { createStackNavigator } from "react-navigation"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
-import { createStackNavigator } from "react-navigation"
 import { HomeScreen } from "./screens/Home"
 import { IrnLocationFilterScreen } from "./screens/IrnLocationFilter"
 import { IrnTablesByDateScreen } from "./screens/IrnTablesByDate"
 import { IrnTablesDayScheduleScreen } from "./screens/IrnTablesDaySchedule"
+import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
 const transitionConfig = () => {
@@ -36,13 +37,14 @@ const transitionConfig = () => {
 
 export const ContentNavigator = createStackNavigator(
   {
+    Test,
     Home: HomeScreen,
     IrnLocationFilter: IrnLocationFilterScreen,
     IrnTablesByDate: IrnTablesByDateScreen,
     IrnTablesDaySchedule: IrnTablesDayScheduleScreen,
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Test",
     headerMode: "none",
     transitionConfig,
   },

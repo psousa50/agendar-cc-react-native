@@ -70,8 +70,6 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const { counties, districts } = globalState.staticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
 
-  console.log("searchableCounties=====>", searchableCounties)
-
   const updateGlobalFilter = () => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
@@ -135,7 +133,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const renderContent = () => {
     return (
       <View>
-        <TextInput placeholder="Distrito - Concelho" value={locationText} onChangeText={onChangeText}></TextInput>
+        <TextInput placeholder="Distrito - Concelho" value={locationText} onChangeText={onChangeText} />
         <View style={styles.currentLocation}>
           <Icon style={styles.currentLocationIcon} type="FontAwesome" name="location-arrow" />
           <Text onPress={setCurrentLocation} style={styles.currentLocationText}>
@@ -143,7 +141,12 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
           </Text>
         </View>
         {!state.hideSearchResults ? (
-          <FlatList data={listItems} renderItem={renderItem} ItemSeparatorComponent={Separator} />
+          <FlatList
+            keyboardShouldPersistTaps="handled"
+            data={listItems}
+            renderItem={renderItem}
+            ItemSeparatorComponent={Separator}
+          />
         ) : null}
       </View>
     )
