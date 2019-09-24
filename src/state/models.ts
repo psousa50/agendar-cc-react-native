@@ -1,4 +1,4 @@
-import { Counties, Districts, IrnRepositoryTables } from "../irnTables/models"
+import { Counties, Districts, IrnPlace, IrnRepositoryTables, TimeSlot } from "../irnTables/models"
 
 export interface StaticDataState {
   counties: Counties
@@ -11,9 +11,12 @@ export interface StaticDataState {
 export interface IrnFilterState {
   countyId?: number
   districtId?: number
+  irbPlaceName?: string
   startDate?: Date
   endDate?: Date
+  selectedIrnPlace?: IrnPlace | null
   selectedDate?: Date | null
+  selectedTimeSlot?: TimeSlot | null
 }
 
 export interface SelectedIrnTableState {

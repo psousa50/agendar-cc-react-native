@@ -16,6 +16,7 @@ import {
 import React from "react"
 import { Platform, StatusBar, ViewStyle } from "react-native"
 import { NavigationRoute, NavigationScreenProp, NavigationScreenProps } from "react-navigation"
+import { navigate } from "../screens/screens"
 import { appTheme } from "../utils/appTheme"
 import { ButtonIcons, editBackgroundColor } from "./ToolbarIcons"
 
@@ -64,7 +65,8 @@ export const drawerButton = (navigation: NavigationScreenProp<NavigationRoute>) 
 export class AppScreen extends React.Component<AppScreenProps> {
   public render() {
     const props = this.props
-    const { content, editing, footer, onFabPressed, navigation, right, tabs, title, subtitle } = props
+    const navigation = navigate(props.navigation)
+    const { content, editing, footer, onFabPressed, right, tabs, title, subtitle } = props
 
     const left = this.props.left
       ? this.props.left

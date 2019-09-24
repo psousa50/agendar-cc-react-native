@@ -15,7 +15,7 @@ import { formatDate } from "../utils/formaters"
 import { navigate } from "./screens"
 
 export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
-  const navigateTo = navigate(props.navigation)
+  const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
 
   const { irnTablesData } = useIrnDataFetch()
@@ -42,7 +42,7 @@ export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
         type: "IRN_TABLES_SET_SELECTED",
         payload: { selectedIrnTable },
       })
-      navigateTo("SelectedIrnTableScreen")
+      navigation.goTo("SelectedIrnTableScreen")
     }
   }
 

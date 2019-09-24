@@ -13,7 +13,7 @@ import { formatDateYYYYMMDD, formatDateYYYYMMDD as formatDateYYYY_MM_DD, formatT
 import { navigate } from "./screens"
 
 export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = props => {
-  const navigateTo = navigate(props.navigation)
+  const navigation = navigate(props.navigation)
   const [, globalDispatch] = useGlobalState()
   const { irnTablesData } = useIrnDataFetch()
 
@@ -38,7 +38,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter: { selectedDate } },
     })
-    navigateTo("IrnTablesDayScheduleScreen")
+    navigation.goTo("IrnTablesDayScheduleScreen")
   }
 
   const renderContent = () => {
