@@ -1,5 +1,5 @@
 import { Counties, Districts, IrnRepositoryTables } from "../irnTables/models"
-import { IrnFilterState } from "./models"
+import { IrnFilterState, SelectedIrnTableState } from "./models"
 export type GlobalStateAction =
   | {
       type: "STATIC_DATA_FETCH_INIT"
@@ -42,5 +42,11 @@ export type GlobalStateAction =
       type: "IRN_TABLES_FETCH_FAILURE"
       payload: {
         error: Error
+      }
+    }
+  | {
+      type: "IRN_TABLES_SET_SELECTED"
+      payload: {
+        selectedIrnTable: SelectedIrnTableState | null
       }
     }

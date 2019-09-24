@@ -5,22 +5,21 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { useGlobalState } from "../GlobalStateProvider"
 import { getIrnFilterCountyName } from "../state/selectors"
 
-export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => (
-  <AppScreen {...props} left={null} content={() => <HomeContent {...props} />} title="Agendar CC" showAds={false} />
-)
+export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
+  const renderContent = () => {
+    const [globalState] = useGlobalState()
 
-const HomeContent: React.FunctionComponent<AppScreenProps> = props => {
-  const [globalState] = useGlobalState()
-
-  const location = getIrnFilterCountyName(globalState) || "Localização"
-  return (
-    <View>
-      <Text onPress={() => props.navigation.navigate("IrnLocationFilter")}>{location}</Text>
-      <Button style={styles.searchButton} block onPress={() => props.navigation.navigate("IrnTablesByDate")}>
-        <Text>{"Mostrar Horãrios"}</Text>
-      </Button>
-    </View>
-  )
+    const location = getIrnFilterCountyName(globalState) || "Localização"
+    return (
+      <View>
+        <Text onPress={() => props.navigation.navigate("IrnLocationFilter")}>{location}</Text>
+        <Button style={styles.searchButton} block onPress={() => props.navigation.navigate("IrnTablesByDateScreen")}>
+          <Text>{"Mostrar Horãrios"}</Text>
+        </Button>
+      </View>
+    )
+  }
+  return <AppScreen {...props} left={null} content={renderContent} title="Agendar CC" showAds={false} />
 }
 
 const styles = StyleSheet.create({

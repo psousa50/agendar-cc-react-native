@@ -23,3 +23,5 @@ export const getIrnTablesFilterCache = (state: GlobalState) => state.irnTablesDa
 
 export const getIrnTables = (state: GlobalState) => state.irnTablesData.irnTables
 export const getIrnTablesCache = (state: GlobalState) => state.irnTablesData.irnTablesCache
+
+export const getSelectedIrnTable = (state: GlobalState) => state.irnTablesData.selectedIrnTable

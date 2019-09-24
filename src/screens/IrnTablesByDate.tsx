@@ -36,7 +36,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter: { selectedDate } },
     })
-    props.navigation.navigate("IrnTablesDaySchedule")
+    props.navigation.navigate("IrnTablesDayScheduleScreen")
   }
 
   const renderContent = () => {

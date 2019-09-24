@@ -8,6 +8,7 @@ import { HomeScreen } from "./screens/Home"
 import { IrnLocationFilterScreen } from "./screens/IrnLocationFilter"
 import { IrnTablesByDateScreen } from "./screens/IrnTablesByDate"
 import { IrnTablesDayScheduleScreen } from "./screens/IrnTablesDaySchedule"
+import { SelectedIrnTableScreen } from "./screens/SelectedIrnTable"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
@@ -37,14 +38,15 @@ const transitionConfig = () => {
 
 export const ContentNavigator = createStackNavigator(
   {
+    HomeScreen,
+    IrnLocationFilterScreen,
+    IrnTablesByDateScreen,
+    IrnTablesDayScheduleScreen,
+    SelectedIrnTableScreen,
     Test,
-    Home: HomeScreen,
-    IrnLocationFilter: IrnLocationFilterScreen,
-    IrnTablesByDate: IrnTablesByDateScreen,
-    IrnTablesDaySchedule: IrnTablesDayScheduleScreen,
   },
   {
-    initialRouteName: "Test",
+    initialRouteName: "HomeScreen",
     headerMode: "none",
     transitionConfig,
   },

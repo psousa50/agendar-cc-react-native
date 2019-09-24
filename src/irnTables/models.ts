@@ -29,7 +29,7 @@ export type IrnRepositoryTable = {
   serviceId: number
   districtId: number
   countyId: number
-  locationName: string
+  placeName: string
   tableNumber: string
   address: string
   postalCode: string
@@ -44,8 +44,8 @@ export type DaySchedule = {
   timeSlots: TimeSlot[]
 }
 
-export type LocationSchedule = {
-  locationName: string
+export type PlaceSchedule = {
+  placeName: string
   timeSlots: TimeSlot[]
 }
 
@@ -59,13 +59,13 @@ export interface IrnTableGrouped {
 }
 
 export interface IrnTableLocationSchedules extends IrnTableGrouped {
-  locationName: string
+  placeName: string
   daySchedules: DaySchedule[]
 }
 
 export interface IrnTableDateSchedules extends IrnTableGrouped {
   date: Date
-  locationSchedules: LocationSchedule[]
+  placeSchedules: PlaceSchedule[]
 }
 
 export type GetTableParams = Partial<{

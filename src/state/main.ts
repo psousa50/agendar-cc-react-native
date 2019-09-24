@@ -71,6 +71,9 @@ const irnTablesDataReducer: IrnTablesDataReducer = (state, action) => {
     case "IRN_TABLES_SET_FILTER": {
       return { ...state, filter: { ...state.filter, ...action.payload.filter } }
     }
+    case "IRN_TABLES_SET_SELECTED": {
+      return { ...state, selectedIrnTable: action.payload.selectedIrnTable }
+    }
     default: {
       return state
     }

@@ -1,35 +1,56 @@
 import { Text, View } from "native-base"
 import { keys } from "ramda"
 import React from "react"
-import { StyleSheet } from "react-native"
+import { StyleSheet, TouchableOpacity } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { DayTimeSlot } from "../common/DayTimeSlot"
 import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTablesByLocation, mergeIrnTablesByTimeSlotAndLocation } from "../irnTables/main"
+import { IrnTablesByPlace, mergeIrnTablesByTimeSlotAndPlace } from "../irnTables/main"
 import { TimeSlot } from "../irnTables/models"
 import { getIrnFilterCountyName, getIrnTablesFilter } from "../state/selectors"
 import { datesEqual } from "../utils/dates"
 import { formatDate } from "../utils/formaters"
 
 export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
-  const [globalState] = useGlobalState()
+  const [globalState, globalDispatch] = useGlobalState()
 
   const { irnTablesData } = useIrnDataFetch()
 
-  const selectedDate = getIrnTablesFilter(globalState).selectedDate
+  const irnFilter = getIrnTablesFilter(globalState)
+  const selectedDate = irnFilter.selectedDate
   const irnTables = irnTablesData.irnTables.filter(t => !selectedDate || datesEqual(selectedDate, t.date))
 
-  const irnTablesByTimeSlotAndLocation = mergeIrnTablesByTimeSlotAndLocation(irnTables)
+  const irnTablesByTimeSlotAndPlaces = mergeIrnTablesByTimeSlotAndPlace(irnTables)
 
-  console.log("irnTablesByTimeSlotAndLocation=====>", irnTablesByTimeSlotAndLocation)
+  const onPlaceSelected = (placeName: string) => {
+    const selectedIrnTable =
+      irnFilter.districtId && selectedDate
+        ? {
+            countyId: irnFilter.countyId,
+            districtId: irnFilter.districtId,
+            date: selectedDate,
+            placeName,
+          }
+        : undefined
 
-  const renderLocations = (irnTablesByLocation: IrnTablesByLocation) =>
-    keys(irnTablesByLocation).map((location, i) => (
-      <View style={styles.locations} key={i}>
-        <Text style={styles.location}>{location}</Text>
-      </View>
+    if (selectedIrnTable) {
+      globalDispatch({
+        type: "IRN_TABLES_SET_SELECTED",
+        payload: { selectedIrnTable },
+      })
+      props.navigation.navigate("SelectedIrnTableScreen")
+    }
+  }
+
+  const renderPlaces = (irnTablesByPlace: IrnTablesByPlace) =>
+    keys(irnTablesByPlace).map((irnPlace, i) => (
+      <TouchableOpacity onPress={() => onPlaceSelected(irnPlace as string)}>
+        <View style={styles.places} key={i}>
+          <Text style={styles.place}>{irnPlace}</Text>
+        </View>
+      </TouchableOpacity>
     ))
 
   const renderContent = () => (
@@ -39,9 +60,9 @@ export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
         <Text>{selectedDate && formatDate(selectedDate)}</Text>
       </View>
       <ScrollView>
-        {keys(irnTablesByTimeSlotAndLocation).map(timeSlot => (
+        {keys(irnTablesByTimeSlotAndPlaces).map(timeSlot => (
           <DayTimeSlot key={timeSlot} timeSlot={timeSlot as TimeSlot}>
-            {renderLocations(irnTablesByTimeSlotAndLocation[timeSlot])}
+            {renderPlaces(irnTablesByTimeSlotAndPlaces[timeSlot])}
           </DayTimeSlot>
         ))}
       </ScrollView>
@@ -58,10 +79,10 @@ const styles = StyleSheet.create({
   header: {
     alignItems: "center",
   },
-  locations: {
+  places: {
     flexDirection: "column",
   },
-  location: {
+  place: {
     fontSize: 10,
     paddingVertical: 5,
   },

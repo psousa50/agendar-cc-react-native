@@ -16,6 +16,13 @@ export interface IrnFilterState {
   selectedDate?: Date | null
 }
 
+export interface SelectedIrnTableState {
+  countyId?: number
+  districtId: number
+  date: Date
+  placeName: string
+}
+
 export interface IrnTablesDataState {
   filter: IrnFilterState
   irnTables: IrnRepositoryTables
@@ -23,6 +30,7 @@ export interface IrnTablesDataState {
   irnTablesCache?: IrnRepositoryTables
   error: Error | null
   loading: boolean
+  selectedIrnTable?: SelectedIrnTableState | null
 }
 
 export interface GlobalState {
