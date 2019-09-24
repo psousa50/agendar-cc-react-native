@@ -10,8 +10,10 @@ import { useGlobalState } from "../GlobalStateProvider"
 import { TimeSlot } from "../irnTables/models"
 import { groupCollection, max, min } from "../utils/collections"
 import { formatDateYYYYMMDD, formatDateYYYYMMDD as formatDateYYYY_MM_DD, formatTimeSlot } from "../utils/formaters"
+import { navigate } from "./screens"
 
 export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = props => {
+  const navigateTo = navigate(props.navigation)
   const [, globalDispatch] = useGlobalState()
   const { irnTablesData } = useIrnDataFetch()
 
@@ -36,7 +38,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter: { selectedDate } },
     })
-    props.navigation.navigate("IrnTablesDayScheduleScreen")
+    navigateTo("IrnTablesDayScheduleScreen")
   }
 
   const renderContent = () => {

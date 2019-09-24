@@ -10,11 +10,8 @@ export const GlobalStateContext = createContext<[GlobalState, React.Dispatch<Glo
 ])
 
 export const GlobalStateProvider: React.FunctionComponent = ({ children }) => {
-  return (
-    <GlobalStateContext.Provider value={useReducer(globalStateReducer, initialGlobalState)}>
-      {children}
-    </GlobalStateContext.Provider>
-  )
+  const globalState = useReducer(globalStateReducer, initialGlobalState)
+  return <GlobalStateContext.Provider value={globalState}>{children}</GlobalStateContext.Provider>
 }
 
 export const useGlobalState = () => useContext(GlobalStateContext)
