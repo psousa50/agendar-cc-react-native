@@ -8,10 +8,11 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, Districts, GpsLocation } from "../irnTables/models"
-import { IrnFilterState } from "../state/models"
+import { IrnTableFilterState } from "../state/models"
 import { getCounty, getDistrict, getIrnTablesFilter } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
 import { getClosestCounty } from "../utils/location"
+import { navigate } from "./screens"
 
 interface SearchableCounty {
   countyId?: number
@@ -44,13 +45,14 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
 }
 
 interface IrnLocationFilterScreenState {
-  irnFilter: IrnFilterState
+  irnFilter: IrnTableFilterState
   locationText: string
   position: GpsLocation | null
   hideSearchResults: boolean
 }
 
 export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = props => {
+  const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
 
   const initialState: IrnLocationFilterScreenState = {
@@ -75,7 +77,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter: state.irnFilter },
     })
-    props.navigation.goBack()
+    navigation.goBack()
   }
 
   const getCurrentPosition = () => {

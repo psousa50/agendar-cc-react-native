@@ -17,11 +17,11 @@ export const formatDate = (date: Date) => {
   return diffDays >= 0 && diffDays <= 2 ? dayNames[diffDays] : formatLocale(date)
 }
 
-const t = (v: number) => `${v < 10 ? 0 : ""}${v}`
+const twoDigits = (v: number) => `${v < 10 ? 0 : ""}${v}`
 
 export const formatTimeSlot = (time: TimeSlot) => {
   const date = new Date(`2000-01-01T${time}`)
-  return `${t(date.getHours())}:${t(date.getMinutes())}`
+  return `${twoDigits(date.getHours())}:${twoDigits(date.getMinutes())}`
 }
 
 export const properCase = (s: string) =>

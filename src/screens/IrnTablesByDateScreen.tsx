@@ -9,7 +9,7 @@ import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import { TimeSlot } from "../irnTables/models"
 import { groupCollection, max, min } from "../utils/collections"
-import { formatDateYYYYMMDD, formatDateYYYYMMDD as formatDateYYYY_MM_DD, formatTimeSlot } from "../utils/formaters"
+import { formatDateYYYYMMDD, formatTimeSlot } from "../utils/formaters"
 import { navigate } from "./screens"
 
 export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = props => {
@@ -27,7 +27,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
   const markedDates = irnTablesByDate.reduce(
     (acc, cur) => ({
       ...acc,
-      [formatDateYYYY_MM_DD(cur.key)]: { selected: true },
+      [formatDateYYYYMMDD(cur.key)]: { selected: true },
     }),
     {},
   )

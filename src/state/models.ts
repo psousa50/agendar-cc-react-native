@@ -8,7 +8,7 @@ export interface StaticDataState {
   loading: boolean
 }
 
-export interface IrnFilterState {
+export interface IrnTableFilterState {
   countyId?: number
   districtId?: number
   irbPlaceName?: string
@@ -27,9 +27,9 @@ export interface SelectedIrnTableState {
 }
 
 export interface IrnTablesDataState {
-  filter: IrnFilterState
+  filter: IrnTableFilterState
   irnTables: IrnRepositoryTables
-  filterCache?: IrnFilterState
+  filterCache?: IrnTableFilterState
   irnTablesCache?: IrnRepositoryTables
   error: Error | null
   loading: boolean
