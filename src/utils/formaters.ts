@@ -2,7 +2,7 @@ import moment from "moment"
 import momentLoc from "moment-with-locales-es6"
 
 import { County, District, TimeSlot } from "../irnTables/models"
-import { diffDays as calcDiffDays } from "./dates"
+import { calcDiffDays } from "./dates"
 
 const dayNames = ["Hoje", "Amanhã", "Depois de Amanhã"]
 
