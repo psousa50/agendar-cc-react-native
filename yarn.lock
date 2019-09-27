@@ -1081,6 +1081,14 @@
     "@types/react-native" "*"
     "@types/xdate" "*"
 
+"@types/react-native-maps@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-maps/-/react-native-maps-0.24.0.tgz#20ce7f8971cb34e788f5d8998ae9ed01e524028d"
+  integrity sha512-72JK63rvQ2+KOskjVFROR29JPFGPG7buWw4mNbqLtfq81DIBpFFLVjytGC3YYVbbYF/s/P7CohrLhEwUZsuDhQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.1":
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.1.tgz#d0862f3eb97bbe5720ab604f2f10ee07dacb31ef"
@@ -5407,6 +5415,11 @@ react-native-keyboard-aware-scroll-view@0.9.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
+
+react-native-maps@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
+  integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
 react-native-safe-area-view@^0.14.1:
   version "0.14.7"

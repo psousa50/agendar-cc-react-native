@@ -72,6 +72,7 @@ export const initialGlobalState: GlobalState = {
 
 export interface ReferenceData {
   getIrnPlace: (place: string) => IrnPlace | undefined
+  getIrnPlaces: (countyId: number) => IrnPlaces
   getDistricts: () => Districts
   getDistrict: (districtId?: number) => District | undefined
   getCounties: (districtId?: number) => Counties

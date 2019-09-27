@@ -29,8 +29,12 @@ export const getSelectedIrnTable = (state: GlobalState) => state.irnTablesData.s
 export const getIrnPlace = (state: GlobalState) => (place: string) =>
   state.staticData.irnPlaces.find(p => p.name === place)
 
+export const getIrnPlaces = (state: GlobalState) => (countyId: number) =>
+  state.staticData.irnPlaces.filter(p => p.countyId === countyId)
+
 export const globalStateSelectors = (state: GlobalState) => ({
   getIrnPlace: getIrnPlace(state),
+  getIrnPlaces: getIrnPlaces(state),
   getDistricts: getDistricts(state),
   getDistrict: getDistrict(state),
   getCounties: getCounties(state),

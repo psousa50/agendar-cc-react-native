@@ -1,4 +1,4 @@
-import { Text, View } from "native-base"
+import { Button, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps, renderContentOrLoading } from "../common/AppScreen"
@@ -14,8 +14,10 @@ import {
 import { GpsLocation } from "../irnTables/models"
 import { globalStateSelectors } from "../state/selectors"
 import { useCurrentGpsLocation } from "../utils/hooks"
+import { navigate } from "./screens"
 
 export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = props => {
+  const navigation = navigate(props.navigation)
   const [globalState] = useGlobalState()
   const { irnTablesData } = useIrnDataFetch()
   const [, setCurrentGpsLocation] = useState(null as GpsLocation | null)
@@ -26,16 +28,12 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const irnFilter = stateSelectors.getIrnTablesFilter
 
-  const irnTableResultByClosestDate = selectOneIrnTableResultByClosestDate(stateSelectors)(
-    irnTablesData.irnTables,
-    irnFilter,
-  )
-  const irnTableResultByClosestPlace = selectOneIrnTableResultByClosestPlace(stateSelectors)(
-    irnTablesData.irnTables,
-    irnFilter,
-  )
+  const regionIrnTables = irnTablesData.irnTables.filter(t => ![1, 13].includes(t.districtId))
 
-  const irnTableResultSummary = getIrnTableResultSummary(irnTablesData.irnTables)
+  const irnTableResultByClosestDate = selectOneIrnTableResultByClosestDate(stateSelectors)(regionIrnTables, irnFilter)
+  const irnTableResultByClosestPlace = selectOneIrnTableResultByClosestPlace(stateSelectors)(regionIrnTables, irnFilter)
+
+  const irnTableResultSummary = getIrnTableResultSummary(regionIrnTables)
 
   const renderContent = () => {
     const closestAreSame =
@@ -44,7 +42,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
         : false
     return (
       <View style={styles.container}>
-        <Text>{`Resultados encontrados: ${irnTablesData.irnTables.length}`}</Text>
+        <Text>{`Resultados encontrados: ${regionIrnTables.length}`}</Text>
         {irnTableResultByClosestDate ? (
           <View style={styles.container}>
             <Text>{`Mais rápido${closestAreSame ? " e mais próximo" : ""}:`}</Text>
@@ -57,6 +55,9 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
             <IrnTableResultView {...irnTableResultByClosestPlace} />
           </View>
         ) : null}
+        <Button onPress={() => navigation.goTo("MapLocationSelectorScreen")}>
+          <Text>{"Map"}</Text>
+        </Button>
         <Text>{`Di = ${irnTableResultSummary.districtIds.length}`}</Text>
         <Text>{`Ct = ${irnTableResultSummary.countyIds.length}`}</Text>
         <Text>{`Pl = ${irnTableResultSummary.irnPlaceNames.length}`}</Text>
