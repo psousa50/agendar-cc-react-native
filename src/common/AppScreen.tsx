@@ -18,6 +18,7 @@ import { Platform, StatusBar, ViewStyle } from "react-native"
 import { NavigationRoute, NavigationScreenProp, NavigationScreenProps } from "react-navigation"
 import { navigate } from "../screens/screens"
 import { appTheme } from "../utils/appTheme"
+import { LoadingPage } from "./LoadingPage"
 import { ButtonIcons, editBackgroundColor } from "./ToolbarIcons"
 
 export interface ScreenStateProps {
@@ -133,3 +134,6 @@ export class AppScreen extends React.Component<AppScreenProps> {
   }
   // private bannerError = () => null
 }
+
+export const renderContentOrLoading = (loading: boolean, renderContent: () => JSX.Element) =>
+  loading ? () => <LoadingPage /> : renderContent

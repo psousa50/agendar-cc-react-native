@@ -1,8 +1,7 @@
-import Geolocation from "@react-native-community/geolocation"
 import { Icon, Text, View } from "native-base"
 import sort from "ramda/es/sort"
 import React from "react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
@@ -11,7 +10,8 @@ import { Counties, Districts, GpsLocation } from "../irnTables/models"
 import { IrnTableFilterState } from "../state/models"
 import { getCounty, getDistrict, getIrnTablesFilter } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
-import { getClosestCounty } from "../utils/location"
+import { useCurrentGpsLocation } from "../utils/hooks"
+import { getClosestLocation } from "../utils/location"
 import { navigate } from "./screens"
 
 interface SearchableCounty {
@@ -47,7 +47,7 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
 interface IrnLocationFilterScreenState {
   irnFilter: IrnTableFilterState
   locationText: string
-  position: GpsLocation | null
+  location: GpsLocation | null
   hideSearchResults: boolean
 }
 
@@ -59,7 +59,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
     irnFilter: getIrnTablesFilter(globalState),
     hideSearchResults: false,
     locationText: "",
-    position: null,
+    location: null,
   }
 
   const [state, setState] = useState(initialState)
@@ -67,7 +67,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const mergeState = (newState: Partial<IrnLocationFilterScreenState>) =>
     setState(oldState => ({ ...oldState, ...newState }))
 
-  const { locationText, position } = state
+  const { locationText, location } = state
 
   const { counties, districts } = globalState.staticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
@@ -80,23 +80,7 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
     navigation.goBack()
   }
 
-  const getCurrentPosition = () => {
-    Geolocation.getCurrentPosition(
-      pos => {
-        mergeState({
-          position: {
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-          },
-        })
-      },
-      () => mergeState({ position: null }),
-    )
-  }
-
-  useEffect(() => {
-    getCurrentPosition()
-  }, [])
+  useCurrentGpsLocation(loc => mergeState({ location: loc }))
 
   const listItems =
     locationText.length > 1
@@ -114,9 +98,9 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   )
 
   const setCurrentLocation = () => {
-    const closesestCounty = position ? getClosestCounty(counties)(position) : null
-    if (closesestCounty && closesestCounty.county) {
-      updateFilter(closesestCounty.county.countyId, closesestCounty.county.districtId)
+    const closesestCounty = location ? getClosestLocation(counties)(location) : null
+    if (closesestCounty && closesestCounty.location) {
+      updateFilter(closesestCounty.location.countyId, closesestCounty.location.districtId)
     }
   }
 

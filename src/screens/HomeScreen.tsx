@@ -20,7 +20,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
       <View>
         <Text onPress={() => navigation.goTo("IrnLocationFilterScreen")}>{location}</Text>
         <Text onPress={() => navigation.goTo("IrnDateFilterScreen")}>{`${startDate} - ${endDate}`}</Text>
-        <Button style={styles.searchButton} block onPress={() => navigation.goTo("IrnTablesByDateScreen")}>
+        <Button style={styles.searchButton} block onPress={() => navigation.goTo("IrnTablesResultsScreen")}>
           <Text>{"Mostrar Horãrios"}</Text>
         </Button>
       </View>

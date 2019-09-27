@@ -1,4 +1,4 @@
-import { calcDistanceInKm, getClosestCounty } from "../../src/utils/location"
+import { calcDistanceInKm, getClosestLocation } from "../../src/utils/location"
 
 describe("distanceInKmBetweenEarthCoordinates", () => {
   it("returns zero for equal coords", () => {
@@ -15,18 +15,18 @@ describe("distanceInKmBetweenEarthCoordinates", () => {
   })
 })
 
-describe("getClosestCounty", () => {
-  it("returns the closest County to a location", () => {
-    const county1 = { gpsLocation: { latitude: 1.3, longitude: 2.3 } } as any
-    const county2 = { gpsLocation: { latitude: 1.1, longitude: 2.1 } } as any
-    const county3 = { gpsLocation: { latitude: 1.2, longitude: 2.2 } } as any
+describe("getClosestLocation", () => {
+  it("returns the closest location to a gps cords", () => {
+    const location1 = { gpsLocation: { latitude: 1.3, longitude: 2.3 } } as any
+    const location2 = { gpsLocation: { latitude: 1.1, longitude: 2.1 } } as any
+    const location3 = { gpsLocation: { latitude: 1.2, longitude: 2.2 } } as any
     const location = { latitude: 1.0, longitude: 2.0 }
 
-    const result = getClosestCounty([county1, county2, county3])(location)
+    const result = getClosestLocation([location1, location2, location3])(location)
 
     const expectedResult = {
-      county: county2,
-      distance: calcDistanceInKm(county2.gpsLocation, location),
+      location: location2,
+      distance: calcDistanceInKm(location2.gpsLocation, location),
     }
 
     expect(result).toEqual(expectedResult)

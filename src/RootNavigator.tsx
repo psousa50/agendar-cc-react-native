@@ -9,6 +9,7 @@ import { IrnDateFilterScreen } from "./screens/IrnDateFilterScreen"
 import { IrnLocationFilterScreen } from "./screens/IrnLocationFilterScreen"
 import { IrnTablesByDateScreen } from "./screens/IrnTablesByDateScreen"
 import { IrnTablesDayScheduleScreen } from "./screens/IrnTablesDayScheduleScreen"
+import { IrnTablesResultsScreen } from "./screens/IrnTablesResultsScreen"
 import { SelectedIrnTableScreen } from "./screens/SelectedIrnTableScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
@@ -44,6 +45,7 @@ export const ContentNavigator = createStackNavigator(
     IrnLocationFilterScreen,
     IrnTablesByDateScreen,
     IrnTablesDayScheduleScreen,
+    IrnTablesResultsScreen,
     SelectedIrnTableScreen,
     Test,
   },

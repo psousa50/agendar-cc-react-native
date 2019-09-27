@@ -1,5 +1,11 @@
 import { isNil, keys } from "ramda"
-import { Counties, Districts, GetTableParams as GetIrnTableParams, IrnRepositoryTables } from "../irnTables/models"
+import {
+  Counties,
+  Districts,
+  GetTableParams as GetIrnTableParams,
+  IrnPlaces,
+  IrnRepositoryTables,
+} from "../irnTables/models"
 import { config } from "./config"
 import { fetchJson } from "./fetch"
 
@@ -20,5 +26,6 @@ const buildParams = (params: {}) => {
 export const fetchDistricts = () => fetchJson<Districts>(`${api}/districts`)
 export const fetchCounties = (districtId?: number) =>
   fetchJson<Counties>(`${api}/counties${isNil(districtId) ? "" : `?districtId=${districtId}`}`)
+export const fetchIrnPlaces = () => fetchJson<IrnPlaces>(`${api}/irnPlaces`)
 export const fetchIrnTables = (params: GetIrnTableParams) =>
   fetchJson<IrnRepositoryTables>(`${api}/irnTables${buildParams(params)}`)

@@ -6,6 +6,7 @@ export type AppScreenName =
   | "IrnLocationFilterScreen"
   | "IrnTablesByDateScreen"
   | "IrnTablesDayScheduleScreen"
+  | "IrnTablesResultsScreen"
   | "SelectedIrnTableScreen"
 
 export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({

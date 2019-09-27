@@ -1,4 +1,4 @@
-import { Counties, County, GpsLocation } from "../irnTables/models"
+import { GpsLocation } from "../irnTables/models"
 
 const degreesToRadians = (degrees: number) => {
   return (degrees * Math.PI) / 180
@@ -19,16 +19,15 @@ export const calcDistanceInKm = (loc1: GpsLocation, loc2: GpsLocation) => {
   return earthRadiusKm * c
 }
 
-type ClosestCounty = { county: County; distance: number }
-export const getClosestCounty = (counties: Counties) => (location: GpsLocation) =>
-  counties.reduce(
-    (acc, county) => {
-      if (acc) {
-        const newDistance = county.gpsLocation ? calcDistanceInKm(county.gpsLocation, location) : null
-        return newDistance && newDistance < acc.distance ? { county, distance: newDistance } : acc
-      } else {
-        return { county, distance: 100000000 }
-      }
-    },
-    null as ClosestCounty | null,
-  )
+export const getClosestLocation = <T extends { gpsLocation?: GpsLocation }>(locations: T[]) => (
+  locationToMatch: GpsLocation,
+) =>
+  locations.length > 0
+    ? locations.slice(1).reduce(
+        (acc, location) => {
+          const newDistance = location.gpsLocation ? calcDistanceInKm(location.gpsLocation, locationToMatch) : null
+          return newDistance && newDistance < acc.distance ? { location, distance: newDistance } : acc
+        },
+        { location: locations[0], distance: calcDistanceInKm(locations[0].gpsLocation!, locationToMatch) },
+      )
+    : undefined

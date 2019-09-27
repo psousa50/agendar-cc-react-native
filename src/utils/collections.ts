@@ -32,8 +32,6 @@ export const mergeIntoCollection = <S>(criteria: (s1: S) => (s2: S) => boolean, 
   return index >= 0 ? replaceByIndex(col, merge(col[index], toMerge), index) : [...col, toMerge]
 }
 
-export const flatten = <T>(list: T[][]) => list.reduce((acc, cur) => [...acc, ...cur], [] as T[])
-
 export const max = <T>(col: T[]) =>
   col.length > 0 ? col.reduce((acc, d) => (acc ? (d > acc ? d : acc) : d), col[0]) : undefined
 export const min = <T>(col: T[]) =>

@@ -1,8 +1,19 @@
-import { Counties, Districts, IrnPlace, IrnRepositoryTables, TimeSlot } from "../irnTables/models"
+import {
+  Counties,
+  County,
+  District,
+  Districts,
+  GpsLocation,
+  IrnPlace,
+  IrnPlaces,
+  IrnRepositoryTables,
+  TimeSlot,
+} from "../irnTables/models"
 
 export interface StaticDataState {
   counties: Counties
   districts: Districts
+  irnPlaces: IrnPlaces
   error: Error | null
   loaded: boolean
   loading: boolean
@@ -11,7 +22,8 @@ export interface StaticDataState {
 export interface IrnTableFilterState {
   countyId?: number
   districtId?: number
-  irbPlaceName?: string
+  irnPlaceName?: string
+  gpsLocation?: GpsLocation | null
   startDate?: Date
   endDate?: Date
   selectedIrnPlace?: IrnPlace | null
@@ -45,6 +57,7 @@ export const initialGlobalState: GlobalState = {
   staticData: {
     districts: [],
     counties: [],
+    irnPlaces: [],
     error: null,
     loaded: false,
     loading: false,
@@ -55,4 +68,12 @@ export const initialGlobalState: GlobalState = {
     error: null,
     loading: false,
   },
+}
+
+export interface ReferenceData {
+  getIrnPlace: (place: string) => IrnPlace | undefined
+  getDistricts: () => Districts
+  getDistrict: (districtId?: number) => District | undefined
+  getCounties: (districtId?: number) => Counties
+  getCounty: (countyId?: number) => County | undefined
 }

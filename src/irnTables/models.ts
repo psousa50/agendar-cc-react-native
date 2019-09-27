@@ -85,3 +85,21 @@ export type GetTableParams = Partial<{
   startTime: TimeSlot
   endTime: TimeSlot
 }>
+
+export interface IrnTableResult {
+  serviceId: number
+  countyId: number
+  districtId: number
+  date: Date
+  placeName: string
+  timeSlot: TimeSlot
+  tableNumber: string
+}
+
+export interface IrnTableResultSummary {
+  districtIds: number[]
+  countyIds: number[]
+  dates: Date[]
+  irnPlaceNames: string[]
+  timeSlots: TimeSlot[]
+}

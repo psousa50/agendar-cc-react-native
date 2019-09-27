@@ -3,8 +3,8 @@ import { task } from "fp-ts/lib/Task"
 import { chain, fold, map } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
 import { useGlobalState } from "./GlobalStateProvider"
-import { Districts } from "./irnTables/models"
-import { fetchCounties, fetchDistricts } from "./utils/irnFetch"
+import { Counties, Districts } from "./irnTables/models"
+import { fetchCounties, fetchDistricts, fetchIrnPlaces } from "./utils/irnFetch"
 
 const mergeWithCounties = (districts: Districts) =>
   pipe(
@@ -12,8 +12,14 @@ const mergeWithCounties = (districts: Districts) =>
     map(counties => ({ districts, counties })),
   )
 
+const mergeWithPlaces = ({ districts, counties }: { districts: Districts; counties: Counties }) =>
+  pipe(
+    fetchIrnPlaces(),
+    map(irnPlaces => ({ districts, counties, irnPlaces })),
+  )
+
 export const GlobalStateInitializer = () => {
-  const [globalState, globalDispatch] = useGlobalState()
+  const [, globalDispatch] = useGlobalState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +28,7 @@ export const GlobalStateInitializer = () => {
       const action = pipe(
         fetchDistricts(),
         chain(mergeWithCounties),
+        chain(mergeWithPlaces),
         fold(
           error => {
             globalDispatch({ type: "STATIC_DATA_FETCH_FAILURE", payload: { error } })
@@ -40,6 +47,5 @@ export const GlobalStateInitializer = () => {
     fetchData()
   }, [])
 
-  console.log("Global State=====>", globalState.staticData)
   return null
 }
