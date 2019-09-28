@@ -26,7 +26,10 @@ export const useIrnDataFetch = () => {
             return task.of(error)
           },
           irnTables => {
-            globalDispatch({ type: "IRN_TABLES_FETCH_SUCCESS", payload: { irnTables } })
+            globalDispatch({
+              type: "IRN_TABLES_FETCH_SUCCESS",
+              payload: { irnTables: irnTables.map(t => ({ ...t, date: new Date(t.date) })) },
+            })
             return task.of(undefined)
           },
         ),

@@ -7,7 +7,7 @@ import { useGlobalState } from "../GlobalStateProvider"
 import { normalizeFilter } from "../state/main"
 import { IrnTableFilterState } from "../state/models"
 import { getIrnTablesFilter } from "../state/selectors"
-import { addDays, createDateRange, datesEqual } from "../utils/dates"
+import { addDays, createDateRange, dateOnly, datesEqual } from "../utils/dates"
 import { formatDateYYYYMMDD } from "../utils/formaters"
 import { navigate } from "./screens"
 
@@ -29,7 +29,7 @@ export const IrnDateFilterScreen: React.FunctionComponent<AppScreenProps> = prop
   }
 
   const onDayPress = (dateObject: DateObject) => {
-    const date = new Date(dateObject.dateString)
+    const date = dateOnly(new Date(dateObject.dateString))
     const { startDate, endDate } = filter
     if (!startDate || endDate) {
       updateFilter({ startDate: date, endDate: undefined })
