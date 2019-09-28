@@ -11,6 +11,6 @@ export type AppScreenName =
   | "SelectedIrnTableScreen"
 
 export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({
-  goBack: () => navigation.goBack(),
+  ...navigation,
   goTo: (screen: AppScreenName) => navigation.navigate(screen),
 })

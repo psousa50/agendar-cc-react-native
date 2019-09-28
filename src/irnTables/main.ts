@@ -1,6 +1,7 @@
 import { flatten, keys, mergeDeepWith, sort, uniq } from "ramda"
 import { IrnTableFilterState, ReferenceData } from "../state/models"
 import { min } from "../utils/collections"
+import { datesEqual } from "../utils/dates"
 import { getClosestLocation } from "../utils/location"
 import { IrnPlace, IrnPlaces, IrnRepositoryTable, IrnRepositoryTables, IrnTableResult, TimeSlot } from "./models"
 
@@ -159,3 +160,20 @@ export const selectOneIrnTableResultByClosestPlace = (referenceData: ReferenceDa
 
 export const irnTableResultsAreEqual = (r1: IrnTableResult, r2: IrnTableResult) =>
   r1.districtId === r2.districtId && r1.countyId === r2.countyId && r1.placeName === r2.placeName && r1.date === r2.date
+
+export const filterTable = ({
+  countyId,
+  districtId,
+  startDate,
+  endDate,
+  selectedDate,
+  irnPlaceName,
+  selectedTimeSlot,
+}: IrnTableFilterState) => (irnTable: IrnRepositoryTable) =>
+  (!districtId || irnTable.districtId === districtId) &&
+  (!countyId || irnTable.countyId === countyId) &&
+  (!startDate || irnTable.date >= startDate) &&
+  (!endDate || irnTable.date <= endDate) &&
+  (!selectedDate || datesEqual(irnTable.date, selectedDate)) &&
+  (!irnPlaceName || irnTable.placeName === irnPlaceName) &&
+  (!selectedTimeSlot || irnTable.timeSlots.includes(selectedTimeSlot))

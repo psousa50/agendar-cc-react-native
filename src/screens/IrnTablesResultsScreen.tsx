@@ -6,6 +6,7 @@ import { IrnTableResultView } from "../common/IrnTableResultView"
 import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import {
+  filterTable,
   getIrnTableResultSummary,
   irnTableResultsAreEqual,
   selectOneIrnTableResultByClosestDate,
@@ -27,13 +28,12 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const stateSelectors = globalStateSelectors(globalState)
 
   const irnFilter = stateSelectors.getIrnTablesFilter
+  const irnTables = irnTablesData.irnTables.filter(filterTable(irnFilter))
 
-  const regionIrnTables = irnTablesData.irnTables.filter(t => ![1, 13].includes(t.districtId))
+  const irnTableResultByClosestDate = selectOneIrnTableResultByClosestDate(stateSelectors)(irnTables, irnFilter)
+  const irnTableResultByClosestPlace = selectOneIrnTableResultByClosestPlace(stateSelectors)(irnTables, irnFilter)
 
-  const irnTableResultByClosestDate = selectOneIrnTableResultByClosestDate(stateSelectors)(regionIrnTables, irnFilter)
-  const irnTableResultByClosestPlace = selectOneIrnTableResultByClosestPlace(stateSelectors)(regionIrnTables, irnFilter)
-
-  const irnTableResultSummary = getIrnTableResultSummary(regionIrnTables)
+  const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
   const renderContent = () => {
     const closestAreSame =
@@ -42,7 +42,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
         : false
     return (
       <View style={styles.container}>
-        <Text>{`Resultados encontrados: ${regionIrnTables.length}`}</Text>
+        <Text>{`Resultados encontrados: ${irnTables.length}`}</Text>
         {irnTableResultByClosestDate ? (
           <View style={styles.container}>
             <Text>{`Mais rápido${closestAreSame ? " e mais próximo" : ""}:`}</Text>
@@ -55,6 +55,9 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
             <IrnTableResultView {...irnTableResultByClosestPlace} />
           </View>
         ) : null}
+        <Button onPress={() => navigation.goTo("IrnTablesByDateScreen")}>
+          <Text>{"Dates"}</Text>
+        </Button>
         <Button onPress={() => navigation.goTo("MapLocationSelectorScreen")}>
           <Text>{"Map"}</Text>
         </Button>

@@ -1,5 +1,10 @@
 import moment from "moment"
 
+export const dateOnly = (date: Date) =>
+  moment(date)
+    .startOf("day")
+    .toDate()
+
 export const addDays = (date: Date, days: number) => new Date(date.getTime() + days * 24 * 60 * 60 * 1000)
 
 export const calcDiffDays = (d1: Date, d2: Date) =>

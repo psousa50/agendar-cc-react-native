@@ -9,6 +9,7 @@ import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import { TimeSlot } from "../irnTables/models"
 import { groupCollection, max, min } from "../utils/collections"
+import { dateOnly } from "../utils/dates"
 import { formatDateYYYYMMDD, formatTimeSlot } from "../utils/formaters"
 import { navigate } from "./screens"
 
@@ -33,12 +34,12 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
   )
 
   const onDayPress = (date: DateObject) => {
-    const selectedDate = new Date(date.dateString)
+    const selectedDate = dateOnly(new Date(date.dateString))
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter: { selectedDate } },
     })
-    navigation.goTo("IrnTablesDayScheduleScreen")
+    navigation.goBack()
   }
 
   const renderContent = () => {

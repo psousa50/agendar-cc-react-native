@@ -26,7 +26,6 @@ export interface IrnTableFilterState {
   gpsLocation?: GpsLocation | null
   startDate?: Date
   endDate?: Date
-  selectedIrnPlace?: IrnPlace | null
   selectedDate?: Date | null
   selectedTimeSlot?: TimeSlot | null
 }
