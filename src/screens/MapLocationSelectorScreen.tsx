@@ -3,7 +3,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
-import { getIrnTableResultSummary } from "../irnTables/main"
+import { filterTable, getIrnTableResultSummary } from "../irnTables/main"
 import { County, District, IrnPlace } from "../irnTables/models"
 import { IrnTableFilterState } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
@@ -15,11 +15,10 @@ export const MapLocationSelectorScreen: React.FunctionComponent<AppScreenProps> 
   const stateSelectors = globalStateSelectors(globalState)
 
   const irnFilter = stateSelectors.getIrnTablesFilter
+  const irnTables = stateSelectors.getIrnTables.filter(filterTable(irnFilter))
+  const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
   const { countyId, districtId } = irnFilter
-
-  const irnTableResultSummary = getIrnTableResultSummary(stateSelectors.getIrnTables)
-
   const districtLocations = irnTableResultSummary.districtIds
     .filter(d => !districtId || d === districtId)
     .map(stateSelectors.getDistrict)
@@ -65,7 +64,7 @@ export const MapLocationSelectorScreen: React.FunctionComponent<AppScreenProps> 
       updateGlobalFilter({ countyId: mapLocation.id })
     }
     if (type === "Place") {
-      updateGlobalFilter({ irnPlaceName: mapLocation.name })
+      updateGlobalFilter({ selectedPlaceName: mapLocation.name })
       goBack()
     }
   }

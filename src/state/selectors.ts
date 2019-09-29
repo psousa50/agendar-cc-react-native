@@ -33,6 +33,7 @@ export const getIrnPlaces = (state: GlobalState) => (countyId: number) =>
   state.staticData.irnPlaces.filter(p => p.countyId === countyId)
 
 export const globalStateSelectors = (state: GlobalState) => ({
+  getIrnTablesData: state.irnTablesData,
   getIrnPlace: getIrnPlace(state),
   getIrnPlaces: getIrnPlaces(state),
   getDistricts: getDistricts(state),

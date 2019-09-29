@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef } from "react"
-import { StyleSheet, Text } from "react-native"
+import React, { useRef } from "react"
+import { StyleSheet } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import { GpsLocation } from "../irnTables/models"
 
@@ -7,6 +7,7 @@ export interface MapLocation {
   id?: number
   gpsLocation?: GpsLocation
   name: string
+  pinColor?: string
 }
 export type LocationsType = "District" | "County" | "Place"
 interface LocationsMapProps {
@@ -18,12 +19,10 @@ interface LocationsMapProps {
 export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLocationPress, locationType }) => {
   const map = useRef(null as MapView | null)
 
-  useLayoutEffect(() => {
+  const fitToElements = () => {
     const theMap = map.current as MapView
-    setTimeout(() => {
-      theMap.fitToElements(true)
-    }, 1000)
-  }, [locationType])
+    theMap.fitToElements(true)
+  }
 
   const realMapLocations = mapLocations.filter(l => !!l.gpsLocation) as MapLocation[]
 
@@ -36,16 +35,16 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
       zoomTapEnabled={true}
       toolbarEnabled={true}
       pitchEnabled={true}
+      onMapReady={fitToElements}
     >
       {realMapLocations.map((mapLocation, i) => (
         <Marker
           key={i}
           coordinate={mapLocation.gpsLocation!}
           title={mapLocation.name}
-          onPress={() => onLocationPress(locationType, mapLocation)}
-        >
-          <Text style={{ backgroundColor: "yellow", fontSize: 10 }}>{mapLocation.name}</Text>
-        </Marker>
+          pinColor={mapLocation.pinColor}
+          onCalloutPress={() => onLocationPress(locationType, mapLocation)}
+        />
       ))}
     </MapView>
   )

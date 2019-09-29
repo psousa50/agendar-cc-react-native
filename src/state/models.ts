@@ -22,12 +22,14 @@ export interface StaticDataState {
 export interface IrnTableFilterState {
   countyId?: number
   districtId?: number
-  irnPlaceName?: string
-  gpsLocation?: GpsLocation | null
+  gpsLocation?: GpsLocation
   startDate?: Date
   endDate?: Date
-  selectedDate?: Date | null
-  selectedTimeSlot?: TimeSlot | null
+  startTime?: TimeSlot
+  endTime?: TimeSlot
+  selectedDate?: Date
+  selectedPlaceName?: string
+  selectedTimeSlot?: TimeSlot
 }
 
 export interface SelectedIrnTableState {
@@ -44,7 +46,7 @@ export interface IrnTablesDataState {
   irnTablesCache?: IrnRepositoryTables
   error: Error | null
   loading: boolean
-  selectedIrnTable?: SelectedIrnTableState | null
+  selectedIrnTable?: SelectedIrnTableState
 }
 
 export interface GlobalState {

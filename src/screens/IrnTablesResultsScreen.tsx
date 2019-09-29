@@ -36,7 +36,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
   const renderContent = () => {
-    const closestAreSame =
+    const closestAreTheSame =
       irnTableResultByClosestDate && irnTableResultByClosestPlace
         ? irnTableResultsAreEqual(irnTableResultByClosestDate, irnTableResultByClosestPlace)
         : false
@@ -45,22 +45,26 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
         <Text>{`Resultados encontrados: ${irnTables.length}`}</Text>
         {irnTableResultByClosestDate ? (
           <View style={styles.container}>
-            <Text>{`Mais rápido${closestAreSame ? " e mais próximo" : ""}:`}</Text>
+            <Text>{`Mais rápido${closestAreTheSame ? " e mais próximo" : ""}:`}</Text>
             <IrnTableResultView {...irnTableResultByClosestDate} />
           </View>
         ) : null}
-        {irnTableResultByClosestPlace && !closestAreSame ? (
+        {irnTableResultByClosestPlace && !closestAreTheSame ? (
           <View style={styles.container}>
             <Text>{"Mais próximo:"}</Text>
             <IrnTableResultView {...irnTableResultByClosestPlace} />
           </View>
         ) : null}
+        <Button onPress={() => navigation.goTo("IrnTablesResultsMapScreen")}>
+          <Text>{"See Map"}</Text>
+        </Button>
         <Button onPress={() => navigation.goTo("IrnTablesByDateScreen")}>
-          <Text>{"Dates"}</Text>
+          <Text>{"Select Date"}</Text>
         </Button>
         <Button onPress={() => navigation.goTo("MapLocationSelectorScreen")}>
-          <Text>{"Map"}</Text>
+          <Text>{"Select Place"}</Text>
         </Button>
+        <Text>{JSON.stringify(irnFilter, null, 2)}</Text>
         <Text>{`Di = ${irnTableResultSummary.districtIds.length}`}</Text>
         <Text>{`Ct = ${irnTableResultSummary.countyIds.length}`}</Text>
         <Text>{`Pl = ${irnTableResultSummary.irnPlaceNames.length}`}</Text>

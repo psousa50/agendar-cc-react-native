@@ -5,9 +5,9 @@ import { StyleSheet } from "react-native"
 import { CalendarList, DateObject } from "react-native-calendars"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LoadingPage } from "../common/LoadingPage"
-import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import { TimeSlot } from "../irnTables/models"
+import { globalStateSelectors } from "../state/selectors"
 import { groupCollection, max, min } from "../utils/collections"
 import { dateOnly } from "../utils/dates"
 import { formatDateYYYYMMDD, formatTimeSlot } from "../utils/formaters"
@@ -15,10 +15,12 @@ import { navigate } from "./screens"
 
 export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
-  const [, globalDispatch] = useGlobalState()
-  const { irnTablesData } = useIrnDataFetch()
+  const [globalState, globalDispatch] = useGlobalState()
+  const stateSelectors = globalStateSelectors(globalState)
 
-  const irnTablesByDate = groupCollection(t => t.date, irnTablesData.irnTables)
+  const irnTables = stateSelectors.getIrnTables
+
+  const irnTablesByDate = groupCollection(t => t.date, irnTables)
   const dates = irnTablesByDate.map(g => g.key)
   const minDate = min(dates)
   const maxDate = max(dates)
@@ -43,7 +45,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
   }
 
   const renderContent = () => {
-    return irnTablesData.loading ? (
+    return stateSelectors.getIrnTablesData.loading ? (
       <LoadingPage />
     ) : (
       <View style={styles.container}>

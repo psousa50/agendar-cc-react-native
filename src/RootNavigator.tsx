@@ -9,6 +9,7 @@ import { IrnDateFilterScreen } from "./screens/IrnDateFilterScreen"
 import { IrnLocationFilterScreen } from "./screens/IrnLocationFilterScreen"
 import { IrnTablesByDateScreen } from "./screens/IrnTablesByDateScreen"
 import { IrnTablesDayScheduleScreen } from "./screens/IrnTablesDayScheduleScreen"
+import { IrnTablesResultsMapScreen } from "./screens/IrnTablesResultsMapScreen"
 import { IrnTablesResultsScreen } from "./screens/IrnTablesResultsScreen"
 import { MapLocationSelectorScreen } from "./screens/MapLocationSelectorScreen"
 import { SelectedIrnTableScreen } from "./screens/SelectedIrnTableScreen"
@@ -47,6 +48,7 @@ export const ContentNavigator = createStackNavigator(
     IrnTablesByDateScreen,
     IrnTablesDayScheduleScreen,
     IrnTablesResultsScreen,
+    IrnTablesResultsMapScreen,
     MapLocationSelectorScreen,
     SelectedIrnTableScreen,
     Test,

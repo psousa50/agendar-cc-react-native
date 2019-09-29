@@ -47,6 +47,6 @@ export type GlobalStateAction =
   | {
       type: "IRN_TABLES_SET_SELECTED"
       payload: {
-        selectedIrnTable: SelectedIrnTableState | null
+        selectedIrnTable?: SelectedIrnTableState
       }
     }
