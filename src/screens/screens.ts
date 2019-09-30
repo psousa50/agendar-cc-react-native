@@ -2,14 +2,16 @@ import { NavigationParams, NavigationRoute, NavigationScreenProp } from "react-n
 
 export type AppScreenName =
   | "HomeScreen"
-  | "IrnDateFilterScreen"
-  | "IrnLocationFilterScreen"
   | "IrnTablesByDateScreen"
   | "IrnTablesDayScheduleScreen"
   | "IrnTablesResultsScreen"
   | "IrnTablesResultsMapScreen"
   | "MapLocationSelectorScreen"
   | "SelectedIrnTableScreen"
+  | "SelectIrnServiceScreen"
+  | "SelectDateTimeScreen"
+  | "SelectLocationScreen"
+  | "Test"
 
 export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({
   ...navigation,

@@ -1,16 +1,19 @@
 import { Button, Text, View } from "native-base"
-import React from "react"
+import React, { useEffect } from "react"
 import { StyleSheet } from "react-native"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
+import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
+import { SelectedLocationView } from "../components/SelectedLocationView"
+import { SelectedServiceView } from "../components/SelectedServiceView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { IrnTableFilterState } from "../state/models"
-import { getIrnFilterCountyName, getIrnTablesFilter } from "../state/selectors"
-import { formatDate } from "../utils/formaters"
+import { globalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
 
 export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const navigation = navigate(props.navigation)
+  const stateSelectors = globalStateSelectors(globalState)
 
   const updateGlobalFilter = (filter: Partial<IrnTableFilterState>) => {
     globalDispatch({
@@ -21,6 +24,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
 
   const clearFilter = () => {
     updateGlobalFilter({
+      serviceId: undefined,
       countyId: undefined,
       districtId: undefined,
       gpsLocation: undefined,
@@ -31,24 +35,34 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     })
   }
 
+  useEffect(() => {
+    updateGlobalFilter({
+      region: "Continente",
+      serviceId: 2,
+      startDate: new Date("2019-09-29"),
+      endDate: new Date("2019-10-03"),
+      districtId: 12,
+      countyId: 5,
+    })
+  }, [])
+
   const onSearch = () => {
     updateGlobalFilter({ selectedDate: undefined, selectedPlaceName: undefined, selectedTimeSlot: undefined })
     navigation.goTo("IrnTablesResultsScreen")
   }
 
+  const irnFilter = stateSelectors.getIrnTablesFilter
+
   const renderContent = () => {
-    const filter = getIrnTablesFilter(globalState)
-    const location = getIrnFilterCountyName(globalState) || "Localização"
-    const startDate = filter.startDate ? formatDate(filter.startDate) : ""
-    const endDate = filter.endDate ? formatDate(filter.endDate) : ""
     return (
-      <View>
-        <Text onPress={() => navigation.goTo("IrnLocationFilterScreen")}>{location}</Text>
-        <Text onPress={() => navigation.goTo("IrnDateFilterScreen")}>{`${startDate} - ${endDate}`}</Text>
-        <Button style={styles.searchButton} block onPress={clearFilter}>
+      <View style={styles.container}>
+        <SelectedServiceView irnFilter={irnFilter} onSelect={() => navigation.goTo("SelectIrnServiceScreen")} />
+        <SelectedDateTimeView irnFilter={irnFilter} onSelect={() => navigation.goTo("SelectDateTimeScreen")} />
+        <SelectedLocationView irnFilter={irnFilter} onSelect={() => navigation.goTo("SelectLocationScreen")} />
+        <Button block onPress={clearFilter}>
           <Text>{"Limpar"}</Text>
         </Button>
-        <Button style={styles.searchButton} block onPress={onSearch}>
+        <Button block onPress={onSearch}>
           <Text>{"Pesquisar Horários"}</Text>
         </Button>
       </View>
@@ -58,7 +72,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
 }
 
 const styles = StyleSheet.create({
-  searchButton: {
-    marginTop: 100,
+  container: {
+    flex: 1,
   },
 })

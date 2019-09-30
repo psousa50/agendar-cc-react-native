@@ -5,14 +5,15 @@ import { createStackNavigator } from "react-navigation"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
 import { HomeScreen } from "./screens/HomeScreen"
-import { IrnDateFilterScreen } from "./screens/IrnDateFilterScreen"
-import { IrnLocationFilterScreen } from "./screens/IrnLocationFilterScreen"
 import { IrnTablesByDateScreen } from "./screens/IrnTablesByDateScreen"
 import { IrnTablesDayScheduleScreen } from "./screens/IrnTablesDayScheduleScreen"
 import { IrnTablesResultsMapScreen } from "./screens/IrnTablesResultsMapScreen"
 import { IrnTablesResultsScreen } from "./screens/IrnTablesResultsScreen"
 import { MapLocationSelectorScreen } from "./screens/MapLocationSelectorScreen"
+import { SelectDateTimeScreen } from "./screens/SelectDateTimeScreen"
 import { SelectedIrnTableScreen } from "./screens/SelectedIrnTableScreen"
+import { SelectIrnServiceScreen } from "./screens/SelectIrnServiceScreen"
+import { SelectLocationScreen } from "./screens/SelectLocationScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
@@ -43,14 +44,15 @@ const transitionConfig = () => {
 export const ContentNavigator = createStackNavigator(
   {
     HomeScreen,
-    IrnDateFilterScreen,
-    IrnLocationFilterScreen,
     IrnTablesByDateScreen,
     IrnTablesDayScheduleScreen,
     IrnTablesResultsScreen,
     IrnTablesResultsMapScreen,
     MapLocationSelectorScreen,
     SelectedIrnTableScreen,
+    SelectIrnServiceScreen,
+    SelectDateTimeScreen,
+    SelectLocationScreen,
     Test,
   },
   {

@@ -5,6 +5,7 @@ import {
   GetTableParams as GetIrnTableParams,
   IrnPlaces,
   IrnRepositoryTables,
+  IrnServices,
 } from "../irnTables/models"
 import { config } from "./config"
 import { fetchJson } from "./fetch"
@@ -23,6 +24,7 @@ const buildParams = (params: {}) => {
   return p.length > 0 ? `?${p}` : ""
 }
 
+export const fetchIrnServices = () => fetchJson<IrnServices>(`${api}/irnServices`)
 export const fetchDistricts = () => fetchJson<Districts>(`${api}/districts`)
 export const fetchCounties = (districtId?: number) =>
   fetchJson<Counties>(`${api}/counties${isNil(districtId) ? "" : `?districtId=${districtId}`}`)

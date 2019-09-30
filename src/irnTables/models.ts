@@ -1,3 +1,5 @@
+import { Region } from "../state/models"
+
 export type TimeSlot = string
 
 export interface GpsLocation {
@@ -5,13 +7,14 @@ export interface GpsLocation {
   longitude: number
 }
 export type IrnService = {
-  id: number
+  serviceId: number
   name: string
 }
 export type IrnServices = IrnService[]
 
 export type District = {
   districtId: number
+  region: Region
   name: string
   gpsLocation?: GpsLocation
 }

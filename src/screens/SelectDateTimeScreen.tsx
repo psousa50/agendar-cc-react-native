@@ -11,7 +11,7 @@ import { addDays, createDateRange, dateOnly, datesEqual } from "../utils/dates"
 import { formatDateYYYYMMDD } from "../utils/formaters"
 import { navigate } from "./screens"
 
-export const IrnDateFilterScreen: React.FunctionComponent<AppScreenProps> = props => {
+export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
   const [filter, setFilter] = useState(getIrnTablesFilter(globalState))

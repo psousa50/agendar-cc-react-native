@@ -7,10 +7,13 @@ import {
   IrnPlace,
   IrnPlaces,
   IrnRepositoryTables,
+  IrnService,
+  IrnServices,
   TimeSlot,
 } from "../irnTables/models"
 
 export interface StaticDataState {
+  irnServices: IrnServices
   counties: Counties
   districts: Districts
   irnPlaces: IrnPlaces
@@ -19,18 +22,24 @@ export interface StaticDataState {
   loading: boolean
 }
 
+export type Region = "Acores" | "Continente" | "Madeira"
 export interface IrnTableFilterState {
+  serviceId?: number
   countyId?: number
   districtId?: number
+  region?: Region
   gpsLocation?: GpsLocation
   startDate?: Date
   endDate?: Date
+  onlySaturdays?: boolean
   startTime?: TimeSlot
   endTime?: TimeSlot
   selectedDate?: Date
   selectedPlaceName?: string
   selectedTimeSlot?: TimeSlot
 }
+
+export const allRegions: Region[] = ["Continente", "Acores", "Madeira"]
 
 export interface SelectedIrnTableState {
   countyId?: number
@@ -56,6 +65,7 @@ export interface GlobalState {
 
 export const initialGlobalState: GlobalState = {
   staticData: {
+    irnServices: [],
     districts: [],
     counties: [],
     irnPlaces: [],
@@ -72,6 +82,8 @@ export const initialGlobalState: GlobalState = {
 }
 
 export interface ReferenceData {
+  getIrnService: (serviceId: number) => IrnService | undefined
+  getIrnServices: () => IrnServices
   getIrnPlace: (place: string) => IrnPlace | undefined
   getIrnPlaces: (countyId: number) => IrnPlaces
   getDistricts: () => Districts

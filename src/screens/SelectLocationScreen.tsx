@@ -3,12 +3,13 @@ import sort from "ramda/es/sort"
 import React from "react"
 import { useMemo, useState } from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet, TextInput, TouchableOpacity } from "react-native"
+import SegmentedControlTab from "react-native-segmented-control-tab"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, Districts, GpsLocation } from "../irnTables/models"
-import { IrnTableFilterState } from "../state/models"
-import { getCounty, getDistrict, getIrnTablesFilter } from "../state/selectors"
+import { allRegions, IrnTableFilterState, Region } from "../state/models"
+import { getCounty, getDistrict, getIrnTablesFilter, globalStateSelectors } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
 import { useCurrentGpsLocation } from "../utils/hooks"
 import { getClosestLocation } from "../utils/location"
@@ -19,6 +20,7 @@ interface SearchableCounty {
   districtId: number
   key: string
   searchText: string
+  region: Region
 }
 const buildSearchableCounties = (counties: Counties, districts: Districts): SearchableCounty[] => {
   const countyNames = counties.map(county => {
@@ -29,6 +31,7 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
       districtId: county.districtId,
       key: countyName,
       searchText: countyName,
+      region: district.region,
     }
   })
   const districtNames = districts.map(district => {
@@ -38,24 +41,26 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
       districtId: district.districtId,
       key: districtName,
       searchText: districtName,
+      region: district.region,
     }
   })
 
   return sort((n1, n2) => n1.searchText.localeCompare(n2.searchText), [...districtNames, ...countyNames])
 }
 
-interface IrnLocationFilterScreenState {
+interface SelectWhereScreenState {
   irnFilter: IrnTableFilterState
   locationText: string
   location: GpsLocation | null
   hideSearchResults: boolean
 }
 
-export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = props => {
+export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
+  const stateSelectors = globalStateSelectors(globalState)
 
-  const initialState: IrnLocationFilterScreenState = {
+  const initialState: SelectWhereScreenState = {
     irnFilter: getIrnTablesFilter(globalState),
     hideSearchResults: false,
     locationText: "",
@@ -64,12 +69,11 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
 
   const [state, setState] = useState(initialState)
 
-  const mergeState = (newState: Partial<IrnLocationFilterScreenState>) =>
-    setState(oldState => ({ ...oldState, ...newState }))
+  const mergeState = (newState: Partial<SelectWhereScreenState>) => setState(oldState => ({ ...oldState, ...newState }))
 
   const { locationText, location } = state
 
-  const { counties, districts } = globalState.staticData
+  const { counties, districts } = stateSelectors.getStaticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
 
   const updateGlobalFilter = () => {
@@ -85,12 +89,16 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const listItems =
     locationText.length > 1
       ? searchableCounties
-          .filter(sc => sc.searchText.toLocaleLowerCase().includes(locationText.toLocaleLowerCase()))
+          .filter(
+            sc =>
+              sc.region === state.irnFilter.region &&
+              sc.searchText.toLocaleLowerCase().includes(locationText.toLocaleLowerCase()),
+          )
           .slice(0, 5)
       : []
 
   const renderItem = ({ item }: ListRenderItemInfo<SearchableCounty>) => (
-    <TouchableOpacity onPress={() => updateFilter(item.countyId, item.districtId)}>
+    <TouchableOpacity onPress={() => updateCounty(item.districtId, item.countyId)}>
       <Text key={item.searchText} style={styles.locationText}>
         {item.searchText}
       </Text>
@@ -100,11 +108,17 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
   const setCurrentLocation = () => {
     const closesestCounty = location ? getClosestLocation(counties)(location) : null
     if (closesestCounty && closesestCounty.location) {
-      updateFilter(closesestCounty.location.countyId, closesestCounty.location.districtId)
+      updateCounty(closesestCounty.location.districtId, closesestCounty.location.countyId)
     }
   }
 
-  const updateFilter = (countyId: number | undefined, districtId: number) => {
+  const updateFilter = (irnFilter: Partial<IrnTableFilterState>) => {
+    mergeState({
+      irnFilter,
+    })
+  }
+
+  const updateCounty = (districtId: number, countyId?: number) => {
     const district = getDistrict(globalState)(districtId)
     const county = getCounty(globalState)(countyId)
     mergeState({
@@ -116,9 +130,18 @@ export const IrnLocationFilterScreen: React.FunctionComponent<AppScreenProps> = 
 
   const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
 
+  const onRegionTabPress = (index: number) => {
+    updateFilter({ region: allRegions[index] })
+  }
+
   const renderContent = () => {
     return (
       <View>
+        <SegmentedControlTab
+          values={allRegions}
+          selectedIndex={allRegions.findIndex(r => r === state.irnFilter.region)}
+          onTabPress={onRegionTabPress}
+        />
         <View style={styles.locationContainer}>
           <TextInput placeholder="Distrito - Concelho" value={locationText} onChangeText={onChangeText} />
           <Icon
