@@ -25,9 +25,10 @@ export interface StaticDataState {
 export type Region = "Acores" | "Continente" | "Madeira"
 export interface IrnTableFilterState {
   serviceId?: number
-  countyId?: number
-  districtId?: number
   region?: Region
+  districtId?: number
+  countyId?: number
+  placeName?: string
   gpsLocation?: GpsLocation
   startDate?: Date
   endDate?: Date
@@ -35,7 +36,6 @@ export interface IrnTableFilterState {
   startTime?: TimeSlot
   endTime?: TimeSlot
   selectedDate?: Date
-  selectedPlaceName?: string
   selectedTimeSlot?: TimeSlot
 }
 

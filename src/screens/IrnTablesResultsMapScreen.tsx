@@ -56,7 +56,7 @@ export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> 
   }
 
   const onLocationPress = (_: LocationsType, mapLocation: MapLocation) => {
-    updateGlobalFilter({ selectedPlaceName: mapLocation.name })
+    updateGlobalFilter({ placeName: mapLocation.name })
     goBack()
   }
 

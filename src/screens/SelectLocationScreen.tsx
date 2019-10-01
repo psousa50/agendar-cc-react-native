@@ -146,13 +146,13 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     const searchableCounty = searchableCounties.find(sc => sc.districtId === districtId && sc.countyId === autoCountyId)
     if (searchableCounty) {
       const irnPlaces = stateSelectors.getIrnPlaces(autoCountyId)
-      const selectedPlaceName = irnPlaces.length === 1 ? irnPlaces[0].name : undefined
+      const placeName = irnPlaces.length === 1 ? irnPlaces[0].name : undefined
       mergeState({
         irnFilter: {
           ...state.irnFilter,
           countyId: autoCountyId,
           districtId,
-          selectedPlaceName,
+          placeName,
           gpsLocation: undefined,
         },
         locationText: searchableCounty.searchText,
@@ -176,7 +176,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
       updateCounty({ districtId: state.irnFilter.districtId, countyId: mapLocation.id })
     }
     if (type === "Place") {
-      updateFilter({ selectedPlaceName: mapLocation.name })
+      updateFilter({ placeName: mapLocation.name })
     }
   }
 
@@ -215,7 +215,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
             <Icon type="FontAwesome" name="location-arrow" />
           </Right>
         </ListItem>
-        <Text style={styles.placeNameText}>{state.irnFilter.selectedPlaceName}</Text>
+        <Text style={styles.placeNameText}>{state.irnFilter.placeName}</Text>
         {showListItems ? (
           <FlatList
             keyboardShouldPersistTaps="handled"

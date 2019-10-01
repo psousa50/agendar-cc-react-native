@@ -167,7 +167,7 @@ export const filterTable = ({
   startDate,
   endDate,
   selectedDate,
-  selectedPlaceName,
+  placeName,
   selectedTimeSlot,
 }: IrnTableFilterState) => (irnTable: IrnRepositoryTable) =>
   (!districtId || irnTable.districtId === districtId) &&
@@ -175,5 +175,5 @@ export const filterTable = ({
   (!startDate || irnTable.date >= startDate) &&
   (!endDate || irnTable.date <= endDate) &&
   (!selectedDate || datesEqual(irnTable.date, selectedDate)) &&
-  (!selectedPlaceName || irnTable.placeName === selectedPlaceName) &&
+  (!placeName || irnTable.placeName === placeName) &&
   (!selectedTimeSlot || irnTable.timeSlots.includes(selectedTimeSlot))

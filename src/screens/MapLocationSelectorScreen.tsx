@@ -64,7 +64,7 @@ export const MapLocationSelectorScreen: React.FunctionComponent<AppScreenProps> 
       updateGlobalFilter({ countyId: mapLocation.id })
     }
     if (type === "Place") {
-      updateGlobalFilter({ selectedPlaceName: mapLocation.name })
+      updateGlobalFilter({ placeName: mapLocation.name })
       goBack()
     }
   }

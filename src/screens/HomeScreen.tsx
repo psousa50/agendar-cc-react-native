@@ -47,7 +47,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }, [])
 
   const onSearch = () => {
-    updateGlobalFilter({ selectedDate: undefined, selectedPlaceName: undefined, selectedTimeSlot: undefined })
+    updateGlobalFilter({ selectedDate: undefined, placeName: undefined, selectedTimeSlot: undefined })
     navigation.goTo("IrnTablesResultsScreen")
   }
 
