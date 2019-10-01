@@ -8,4 +8,4 @@ const productionConfig = {
   irnUrl: "https://agendar-cc.herokuapp.com",
 }
 
-export const config = !__DEV__ ? developmentConfig : productionConfig
+export const config = __DEV__ ? developmentConfig : productionConfig

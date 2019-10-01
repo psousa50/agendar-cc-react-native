@@ -84,7 +84,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     </TouchableOpacity>
   )
 
-  const updateCounty = ({ districtId, countyId }: DistrictCounty) => {
+  const updateCounty = ({ districtId, countyId }: DistrictCounty, gpsLocation?: GpsLocation) => {
+    const district = stateSelectors.getDistrict(districtId)
     const countiesForDistrict = stateSelectors.getCounties(districtId)
     const autoCountyId = countiesForDistrict.length === 1 ? countiesForDistrict[0].countyId : countyId
     const searchableCounty = searchableCounties.find(sc => sc.districtId === districtId && sc.countyId === autoCountyId)
@@ -92,10 +93,11 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
       const irnPlaces = stateSelectors.getIrnPlaces(autoCountyId)
       const placeName = irnPlaces.length === 1 ? irnPlaces[0].name : undefined
       updateGlobalFilterForEdit({
+        region: district && district.region,
         countyId: autoCountyId,
         districtId,
         placeName,
-        gpsLocation: undefined,
+        gpsLocation,
       })
       mergeState({
         locationText: searchableCounty.searchText,
@@ -107,16 +109,20 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
 
   const onRegionTabPress = (index: number) => {
-    updateGlobalFilterForEdit({ region: allRegions[index] })
+    updateGlobalFilterForEdit({
+      region: allRegions[index],
+      districtId: undefined,
+      countyId: undefined,
+      placeName: undefined,
+    })
   }
 
-  const onLocationCheckBoxPress = () => {
+  const onUseCurrentLocationPress = () => {
     const closesestCounty = state.gpsLocation ? getClosestLocation(counties)(state.gpsLocation) : null
     if (closesestCounty && closesestCounty.location) {
       const { districtId, countyId } = closesestCounty.location
-      updateCounty({ districtId, countyId })
+      updateCounty({ districtId, countyId }, irnFilter.gpsLocation ? undefined : state.gpsLocation)
     }
-    updateGlobalFilterForEdit({ gpsLocation: irnFilter.gpsLocation ? undefined : state.gpsLocation })
   }
 
   const renderContent = () => {
@@ -133,7 +139,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
           value={state.locationText}
           onChangeText={onChangeText}
         />
-        <ListItem onPress={onLocationCheckBoxPress}>
+        <ListItem onPress={onUseCurrentLocationPress}>
           <CheckBox checked={!!irnFilter.gpsLocation} />
           <Body>
             <Text style={styles.currentLocationText}>{"Usar a minha localização actual"}</Text>
