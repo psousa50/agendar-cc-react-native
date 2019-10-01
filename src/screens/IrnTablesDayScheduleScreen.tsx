@@ -9,7 +9,7 @@ import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import { IrnTablesByPlace, mergeIrnTablesByTimeSlotAndPlace } from "../irnTables/main"
 import { TimeSlot } from "../irnTables/models"
-import { getIrnFilterCountyName, getIrnTablesFilter } from "../state/selectors"
+import { globalStateSelectors } from "../state/selectors"
 import { datesEqual } from "../utils/dates"
 import { formatDate } from "../utils/formaters"
 import { navigate } from "./screens"
@@ -17,10 +17,11 @@ import { navigate } from "./screens"
 export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
+  const stateSelectors = globalStateSelectors(globalState)
 
   const { irnTablesData } = useIrnDataFetch()
 
-  const irnFilter = getIrnTablesFilter(globalState)
+  const irnFilter = stateSelectors.getIrnTablesFilter
   const selectedDate = irnFilter.selectedDate
   const irnTables = irnTablesData.irnTables.filter(t => !selectedDate || datesEqual(selectedDate, t.date))
 
@@ -58,7 +59,7 @@ export const IrnTablesDayScheduleScreen: React.FC<AppScreenProps> = props => {
   const renderContent = () => (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{getIrnFilterCountyName(globalState)}</Text>
+        <Text>stateSelectors{stateSelectors.getIrnFilterCountyName}</Text>
         <Text>{selectedDate && formatDate(selectedDate)}</Text>
       </View>
       <ScrollView>

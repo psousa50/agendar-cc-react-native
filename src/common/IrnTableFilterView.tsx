@@ -3,14 +3,15 @@ import React from "react"
 import { StyleSheet } from "react-native"
 import { useGlobalState } from "../GlobalStateProvider"
 import { IrnTableFilterState } from "../state/models"
-import { getCounty, getDistrict } from "../state/selectors"
+import { globalStateSelectors } from "../state/selectors"
 import { getCountyName } from "../utils/formaters"
 
 export const IrnTableFilterView: React.FC<IrnTableFilterState> = irnFilter => {
   const [globalState] = useGlobalState()
+  const stateSelectors = globalStateSelectors(globalState)
 
-  const county = getCounty(globalState)(irnFilter.countyId)
-  const district = getDistrict(globalState)(irnFilter.districtId)
+  const county = stateSelectors.getCounty(irnFilter.countyId)
+  const district = stateSelectors.getDistrict(irnFilter.districtId)
   return (
     <View style={styles.header}>
       <Text>{getCountyName(county, district)}</Text>

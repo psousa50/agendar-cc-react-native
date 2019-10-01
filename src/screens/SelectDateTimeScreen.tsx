@@ -1,12 +1,11 @@
 import { View } from "native-base"
-import React, { useState } from "react"
+import React from "react"
 import { Calendar, DateObject } from "react-native-calendars"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
-import { normalizeFilter } from "../state/main"
 import { IrnTableFilterState } from "../state/models"
-import { getIrnTablesFilter } from "../state/selectors"
+import { globalStateSelectors } from "../state/selectors"
 import { addDays, createDateRange, dateOnly, datesEqual } from "../utils/dates"
 import { formatDateYYYYMMDD } from "../utils/formaters"
 import { navigate } from "./screens"
@@ -14,32 +13,37 @@ import { navigate } from "./screens"
 export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
-  const [filter, setFilter] = useState(getIrnTablesFilter(globalState))
+  const stateSelectors = globalStateSelectors(globalState)
 
-  const updateFilter = (newFilter: Partial<IrnTableFilterState>) => {
-    setFilter(oldFilter => normalizeFilter({ ...oldFilter, ...newFilter }))
+  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilterState>) => {
+    globalDispatch({
+      type: "IRN_TABLES_SET_FILTER_FOR_EDIT",
+      payload: { filter: { ...stateSelectors.getIrnTablesFilterForEdit, ...filter } },
+    })
   }
 
-  const updateGlobalFilter = () => {
+  const updateGlobalFilterAndGoBack = () => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
-      payload: { filter },
+      payload: { filter: stateSelectors.getIrnTablesFilterForEdit },
     })
     navigation.goBack()
   }
 
+  const irnFilter = stateSelectors.getIrnTablesFilterForEdit
+
   const onDayPress = (dateObject: DateObject) => {
     const date = dateOnly(new Date(dateObject.dateString))
-    const { startDate, endDate } = filter
+    const { startDate, endDate } = irnFilter
     if (!startDate || endDate) {
-      updateFilter({ startDate: date, endDate: undefined })
+      updateGlobalFilterForEdit({ startDate: date, endDate: undefined })
     } else {
-      updateFilter(datesEqual(date, startDate) ? { startDate: undefined } : { endDate: date })
+      updateGlobalFilterForEdit(datesEqual(date, startDate) ? { startDate: undefined } : { endDate: date })
     }
   }
 
   const renderContent = () => {
-    const { startDate, endDate } = filter
+    const { startDate, endDate } = irnFilter
 
     const hasBothDates = !!startDate && !!endDate
     const dateRange = startDate && endDate ? createDateRange(addDays(startDate, 1), addDays(endDate, -1)) : []
@@ -85,7 +89,7 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
       content={renderContent}
       title="Quando"
       showAds={false}
-      right={() => ButtonIcons.Checkmark(() => updateGlobalFilter())}
+      right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}
     />
   )
 }

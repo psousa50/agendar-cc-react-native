@@ -16,11 +16,11 @@ export const SelectIrnServiceScreen: React.FC<AppScreenProps> = props => {
   const updateGlobalFilter = (filter: Partial<IrnTableFilterState>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
-      payload: { filter },
+      payload: { filter: { ...stateSelectors.getIrnTablesFilter, ...filter } },
     })
   }
 
-  const onPress = (serviceId: number) => {
+  const onServiceSelected = (serviceId: number) => {
     updateGlobalFilter({ serviceId })
     navigation.goBack()
   }
@@ -28,7 +28,7 @@ export const SelectIrnServiceScreen: React.FC<AppScreenProps> = props => {
     return (
       <Card>
         {stateSelectors.getIrnServices().map(irnService => (
-          <CardItem key={irnService.serviceId} button onPress={() => onPress(irnService.serviceId)}>
+          <CardItem key={irnService.serviceId} button onPress={() => onServiceSelected(irnService.serviceId)}>
             <Left>
               <Image source={irnServiceImages[irnService.serviceId]} style={styles.image} />
               <Body>

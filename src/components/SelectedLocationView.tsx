@@ -8,7 +8,7 @@ import { getCountyName } from "../utils/formaters"
 
 interface SelectedLocationViewProps {
   irnFilter: IrnTableFilterState
-  onSelect: () => void
+  onSelect?: () => void
 }
 export const SelectedLocationView: React.FC<SelectedLocationViewProps> = ({
   irnFilter: { districtId, countyId, region, placeName },

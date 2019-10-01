@@ -13,6 +13,7 @@ import { MapLocationSelectorScreen } from "./screens/MapLocationSelectorScreen"
 import { SelectDateTimeScreen } from "./screens/SelectDateTimeScreen"
 import { SelectedIrnTableScreen } from "./screens/SelectedIrnTableScreen"
 import { SelectIrnServiceScreen } from "./screens/SelectIrnServiceScreen"
+import { SelectLocationByMapScreen } from "./screens/SelectLocationByMapScreen"
 import { SelectLocationScreen } from "./screens/SelectLocationScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
@@ -53,6 +54,7 @@ export const ContentNavigator = createStackNavigator(
     SelectIrnServiceScreen,
     SelectDateTimeScreen,
     SelectLocationScreen,
+    SelectLocationByMapScreen,
     Test,
   },
   {

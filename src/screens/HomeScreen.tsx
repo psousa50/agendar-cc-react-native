@@ -8,7 +8,7 @@ import { SelectedServiceView } from "../components/SelectedServiceView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { IrnTableFilterState } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
-import { navigate } from "./screens"
+import { AppScreenName, navigate } from "./screens"
 
 export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
@@ -39,16 +39,21 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 2,
-      startDate: new Date("2019-09-29"),
-      endDate: new Date("2019-10-03"),
+      startDate: new Date("2019-10-03"),
+      endDate: new Date("2019-10-14"),
       districtId: 12,
       countyId: 7,
     })
   }, [])
 
   const onSearch = () => {
-    updateGlobalFilter({ selectedDate: undefined, placeName: undefined, selectedTimeSlot: undefined })
+    updateGlobalFilter({ ...stateSelectors.getIrnTablesFilter, selectedDate: undefined, selectedTimeSlot: undefined })
     navigation.goTo("IrnTablesResultsScreen")
+  }
+
+  const onSelectFilter = (filterScreen: AppScreenName) => () => {
+    updateGlobalFilter({ ...stateSelectors.getIrnTablesFilter, selectedDate: undefined, selectedTimeSlot: undefined })
+    navigation.goTo(filterScreen)
   }
 
   const irnFilter = stateSelectors.getIrnTablesFilter
@@ -56,9 +61,9 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const renderContent = () => {
     return (
       <View style={styles.container}>
-        <SelectedServiceView irnFilter={irnFilter} onSelect={() => navigation.goTo("SelectIrnServiceScreen")} />
-        <SelectedDateTimeView irnFilter={irnFilter} onSelect={() => navigation.goTo("SelectDateTimeScreen")} />
-        <SelectedLocationView irnFilter={irnFilter} onSelect={() => navigation.goTo("SelectLocationScreen")} />
+        <SelectedServiceView irnFilter={irnFilter} onSelect={onSelectFilter("SelectIrnServiceScreen")} />
+        <SelectedDateTimeView irnFilter={irnFilter} onSelect={onSelectFilter("SelectDateTimeScreen")} />
+        <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
         <Button block onPress={clearFilter}>
           <Text>{"Limpar"}</Text>
         </Button>

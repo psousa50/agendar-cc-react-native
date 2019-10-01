@@ -24,6 +24,12 @@ export type GlobalStateAction =
       }
     }
   | {
+      type: "IRN_TABLES_SET_FILTER_FOR_EDIT"
+      payload: {
+        filter: IrnTableFilterState
+      }
+    }
+  | {
       type: "IRN_TABLES_FETCH_INIT"
     }
   | {

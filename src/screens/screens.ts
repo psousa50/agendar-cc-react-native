@@ -11,6 +11,7 @@ export type AppScreenName =
   | "SelectIrnServiceScreen"
   | "SelectDateTimeScreen"
   | "SelectLocationScreen"
+  | "SelectLocationByMapScreen"
   | "Test"
 
 export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({
