@@ -2,7 +2,7 @@ import Geolocation from "@react-native-community/geolocation"
 import { useEffect } from "react"
 import { GpsLocation } from "../irnTables/models"
 
-export const useCurrentGpsLocation = (callback: (gpsLocation: GpsLocation | null) => void) => {
+export const useCurrentGpsLocation = (callback: (gpsLocation?: GpsLocation) => void) => {
   const getCurrentGpsLocation = () => {
     Geolocation.getCurrentPosition(
       pos =>
@@ -11,8 +11,8 @@ export const useCurrentGpsLocation = (callback: (gpsLocation: GpsLocation | null
               latitude: pos.coords.latitude,
               longitude: pos.coords.longitude,
             })
-          : callback(null),
-      () => callback(null),
+          : callback(undefined),
+      () => callback(undefined),
     )
   }
 

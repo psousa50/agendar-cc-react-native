@@ -1,12 +1,13 @@
 import { isNil } from "ramda"
 import { getCountyName } from "../utils/formaters"
-import { GlobalState } from "./models"
+import { GlobalState, Region } from "./models"
 
 export const getIrnServices = (state: GlobalState) => () => state.staticData.irnServices
 export const getIrnService = (state: GlobalState) => (serviceId?: number) =>
   state.staticData.irnServices.find(irnService => irnService.serviceId === serviceId)
 
-export const getDistricts = (state: GlobalState) => () => state.staticData.districts
+export const getDistricts = (state: GlobalState) => (region?: Region) =>
+  state.staticData.districts.filter(d => isNil(region) || d.region === region)
 export const getDistrict = (state: GlobalState) => (districtId?: number) =>
   state.staticData.districts.find(d => !isNil(districtId) && d.districtId === districtId)
 
@@ -33,8 +34,8 @@ export const getSelectedIrnTable = (state: GlobalState) => state.irnTablesData.s
 export const getIrnPlace = (state: GlobalState) => (place: string) =>
   state.staticData.irnPlaces.find(p => p.name === place)
 
-export const getIrnPlaces = (state: GlobalState) => (countyId: number) =>
-  state.staticData.irnPlaces.filter(p => p.countyId === countyId)
+export const getIrnPlaces = (state: GlobalState) => (countyId?: number) =>
+  state.staticData.irnPlaces.filter(p => isNil(countyId) || p.countyId === countyId)
 
 export const globalStateSelectors = (state: GlobalState) => ({
   getStaticData: state.staticData,
@@ -54,3 +55,5 @@ export const globalStateSelectors = (state: GlobalState) => ({
   getIrnTablesCache: getIrnTablesCache(state),
   getSelectedIrnTable: getSelectedIrnTable(state),
 })
+
+export type GlobalStateSelectors = ReturnType<typeof globalStateSelectors>

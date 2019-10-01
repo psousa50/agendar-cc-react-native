@@ -21,7 +21,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const navigation = navigate(props.navigation)
   const [globalState] = useGlobalState()
   const { irnTablesData } = useIrnDataFetch()
-  const [, setCurrentGpsLocation] = useState(null as GpsLocation | null)
+  const [, setCurrentGpsLocation] = useState(undefined as GpsLocation | undefined)
 
   useCurrentGpsLocation(setCurrentGpsLocation)
 

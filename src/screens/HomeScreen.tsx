@@ -42,7 +42,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
       startDate: new Date("2019-09-29"),
       endDate: new Date("2019-10-03"),
       districtId: 12,
-      countyId: 5,
+      countyId: 7,
     })
   }, [])
 

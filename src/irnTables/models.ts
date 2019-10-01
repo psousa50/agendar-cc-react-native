@@ -28,6 +28,10 @@ export type County = {
 }
 export type Counties = County[]
 
+export interface DistrictCounty {
+  districtId?: number
+  countyId?: number
+}
 export type IrnPlace = {
   districtId: number
   countyId: number

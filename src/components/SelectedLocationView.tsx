@@ -11,7 +11,7 @@ interface SelectedLocationViewProps {
   onSelect: () => void
 }
 export const SelectedLocationView: React.FC<SelectedLocationViewProps> = ({
-  irnFilter: { districtId, countyId, region },
+  irnFilter: { districtId, countyId, region, selectedPlaceName },
   onSelect,
 }) => {
   const [globalState] = useGlobalState()
@@ -28,6 +28,7 @@ export const SelectedLocationView: React.FC<SelectedLocationViewProps> = ({
           <Body>
             <Text>{region}</Text>
             <Text>{countyName}</Text>
+            <Text>{selectedPlaceName}</Text>
           </Body>
         </CardItem>
       </Card>

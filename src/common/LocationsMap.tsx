@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { StyleSheet } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import { GpsLocation } from "../irnTables/models"
@@ -13,7 +13,7 @@ export type LocationsType = "District" | "County" | "Place"
 interface LocationsMapProps {
   locationType: LocationsType
   mapLocations: MapLocation[]
-  onLocationPress: (locationType: LocationsType, location: MapLocation) => void
+  onLocationPress: (locationType: LocationsType, mapLocation: MapLocation) => void
 }
 
 export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLocationPress, locationType }) => {
@@ -24,7 +24,13 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
     theMap.fitToElements(true)
   }
 
-  const realMapLocations = mapLocations.filter(l => !!l.gpsLocation) as MapLocation[]
+  useEffect(() => {
+    setTimeout(() => {
+      fitToElements()
+    }, 200)
+  }, [mapLocations[0]])
+
+  const validMapLocations = mapLocations.filter(l => !!l.gpsLocation) as MapLocation[]
 
   return (
     <MapView
@@ -37,7 +43,7 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
       pitchEnabled={true}
       onMapReady={fitToElements}
     >
-      {realMapLocations.map((mapLocation, i) => (
+      {validMapLocations.map((mapLocation, i) => (
         <Marker
           key={i}
           coordinate={mapLocation.gpsLocation!}
