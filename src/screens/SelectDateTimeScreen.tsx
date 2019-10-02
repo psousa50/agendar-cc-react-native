@@ -128,7 +128,7 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
       <View style={styles.container}>
         <SelectedDateTimeView irnFilter={irnFilter} />
         <View style={styles.switch}>
-          <Text>{state.useDatePeriod ? "Neste período:" : "O mais depressa possível"}</Text>
+          <Text>{"Num determinado período:"}</Text>
           <Switch value={state.useDatePeriod} onValueChange={onUseDatePeriod} />
         </View>
         <Collapsible collapsed={!state.useDatePeriod}>
@@ -143,7 +143,7 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
           <Calendar markedDates={markedDates} markingType="period" onDayPress={onDayPress} theme={calendarTheme} />
         </Modal>
         <View style={styles.switch}>
-          <Text>{state.useTimeSlot ? "Neste horário:" : "Em qualquer horário"}</Text>
+          <Text>{"Num determinado horário:"}</Text>
           <Switch value={state.useTimeSlot} onValueChange={onUseTimeSlot} />
         </View>
         <Collapsible collapsed={!state.useTimeSlot}>
