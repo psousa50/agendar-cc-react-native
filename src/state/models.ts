@@ -30,6 +30,7 @@ export interface IrnTableFilterState {
   countyId?: number
   placeName?: string
   gpsLocation?: GpsLocation
+  distanceRadius?: number
   startDate?: Date
   endDate?: Date
   onlySaturdays?: boolean

@@ -1,8 +1,10 @@
+import Slider from "@react-native-community/slider"
 import { Button, Text, View } from "native-base"
 import sort from "ramda/es/sort"
 import { useMemo, useState } from "react"
 import React from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet, Switch, TextInput, TouchableOpacity } from "react-native"
+import Collapsible from "react-native-collapsible"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
@@ -28,6 +30,8 @@ interface SelectLocationScreenState {
   useGpsLocation: boolean
   gpsLocation?: GpsLocation
   hideSearchResults: boolean
+  useDistanceRadius: boolean
+  distanceRadius?: number
 }
 
 export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
@@ -46,8 +50,11 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
       payload: {
-        filter: { ...stateSelectors.getIrnTablesFilterForEdit },
-        ...(state.useGpsLocation ? {} : { gpsLocation: undefined }),
+        filter: {
+          ...stateSelectors.getIrnTablesFilterForEdit,
+          ...(state.useGpsLocation ? {} : { gpsLocation: undefined }),
+          ...(state.useDistanceRadius ? { distanceRadius: state.distanceRadius } : { distanceRadius: undefined }),
+        },
       },
     })
     navigation.goBack()
@@ -59,6 +66,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     hideSearchResults: false,
     locationText: "",
     useGpsLocation: false,
+    useDistanceRadius: !!irnFilter.distanceRadius,
+    distanceRadius: irnFilter.distanceRadius || 0,
   }
   const [state, setState] = useState(initialState)
 
@@ -133,6 +142,10 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     mergeState({ useGpsLocation: !state.useGpsLocation })
   }
 
+  const onUseDistanceRadius = () => mergeState({ useDistanceRadius: !state.useDistanceRadius })
+
+  const onDistanceRadiusChange = (distanceRadius: number) => mergeState({ distanceRadius })
+
   const renderContent = () => {
     return (
       <View style={styles.container}>
@@ -159,6 +172,19 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
             ItemSeparatorComponent={Separator}
           />
         ) : null}
+        <View style={styles.switch}>
+          <Text>{`Num raio de${state.useDistanceRadius ? ` ${state.distanceRadius} Km` : ":"}`}</Text>
+          <Switch value={state.useDistanceRadius} onValueChange={onUseDistanceRadius} />
+        </View>
+        <Collapsible collapsed={!state.useDistanceRadius}>
+          <Slider
+            value={state.distanceRadius}
+            minimumValue={0}
+            maximumValue={100}
+            step={10}
+            onValueChange={onDistanceRadiusChange}
+          />
+        </Collapsible>
         <SelectedLocationView irnFilter={irnFilter} />
         <Button block onPress={() => navigation.goTo("SelectLocationByMapScreen")}>
           <Text>{"Seleccionar no mapa..."}</Text>

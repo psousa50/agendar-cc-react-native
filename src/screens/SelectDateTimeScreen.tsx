@@ -52,9 +52,11 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
       payload: {
-        filter: { ...stateSelectors.getIrnTablesFilterForEdit },
-        ...(state.useTimeSlot ? {} : { startTime: undefined, endTime: undefined }),
-        ...(state.useDatePeriod ? {} : { startDate: undefined, endDate: undefined }),
+        filter: {
+          ...stateSelectors.getIrnTablesFilterForEdit,
+          ...(state.useTimeSlot ? {} : { startTime: undefined, endTime: undefined }),
+          ...(state.useDatePeriod ? {} : { startDate: undefined, endDate: undefined }),
+        },
       },
     })
     navigation.goBack()
