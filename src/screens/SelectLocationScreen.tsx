@@ -3,15 +3,22 @@ import { Button, Text, View } from "native-base"
 import sort from "ramda/es/sort"
 import { useMemo, useState } from "react"
 import React from "react"
-import { FlatList, ListRenderItemInfo, StyleSheet, Switch, TextInput, TouchableOpacity } from "react-native"
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  ListRenderItemInfo,
+  StyleSheet,
+  Switch,
+  TextInput,
+  TouchableOpacity,
+} from "react-native"
 import Collapsible from "react-native-collapsible"
-import SegmentedControlTab from "react-native-segmented-control-tab"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectedLocationView } from "../components/SelectedLocationView"
+import { RadioButton } from "../components/RadioButton"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, DistrictCounty, Districts, GpsLocation } from "../irnTables/models"
-import { allRegions, IrnTableFilterState, Region } from "../state/models"
+import { allRegions, IrnTableFilterState, Region, regionNames } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
 import { useCurrentGpsLocation } from "../utils/hooks"
@@ -124,16 +131,18 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     }
   }
 
-  const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
-
-  const onRegionTabPress = (index: number) => {
+  const onRegionSelected = (region: string) => {
     updateGlobalFilterForEdit({
-      region: allRegions[index],
+      region: region as Region,
       districtId: undefined,
       countyId: undefined,
       placeName: undefined,
     })
+    mergeState({
+      locationText: "",
+    })
   }
+  const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
 
   const onUseGpsLocation = () => {
     if (!state.useGpsLocation) {
@@ -160,30 +169,37 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const renderContent = () => {
     return (
       <View style={styles.container}>
-        <SelectedLocationView irnFilter={irnFilter} />
-        <SegmentedControlTab
-          values={allRegions}
-          selectedIndex={allRegions.findIndex(r => r === irnFilter.region)}
-          onTabPress={onRegionTabPress}
-        />
+        <View style={styles.regions}>
+          {allRegions.map(r => (
+            <RadioButton
+              key={r}
+              id={r}
+              label={regionNames[r]}
+              selected={r === irnFilter.region}
+              onSelected={onRegionSelected}
+            />
+          ))}
+        </View>
         <TextInput
           style={styles.locationInput}
           placeholder="Distrito - Concelho"
           value={state.locationText}
           onChangeText={onChangeText}
         />
+        {!state.hideSearchResults && listItems.length > 0 ? (
+          <KeyboardAvoidingView>
+            <FlatList
+              keyboardShouldPersistTaps="handled"
+              data={listItems}
+              renderItem={renderItem}
+              ItemSeparatorComponent={Separator}
+            />
+          </KeyboardAvoidingView>
+        ) : null}
         <View style={styles.switch}>
           <Text>{"Usar a minha localização actual"}</Text>
           <Switch value={state.useGpsLocation} onValueChange={onUseGpsLocation} />
         </View>
-        {!state.hideSearchResults && listItems.length > 0 ? (
-          <FlatList
-            keyboardShouldPersistTaps="handled"
-            data={listItems}
-            renderItem={renderItem}
-            ItemSeparatorComponent={Separator}
-          />
-        ) : null}
         <View style={styles.switch}>
           <Text>{`Num raio de${state.useDistanceRadius ? ` ${state.distanceRadiusKm} Km` : ":"}`}</Text>
           <Switch value={state.useDistanceRadius} onValueChange={onUseDistanceRadius} />
@@ -246,6 +262,10 @@ const Separator = () => <View style={styles.separator} />
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  regions: {
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   locationInput: {
     marginTop: 10,

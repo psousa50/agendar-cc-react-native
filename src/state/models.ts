@@ -41,6 +41,14 @@ export interface IrnTableFilterState {
 }
 
 export const allRegions: Region[] = ["Continente", "Acores", "Madeira"]
+type RegionNames = {
+  [k: string]: string
+}
+export const regionNames: RegionNames = {
+  ["Continente"]: "Continente",
+  ["Acores"]: "Açores",
+  ["Madeira"]: "Madeira",
+}
 
 export interface SelectedIrnTableState {
   countyId?: number

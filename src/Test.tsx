@@ -1,34 +1,12 @@
-import { Button, Text, View } from "native-base"
-import React, { useState } from "react"
-import { FlatList, TextInput, TouchableOpacity } from "react-native"
+import { View } from "native-base"
+import React from "react"
+import { RadioButton } from "./components/RadioButton"
 
 export const Test = () => {
-  const [state, setState] = useState("")
-
-  const renderItem = (info: any) => (
-    <TouchableOpacity onPress={() => setState("pressed")}>
-      <Text>{info.item}</Text>
-    </TouchableOpacity>
-  )
-
-  const keyExtractor = (item: any) => item
-
   return (
-    <View>
-      <TextInput />
-      <TouchableOpacity onPress={() => setState("pressed something")}>
-        <Text>{"Something"}</Text>
-      </TouchableOpacity>
-      <FlatList
-        keyboardShouldPersistTaps="handled"
-        data={["jktktyukyuik", "sdjuofsoduif", "sdjufghfghofsoduif", "ghjhjjkjhk"]}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-      />
-      <Text>{state}</Text>
-      <Button onPress={() => setState("pressed button")}>
-        <Text>{"Test"}</Text>
-      </Button>
+    <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+      <RadioButton id={"1"} selected={false} label={"Continente"} onSelected={() => undefined} />
+      <RadioButton id={"1"} selected={true} label={"Continente"} onSelected={() => undefined} />
     </View>
   )
 }
