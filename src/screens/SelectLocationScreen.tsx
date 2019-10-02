@@ -77,6 +77,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const { counties, districts } = stateSelectors.getStaticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
 
+  console.log("counties=====>", counties)
+
   useCurrentGpsLocation(loc => mergeState({ gpsLocation: loc }))
 
   const listItems =
@@ -84,7 +86,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
       ? searchableCounties
           .filter(
             sc =>
-              sc.region === irnFilter.region &&
+              (!irnFilter.region || sc.region === irnFilter.region) &&
               sc.searchText.toLocaleLowerCase().includes(state.locationText.toLocaleLowerCase()),
           )
           .slice(0, 5)
