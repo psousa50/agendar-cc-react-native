@@ -19,7 +19,7 @@ export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
       : "O mais depressa possível"
 
   return (
-    <Card>
+    <Card style={{ flex: 0 }}>
       <CardItem button onPress={onSelect}>
         <Body>
           <Text>{dates}</Text>
