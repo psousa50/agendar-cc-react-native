@@ -1,7 +1,7 @@
 import { Body, Button, CheckBox, Icon, ListItem, Right, Text, View } from "native-base"
 import sort from "ramda/es/sort"
-import React from "react"
 import { useMemo, useState } from "react"
+import React from "react"
 import { FlatList, ListRenderItemInfo, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"

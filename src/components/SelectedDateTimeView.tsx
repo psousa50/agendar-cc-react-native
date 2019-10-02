@@ -1,14 +1,14 @@
 import { Body, Card, CardItem, Text } from "native-base"
 import React from "react"
 import { IrnTableFilterState } from "../state/models"
-import { formatDateLocale } from "../utils/formaters"
+import { formatDateLocale, formatTimeSlot } from "../utils/formaters"
 
 interface SelectedWhenViewProps {
   irnFilter: IrnTableFilterState
-  onSelect: () => void
+  onSelect?: () => void
 }
 export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
-  irnFilter: { startDate, endDate },
+  irnFilter: { startDate, endDate, startTime, endTime },
   onSelect,
 }) => {
   const dates =
@@ -23,6 +23,8 @@ export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
       <CardItem button onPress={onSelect}>
         <Body>
           <Text>{dates}</Text>
+          <Text>{formatTimeSlot(startTime)}</Text>
+          <Text>{formatTimeSlot(endTime)}</Text>
         </Body>
       </CardItem>
     </Card>

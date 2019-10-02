@@ -5,6 +5,8 @@ export const dateOnly = (date: Date) =>
     .startOf("day")
     .toDate()
 
+export const dateFromTime = (time?: string, defaultTime: string = "") => new Date(`2000-01-01T${time || defaultTime}`)
+
 export const addDays = (date: Date, days: number) =>
   moment(date)
     .add(days, "days")

@@ -39,6 +39,8 @@ target 'agendarCC' do
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
   target 'agendarCCTests' do
     inherit! :search_paths
     # Pods for testing

@@ -2,7 +2,7 @@ import moment from "moment"
 import momentLoc from "moment-with-locales-es6"
 
 import { County, District, TimeSlot } from "../irnTables/models"
-import { calcDiffDays } from "./dates"
+import { calcDiffDays, dateFromTime } from "./dates"
 
 const dayNames = ["Hoje", "Amanhã", "Depois de Amanhã"]
 
@@ -20,10 +20,16 @@ export const formatDate = (date: Date) => {
 
 const twoDigits = (v: number) => `${v < 10 ? 0 : ""}${v}`
 
-export const formatTimeSlot = (time: TimeSlot) => {
-  const date = new Date(`2000-01-01T${time}`)
-  return `${twoDigits(date.getHours())}:${twoDigits(date.getMinutes())}`
+export const formatTimeSlot = (time?: TimeSlot, defaultTime: string = "--:--") => {
+  if (time) {
+    const date = dateFromTime(time)
+    return `${twoDigits(date.getHours())}:${twoDigits(date.getMinutes())}`
+  } else {
+    return defaultTime
+  }
 }
+
+export const extractTime = (date: Date) => moment(date).format("HH:mm:00")
 
 export const properCase = (s: string) =>
   s
