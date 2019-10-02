@@ -18,6 +18,10 @@ import { useCurrentGpsLocation } from "../utils/hooks"
 import { getClosestLocation } from "../utils/location"
 import { navigate } from "./screens"
 
+const MINIMUN_DISTANCE_RADIUS = 10
+const MAXIMUN_DISTANCE_RADIUS = 500
+const DISTANCE_RADIUS_STEP = 10
+
 interface SearchableCounty {
   countyId?: number
   districtId: number
@@ -31,7 +35,7 @@ interface SelectLocationScreenState {
   gpsLocation?: GpsLocation
   hideSearchResults: boolean
   useDistanceRadius: boolean
-  distanceRadius?: number
+  distanceRadiusKm?: number
 }
 
 export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
@@ -53,7 +57,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
         filter: {
           ...stateSelectors.getIrnTablesFilterForEdit,
           ...(state.useGpsLocation ? {} : { gpsLocation: undefined }),
-          ...(state.useDistanceRadius ? { distanceRadius: state.distanceRadius } : { distanceRadius: undefined }),
+          ...(state.useDistanceRadius ? { distanceRadiusKm: state.distanceRadiusKm } : { distanceRadiusKm: undefined }),
         },
       },
     })
@@ -66,8 +70,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     hideSearchResults: false,
     locationText: "",
     useGpsLocation: false,
-    useDistanceRadius: !!irnFilter.distanceRadius,
-    distanceRadius: irnFilter.distanceRadius || 0,
+    useDistanceRadius: !!irnFilter.distanceRadiusKm,
+    distanceRadiusKm: irnFilter.distanceRadiusKm || MINIMUN_DISTANCE_RADIUS,
   }
   const [state, setState] = useState(initialState)
 
@@ -76,8 +80,6 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
 
   const { counties, districts } = stateSelectors.getStaticData
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
-
-  console.log("counties=====>", counties)
 
   useCurrentGpsLocation(loc => mergeState({ gpsLocation: loc }))
 
@@ -146,11 +148,19 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
 
   const onUseDistanceRadius = () => mergeState({ useDistanceRadius: !state.useDistanceRadius })
 
-  const onDistanceRadiusChange = (distanceRadius: number) => mergeState({ distanceRadius })
+  const calcDistanceRadius = (distanceRadiusKm: number) =>
+    Math.floor(distanceRadiusKm / DISTANCE_RADIUS_STEP) * DISTANCE_RADIUS_STEP
+
+  const onDistanceRadiusChange = (distanceRadiusKm: number) =>
+    mergeState({ distanceRadiusKm: calcDistanceRadius(distanceRadiusKm) })
+
+  const onDistanceRadiusComplete = (distanceRadiusKm: number) =>
+    updateGlobalFilterForEdit({ distanceRadiusKm: calcDistanceRadius(distanceRadiusKm) })
 
   const renderContent = () => {
     return (
       <View style={styles.container}>
+        <SelectedLocationView irnFilter={irnFilter} />
         <SegmentedControlTab
           values={allRegions}
           selectedIndex={allRegions.findIndex(r => r === irnFilter.region)}
@@ -175,19 +185,18 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
           />
         ) : null}
         <View style={styles.switch}>
-          <Text>{`Num raio de${state.useDistanceRadius ? ` ${state.distanceRadius} Km` : ":"}`}</Text>
+          <Text>{`Num raio de${state.useDistanceRadius ? ` ${state.distanceRadiusKm} Km` : ":"}`}</Text>
           <Switch value={state.useDistanceRadius} onValueChange={onUseDistanceRadius} />
         </View>
         <Collapsible collapsed={!state.useDistanceRadius}>
           <Slider
-            value={state.distanceRadius}
-            minimumValue={0}
-            maximumValue={100}
-            step={10}
+            value={irnFilter.distanceRadiusKm}
+            minimumValue={MINIMUN_DISTANCE_RADIUS}
+            maximumValue={MAXIMUN_DISTANCE_RADIUS}
             onValueChange={onDistanceRadiusChange}
+            onSlidingComplete={onDistanceRadiusComplete}
           />
         </Collapsible>
-        <SelectedLocationView irnFilter={irnFilter} />
         <Button block onPress={() => navigation.goTo("SelectLocationByMapScreen")}>
           <Text>{"Seleccionar no mapa..."}</Text>
         </Button>
