@@ -1,5 +1,6 @@
 import { Body, Card, CardItem, Text } from "native-base"
 import React from "react"
+import { StyleSheet } from "react-native"
 import { IrnTableFilterState } from "../state/models"
 import { formatDateLocale, formatTimeSlot } from "../utils/formaters"
 
@@ -19,7 +20,7 @@ export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
       : "O mais depressa possível"
 
   return (
-    <Card style={{ flex: 0 }}>
+    <Card style={styles.card}>
       <CardItem button onPress={onSelect}>
         <Body>
           <Text>{dates}</Text>
@@ -30,3 +31,9 @@ export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
     </Card>
   )
 }
+
+const styles = StyleSheet.create({
+  card: {
+    flex: 0,
+  },
+})

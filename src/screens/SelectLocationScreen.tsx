@@ -1,8 +1,8 @@
-import { Body, Button, CheckBox, Icon, ListItem, Right, Text, View } from "native-base"
+import { Button, Text, View } from "native-base"
 import sort from "ramda/es/sort"
 import { useMemo, useState } from "react"
 import React from "react"
-import { FlatList, ListRenderItemInfo, StyleSheet, TextInput, TouchableOpacity } from "react-native"
+import { FlatList, ListRenderItemInfo, StyleSheet, Switch, TextInput, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
@@ -25,6 +25,7 @@ interface SearchableCounty {
 }
 interface SelectLocationScreenState {
   locationText: string
+  useGpsLocation: boolean
   gpsLocation?: GpsLocation
   hideSearchResults: boolean
 }
@@ -44,7 +45,10 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const updateGlobalFilterAndGoBack = () => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
-      payload: { filter: stateSelectors.getIrnTablesFilterForEdit },
+      payload: {
+        filter: { ...stateSelectors.getIrnTablesFilterForEdit },
+        ...(state.useGpsLocation ? {} : { gpsLocation: undefined }),
+      },
     })
     navigation.goBack()
   }
@@ -54,6 +58,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const initialState: SelectLocationScreenState = {
     hideSearchResults: false,
     locationText: "",
+    useGpsLocation: false,
   }
   const [state, setState] = useState(initialState)
 
@@ -117,12 +122,15 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     })
   }
 
-  const onUseCurrentLocationPress = () => {
-    const closesestCounty = state.gpsLocation ? getClosestLocation(counties)(state.gpsLocation) : null
-    if (closesestCounty && closesestCounty.location) {
-      const { districtId, countyId } = closesestCounty.location
-      updateCounty({ districtId, countyId }, irnFilter.gpsLocation ? undefined : state.gpsLocation)
+  const onUseGpsLocation = () => {
+    if (!state.useGpsLocation) {
+      const closesestCounty = state.gpsLocation ? getClosestLocation(counties)(state.gpsLocation) : null
+      if (closesestCounty && closesestCounty.location) {
+        const { districtId, countyId } = closesestCounty.location
+        updateCounty({ districtId, countyId }, irnFilter.gpsLocation ? undefined : state.gpsLocation)
+      }
     }
+    mergeState({ useGpsLocation: !state.useGpsLocation })
   }
 
   const renderContent = () => {
@@ -139,15 +147,10 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
           value={state.locationText}
           onChangeText={onChangeText}
         />
-        <ListItem onPress={onUseCurrentLocationPress}>
-          <CheckBox checked={!!irnFilter.gpsLocation} />
-          <Body>
-            <Text style={styles.currentLocationText}>{"Usar a minha localização actual"}</Text>
-          </Body>
-          <Right>
-            <Icon type="FontAwesome" name="location-arrow" />
-          </Right>
-        </ListItem>
+        <View style={styles.switch}>
+          <Text>{"Usar a minha localização actual"}</Text>
+          <Switch value={state.useGpsLocation} onValueChange={onUseGpsLocation} />
+        </View>
         {!state.hideSearchResults && listItems.length > 0 ? (
           <FlatList
             keyboardShouldPersistTaps="handled"
@@ -242,5 +245,12 @@ const styles = StyleSheet.create({
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: "#707070",
+  },
+  switch: {
+    flexDirection: "row",
+    paddingLeft: 14,
+    paddingVertical: 5,
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 })

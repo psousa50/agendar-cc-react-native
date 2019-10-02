@@ -1,4 +1,4 @@
-import { Body, Card, CardItem, Text, View } from "native-base"
+import { Body, Card, CardItem, Text } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import { useGlobalState } from "../GlobalStateProvider"
@@ -22,22 +22,20 @@ export const SelectedLocationView: React.FC<SelectedLocationViewProps> = ({
   const countyName = getCountyName(county, district)
 
   return (
-    <View style={styles.container}>
-      <Card>
-        <CardItem button onPress={onSelect}>
-          <Body>
-            <Text>{region}</Text>
-            <Text>{countyName}</Text>
-            <Text>{placeName}</Text>
-          </Body>
-        </CardItem>
-      </Card>
-    </View>
+    <Card style={styles.card}>
+      <CardItem button onPress={onSelect}>
+        <Body>
+          <Text>{region}</Text>
+          <Text>{countyName}</Text>
+          <Text>{placeName}</Text>
+        </Body>
+      </CardItem>
+    </Card>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  card: {
+    flex: 0,
   },
 })

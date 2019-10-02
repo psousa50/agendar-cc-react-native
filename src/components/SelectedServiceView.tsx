@@ -17,8 +17,8 @@ export const SelectedServiceView: React.FC<SelectedServiceViewProps> = ({ irnFil
   const irnService = stateSelectors.getIrnService(serviceId)
 
   return (
-    <Card>
-      <CardItem header>
+    <Card style={styles.card}>
+      <CardItem header button onPress={onSelect}>
         <Text>{"Pretendo..."}</Text>
       </CardItem>
       {irnService ? (
@@ -38,6 +38,9 @@ export const SelectedServiceView: React.FC<SelectedServiceViewProps> = ({ irnFil
 }
 
 const styles = StyleSheet.create({
+  card: {
+    flex: 0,
+  },
   image: {
     resizeMode: "contain",
     height: 40,
