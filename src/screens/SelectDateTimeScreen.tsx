@@ -1,9 +1,10 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { Button, Text, View } from "native-base"
+import { Button, Icon, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet, Switch } from "react-native"
 import { Calendar, CalendarTheme, DateObject } from "react-native-calendars"
 import Collapsible from "react-native-collapsible"
+import Modal from "react-native-modal"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
@@ -12,12 +13,13 @@ import { IrnTableFilterState } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { addDays, createDateRange, dateOnly, datesEqual } from "../utils/dates"
 import { dateFromTime } from "../utils/dates"
-import { extractTime, formatTimeSlot } from "../utils/formaters"
+import { extractTime, formatDateLocale, formatTimeSlot } from "../utils/formaters"
 import { formatDateYYYYMMDD } from "../utils/formaters"
 import { navigate } from "./screens"
 
 interface SelectDateTimeScreenState {
   useDatePeriod: boolean
+  showDatePeriod: boolean
   showStartTime: boolean
   showEndTime: boolean
   useTimeSlot: boolean
@@ -31,6 +33,7 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
 
   const initialState: SelectDateTimeScreenState = {
     useDatePeriod: !!irnFilter.startDate || !!irnFilter.endDate,
+    showDatePeriod: false,
     showStartTime: false,
     showEndTime: false,
     useTimeSlot: !!irnFilter.startTime || !!irnFilter.endTime,
@@ -69,7 +72,11 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
     }
   }
 
-  const onUseDatePeriod = () => mergeState({ useDatePeriod: !state.useDatePeriod })
+  const onUseDatePeriod = () =>
+    mergeState({ useDatePeriod: !state.useDatePeriod, showDatePeriod: !state.useDatePeriod })
+
+  const openDatePeriod = () => mergeState({ showDatePeriod: true })
+  const closeDatePeriod = () => mergeState({ showDatePeriod: false })
 
   const onUseTimeSlot = () => mergeState({ useTimeSlot: !state.useTimeSlot })
 
@@ -110,6 +117,13 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
         : {}),
     }
 
+    const dates =
+      startDate && endDate
+        ? `No período entre ${formatDateLocale(startDate)} e ${formatDateLocale(endDate)}`
+        : startDate
+        ? `A partir do dia ${formatDateLocale(startDate)}`
+        : "O mais depressa possível"
+
     return (
       <View style={styles.container}>
         <SelectedDateTimeView irnFilter={irnFilter} />
@@ -118,8 +132,16 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
           <Switch value={state.useDatePeriod} onValueChange={onUseDatePeriod} />
         </View>
         <Collapsible collapsed={!state.useDatePeriod}>
-          <Calendar markedDates={markedDates} markingType="period" onDayPress={onDayPress} theme={calendarTheme} />
+          <View style={styles.timeSlot}>
+            <Text onPress={openDatePeriod}>{dates}</Text>
+          </View>
         </Collapsible>
+        <Modal isVisible={state.showDatePeriod}>
+          <View style={styles.modalClose}>
+            <Icon type="Ionicons" name="close-circle" onPress={closeDatePeriod} />
+          </View>
+          <Calendar markedDates={markedDates} markingType="period" onDayPress={onDayPress} theme={calendarTheme} />
+        </Modal>
         <View style={styles.switch}>
           <Text>{state.useTimeSlot ? "Neste horário:" : "Em qualquer horário"}</Text>
           <Switch value={state.useTimeSlot} onValueChange={onUseTimeSlot} />
@@ -180,6 +202,12 @@ const calendarTheme: CalendarTheme = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  modalClose: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    backgroundColor: "white",
+    padding: 5,
   },
   switch: {
     flexDirection: "row",

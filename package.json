@@ -31,6 +31,7 @@
     "react-native-collapsible": "^1.5.1",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-maps": "^0.25.0",
+    "react-native-modal": "^11.4.0",
     "react-native-segmented-control-tab": "^3.4.1",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.9.1"
@@ -50,6 +51,7 @@
     "@types/react-native-calendars": "^1.20.7",
     "@types/react-native-collapsible": "^0.11.0",
     "@types/react-native-maps": "^0.24.0",
+    "@types/react-native-modal": "^4.1.1",
     "@types/react-native-vector-icons": "^6.4.1",
     "@types/react-navigation": "^3.0.8",
     "@types/react-test-renderer": "^16.9.0",
