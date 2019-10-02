@@ -13,9 +13,13 @@ export const formatDateLocale = (date: Date) => {
 
 export const formatDateYYYYMMDD = (date: Date) => moment(date).format("YYYY-MM-DD")
 
-export const formatDate = (date: Date) => {
-  const diffDays = calcDiffDays(new Date(Date.now()), date)
-  return diffDays >= 0 && diffDays <= 2 ? dayNames[diffDays] : formatDateLocale(date)
+export const formatDate = (date?: Date, defaultDate: string = "--") => {
+  if (date) {
+    const diffDays = calcDiffDays(new Date(Date.now()), date)
+    return diffDays >= 0 && diffDays <= 2 ? dayNames[diffDays] : formatDateLocale(date)
+  } else {
+    return defaultDate
+  }
 }
 
 const twoDigits = (v: number) => `${v < 10 ? 0 : ""}${v}`

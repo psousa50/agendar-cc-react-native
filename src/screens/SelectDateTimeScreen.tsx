@@ -1,25 +1,22 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { Button, Icon, Text, View } from "native-base"
+import { Button, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet, Switch } from "react-native"
-import { Calendar, CalendarTheme, DateObject } from "react-native-calendars"
 import Collapsible from "react-native-collapsible"
-import Modal from "react-native-modal"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { IrnTableFilterState } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
-import { addDays, createDateRange, dateOnly, datesEqual } from "../utils/dates"
 import { dateFromTime } from "../utils/dates"
-import { extractTime, formatDateLocale, formatTimeSlot } from "../utils/formaters"
-import { formatDateYYYYMMDD } from "../utils/formaters"
+import { extractTime, formatDate, formatTimeSlot } from "../utils/formaters"
 import { navigate } from "./screens"
 
 interface SelectDateTimeScreenState {
   useDatePeriod: boolean
-  showDatePeriod: boolean
+  showStartDate: boolean
+  showEndDate: boolean
   showStartTime: boolean
   showEndTime: boolean
   useTimeSlot: boolean
@@ -33,7 +30,8 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
 
   const initialState: SelectDateTimeScreenState = {
     useDatePeriod: !!irnFilter.startDate || !!irnFilter.endDate,
-    showDatePeriod: false,
+    showStartDate: false,
+    showEndDate: false,
     showStartTime: false,
     showEndTime: false,
     useTimeSlot: !!irnFilter.startTime || !!irnFilter.endTime,
@@ -62,68 +60,33 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
     navigation.goBack()
   }
 
-  const onDayPress = (dateObject: DateObject) => {
-    const date = dateOnly(new Date(dateObject.dateString))
-    const { startDate, endDate } = irnFilter
-    if (!startDate || endDate) {
-      updateGlobalFilterForEdit({ startDate: date, endDate: undefined })
-    } else {
-      updateGlobalFilterForEdit(datesEqual(date, startDate) ? { startDate: undefined } : { endDate: date })
-    }
-  }
-
-  const onUseDatePeriod = () =>
-    mergeState({ useDatePeriod: !state.useDatePeriod, showDatePeriod: !state.useDatePeriod })
-
-  const openDatePeriod = () => mergeState({ showDatePeriod: true })
-  const closeDatePeriod = () => mergeState({ showDatePeriod: false })
+  const onUseDatePeriod = () => mergeState({ useDatePeriod: !state.useDatePeriod })
 
   const onUseTimeSlot = () => mergeState({ useTimeSlot: !state.useTimeSlot })
 
+  const onStartDateChange = (_: any, date?: Date) => {
+    mergeState({ showStartDate: false })
+    updateGlobalFilterForEdit({ startDate: date })
+  }
+
+  const onEndDateChange = (_: any, date?: Date) => {
+    mergeState({ showEndDate: false })
+    updateGlobalFilterForEdit({ endDate: date })
+  }
+
   const onStartTimeChange = (_: any, date?: Date) => {
     const startTime = date && extractTime(date)
-    if (startTime) {
-      mergeState({ showStartTime: false })
-      updateGlobalFilterForEdit({ startTime })
-    }
+    mergeState({ showStartTime: false })
+    updateGlobalFilterForEdit({ startTime })
   }
 
   const onEndTimeChange = (_: any, date?: Date) => {
     const endTime = date && extractTime(date)
-    if (endTime) {
-      mergeState({ showEndTime: false })
-      updateGlobalFilterForEdit({ endTime })
-    }
+    mergeState({ showEndTime: false })
+    updateGlobalFilterForEdit({ endTime })
   }
 
   const renderContent = () => {
-    const { startDate, endDate } = irnFilter
-
-    const hasBothDates = !!startDate && !!endDate
-    const dateRange = startDate && endDate ? createDateRange(addDays(startDate, 1), addDays(endDate, -1)) : []
-    const markedDates = {
-      ...(startDate
-        ? { [formatDateYYYYMMDD(startDate)]: { selected: true, color: "green", startingDay: hasBothDates } }
-        : {}),
-      ...dateRange.reduce(
-        (acc, date) => ({
-          ...acc,
-          [formatDateYYYYMMDD(date)]: { selected: true, color: "green" },
-        }),
-        {},
-      ),
-      ...(endDate
-        ? { [formatDateYYYYMMDD(endDate)]: { selected: true, color: "green", endingDay: hasBothDates } }
-        : {}),
-    }
-
-    const dates =
-      startDate && endDate
-        ? `No período entre ${formatDateLocale(startDate)} e ${formatDateLocale(endDate)}`
-        : startDate
-        ? `A partir do dia ${formatDateLocale(startDate)}`
-        : "O mais depressa possível"
-
     return (
       <View style={styles.container}>
         <SelectedDateTimeView irnFilter={irnFilter} />
@@ -132,16 +95,31 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
           <Switch value={state.useDatePeriod} onValueChange={onUseDatePeriod} />
         </View>
         <Collapsible collapsed={!state.useDatePeriod}>
-          <View style={styles.timeSlot}>
-            <Text onPress={openDatePeriod}>{dates}</Text>
+          <View style={styles.datePeriod}>
+            <Button rounded onPress={() => mergeState({ showStartDate: true })}>
+              <Text>{formatDate(irnFilter.startDate)}</Text>
+            </Button>
+            {state.showStartDate ? (
+              <DateTimePicker
+                value={irnFilter.startDate || new Date()}
+                mode={"date"}
+                display="default"
+                onChange={onStartDateChange}
+              />
+            ) : null}
+            <Button rounded onPress={() => mergeState({ showEndDate: true })}>
+              <Text>{formatDate(irnFilter.endDate)}</Text>
+            </Button>
+            {state.showEndDate ? (
+              <DateTimePicker
+                value={irnFilter.endDate || new Date()}
+                mode={"date"}
+                display="default"
+                onChange={onEndDateChange}
+              />
+            ) : null}
           </View>
         </Collapsible>
-        <Modal isVisible={state.showDatePeriod}>
-          <View style={styles.modalClose}>
-            <Icon type="Ionicons" name="close-circle" onPress={closeDatePeriod} />
-          </View>
-          <Calendar markedDates={markedDates} markingType="period" onDayPress={onDayPress} theme={calendarTheme} />
-        </Modal>
         <View style={styles.switch}>
           <Text>{"Num determinado horário:"}</Text>
           <Switch value={state.useTimeSlot} onValueChange={onUseTimeSlot} />
@@ -156,7 +134,7 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
                 value={dateFromTime(irnFilter.startTime, "08:00")}
                 mode={"time"}
                 is24Hour={true}
-                display="clock"
+                display="default"
                 onChange={onStartTimeChange}
               />
             ) : null}
@@ -168,12 +146,19 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
                 value={dateFromTime(irnFilter.endTime, "21:00")}
                 mode={"time"}
                 is24Hour={true}
-                display="clock"
+                display="default"
                 onChange={onEndTimeChange}
               />
             ) : null}
           </View>
         </Collapsible>
+        <View style={styles.switch}>
+          <Text>{"Só aos Sábados"}</Text>
+          <Switch
+            value={irnFilter.onlySaturdays}
+            onValueChange={onlySaturdays => updateGlobalFilterForEdit({ onlySaturdays })}
+          />
+        </View>
       </View>
     )
   }
@@ -186,17 +171,6 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
       right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}
     />
   )
-}
-
-const calendarTheme: CalendarTheme = {
-  "stylesheet.day.period": {
-    base: {
-      overflow: "hidden",
-      height: 34,
-      alignItems: "center",
-      width: 38,
-    },
-  },
 }
 
 const styles = StyleSheet.create({
@@ -213,6 +187,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: 14,
     paddingVertical: 5,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  datePeriod: {
+    flexDirection: "row",
+    paddingTop: 20,
+    paddingBottom: 30,
+    paddingHorizontal: 20,
     alignItems: "center",
     justifyContent: "space-between",
   },

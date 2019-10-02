@@ -9,7 +9,7 @@ interface SelectedWhenViewProps {
   onSelect?: () => void
 }
 export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
-  irnFilter: { startDate, endDate, startTime, endTime },
+  irnFilter: { startDate, endDate, startTime, endTime, onlySaturdays },
   onSelect,
 }) => {
   const dates =
@@ -26,6 +26,7 @@ export const SelectedDateTimeView: React.FC<SelectedWhenViewProps> = ({
           <Text>{dates}</Text>
           <Text>{formatTimeSlot(startTime)}</Text>
           <Text>{formatTimeSlot(endTime)}</Text>
+          <Text>{onlySaturdays ? "Só aos Sábados" : ""}</Text>
         </Body>
       </CardItem>
     </Card>
