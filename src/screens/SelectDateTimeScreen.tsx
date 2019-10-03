@@ -161,8 +161,8 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
         <View style={styles.switch}>
           <Text>{"Só aos Sábados"}</Text>
           <Switch
-            value={irnFilter.onlySaturdays}
-            onValueChange={onlySaturdays => updateGlobalFilterForEdit({ onlySaturdays })}
+            value={irnFilter.onlyOnSaturdays}
+            onValueChange={onlyOnSaturdays => updateGlobalFilterForEdit({ onlyOnSaturdays })}
           />
         </View>
       </View>

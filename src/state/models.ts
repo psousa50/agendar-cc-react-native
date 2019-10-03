@@ -36,7 +36,7 @@ export interface IrnTableFilterLocationState {
 export interface IrnTableFilterDateTimeState {
   endDate?: Date
   endTime?: TimeSlot
-  onlySaturdays?: boolean
+  onlyOnSaturdays?: boolean
   startDate?: Date
   startTime?: TimeSlot
 }
