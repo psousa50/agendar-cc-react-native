@@ -1,5 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { Button, Text, View } from "native-base"
+import { Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet, Switch } from "react-native"
 import Collapsible from "react-native-collapsible"
@@ -93,14 +93,19 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
       <View style={styles.container}>
         <SelectedDateTimeView irnFilter={irnFilter} />
         <View style={styles.switch}>
-          <Text>{"Num determinado período:"}</Text>
+          <Text>{"Neste período:"}</Text>
           <Switch value={state.useDatePeriod} onValueChange={onUseDatePeriod} />
         </View>
         <Collapsible collapsed={!state.useDatePeriod}>
-          <View style={styles.datePeriod}>
-            <Button rounded onPress={() => mergeState({ showStartDate: true })}>
-              <Text>{formatDate(irnFilter.startDate)}</Text>
-            </Button>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>{"De"}</Text>
+            <Text style={styles.inputText} onPress={() => mergeState({ showStartDate: true })}>
+              {formatDate(irnFilter.startDate)}
+            </Text>
+            <Text style={styles.text}>{"a"}</Text>
+            <Text style={styles.inputText} onPress={() => mergeState({ showEndDate: true })}>
+              {formatDate(irnFilter.endDate)}
+            </Text>
             {state.showStartDate ? (
               <DateTimePicker
                 value={irnFilter.startDate || new Date()}
@@ -109,9 +114,6 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
                 onChange={onStartDateChange}
               />
             ) : null}
-            <Button rounded onPress={() => mergeState({ showEndDate: true })}>
-              <Text>{formatDate(irnFilter.endDate)}</Text>
-            </Button>
             {state.showEndDate ? (
               <DateTimePicker
                 value={irnFilter.endDate || new Date()}
@@ -123,14 +125,19 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
           </View>
         </Collapsible>
         <View style={styles.switch}>
-          <Text>{"Num determinado horário:"}</Text>
+          <Text>{"Neste horário:"}</Text>
           <Switch value={state.useTimeSlot} onValueChange={onUseTimeSlot} />
         </View>
         <Collapsible collapsed={!state.useTimeSlot}>
-          <View style={styles.timeSlot}>
-            <Button rounded onPress={() => mergeState({ showStartTime: true })}>
-              <Text>{formatTimeSlot(irnFilter.startTime)}</Text>
-            </Button>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>{"Das"}</Text>
+            <Text style={styles.inputText} onPress={() => mergeState({ showStartTime: true })}>
+              {formatTimeSlot(irnFilter.startTime)}
+            </Text>
+            <Text style={styles.text}>{"às"}</Text>
+            <Text style={styles.inputText} onPress={() => mergeState({ showEndTime: true })}>
+              {formatTimeSlot(irnFilter.endTime)}
+            </Text>
             {state.showStartTime ? (
               <DateTimePicker
                 value={dateFromTime(irnFilter.startTime, "08:00")}
@@ -140,9 +147,6 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
                 onChange={onStartTimeChange}
               />
             ) : null}
-            <Button rounded onPress={() => mergeState({ showEndTime: true })}>
-              <Text>{formatTimeSlot(irnFilter.endTime)}</Text>
-            </Button>
             {state.showEndTime ? (
               <DateTimePicker
                 value={dateFromTime(irnFilter.endTime, "21:00")}
@@ -192,14 +196,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  datePeriod: {
-    flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 30,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
   timeSlot: {
     flexDirection: "row",
     paddingTop: 20,
@@ -211,5 +207,21 @@ const styles = StyleSheet.create({
   useTimeSlotText: {
     paddingLeft: 20,
     fontSize: 14,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    paddingBottom: 30,
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  inputText: {
+    borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: "#EEEEEE",
+    padding: 5,
+    fontSize: 10,
+  },
+  text: {
+    paddingHorizontal: 15,
+    fontSize: 10,
   },
 })
