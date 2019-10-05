@@ -1,6 +1,6 @@
 const developmentConfig = {
   irnPort: 3000,
-  irnUrl: "http://192.168.1.105",
+  irnUrl: "http://192.168.1.67",
 }
 
 const productionConfig = {

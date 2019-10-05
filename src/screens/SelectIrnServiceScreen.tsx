@@ -27,18 +27,21 @@ export const SelectIrnServiceScreen: React.FC<AppScreenProps> = props => {
   const renderContent = () => {
     return (
       <Card>
-        {stateSelectors.getIrnServices().map(irnService => (
-          <CardItem key={irnService.serviceId} button onPress={() => onServiceSelected(irnService.serviceId)}>
-            <Left>
-              <Image source={irnServiceImages[irnService.serviceId]} style={styles.image} />
-              <Body>
-                <View style={styles.textView}>
-                  <Text style={styles.text}>{irnService.name}</Text>
-                </View>
-              </Body>
-            </Left>
-          </CardItem>
-        ))}
+        {stateSelectors
+          .getIrnServices()
+          .sort((s1, s2) => s1.serviceId - s2.serviceId)
+          .map(irnService => (
+            <CardItem key={irnService.serviceId} button onPress={() => onServiceSelected(irnService.serviceId)}>
+              <Left>
+                <Image source={irnServiceImages[irnService.serviceId]} style={styles.image} />
+                <Body>
+                  <View style={styles.textView}>
+                    <Text style={styles.text}>{irnService.name}</Text>
+                  </View>
+                </Body>
+              </Left>
+            </CardItem>
+          ))}
       </Card>
     )
   }

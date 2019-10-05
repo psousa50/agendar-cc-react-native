@@ -41,10 +41,17 @@ export interface IrnTableFilterDateTimeState {
   startTime?: TimeSlot
 }
 
-export interface IrnTableFilterState extends IrnTableFilterLocationState, IrnTableFilterDateTimeState {
-  serviceId?: number
+export interface IrnTableFilterSelectedState {
   selectedDate?: Date
+  selectedPlaceName?: string
   selectedTimeSlot?: TimeSlot
+}
+
+export interface IrnTableFilterState
+  extends IrnTableFilterLocationState,
+    IrnTableFilterDateTimeState,
+    IrnTableFilterSelectedState {
+  serviceId?: number
 }
 
 export const allRegions: Region[] = ["Continente", "Acores", "Madeira"]

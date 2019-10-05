@@ -32,7 +32,6 @@ const buildParams = (params: IrnTableFilterState) => {
     "",
   )
 
-  console.log("PP=====>\n", p)
   return p.length > 0 ? `?${p}` : ""
 }
 

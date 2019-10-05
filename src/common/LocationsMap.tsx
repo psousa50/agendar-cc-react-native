@@ -21,7 +21,7 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
 
   const fitToElements = () => {
     const theMap = map.current as MapView
-    theMap.fitToElements(true)
+    theMap && theMap.fitToElements(true)
   }
 
   useEffect(() => {

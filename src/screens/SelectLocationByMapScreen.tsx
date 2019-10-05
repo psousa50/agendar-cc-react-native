@@ -28,7 +28,6 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   const irnFilter = stateSelectors.getIrnTablesFilterForEdit
 
   const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
-    console.log("onLocationPress=====>")
     if (type === "District") {
       updateGlobalFilterForEdit({ districtId: mapLocation.id, countyId: undefined })
     }

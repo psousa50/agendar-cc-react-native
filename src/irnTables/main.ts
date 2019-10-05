@@ -164,16 +164,22 @@ export const irnTableResultsAreEqual = (r1: IrnTableResult, r2: IrnTableResult) 
 export const filterTable = ({
   countyId,
   districtId,
+  placeName,
   startDate,
   endDate,
+  startTime,
+  endTime,
   selectedDate,
-  placeName,
+  selectedPlaceName,
   selectedTimeSlot,
 }: IrnTableFilterState) => (irnTable: IrnRepositoryTable) =>
   (!districtId || irnTable.districtId === districtId) &&
   (!countyId || irnTable.countyId === countyId) &&
+  (!placeName || irnTable.placeName === placeName) &&
   (!startDate || irnTable.date >= startDate) &&
   (!endDate || irnTable.date <= endDate) &&
+  (!startTime || irnTable.timeSlots.some(ts => ts >= startTime)) &&
+  (!endTime || irnTable.timeSlots.some(ts => ts <= endTime)) &&
   (!selectedDate || datesEqual(irnTable.date, selectedDate)) &&
-  (!placeName || irnTable.placeName === placeName) &&
+  (!selectedPlaceName || irnTable.placeName === selectedPlaceName) &&
   (!selectedTimeSlot || irnTable.timeSlots.includes(selectedTimeSlot))

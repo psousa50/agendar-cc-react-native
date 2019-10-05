@@ -6,9 +6,7 @@ import { IrnTableResultView } from "../common/IrnTableResultView"
 import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import {
-  filterTable,
   getIrnTableResultSummary,
-  irnTableResultsAreEqual,
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
 } from "../irnTables/main"
@@ -28,42 +26,41 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const stateSelectors = globalStateSelectors(globalState)
 
   const irnFilter = stateSelectors.getIrnTablesFilter
-  const irnTables = irnTablesData.irnTables.filter(filterTable(irnFilter))
+  const { startDate, endDate } = irnFilter
+  const irnTables = irnTablesData.irnTables
 
-  const irnTableResultByClosestDate = selectOneIrnTableResultByClosestDate(stateSelectors)(irnTables, irnFilter)
-  const irnTableResultByClosestPlace = selectOneIrnTableResultByClosestPlace(stateSelectors)(irnTables, irnFilter)
+  const isAsap = !startDate && !endDate
+  const irnTableResult = isAsap
+    ? selectOneIrnTableResultByClosestDate(stateSelectors)(irnTables, irnFilter)
+    : selectOneIrnTableResultByClosestPlace(stateSelectors)(irnTables, irnFilter)
 
   const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
   const renderContent = () => {
-    const closestAreTheSame =
-      irnTableResultByClosestDate && irnTableResultByClosestPlace
-        ? irnTableResultsAreEqual(irnTableResultByClosestDate, irnTableResultByClosestPlace)
-        : false
     return (
       <View style={styles.container}>
         <Text>{`Resultados encontrados: ${irnTables.length}`}</Text>
-        {irnTableResultByClosestDate ? (
+        {irnTableResult ? (
           <View style={styles.container}>
-            <Text>{`Mais rápido${closestAreTheSame ? " e mais próximo" : ""}:`}</Text>
-            <IrnTableResultView {...irnTableResultByClosestDate} />
+            <Text>{`Mais ${isAsap ? "perto" : "próximo"}:`}</Text>
+            <IrnTableResultView {...irnTableResult} />
           </View>
         ) : null}
-        {irnTableResultByClosestPlace && !closestAreTheSame ? (
-          <View style={styles.container}>
-            <Text>{"Mais próximo:"}</Text>
-            <IrnTableResultView {...irnTableResultByClosestPlace} />
-          </View>
+        {irnTableResultSummary.irnPlaceNames.length > 1 ? (
+          <Button onPress={() => navigation.goTo("IrnTablesResultsMapScreen")}>
+            <Text>{"Escolher outro local"}</Text>
+          </Button>
         ) : null}
-        <Button onPress={() => navigation.goTo("IrnTablesResultsMapScreen")}>
-          <Text>{"See Map"}</Text>
-        </Button>
-        <Button onPress={() => navigation.goTo("IrnTablesByDateScreen")}>
-          <Text>{"Select Date"}</Text>
-        </Button>
-        <Button onPress={() => navigation.goTo("MapLocationSelectorScreen")}>
-          <Text>{"Select Place"}</Text>
-        </Button>
+        {irnTableResultSummary.dates.length > 1 ? (
+          <Button onPress={() => navigation.goTo("IrnTablesByDateScreen")}>
+            <Text>{"Escolher outra data"}</Text>
+          </Button>
+        ) : null}
+        {irnTableResultSummary.irnPlaceNames.length > 1 ? (
+          <Button onPress={() => navigation.goTo("MapLocationSelectorScreen")}>
+            <Text>{"Select Place"}</Text>
+          </Button>
+        ) : null}
         <Text>{JSON.stringify(irnFilter, null, 2)}</Text>
         <Text>{`Di = ${irnTableResultSummary.districtIds.length}`}</Text>
         <Text>{`Ct = ${irnTableResultSummary.countyIds.length}`}</Text>
