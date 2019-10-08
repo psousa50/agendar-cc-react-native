@@ -17,7 +17,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { RadioButton } from "../components/RadioButton"
 import { useGlobalState } from "../GlobalStateProvider"
-import { Counties, DistrictCounty, Districts, GpsLocation } from "../irnTables/models"
+import { Counties, County, DistrictAndCounty, Districts, GpsLocation } from "../irnTables/models"
 import { allRegions, IrnTableFilter, Region, regionNames } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
@@ -109,17 +109,15 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     </TouchableOpacity>
   )
 
-  const updateCounty = ({ districtId, countyId }: DistrictCounty, gpsLocation?: GpsLocation) => {
+  const updateCounty = ({ districtId, countyId }: DistrictAndCounty, gpsLocation?: GpsLocation) => {
     const district = stateSelectors.getDistrict(districtId)
-    const countiesForDistrict = stateSelectors.getCounties(districtId)
-    const autoCountyId = countiesForDistrict.length === 1 ? countiesForDistrict[0].countyId : countyId
-    const searchableCounty = searchableCounties.find(sc => sc.districtId === districtId && sc.countyId === autoCountyId)
+    const searchableCounty = searchableCounties.find(sc => sc.districtId === districtId && sc.countyId === countyId)
     if (searchableCounty) {
-      const irnPlaces = stateSelectors.getIrnPlaces(autoCountyId)
+      const irnPlaces = stateSelectors.getIrnPlaces({ districtId, countyId })
       const placeName = irnPlaces.length === 1 ? irnPlaces[0].name : undefined
       updateGlobalFilterForEdit({
         region: district && district.region,
-        countyId: autoCountyId,
+        countyId,
         districtId,
         placeName,
         gpsLocation,
@@ -142,6 +140,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
       locationText: "",
     })
   }
+
   const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
 
   const onUseGpsLocation = () => {
@@ -167,6 +166,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     updateGlobalFilterForEdit({ distanceRadiusKm: calcDistanceRadius(distanceRadiusKm) })
 
   const renderContent = () => {
+    const irnPlaces = stateSelectors.getIrnPlaces(irnFilter)
     return (
       <View style={styles.container}>
         <View style={styles.regions}>
@@ -213,7 +213,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
             onSlidingComplete={onDistanceRadiusComplete}
           />
         </Collapsible>
-        <Button block onPress={() => navigation.goTo("SelectLocationByMapScreen")}>
+        <Button disabled={irnPlaces.length <= 1} block onPress={() => navigation.goTo("SelectLocationByMapScreen")}>
           <Text>{"Seleccionar no mapa..."}</Text>
         </Button>
       </View>
@@ -232,7 +232,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
 }
 
 const buildSearchableCounties = (counties: Counties, districts: Districts): SearchableCounty[] => {
-  const countyNames = counties.map(county => {
+  const countyIsNotSingle = (county: County) => counties.filter(c => c.districtId === county.districtId).length > 1
+  const countyNames = counties.filter(countyIsNotSingle).map(county => {
     const district = districts.find(d => d.districtId === county.districtId)!
     const countyName = getCountyName(county, district)
     return {
@@ -249,7 +250,7 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
       countyId: undefined,
       districtId: district.districtId,
       key: districtName,
-      searchText: districtName,
+      searchText: `${districtName} - (Todos os Concelhos)`,
       region: district.region,
     }
   })

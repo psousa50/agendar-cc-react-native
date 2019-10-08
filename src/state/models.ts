@@ -2,6 +2,7 @@ import {
   Counties,
   County,
   District,
+  DistrictAndCounty,
   Districts,
   GpsLocation,
   IrnPlace,
@@ -117,7 +118,7 @@ export interface ReferenceData {
   getIrnService: (serviceId: number) => IrnService | undefined
   getIrnServices: () => IrnServices
   getIrnPlace: (place: string) => IrnPlace | undefined
-  getIrnPlaces: (countyId: number) => IrnPlaces
+  getIrnPlaces: ({ districtId, countyId }: DistrictAndCounty) => IrnPlaces
   getDistricts: () => Districts
   getDistrict: (districtId?: number) => District | undefined
   getCounties: (districtId?: number) => Counties

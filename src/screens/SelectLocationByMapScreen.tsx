@@ -5,7 +5,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { globalStateSelectors, GlobalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
 
@@ -14,7 +14,7 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
 
-  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilterState>) => {
+  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER_FOR_EDIT",
       payload: { filter: { ...stateSelectors.getIrnTablesFilterForEdit, ...filter } },
@@ -60,7 +60,7 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   )
 }
 
-const getMapLocations = (stateSelectors: GlobalStateSelectors) => (irnFilter: IrnTableFilterState) => {
+const getMapLocations = (stateSelectors: GlobalStateSelectors) => (irnFilter: IrnTableFilter) => {
   const { districtId, countyId, region } = irnFilter
   const districtLocations = stateSelectors
     .getDistricts(region)

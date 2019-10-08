@@ -28,7 +28,7 @@ export type County = {
 }
 export type Counties = County[]
 
-export interface DistrictCounty {
+export interface DistrictAndCounty {
   districtId?: number
   countyId?: number
 }
