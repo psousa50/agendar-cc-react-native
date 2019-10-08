@@ -5,36 +5,21 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* agendarCCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* agendarCCTests.m */; };
-		11BCD3EC861C46C4932D3D17 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E22F79EAD0A84CED84B508C8 /* Octicons.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1FDA5973D51743A4974E9047 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A7229EB4474AF6A08422EC /* FontAwesome.ttf */; };
-		23F6FE3EE8DA40A69CFF77B3 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2607F1306AE418199CD9F8C /* FontAwesome5_Regular.ttf */; };
 		26CD538F630820DA8E05AAD0 /* libPods-agendarCC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E2E948267EAF7C6452586B /* libPods-agendarCC.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* agendarCCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* agendarCCTests.m */; };
-		443D22AE4B2F4927A9DBF2E9 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FCD9362F2BB4E2CBC031B08 /* SimpleLineIcons.ttf */; };
-		47A10715F49449F2A285D34F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57EC5DCA6D4B4FA3A3A2ECBF /* Ionicons.ttf */; };
-		47B8FECFED56472297CD5F8F /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9984ED1A1F704F69B380B93B /* FontAwesome5_Brands.ttf */; };
-		4A85469BE92A419E927F2375 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E00C8CC51054CDFB3243085 /* Zocial.ttf */; };
-		530DDDF3BBAC4B4B8C1F0E80 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B758C5A7C4F47BC9862CBCF /* MaterialIcons.ttf */; };
 		5454088ADD6E99F5F76FB6AC /* libPods-agendarCCTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 386584C99DFBF2E3B7E95855 /* libPods-agendarCCTests.a */; };
-		7594F14551D5436E8BB92DE3 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7ABA17B3AD4184AEE5A529 /* Feather.ttf */; };
-		945B7A167AAB463699183AF6 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4916476F3AE4FE1A0919891 /* AntDesign.ttf */; };
 		A00DB0755DF694EFA519FD28 /* libPods-agendarCC-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0D822A231BAD01D8F1505C /* libPods-agendarCC-tvOSTests.a */; };
-		A2AF0D7AE6574BF788E3721F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4B568FE0FA844B48F6E53B7 /* MaterialCommunityIcons.ttf */; };
-		A97D9B1069D046159F30C502 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C150F9D34F7542398CC63821 /* FontAwesome5_Solid.ttf */; };
 		C74F00DE8CA3D732152EBB98 /* libPods-agendarCC-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B4CC3CCCB5EDC9D9D198E52 /* libPods-agendarCC-tvOS.a */; };
-		D4993D90D49E46318868DF25 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57F308B4FA534819A96624C5 /* Entypo.ttf */; };
-		D4E0DCA013FD4BE4A1951652 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE2F2A2D99934D0B85A2B18F /* EvilIcons.ttf */; };
-		D9EAE94AF2B24311B53F2DFF /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B355EFD867C4FA581818A07 /* Fontisto.ttf */; };
-		FE1C32A13408458E91183E15 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 916CC3DDEE354B5BA56EFAE5 /* Foundation.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -256,7 +241,6 @@
 		FE04B2D4232857420075106B /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				2A590A15CD78413493CF0D30 /* libRNAdMobManager.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -383,8 +367,6 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* agendarCC */,
@@ -394,9 +376,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
@@ -412,22 +391,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				945B7A167AAB463699183AF6 /* AntDesign.ttf in Resources */,
-				D4993D90D49E46318868DF25 /* Entypo.ttf in Resources */,
-				D4E0DCA013FD4BE4A1951652 /* EvilIcons.ttf in Resources */,
-				7594F14551D5436E8BB92DE3 /* Feather.ttf in Resources */,
-				1FDA5973D51743A4974E9047 /* FontAwesome.ttf in Resources */,
-				47B8FECFED56472297CD5F8F /* FontAwesome5_Brands.ttf in Resources */,
-				23F6FE3EE8DA40A69CFF77B3 /* FontAwesome5_Regular.ttf in Resources */,
-				A97D9B1069D046159F30C502 /* FontAwesome5_Solid.ttf in Resources */,
-				D9EAE94AF2B24311B53F2DFF /* Fontisto.ttf in Resources */,
-				FE1C32A13408458E91183E15 /* Foundation.ttf in Resources */,
-				47A10715F49449F2A285D34F /* Ionicons.ttf in Resources */,
-				A2AF0D7AE6574BF788E3721F /* MaterialCommunityIcons.ttf in Resources */,
-				530DDDF3BBAC4B4B8C1F0E80 /* MaterialIcons.ttf in Resources */,
-				11BCD3EC861C46C4932D3D17 /* Octicons.ttf in Resources */,
-				443D22AE4B2F4927A9DBF2E9 /* SimpleLineIcons.ttf in Resources */,
-				4A85469BE92A419E927F2375 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -726,15 +689,11 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = agendarCCTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -753,15 +712,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 8TZS9FP9KY;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = agendarCCTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -781,9 +736,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 8TZS9FP9KY;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = agendarCC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -804,9 +757,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8TZS9FP9KY;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = agendarCC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -833,14 +784,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "agendarCC-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -867,14 +814,10 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "agendarCC-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -900,14 +843,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "agendarCC-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -933,14 +872,10 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "agendarCC-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
