@@ -5,7 +5,7 @@ import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { getIrnTableResultSummary, refineFilterTable } from "../irnTables/main"
-import { Counties, District, Districts, IrnPlaces } from "../irnTables/models"
+import { Counties, Districts, IrnPlaces } from "../irnTables/models"
 import { IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors, GlobalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
