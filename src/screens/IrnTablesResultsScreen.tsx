@@ -7,7 +7,7 @@ import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import {
   getIrnTableResultSummary,
-  refineFilterTable,
+  refineFilterIrnTable,
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
 } from "../irnTables/main"
@@ -30,7 +30,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const refineFilter = stateSelectors.getIrnTablesRefineFilter
   const { startDate, endDate } = filter
   const irnTables = irnTablesData.irnTables
-  const irnTablesFiltered = irnTablesData.irnTables.filter(refineFilterTable(refineFilter))
+  const irnTablesFiltered = irnTablesData.irnTables.filter(refineFilterIrnTable(refineFilter))
 
   const { countyId, districtId, gpsLocation } = filter
   const { date: refinedDate } = refineFilter

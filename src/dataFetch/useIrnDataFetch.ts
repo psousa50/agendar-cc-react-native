@@ -3,6 +3,7 @@ import { task } from "fp-ts/lib/Task"
 import { fold } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
 import { useGlobalState } from "../GlobalStateProvider"
+import { filterIrnTable } from "../irnTables/main"
 import { globalStateSelectors } from "../state/selectors"
 import { filtersAreCompatible } from "../utils/filters"
 import { fetchIrnTables } from "../utils/irnFetch"
@@ -36,10 +37,14 @@ export const useIrnDataFetch = () => {
       const filterCache = stateSelectors.getIrnTablesFilterCache
 
       const irnTablesCache = stateSelectors.getIrnTablesCache
+
       if (!irnTablesCache || !filterCache || !filtersAreCompatible(filterCache, filter)) {
         await fetchIrnTablesData()
       } else {
-        globalDispatch({ type: "IRN_TABLES_UPDATE", payload: { irnTables: irnTablesCache } })
+        globalDispatch({
+          type: "IRN_TABLES_UPDATE",
+          payload: { irnTables: irnTablesCache.filter(filterIrnTable(filter)), filter },
+        })
       }
     }
 

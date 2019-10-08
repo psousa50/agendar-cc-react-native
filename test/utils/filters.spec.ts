@@ -113,6 +113,13 @@ describe("filtersAreCompatible", () => {
 
       expect(filtersAreCompatible(filter1, filter2)).toBeTruthy()
     })
+
+    it("if onlyOnSaturdays arelogical equal", () => {
+      const filter1 = { ...defaultFilter, onlyOnSaturdays: undefined }
+      const filter2 = { ...defaultFilter, onlyOnSaturdays: false }
+
+      expect(filtersAreCompatible(filter1, filter2)).toBeTruthy()
+    })
   })
 
   describe("returns false", () => {
@@ -137,8 +144,8 @@ describe("filtersAreCompatible", () => {
       expect(filtersAreCompatible(filter1, filter2)).toBeFalsy()
     })
 
-    it("if onlyOnSaturdays is different", () => {
-      const filter1 = { ...defaultFilter, onlyOnSaturdays: false }
+    it("if onlyOnSaturdays are not logical equal", () => {
+      const filter1 = { ...defaultFilter, onlyOnSaturdays: undefined }
       const filter2 = { ...defaultFilter, onlyOnSaturdays: true }
 
       expect(filtersAreCompatible(filter1, filter2)).toBeFalsy()

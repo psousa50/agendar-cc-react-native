@@ -173,7 +173,7 @@ export const selectOneIrnTableResultByClosestPlace = (referenceData: ReferenceDa
 export const irnTableResultsAreEqual = (r1: IrnTableResult, r2: IrnTableResult) =>
   r1.districtId === r2.districtId && r1.countyId === r2.countyId && r1.placeName === r2.placeName && r1.date === r2.date
 
-export const filterTable = ({
+export const filterIrnTable = ({
   countyId,
   districtId,
   placeName,
@@ -193,7 +193,7 @@ export const filterTable = ({
   )
 }
 
-export const refineFilterTable = ({ countyId, date, districtId, placeName, timeSlot }: IrnTableRefineFilter) => (
+export const refineFilterIrnTable = ({ countyId, date, districtId, placeName, timeSlot }: IrnTableRefineFilter) => (
   irnTable: IrnRepositoryTable,
 ) => {
   return (

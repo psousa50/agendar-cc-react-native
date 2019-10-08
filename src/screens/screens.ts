@@ -5,7 +5,6 @@ export type AppScreenName =
   | "IrnTablesByDateScreen"
   | "IrnTablesResultsScreen"
   | "IrnTablesResultsMapScreen"
-  | "MapLocationSelectorScreen"
   | "SelectedIrnTableScreen"
   | "SelectIrnServiceScreen"
   | "SelectDateTimeScreen"

@@ -4,7 +4,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
-import { getIrnTableResultSummary, refineFilterTable } from "../irnTables/main"
+import { getIrnTableResultSummary, refineFilterIrnTable } from "../irnTables/main"
 import { Counties, Districts, IrnPlaces } from "../irnTables/models"
 import { IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors, GlobalStateSelectors } from "../state/selectors"
@@ -78,7 +78,7 @@ export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> 
 }
 
 const getMapLocations = (stateSelectors: GlobalStateSelectors) => (filter: IrnTableRefineFilter) => {
-  const irnTables = stateSelectors.getIrnTables.filter(refineFilterTable(filter))
+  const irnTables = stateSelectors.getIrnTables.filter(refineFilterIrnTable(filter))
   const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
   const { districtId, countyId, placeName } = filter

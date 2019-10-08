@@ -33,8 +33,8 @@ export const filtersAreCompatible = (filter1: IrnTableFilter, filter2: IrnTableF
     eq("districtId") &&
     eq("countyId") &&
     eq("placeName") &&
-    eq("onlyOnSaturdays") &&
     eq("distanceRadiusKm", (d1, d2) => d2 <= d1) &&
+    !!filter1.onlyOnSaturdays === !!filter2.onlyOnSaturdays &&
     rangeEq("startDate", "endDate") &&
     rangeEq("startTime", "endTime") &&
     eq("gpsLocation", locationsAreEqual)

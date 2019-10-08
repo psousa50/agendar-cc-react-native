@@ -54,19 +54,22 @@ const irnTablesDataReducer: IrnTablesDataReducer = (state, action) => {
       }
     }
     case "IRN_TABLES_FETCH_SUCCESS": {
+      const { irnTables } = action.payload
       return {
         ...state,
-        irnTables: action.payload.irnTables,
-        irnTablesCache: action.payload.irnTables,
+        irnTables,
+        irnTablesCache: irnTables,
         filterCache: state.filter,
         error: null,
         loading: false,
       }
     }
     case "IRN_TABLES_UPDATE": {
+      const { filter, irnTables } = action.payload
       return {
         ...state,
-        irnTables: action.payload.irnTables,
+        irnTables,
+        filter,
         error: null,
         loading: false,
       }
