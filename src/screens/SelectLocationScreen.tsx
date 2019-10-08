@@ -16,6 +16,7 @@ import Collapsible from "react-native-collapsible"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { RadioButton } from "../components/RadioButton"
+import { SelectedLocationView } from "../components/SelectedLocationView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, County, DistrictAndCounty, Districts, GpsLocation } from "../irnTables/models"
 import { allRegions, IrnTableFilter, Region, regionNames } from "../state/models"
@@ -130,15 +131,17 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   }
 
   const onRegionSelected = (region: string) => {
-    updateGlobalFilterForEdit({
-      region: region as Region,
-      districtId: undefined,
-      countyId: undefined,
-      placeName: undefined,
-    })
-    mergeState({
-      locationText: "",
-    })
+    if (region !== stateSelectors.getIrnTablesFilterForEdit.region) {
+      updateGlobalFilterForEdit({
+        region: region as Region,
+        districtId: undefined,
+        countyId: undefined,
+        placeName: undefined,
+      })
+      mergeState({
+        locationText: "",
+      })
+    }
   }
 
   const onChangeText = (text: string) => mergeState({ locationText: text, hideSearchResults: false })
@@ -169,6 +172,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     const irnPlaces = stateSelectors.getIrnPlaces(irnFilter)
     return (
       <View style={styles.container}>
+        <SelectedLocationView irnFilter={irnFilter} />
         <View style={styles.regions}>
           {allRegions.map(r => (
             <RadioButton

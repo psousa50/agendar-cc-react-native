@@ -1,3 +1,4 @@
+import { isNil } from "ramda"
 import React from "react"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
@@ -20,7 +21,7 @@ export const MapLocationSelectorScreen: React.FunctionComponent<AppScreenProps> 
 
   const { countyId, districtId } = irnFilter
   const districtLocations = irnTableResultSummary.districtIds
-    .filter(d => !districtId || d === districtId)
+    .filter(d => isNil(districtId) || d === districtId)
     .map(stateSelectors.getDistrict)
     .filter(d => !!d)
     .map(d => d as District)
@@ -30,14 +31,14 @@ export const MapLocationSelectorScreen: React.FunctionComponent<AppScreenProps> 
     .map(stateSelectors.getCounty)
     .filter(c => !!c)
     .map(c => c as County)
-    .filter(c => (!countyId || c.countyId === countyId) && (!districtId || c.districtId === districtId))
+    .filter(c => (isNil(countyId) || c.countyId === countyId) && (isNil(districtId) || c.districtId === districtId))
     .map(c => ({ ...c, id: c.countyId }))
 
   const irnPlacesLocations = irnTableResultSummary.irnPlaceNames
     .map(stateSelectors.getIrnPlace)
     .filter(p => !!p)
     .map(p => p as IrnPlace)
-    .filter(p => (!countyId || p.countyId === countyId) && (!districtId || p.districtId === districtId))
+    .filter(p => (isNil(countyId) || p.countyId === countyId) && (isNil(districtId) || p.districtId === districtId))
 
   const locationType: LocationsType =
     districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"

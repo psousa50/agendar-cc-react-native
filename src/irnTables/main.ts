@@ -1,4 +1,4 @@
-import { flatten, keys, mergeDeepWith, sort, uniq } from "ramda"
+import { flatten, isNil, keys, mergeDeepWith, sort, uniq } from "ramda"
 import { IrnTableFilter, IrnTableRefineFilter, ReferenceData, TimeSlotsFilter } from "../state/models"
 import { min } from "../utils/collections"
 import { datesAreEqual } from "../utils/dates"
@@ -183,13 +183,13 @@ export const filterTable = ({
   endTime,
 }: IrnTableFilter) => (irnTable: IrnRepositoryTable) => {
   return (
-    (!districtId || irnTable.districtId === districtId) &&
-    (!countyId || irnTable.countyId === countyId) &&
-    (!placeName || irnTable.placeName === placeName) &&
-    (!startDate || irnTable.date >= startDate) &&
-    (!endDate || irnTable.date <= endDate) &&
-    (!startTime || irnTable.timeSlots.some(ts => ts >= startTime)) &&
-    (!endTime || irnTable.timeSlots.some(ts => ts <= endTime))
+    (isNil(districtId) || irnTable.districtId === districtId) &&
+    (isNil(countyId) || irnTable.countyId === countyId) &&
+    (isNil(placeName) || irnTable.placeName === placeName) &&
+    (isNil(startDate) || irnTable.date >= startDate) &&
+    (isNil(endDate) || irnTable.date <= endDate) &&
+    (isNil(startTime) || irnTable.timeSlots.some(ts => ts >= startTime)) &&
+    (isNil(endTime) || irnTable.timeSlots.some(ts => ts <= endTime))
   )
 }
 
@@ -197,10 +197,10 @@ export const refineFilterTable = ({ countyId, date, districtId, placeName, timeS
   irnTable: IrnRepositoryTable,
 ) => {
   return (
-    (!districtId || irnTable.districtId === districtId) &&
-    (!countyId || irnTable.countyId === countyId) &&
-    (!placeName || irnTable.placeName === placeName) &&
-    (!date || datesAreEqual(irnTable.date, date)) &&
-    (!timeSlot || irnTable.timeSlots.includes(timeSlot))
+    (isNil(districtId) || irnTable.districtId === districtId) &&
+    (isNil(countyId) || irnTable.countyId === countyId) &&
+    (isNil(placeName) || irnTable.placeName === placeName) &&
+    (isNil(date) || datesAreEqual(irnTable.date, date)) &&
+    (isNil(timeSlot) || irnTable.timeSlots.includes(timeSlot))
   )
 }

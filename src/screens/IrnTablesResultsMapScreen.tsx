@@ -1,10 +1,11 @@
+import { isNil } from "ramda"
 import React, { useState } from "react"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { getIrnTableResultSummary, refineFilterTable } from "../irnTables/main"
-import { Counties, Districts, IrnPlaces } from "../irnTables/models"
+import { Counties, District, Districts, IrnPlaces } from "../irnTables/models"
 import { IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors, GlobalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
@@ -37,7 +38,8 @@ export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> 
   }
 
   const checkOnlyOneResult = (newFilter: IrnTableRefineFilter) => {
-    const { mapLocations, locationType } = getMapLocations(stateSelectors)(newFilter)
+    const { mapLocations, locationType } = getMapLocations(stateSelectors)({ ...filter, ...newFilter })
+    console.log("(locationType=====>", locationType)
     if (locationType === "Place" && mapLocations.length === 1) {
       updateRefineFilter(newFilter)
       goBack()
@@ -85,20 +87,26 @@ const getMapLocations = (stateSelectors: GlobalStateSelectors) => (filter: IrnTa
   const counties = irnTableResultSummary.countyIds.map(stateSelectors.getCounty).filter(d => !!d) as Counties
   const irnPlaces = irnTableResultSummary.irnPlaceNames.map(stateSelectors.getIrnPlace).filter(d => !!d) as IrnPlaces
 
+  // const hasCounties = (district: District) =>
   const districtLocations = districts
-    .filter(d => !districtId || d.districtId === districtId)
+    .filter(d => isNil(districtId) || d.districtId === districtId)
     .map(d => ({ ...d, id: d.districtId }))
 
   const countyLocations = counties
-    .filter(c => !districtId || (c.districtId === districtId && (!countyId || c.countyId === countyId)))
+    .filter(c => isNil(districtId) || (c.districtId === districtId && (isNil(countyId) || c.countyId === countyId)))
     .map(c => ({ ...c, id: c.countyId }))
 
   const irnPlacesLocations = irnPlaces.filter(
     p =>
-      (!districtId || p.districtId === districtId) &&
-      (!countyId || p.countyId === countyId) &&
-      (!placeName || p.name === placeName),
+      (isNil(districtId) || p.districtId === districtId) &&
+      (isNil(countyId) || p.countyId === countyId) &&
+      (isNil(placeName) || p.name === placeName),
   )
+
+  console.log("FILTER=====>", filter)
+  console.log("D=====>", districtLocations)
+  console.log("C=====>", countyLocations)
+  console.log("P=====>", irnPlacesLocations)
 
   const locationType: LocationsType =
     districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"

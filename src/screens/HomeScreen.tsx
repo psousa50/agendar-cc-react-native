@@ -46,8 +46,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
-      startDate: new Date("2019-10-07"),
-      endDate: new Date("2019-12-14"),
+      onlyOnSaturdays: true,
     })
   }, [])
 
@@ -69,11 +68,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
         <SelectedServiceView irnFilter={irnFilter} onSelect={onSelectFilter("SelectIrnServiceScreen")} />
         <SelectedDateTimeView irnFilter={irnFilter} onSelect={onSelectFilter("SelectDateTimeScreen")} />
         <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
-        <Button block onPress={clearFilter}>
-          <Text>{"Limpar"}</Text>
-        </Button>
         <Button block onPress={onSearch}>
           <Text>{"Pesquisar Horários"}</Text>
+        </Button>
+        <Button style={{ marginTop: 100 }} block onPress={clearFilter}>
+          <Text>{"Limpar"}</Text>
         </Button>
       </View>
     )
