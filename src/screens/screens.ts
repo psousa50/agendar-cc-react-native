@@ -3,7 +3,6 @@ import { NavigationParams, NavigationRoute, NavigationScreenProp } from "react-n
 export type AppScreenName =
   | "HomeScreen"
   | "IrnTablesByDateScreen"
-  | "IrnTablesDayScheduleScreen"
   | "IrnTablesResultsScreen"
   | "IrnTablesResultsMapScreen"
   | "MapLocationSelectorScreen"

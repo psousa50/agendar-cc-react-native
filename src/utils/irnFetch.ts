@@ -1,6 +1,6 @@
 import { isNil, keys } from "ramda"
 import { Counties, Districts, IrnPlaces, IrnRepositoryTables, IrnServices } from "../irnTables/models"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { config } from "./config"
 import { fetchJson } from "./fetch"
 
@@ -14,7 +14,7 @@ const fromDate = (value?: Date) => (value ? value.toISOString().substr(0, 10) : 
 const fromBoolean = (value?: boolean) => (value ? "Y" : undefined)
 const fromTimeSlot = (value?: string) => value
 
-const buildParams = (params: IrnTableFilterState) => {
+const buildParams = (params: IrnTableFilter) => {
   const fieldValues = {
     countyId: fromNumber(params.countyId),
     districtId: fromNumber(params.districtId),
@@ -22,6 +22,7 @@ const buildParams = (params: IrnTableFilterState) => {
     endTime: fromTimeSlot(params.endTime),
     onlyOnSaturdays: fromBoolean(params.onlyOnSaturdays),
     placeName: params.placeName,
+    region: params.region,
     serviceId: fromNumber(params.serviceId),
     startDate: fromDate(params.startDate),
     startTime: fromTimeSlot(params.startTime),
@@ -40,5 +41,5 @@ export const fetchDistricts = () => fetchJson<Districts>(`${api}/districts`)
 export const fetchCounties = (districtId?: number) =>
   fetchJson<Counties>(`${api}/counties${isNil(districtId) ? "" : `?districtId=${districtId}`}`)
 export const fetchIrnPlaces = () => fetchJson<IrnPlaces>(`${api}/irnPlaces`)
-export const fetchIrnTables = (params: IrnTableFilterState) =>
+export const fetchIrnTables = (params: IrnTableFilter) =>
   fetchJson<IrnRepositoryTables>(`${api}/irnTables${buildParams(params)}`)

@@ -33,23 +33,24 @@ export interface DistrictCounty {
   countyId?: number
 }
 export type IrnPlace = {
-  districtId: number
+  address: string
   countyId: number
-  name: string
+  districtId: number
   gpsLocation?: GpsLocation
+  name: string
+  phone: string
+  postalCode: string
 }
 export type IrnPlaces = IrnPlace[]
 
 export type IrnRepositoryTable = {
-  serviceId: number
-  districtId: number
   countyId: number
-  placeName: string
-  tableNumber: string
-  address: string
-  postalCode: string
-  phone: string
   date: Date
+  districtId: number
+  placeName: string
+  region: string
+  serviceId: number
+  tableNumber: string
   timeSlots: TimeSlot[]
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]

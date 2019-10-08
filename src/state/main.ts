@@ -1,5 +1,5 @@
 import { GlobalStateAction } from "./actions"
-import { GlobalState, IrnTableFilterState, IrnTablesDataState, StaticDataState } from "./models"
+import { GlobalState, IrnTableFilter, IrnTablesDataState, StaticDataState } from "./models"
 
 type StaticDataReducer = (state: StaticDataState, action: GlobalStateAction) => StaticDataState
 const staticDataReducer: StaticDataReducer = (state, action) => {
@@ -33,7 +33,7 @@ const staticDataReducer: StaticDataReducer = (state, action) => {
   }
 }
 
-export const normalizeFilter = (filter: IrnTableFilterState) => {
+export const normalizeFilter = (filter: IrnTableFilter) => {
   const { startDate, endDate } = filter
   const swapDates = startDate && endDate ? startDate > endDate : false
   return {
@@ -85,6 +85,10 @@ const irnTablesDataReducer: IrnTablesDataReducer = (state, action) => {
     case "IRN_TABLES_SET_FILTER_FOR_EDIT": {
       const newFilter = normalizeFilter(action.payload.filter)
       return { ...state, filterForEdit: newFilter }
+    }
+    case "IRN_TABLES_SET_REFINE_FILTER": {
+      const newFilter = normalizeFilter(action.payload.filter)
+      return { ...state, refineFilter: newFilter }
     }
     case "IRN_TABLES_SET_SELECTED": {
       return { ...state, selectedIrnTable: action.payload.selectedIrnTable }

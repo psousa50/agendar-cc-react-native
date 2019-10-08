@@ -7,7 +7,7 @@ import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { dateFromTime } from "../utils/dates"
 import { extractTime, formatDate, formatTimeSlot } from "../utils/formaters"
@@ -41,7 +41,7 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
   const mergeState = (newState: Partial<SelectDateTimeScreenState>) =>
     setState(oldState => ({ ...oldState, ...newState }))
 
-  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilterState>) => {
+  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER_FOR_EDIT",
       payload: { filter: { ...stateSelectors.getIrnTablesFilterForEdit, ...filter } },

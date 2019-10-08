@@ -25,6 +25,7 @@ const getIrnFilterCountyName = (state: GlobalState) => () => {
 
 const getIrnTablesFilter = (state: GlobalState) => state.irnTablesData.filter
 const getIrnTablesFilterForEdit = (state: GlobalState) => state.irnTablesData.filterForEdit
+const getIrnTablesRefineFilter = (state: GlobalState) => state.irnTablesData.refineFilter
 const getIrnTablesFilterCache = (state: GlobalState) => state.irnTablesData.filterCache
 
 const getIrnTables = (state: GlobalState) => state.irnTablesData.irnTables
@@ -51,6 +52,7 @@ export const globalStateSelectors = (state: GlobalState) => ({
   getIrnFilterCountyName: getIrnFilterCountyName(state),
   getIrnTablesFilter: getIrnTablesFilter(state),
   getIrnTablesFilterForEdit: getIrnTablesFilterForEdit(state),
+  getIrnTablesRefineFilter: getIrnTablesRefineFilter(state),
   getIrnTablesFilterCache: getIrnTablesFilterCache(state),
   getIrnTables: getIrnTables(state),
   getIrnTablesCache: getIrnTablesCache(state),

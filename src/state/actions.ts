@@ -1,5 +1,5 @@
 import { Counties, Districts, IrnRepositoryTables } from "../irnTables/models"
-import { IrnTableFilterState, SelectedIrnTableState } from "./models"
+import { IrnTableFilter, IrnTableRefineFilter, SelectedIrnTableState } from "./models"
 export type GlobalStateAction =
   | {
       type: "STATIC_DATA_FETCH_INIT"
@@ -20,13 +20,19 @@ export type GlobalStateAction =
   | {
       type: "IRN_TABLES_SET_FILTER"
       payload: {
-        filter: IrnTableFilterState
+        filter: IrnTableFilter
       }
     }
   | {
       type: "IRN_TABLES_SET_FILTER_FOR_EDIT"
       payload: {
-        filter: IrnTableFilterState
+        filter: IrnTableFilter
+      }
+    }
+  | {
+      type: "IRN_TABLES_SET_REFINE_FILTER"
+      payload: {
+        filter: IrnTableRefineFilter
       }
     }
   | {

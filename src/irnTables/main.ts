@@ -1,9 +1,18 @@
 import { flatten, keys, mergeDeepWith, sort, uniq } from "ramda"
-import { IrnTableFilterState, ReferenceData } from "../state/models"
+import { IrnTableFilter, IrnTableRefineFilter, ReferenceData, TimeSlotsFilter } from "../state/models"
 import { min } from "../utils/collections"
-import { datesEqual } from "../utils/dates"
+import { datesAreEqual } from "../utils/dates"
+import { filterTimeSlots } from "../utils/filters"
 import { getClosestLocation } from "../utils/location"
-import { IrnPlace, IrnPlaces, IrnRepositoryTable, IrnRepositoryTables, IrnTableResult, TimeSlot } from "./models"
+import {
+  GpsLocation,
+  IrnPlace,
+  IrnPlaces,
+  IrnRepositoryTable,
+  IrnRepositoryTables,
+  IrnTableResult,
+  TimeSlot,
+} from "./models"
 
 export const sortTimes = (t1: TimeSlot, t2: TimeSlot) => t1.localeCompare(t2)
 
@@ -89,17 +98,13 @@ const getIrnTablesByClosestDate = (irnTables: IrnRepositoryTables) => {
 
 export const getIrnTablesByClosestPlace = (referenceData: ReferenceData) => (
   irnTables: IrnRepositoryTables,
-  irnFilter: IrnTableFilterState,
+  location?: GpsLocation,
 ) => {
   const irnPlaces = irnTables
     .map(t => t.placeName)
     .map(referenceData.getIrnPlace)
     .filter(p => !!p) as IrnPlaces
 
-  const { countyId, districtId, gpsLocation } = irnFilter
-  const county = referenceData.getCounty(countyId)
-  const district = referenceData.getDistrict(districtId)
-  const location = gpsLocation || (county && county.gpsLocation) || (district && district.gpsLocation) || gpsLocation
   const closest = location ? getClosestLocation(irnPlaces)(location) : undefined
   const closestIrnPlace = closest ? closest.location : irnPlaces[0]
 
@@ -108,8 +113,13 @@ export const getIrnTablesByClosestPlace = (referenceData: ReferenceData) => (
   return { closestIrnPlace, irnTablesByClosestPlace }
 }
 
-const getOneIrnTableResult = (date: Date, irnPlace: IrnPlace, irnTables: IrnRepositoryTables) => {
-  const timeSlots = sort(sortTimes, flatten(irnTables.map(t => t.timeSlots)))
+const getOneIrnTableResult = (
+  date: Date,
+  irnPlace: IrnPlace,
+  irnTables: IrnRepositoryTables,
+  timeSlotsFilter: TimeSlotsFilter,
+) => {
+  const timeSlots = sort(sortTimes, flatten(irnTables.map(t => t.timeSlots))).filter(filterTimeSlots(timeSlotsFilter))
   const earlierTimeSlot = timeSlots[0]
 
   const selectedIrnTable = irnTables[0]
@@ -127,7 +137,8 @@ const getOneIrnTableResult = (date: Date, irnPlace: IrnPlace, irnTables: IrnRepo
 
 export const selectOneIrnTableResultByClosestDate = (referenceData: ReferenceData) => (
   irnTables: IrnRepositoryTables,
-  irnFilter: IrnTableFilterState,
+  location?: GpsLocation,
+  timeSlotsFilter: TimeSlotsFilter = {},
 ) => {
   if (irnTables.length === 0) {
     return undefined
@@ -137,25 +148,26 @@ export const selectOneIrnTableResultByClosestDate = (referenceData: ReferenceDat
 
   const { closestIrnPlace, irnTablesByClosestPlace } = getIrnTablesByClosestPlace(referenceData)(
     irnTablesByClosestDate,
-    irnFilter,
+    location,
   )
 
-  return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestPlace)
+  return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestPlace, timeSlotsFilter)
 }
 
 export const selectOneIrnTableResultByClosestPlace = (referenceData: ReferenceData) => (
   irnTables: IrnRepositoryTables,
-  irnFilter: IrnTableFilterState,
+  location: GpsLocation,
+  timeSlotsFilter: TimeSlotsFilter,
 ) => {
   if (irnTables.length === 0) {
     return undefined
   }
 
-  const { closestIrnPlace, irnTablesByClosestPlace } = getIrnTablesByClosestPlace(referenceData)(irnTables, irnFilter)
+  const { closestIrnPlace, irnTablesByClosestPlace } = getIrnTablesByClosestPlace(referenceData)(irnTables, location)
 
   const { closestDate, irnTablesByClosestDate } = getIrnTablesByClosestDate(irnTablesByClosestPlace)
 
-  return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestDate)
+  return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestDate, timeSlotsFilter)
 }
 
 export const irnTableResultsAreEqual = (r1: IrnTableResult, r2: IrnTableResult) =>
@@ -169,17 +181,26 @@ export const filterTable = ({
   endDate,
   startTime,
   endTime,
-  selectedDate,
-  selectedPlaceName,
-  selectedTimeSlot,
-}: IrnTableFilterState) => (irnTable: IrnRepositoryTable) =>
-  (!districtId || irnTable.districtId === districtId) &&
-  (!countyId || irnTable.countyId === countyId) &&
-  (!placeName || irnTable.placeName === placeName) &&
-  (!startDate || irnTable.date >= startDate) &&
-  (!endDate || irnTable.date <= endDate) &&
-  (!startTime || irnTable.timeSlots.some(ts => ts >= startTime)) &&
-  (!endTime || irnTable.timeSlots.some(ts => ts <= endTime)) &&
-  (!selectedDate || datesEqual(irnTable.date, selectedDate)) &&
-  (!selectedPlaceName || irnTable.placeName === selectedPlaceName) &&
-  (!selectedTimeSlot || irnTable.timeSlots.includes(selectedTimeSlot))
+}: IrnTableFilter) => (irnTable: IrnRepositoryTable) => {
+  return (
+    (!districtId || irnTable.districtId === districtId) &&
+    (!countyId || irnTable.countyId === countyId) &&
+    (!placeName || irnTable.placeName === placeName) &&
+    (!startDate || irnTable.date >= startDate) &&
+    (!endDate || irnTable.date <= endDate) &&
+    (!startTime || irnTable.timeSlots.some(ts => ts >= startTime)) &&
+    (!endTime || irnTable.timeSlots.some(ts => ts <= endTime))
+  )
+}
+
+export const refineFilterTable = ({ countyId, date, districtId, placeName, timeSlot }: IrnTableRefineFilter) => (
+  irnTable: IrnRepositoryTable,
+) => {
+  return (
+    (!districtId || irnTable.districtId === districtId) &&
+    (!countyId || irnTable.countyId === countyId) &&
+    (!placeName || irnTable.placeName === placeName) &&
+    (!date || datesAreEqual(irnTable.date, date)) &&
+    (!timeSlot || irnTable.timeSlots.includes(timeSlot))
+  )
+}

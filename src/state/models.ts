@@ -41,17 +41,22 @@ export interface IrnTableFilterDateTimeState {
   startTime?: TimeSlot
 }
 
-export interface IrnTableFilterSelectedState {
-  selectedDate?: Date
-  selectedPlaceName?: string
-  selectedTimeSlot?: TimeSlot
+export interface IrnTableRefineFilter {
+  countyId?: number
+  districtId?: number
+  date?: Date
+  placeName?: string
+  timeSlot?: TimeSlot
 }
 
-export interface IrnTableFilterState
-  extends IrnTableFilterLocationState,
-    IrnTableFilterDateTimeState,
-    IrnTableFilterSelectedState {
+export interface IrnTableFilter extends IrnTableFilterLocationState, IrnTableFilterDateTimeState {
   serviceId?: number
+}
+
+export interface TimeSlotsFilter {
+  endTime?: TimeSlot
+  startTime?: TimeSlot
+  timeSlot?: TimeSlot
 }
 
 export const allRegions: Region[] = ["Continente", "Acores", "Madeira"]
@@ -72,10 +77,11 @@ export interface SelectedIrnTableState {
 }
 
 export interface IrnTablesDataState {
-  filter: IrnTableFilterState
-  filterForEdit: IrnTableFilterState
+  filter: IrnTableFilter
+  filterForEdit: IrnTableFilter
+  refineFilter: IrnTableRefineFilter
   irnTables: IrnRepositoryTables
-  filterCache?: IrnTableFilterState
+  filterCache?: IrnTableFilter
   irnTablesCache?: IrnRepositoryTables
   error: Error | null
   loading: boolean
@@ -100,6 +106,7 @@ export const initialGlobalState: GlobalState = {
   irnTablesData: {
     filter: {},
     filterForEdit: {},
+    refineFilter: {},
     irnTables: [],
     error: null,
     loading: false,

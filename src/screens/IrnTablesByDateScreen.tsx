@@ -35,11 +35,11 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
     {},
   )
 
-  const onDayPress = (date: DateObject) => {
-    const selectedDate = dateOnly(new Date(date.dateString))
+  const onDayPress = (dateObject: DateObject) => {
+    const date = dateOnly(new Date(dateObject.dateString))
     globalDispatch({
-      type: "IRN_TABLES_SET_FILTER",
-      payload: { filter: { selectedDate } },
+      type: "IRN_TABLES_SET_REFINE_FILTER",
+      payload: { filter: { date } },
     })
     navigation.goBack()
   }

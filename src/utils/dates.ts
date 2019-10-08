@@ -17,7 +17,7 @@ export const calcDiffDays = (d1: Date, d2: Date) =>
     .startOf("day")
     .diff(moment(d1).startOf("day"), "days")
 
-export const datesEqual = (d1: Date, d2: Date) =>
+export const datesAreEqual = (d1: Date, d2: Date) =>
   moment(d1)
     .startOf("day")
     .isSame(moment(d2).startOf("day"))

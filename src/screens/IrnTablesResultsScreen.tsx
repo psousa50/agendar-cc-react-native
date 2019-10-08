@@ -7,6 +7,7 @@ import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
 import {
   getIrnTableResultSummary,
+  refineFilterTable,
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
 } from "../irnTables/main"
@@ -25,14 +26,28 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const stateSelectors = globalStateSelectors(globalState)
 
-  const irnFilter = stateSelectors.getIrnTablesFilter
-  const { startDate, endDate } = irnFilter
+  const filter = stateSelectors.getIrnTablesFilter
+  const refineFilter = stateSelectors.getIrnTablesRefineFilter
+  const { startDate, endDate } = filter
   const irnTables = irnTablesData.irnTables
+  const irnTablesFiltered = irnTablesData.irnTables.filter(refineFilterTable(refineFilter))
 
-  const isAsap = !startDate && !endDate
-  const irnTableResult = isAsap
-    ? selectOneIrnTableResultByClosestDate(stateSelectors)(irnTables, irnFilter)
-    : selectOneIrnTableResultByClosestPlace(stateSelectors)(irnTables, irnFilter)
+  const { countyId, districtId, gpsLocation } = filter
+  const { date: refinedDate } = refineFilter
+  const county = stateSelectors.getCounty(countyId)
+  const district = stateSelectors.getDistrict(districtId)
+  const location = gpsLocation || (county && county.gpsLocation) || (district && district.gpsLocation)
+
+  const timeSlotsFilter = {
+    endTime: filter.endTime,
+    startTime: filter.startTime,
+    timeSlot: refineFilter.timeSlot,
+  }
+  const isAsap = !startDate && !endDate && !refinedDate
+  const irnTableResult =
+    isAsap || !location
+      ? selectOneIrnTableResultByClosestDate(stateSelectors)(irnTablesFiltered, location, timeSlotsFilter)
+      : selectOneIrnTableResultByClosestPlace(stateSelectors)(irnTablesFiltered, location, timeSlotsFilter)
 
   const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
@@ -56,12 +71,8 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
             <Text>{"Escolher outra data"}</Text>
           </Button>
         ) : null}
-        {irnTableResultSummary.irnPlaceNames.length > 1 ? (
-          <Button onPress={() => navigation.goTo("MapLocationSelectorScreen")}>
-            <Text>{"Select Place"}</Text>
-          </Button>
-        ) : null}
-        <Text>{JSON.stringify(irnFilter, null, 2)}</Text>
+        <Text>{JSON.stringify(filter, null, 2)}</Text>
+        <Text>{JSON.stringify(stateSelectors.getIrnTablesRefineFilter, null, 2)}</Text>
         <Text>{`Di = ${irnTableResultSummary.districtIds.length}`}</Text>
         <Text>{`Ct = ${irnTableResultSummary.countyIds.length}`}</Text>
         <Text>{`Pl = ${irnTableResultSummary.irnPlaceNames.length}`}</Text>

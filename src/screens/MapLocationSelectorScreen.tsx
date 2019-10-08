@@ -5,7 +5,7 @@ import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
 import { filterTable, getIrnTableResultSummary } from "../irnTables/main"
 import { County, District, IrnPlace } from "../irnTables/models"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
 
@@ -45,7 +45,7 @@ export const MapLocationSelectorScreen: React.FunctionComponent<AppScreenProps> 
   const mapLocations =
     locationType === "District" ? districtLocations : locationType === "County" ? countyLocations : irnPlacesLocations
 
-  const updateGlobalFilter = (filter: Partial<IrnTableFilterState>) => {
+  const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter },

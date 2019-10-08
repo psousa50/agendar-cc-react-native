@@ -3,11 +3,11 @@ import React from "react"
 import { Image, StyleSheet } from "react-native"
 import { irnServiceImages } from "../assets/images/images"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 
 interface SelectedServiceViewProps {
-  irnFilter: IrnTableFilterState
+  irnFilter: IrnTableFilter
   onSelect: () => void
 }
 export const SelectedServiceView: React.FC<SelectedServiceViewProps> = ({ irnFilter: { serviceId }, onSelect }) => {

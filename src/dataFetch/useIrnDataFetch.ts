@@ -3,12 +3,9 @@ import { task } from "fp-ts/lib/Task"
 import { fold } from "fp-ts/lib/TaskEither"
 import { useEffect } from "react"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
+import { filtersAreCompatible } from "../utils/filters"
 import { fetchIrnTables } from "../utils/irnFetch"
-
-const filtersAreIncompatible = (filter1: IrnTableFilterState, filter2: IrnTableFilterState) =>
-  filter1.countyId !== filter2.countyId || filter1.districtId !== filter2.districtId
 
 export const useIrnDataFetch = () => {
   const [globalState, globalDispatch] = useGlobalState()
@@ -35,11 +32,13 @@ export const useIrnDataFetch = () => {
         ),
       )
 
+      await fetchIrnTablesData()
+
       const filter = stateSelectors.getIrnTablesFilter
       const filterCache = stateSelectors.getIrnTablesFilterCache
 
       const irnTablesCache = stateSelectors.getIrnTablesCache
-      if (!irnTablesCache || !filterCache || filtersAreIncompatible(filter, filterCache)) {
+      if (!irnTablesCache || !filterCache || !filtersAreCompatible(filter, filterCache)) {
         await fetchIrnTablesData()
       } else {
         globalDispatch({ type: "IRN_TABLES_UPDATE", payload: { irnTables: irnTablesCache } })

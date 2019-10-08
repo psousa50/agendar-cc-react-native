@@ -2,12 +2,12 @@ import { Body, Card, CardItem, Text } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { getCountyName } from "../utils/formaters"
 
 interface SelectedLocationViewProps {
-  irnFilter: IrnTableFilterState
+  irnFilter: IrnTableFilter
   onSelect?: () => void
 }
 export const SelectedLocationView: React.FC<SelectedLocationViewProps> = ({

@@ -18,7 +18,7 @@ import { ButtonIcons } from "../common/ToolbarIcons"
 import { RadioButton } from "../components/RadioButton"
 import { useGlobalState } from "../GlobalStateProvider"
 import { Counties, DistrictCounty, Districts, GpsLocation } from "../irnTables/models"
-import { allRegions, IrnTableFilterState, Region, regionNames } from "../state/models"
+import { allRegions, IrnTableFilter, Region, regionNames } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { getCountyName, properCase } from "../utils/formaters"
 import { useCurrentGpsLocation } from "../utils/hooks"
@@ -50,7 +50,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
 
-  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilterState>) => {
+  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER_FOR_EDIT",
       payload: { filter: { ...stateSelectors.getIrnTablesFilterForEdit, ...filter } },

@@ -4,7 +4,7 @@ import { Image, StyleSheet } from "react-native"
 import { irnServiceImages } from "../assets/images/images"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
 
@@ -13,7 +13,7 @@ export const SelectIrnServiceScreen: React.FC<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
 
-  const updateGlobalFilter = (filter: Partial<IrnTableFilterState>) => {
+  const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
       payload: { filter: { ...stateSelectors.getIrnTablesFilter, ...filter } },

@@ -1,48 +1,68 @@
-import React from "react"
+import React, { useState } from "react"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { useGlobalState } from "../GlobalStateProvider"
-import { getIrnTableResultSummary } from "../irnTables/main"
+import { getIrnTableResultSummary, refineFilterTable } from "../irnTables/main"
 import { Counties, Districts, IrnPlaces } from "../irnTables/models"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors, GlobalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
 
 export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
+  const initialFilter: IrnTableRefineFilter = {}
+  const [filter, setFilter] = useState(initialFilter)
   const stateSelectors = globalStateSelectors(globalState)
 
-  const irnFilter = stateSelectors.getIrnTablesFilter
-  const { mapLocations, locationType } = getMapLocations(stateSelectors)()
-
-  const updateGlobalFilterForEdit = (filter: Partial<IrnTableFilterState>) => {
+  const updateRefineFilter = (newFilter: Partial<IrnTableRefineFilter>) => {
     globalDispatch({
-      type: "IRN_TABLES_SET_FILTER_FOR_EDIT",
-      payload: { filter: { ...stateSelectors.getIrnTablesFilterForEdit, ...filter } },
+      type: "IRN_TABLES_SET_REFINE_FILTER",
+      payload: { filter: newFilter },
     })
+  }
+
+  const updateFilter = (newFilter: Partial<IrnTableRefineFilter>) => {
+    setFilter({ ...filter, ...newFilter })
   }
 
   const goBack = () => {
     navigation.goBack()
   }
 
-  const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
-    if (type === "District") {
-      updateGlobalFilterForEdit({ districtId: mapLocation.id, countyId: undefined })
-    }
-    if (type === "County") {
-      updateGlobalFilterForEdit({ districtId: irnFilter.districtId, countyId: mapLocation.id })
-    }
-    if (type === "Place") {
-      updateGlobalFilterForEdit({ placeName: mapLocation.name })
+  const updateRefineFilterAndGoBack = () => {
+    updateRefineFilter(filter)
+    goBack()
+  }
+
+  const checkOnlyOneResult = (newFilter: IrnTableRefineFilter) => {
+    const { mapLocations, locationType } = getMapLocations(stateSelectors)(newFilter)
+    if (locationType === "Place" && mapLocations.length === 1) {
+      updateRefineFilter(newFilter)
+      goBack()
+    } else {
+      updateFilter(newFilter)
     }
   }
 
-  const renderContent = () => (
-    <LocationsMap mapLocations={mapLocations} locationType={locationType} onLocationPress={onLocationPress} />
-  )
+  const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
+    if (type === "District") {
+      checkOnlyOneResult({ ...filter, districtId: mapLocation.id, countyId: undefined })
+    }
+    if (type === "County") {
+      checkOnlyOneResult({ ...filter, countyId: mapLocation.id })
+    }
+    if (type === "Place") {
+      updateRefineFilter({ ...filter, placeName: mapLocation.name })
+      goBack()
+    }
+  }
+
+  const renderContent = () => {
+    const { mapLocations, locationType } = getMapLocations(stateSelectors)(filter)
+    return <LocationsMap mapLocations={mapLocations} locationType={locationType} onLocationPress={onLocationPress} />
+  }
 
   return (
     <AppScreen
@@ -50,17 +70,16 @@ export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> 
       content={renderContent}
       title="Resultados"
       showAds={false}
-      right={() => ButtonIcons.Checkmark(() => goBack())}
+      right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}
     />
   )
 }
 
-const getMapLocations = (stateSelectors: GlobalStateSelectors) => () => {
-  const irnFilter = stateSelectors.getIrnTablesFilter
-  const irnTables = stateSelectors.getIrnTables
+const getMapLocations = (stateSelectors: GlobalStateSelectors) => (filter: IrnTableRefineFilter) => {
+  const irnTables = stateSelectors.getIrnTables.filter(refineFilterTable(filter))
   const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
-  const { districtId, countyId } = irnFilter
+  const { districtId, countyId, placeName } = filter
 
   const districts = irnTableResultSummary.districtIds.map(stateSelectors.getDistrict).filter(d => !!d) as Districts
   const counties = irnTableResultSummary.countyIds.map(stateSelectors.getCounty).filter(d => !!d) as Counties
@@ -78,7 +97,7 @@ const getMapLocations = (stateSelectors: GlobalStateSelectors) => () => {
     p =>
       (!districtId || p.districtId === districtId) &&
       (!countyId || p.countyId === countyId) &&
-      (!districtId || p.districtId === districtId),
+      (!placeName || p.name === placeName),
   )
 
   const locationType: LocationsType =

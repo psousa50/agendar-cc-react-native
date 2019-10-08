@@ -6,7 +6,7 @@ import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
 import { SelectedLocationView } from "../components/SelectedLocationView"
 import { SelectedServiceView } from "../components/SelectedServiceView"
 import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilterState } from "../state/models"
+import { IrnTableFilter, IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { AppScreenName, navigate } from "./screens"
 
@@ -15,9 +15,16 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const stateSelectors = globalStateSelectors(globalState)
 
-  const updateGlobalFilter = (filter: Partial<IrnTableFilterState>) => {
+  const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
       type: "IRN_TABLES_SET_FILTER",
+      payload: { filter },
+    })
+  }
+
+  const updateRefineFilter = (filter: Partial<IrnTableRefineFilter>) => {
+    globalDispatch({
+      type: "IRN_TABLES_SET_REFINE_FILTER",
       payload: { filter },
     })
   }
@@ -41,18 +48,16 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
       serviceId: 1,
       startDate: new Date("2019-10-07"),
       endDate: new Date("2019-12-14"),
-      districtId: 12,
-      countyId: 7,
     })
   }, [])
 
   const onSearch = () => {
-    updateGlobalFilter({ ...stateSelectors.getIrnTablesFilter, selectedDate: undefined, selectedTimeSlot: undefined })
+    updateRefineFilter({})
     navigation.goTo("IrnTablesResultsScreen")
   }
 
   const onSelectFilter = (filterScreen: AppScreenName) => () => {
-    updateGlobalFilter({ ...stateSelectors.getIrnTablesFilter, selectedDate: undefined, selectedTimeSlot: undefined })
+    updateRefineFilter({})
     navigation.goTo(filterScreen)
   }
 
