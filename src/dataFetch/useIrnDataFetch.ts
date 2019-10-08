@@ -32,13 +32,11 @@ export const useIrnDataFetch = () => {
         ),
       )
 
-      await fetchIrnTablesData()
-
       const filter = stateSelectors.getIrnTablesFilter
       const filterCache = stateSelectors.getIrnTablesFilterCache
 
       const irnTablesCache = stateSelectors.getIrnTablesCache
-      if (!irnTablesCache || !filterCache || !filtersAreCompatible(filter, filterCache)) {
+      if (!irnTablesCache || !filterCache || !filtersAreCompatible(filterCache, filter)) {
         await fetchIrnTablesData()
       } else {
         globalDispatch({ type: "IRN_TABLES_UPDATE", payload: { irnTables: irnTablesCache } })

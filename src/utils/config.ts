@@ -1,14 +1,14 @@
-export const localDatabase = {
+export const localApi = {
   irnPort: 3000,
   irnUrl: "http://192.168.1.67",
 }
 
-export const productionDatabase = {
+export const productionApi = {
   irnPort: undefined,
   irnUrl: "https://agendar-cc.herokuapp.com",
 }
 
-const database = productionDatabase
+const database = localApi
 
 const developmentConfig = {
   ...database,
