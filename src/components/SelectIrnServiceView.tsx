@@ -7,7 +7,7 @@ import { i18n } from "../localization/i18n"
 
 interface SelectIrnServiceViewProps {
   serviceId?: number
-  onServiceIdChanged: (sefrviceId: number) => void
+  onServiceIdChanged: (serviceId: number) => void
 }
 
 export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serviceId, onServiceIdChanged }) => {

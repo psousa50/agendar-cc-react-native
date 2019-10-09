@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native"
 import { appBackgroundImage } from "../assets/images/images"
 import { AppScreenProps } from "../common/AppScreen"
 import { AppScreen } from "../common/AppScreenNew"
-import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
+import { PeriodView } from "../components/PeriodView"
 import { SelectedLocationView } from "../components/SelectedLocationView"
 import { SelectIrnServiceView } from "../components/SelectIrnServiceView"
 import { useGlobalState } from "../GlobalStateProvider"
@@ -66,7 +66,12 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
           <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
         </InfoCard>
         <InfoCard title={i18n.t("When")}>
-          <SelectedDateTimeView irnFilter={irnFilter} onSelect={onSelectFilter("SelectDateTimeScreen")} />
+          <PeriodView
+            startDate={irnFilter.startDate}
+            endDate={irnFilter.endDate}
+            onClearDate={() => undefined}
+            onEditDate={() => undefined}
+          />
         </InfoCard>
         <Button block success onPress={onSearch}>
           <Text>{"Pesquisar Horários"}</Text>
