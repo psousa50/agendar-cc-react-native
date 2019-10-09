@@ -9,6 +9,7 @@ export type AppScreenName =
   | "SelectDateTimeScreen"
   | "SelectLocationScreen"
   | "SelectLocationByMapScreen"
+  | "SelectPeriodScreen"
   | "Test"
 
 export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({

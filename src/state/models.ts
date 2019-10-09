@@ -23,6 +23,16 @@ export interface StaticDataState {
   loading: boolean
 }
 
+export interface DatePeriod {
+  endDate?: Date
+  startDate?: Date
+}
+
+export interface TimePeriod {
+  endTime?: TimeSlot
+  startTime?: TimeSlot
+}
+
 export type Region = "Acores" | "Continente" | "Madeira"
 
 export interface IrnTableFilterLocationState {

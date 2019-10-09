@@ -1,18 +1,18 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { StyleSheet } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import { StyleSheet, TouchableOpacity } from "react-native"
 import { i18n } from "../localization/i18n"
+import { DatePeriod } from "../state/models"
 import { formatDateLocale } from "../utils/formaters"
 
 interface PeriodViewProps {
-  startDate?: Date
-  endDate?: Date
+  datePeriod: DatePeriod
   onClearDate: () => void
   onEditDate: () => void
 }
 
-export const PeriodView: React.FC<PeriodViewProps> = ({ startDate, endDate, onClearDate, onEditDate }) => {
+export const PeriodView: React.FC<PeriodViewProps> = ({ datePeriod, onClearDate, onEditDate }) => {
+  const { startDate, endDate } = datePeriod
   const periodText =
     startDate && endDate
       ? i18n.t(["DatePeriod", "OnThePeriod"], {
@@ -29,7 +29,11 @@ export const PeriodView: React.FC<PeriodViewProps> = ({ startDate, endDate, onCl
     <View style={styles.container}>
       <Text style={styles.periodText}>{periodText}</Text>
       <View style={styles.icons}>
-        {startDate || endDate ? <Icon style={styles.icon} name={"close-circle"} onPress={onClearDate} /> : null}
+        {startDate || endDate ? (
+          <TouchableOpacity onPress={onClearDate}>
+            <Icon style={styles.icon} name={"close-circle"} />
+          </TouchableOpacity>
+        ) : null}
         <TouchableOpacity onPress={onEditDate}>
           <Icon style={styles.icon} name={"create"} />
         </TouchableOpacity>
@@ -42,6 +46,7 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
   },
   icons: {
     flex: 1,

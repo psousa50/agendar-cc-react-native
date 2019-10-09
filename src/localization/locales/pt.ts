@@ -8,9 +8,9 @@ export const pt = {
   Get_renew: "Pedir / Renovar",
   Pickup: "Levantar",
   DatePeriod: {
-    OnThePeriod: "No período entre {startDate} e ${endDate}",
-    FromTheDay: "A partir do dia {startDate}",
-    UntilTheDay: "Até ao dia {startDate}",
+    OnThePeriod: "No período entre {{startDate}} e ${{endDate}}",
+    FromTheDay: "A partir do dia {{startDate}}",
+    UntilTheDay: "Até ao dia {{startDate}}",
     asap: "O mais depressa possível",
   },
 }

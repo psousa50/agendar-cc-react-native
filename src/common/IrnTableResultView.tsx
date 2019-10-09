@@ -33,6 +33,6 @@ export const IrnTableResultView: React.FC<IrnTableResult> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
   },
 })

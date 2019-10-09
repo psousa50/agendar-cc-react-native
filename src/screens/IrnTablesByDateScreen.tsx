@@ -61,7 +61,7 @@ export const IrnTablesByDateScreen: React.FunctionComponent<AppScreenProps> = pr
     )
   }
 
-  return <AppScreen {...props} content={renderContent} title="Horários" showAds={false} />
+  return <AppScreen {...props}>{renderContent()}</AppScreen>
 }
 
 const TimeSlot: React.FunctionComponent<{ time: TimeSlot }> = ({ time }) => (

@@ -74,13 +74,9 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   }
 
   return (
-    <AppScreen
-      {...props}
-      content={renderContent}
-      title="Localização"
-      showAds={false}
-      right={() => ButtonIcons.Checkmark(updateGlobalFilterForEditAndGoBack)}
-    />
+    <AppScreen {...props} right={() => ButtonIcons.Checkmark(updateGlobalFilterForEditAndGoBack)}>
+      {renderContent()}
+    </AppScreen>
   )
 }
 

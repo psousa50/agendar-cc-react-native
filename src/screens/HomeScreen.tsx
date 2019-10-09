@@ -2,8 +2,7 @@ import { Button, Text, View } from "native-base"
 import React, { useEffect } from "react"
 import { StyleSheet } from "react-native"
 import { appBackgroundImage } from "../assets/images/images"
-import { AppScreenProps } from "../common/AppScreen"
-import { AppScreen } from "../common/AppScreenNew"
+import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { PeriodView } from "../components/PeriodView"
 import { SelectedLocationView } from "../components/SelectedLocationView"
 import { SelectIrnServiceView } from "../components/SelectIrnServiceView"
@@ -56,6 +55,14 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({ ...irnFilter, serviceId: newServiceId })
   }
 
+  const onClearDate = () => {
+    updateGlobalFilter({ ...irnFilter, startDate: undefined, endDate: undefined })
+  }
+
+  const onEditDate = () => {
+    navigation.goTo("SelectPeriodScreen")
+  }
+
   const renderContent = () => {
     return (
       <View style={styles.container}>
@@ -66,12 +73,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
           <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
         </InfoCard>
         <InfoCard title={i18n.t("When")}>
-          <PeriodView
-            startDate={irnFilter.startDate}
-            endDate={irnFilter.endDate}
-            onClearDate={() => undefined}
-            onEditDate={() => undefined}
-          />
+          <PeriodView datePeriod={irnFilter} onClearDate={onClearDate} onEditDate={onEditDate} />
         </InfoCard>
         <Button block success onPress={onSearch}>
           <Text>{"Pesquisar Horários"}</Text>
@@ -106,7 +108,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, children }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 10,
   },

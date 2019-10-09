@@ -29,7 +29,7 @@ export const SelectedIrnTableScreen: React.FunctionComponent<AppScreenProps> = p
       return <></>
     }
   }
-  return <AppScreen {...props} left={null} content={renderContent} title="Agendar CC" showAds={false} />
+  return <AppScreen {...props}>{renderContent()}</AppScreen>
 }
 
 const styles = StyleSheet.create({

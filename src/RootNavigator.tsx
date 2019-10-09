@@ -12,6 +12,7 @@ import { SelectDateTimeScreen } from "./screens/SelectDateTimeScreen"
 import { SelectedIrnTableScreen } from "./screens/SelectedIrnTableScreen"
 import { SelectLocationByMapScreen } from "./screens/SelectLocationByMapScreen"
 import { SelectLocationScreen } from "./screens/SelectLocationScreen"
+import { SelectPeriodScreen } from "./screens/SelectPeriodScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
@@ -49,6 +50,7 @@ export const ContentNavigator = createStackNavigator(
     SelectDateTimeScreen,
     SelectLocationScreen,
     SelectLocationByMapScreen,
+    SelectPeriodScreen,
     Test,
   },
   {

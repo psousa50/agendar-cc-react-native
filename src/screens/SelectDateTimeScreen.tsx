@@ -169,13 +169,9 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
     )
   }
   return (
-    <AppScreen
-      {...props}
-      content={renderContent}
-      title="Quando"
-      showAds={false}
-      right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}
-    />
+    <AppScreen {...props} right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}>
+      {renderContent()}
+    </AppScreen>
   )
 }
 

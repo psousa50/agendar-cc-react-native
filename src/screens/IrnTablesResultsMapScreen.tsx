@@ -67,13 +67,9 @@ export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> 
   }
 
   return (
-    <AppScreen
-      {...props}
-      content={renderContent}
-      title="Resultados"
-      showAds={false}
-      right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}
-    />
+    <AppScreen {...props} right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}>
+      {renderContent()}
+    </AppScreen>
   )
 }
 
@@ -102,11 +98,6 @@ const getMapLocations = (stateSelectors: GlobalStateSelectors) => (filter: IrnTa
       (isNil(countyId) || p.countyId === countyId) &&
       (isNil(placeName) || p.name === placeName),
   )
-
-  console.log("FILTER=====>", filter)
-  console.log("D=====>", districtLocations)
-  console.log("C=====>", countyLocations)
-  console.log("P=====>", irnPlacesLocations)
 
   const locationType: LocationsType =
     districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"

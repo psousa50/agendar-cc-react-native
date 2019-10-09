@@ -8,9 +8,9 @@ export const en = {
   Get_renew: "Get / Renew",
   Pickup: "Pick up",
   DatePeriod: {
-    OnThePeriod: "From {startDate}  ${endDate}",
-    FromTheDay: "From {startDate}",
-    UntilTheDay: "Until {endDate}",
+    OnThePeriod: "From {{startDate}} to {{endDate}}",
+    FromTheDay: "From {{startDate}}",
+    UntilTheDay: "Until {{endDate}}",
     Asap: "As soon as possible",
   },
 }

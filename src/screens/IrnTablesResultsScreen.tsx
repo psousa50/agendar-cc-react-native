@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { StyleSheet } from "react-native"
 import { appBackgroundImage } from "../assets/images/images"
 import { AppScreenProps } from "../common/AppScreen"
-import { AppScreen } from "../common/AppScreenNew"
+import { AppScreen } from "../common/AppScreen"
 import { IrnTableResultView } from "../common/IrnTableResultView"
 import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
@@ -94,6 +94,6 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
   },
 })
