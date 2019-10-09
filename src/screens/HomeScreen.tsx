@@ -1,10 +1,12 @@
 import { Button, Text, View } from "native-base"
 import React, { useEffect } from "react"
 import { StyleSheet } from "react-native"
-import { AppScreen, AppScreenProps } from "../common/AppScreen"
+import { appBackgroundImage } from "../assets/images/images"
+import { AppScreenProps } from "../common/AppScreen"
+import { AppScreen } from "../common/AppScreenNew"
 import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
 import { SelectedLocationView } from "../components/SelectedLocationView"
-import { SelectedServiceView } from "../components/SelectedServiceView"
+import { SelectIrnServiceView } from "../components/SelectIrnServiceView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { IrnTableFilter, IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
@@ -14,6 +16,9 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const navigation = navigate(props.navigation)
   const stateSelectors = globalStateSelectors(globalState)
+
+  const irnFilter = stateSelectors.getIrnTablesFilter
+  const { serviceId } = irnFilter
 
   const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
@@ -26,19 +31,6 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     globalDispatch({
       type: "IRN_TABLES_SET_REFINE_FILTER",
       payload: { filter },
-    })
-  }
-
-  const clearFilter = () => {
-    updateGlobalFilter({
-      serviceId: undefined,
-      countyId: undefined,
-      districtId: undefined,
-      gpsLocation: undefined,
-      startDate: undefined,
-      endDate: undefined,
-      startTime: undefined,
-      endTime: undefined,
     })
   }
 
@@ -59,28 +51,75 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     navigation.goTo(filterScreen)
   }
 
-  const irnFilter = stateSelectors.getIrnTablesFilter
+  const onServiceIdChanged = (newServiceId: number) => {
+    updateGlobalFilter({ ...irnFilter, serviceId: newServiceId })
+  }
 
   const renderContent = () => {
     return (
       <View style={styles.container}>
-        <SelectedServiceView irnFilter={irnFilter} onSelect={onSelectFilter("SelectIrnServiceScreen")} />
-        <SelectedDateTimeView irnFilter={irnFilter} onSelect={onSelectFilter("SelectDateTimeScreen")} />
-        <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
-        <Button block onPress={onSearch}>
+        <InfoCard title={"Serviço"}>
+          <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
+        </InfoCard>
+        <InfoCard title={"Onde"}>
+          <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
+        </InfoCard>
+        <InfoCard title={"Quando"}>
+          <SelectedDateTimeView irnFilter={irnFilter} onSelect={onSelectFilter("SelectDateTimeScreen")} />
+        </InfoCard>
+        <Button block success onPress={onSearch}>
           <Text>{"Pesquisar Horários"}</Text>
         </Button>
-        <Button style={{ marginTop: 100 }} block onPress={clearFilter}>
+        {/* <Button block danger onPress={clearFilter}>
           <Text>{"Limpar"}</Text>
-        </Button>
+        </Button> */}
       </View>
     )
   }
-  return <AppScreen {...props} left={null} content={renderContent} title="Agendar CC" showAds={false} />
+  return (
+    <AppScreen {...props} backgroundImage={appBackgroundImage}>
+      {renderContent()}
+    </AppScreen>
+  )
 }
+
+interface InfoCardProps {
+  title: string
+}
+const InfoCard: React.FC<InfoCardProps> = ({ title, children }) => (
+  <>
+    <View style={styles.titleBar}>
+      <Text style={styles.titleBarText}>{title}</Text>
+    </View>
+    <View style={styles.infoCard}>
+      <View style={styles.infoCardContainer}>{children}</View>
+    </View>
+  </>
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+  infoCard: {
+    backgroundColor: "transparent",
+    marginLeft: 30,
+  },
+  infoCardContainer: {
+    display: "flex",
+    margin: 5,
+    padding: 5,
+    backgroundColor: "white",
+  },
+  titleBar: {
+    backgroundColor: "#3171a8",
+    padding: 10,
+  },
+  titleBarText: {
+    color: "white",
+    fontSize: 16,
   },
 })

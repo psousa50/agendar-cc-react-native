@@ -1,7 +1,9 @@
 import { Button, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet } from "react-native"
-import { AppScreen, AppScreenProps, renderContentOrLoading } from "../common/AppScreen"
+import { appBackgroundImage } from "../assets/images/images"
+import { AppScreenProps } from "../common/AppScreen"
+import { AppScreen } from "../common/AppScreenNew"
 import { IrnTableResultView } from "../common/IrnTableResultView"
 import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../GlobalStateProvider"
@@ -38,6 +40,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const district = stateSelectors.getDistrict(districtId)
   const location = gpsLocation || (county && county.gpsLocation) || (district && district.gpsLocation)
 
+  const loading = stateSelectors.getStaticData.loading || irnTablesData.loading
   const timeSlotsFilter = {
     endTime: filter.endTime,
     startTime: filter.startTime,
@@ -53,7 +56,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const renderContent = () => {
     return (
-      <View style={styles.container}>
+      <View>
         <Text>{`Resultados encontrados: ${irnTables.length}`}</Text>
         {irnTableResult ? (
           <View style={styles.container}>
@@ -83,12 +86,9 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   }
 
   return (
-    <AppScreen
-      {...props}
-      content={renderContentOrLoading(irnTablesData.loading, renderContent)}
-      title="Resultados"
-      showAds={false}
-    />
+    <AppScreen {...props} loading={loading} backgroundImage={appBackgroundImage}>
+      {renderContent()}
+    </AppScreen>
   )
 }
 
