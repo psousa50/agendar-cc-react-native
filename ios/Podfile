@@ -43,6 +43,8 @@ target 'agendarCC' do
 
   pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
 
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
   target 'agendarCCTests' do
     inherit! :search_paths
     # Pods for testing

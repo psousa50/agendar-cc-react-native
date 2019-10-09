@@ -3,6 +3,7 @@ import React from "react"
 import { Image, StyleSheet, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { ccImage, passportImage } from "../assets/images/images"
+import { i18n } from "../localization/i18n"
 
 interface SelectIrnServiceViewProps {
   serviceId?: number
@@ -37,7 +38,7 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
       <SegmentedControlTab
         activeTabStyle={{ backgroundColor: "#e3b13b" }}
         tabStyle={{ borderColor: "#e3b13b" }}
-        values={["Pedir", "Levantar"]}
+        values={[i18n.t("Get_renew"), i18n.t("Pickup")]}
         selectedIndex={[1, 3].includes(serviceId || 1) ? 0 : 1}
         onTabPress={onTabPress}
       />
@@ -47,14 +48,14 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
           onPress={() => onImagePress(0)}
         >
           <Image style={styles.serviceImage} source={ccImage} />
-          <Text style={styles.cardText}>{"Cartão de Cidadão"}</Text>
+          <Text style={styles.cardText}>{i18n.t("CitizenCard")}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.serviceImageTouch, [3, 4].includes(serviceId || 1) ? styles.selectedCard : {}]}
           onPress={() => onImagePress(1)}
         >
           <Image style={styles.serviceImage} source={passportImage} />
-          <Text style={styles.cardText}>{"Passaporte"}</Text>
+          <Text style={styles.cardText}>{i18n.t("Passport")}</Text>
         </TouchableOpacity>
       </View>
     </View>

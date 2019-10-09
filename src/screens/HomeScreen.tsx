@@ -8,6 +8,7 @@ import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
 import { SelectedLocationView } from "../components/SelectedLocationView"
 import { SelectIrnServiceView } from "../components/SelectIrnServiceView"
 import { useGlobalState } from "../GlobalStateProvider"
+import { i18n } from "../localization/i18n"
 import { IrnTableFilter, IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
 import { AppScreenName, navigate } from "./screens"
@@ -58,13 +59,13 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const renderContent = () => {
     return (
       <View style={styles.container}>
-        <InfoCard title={"Serviço"}>
+        <InfoCard title={i18n.t("Service")}>
           <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
         </InfoCard>
-        <InfoCard title={"Onde"}>
+        <InfoCard title={i18n.t("Where")}>
           <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
         </InfoCard>
-        <InfoCard title={"Quando"}>
+        <InfoCard title={i18n.t("When")}>
           <SelectedDateTimeView irnFilter={irnFilter} onSelect={onSelectFilter("SelectDateTimeScreen")} />
         </InfoCard>
         <Button block success onPress={onSearch}>

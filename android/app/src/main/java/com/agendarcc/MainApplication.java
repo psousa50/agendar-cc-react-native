@@ -7,6 +7,7 @@ import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import com.airbnb.android.react.maps.MapsPackage;
