@@ -1,4 +1,4 @@
-import I18n from "i18n-js"
+import I18n, { TranslateOptions } from "i18n-js"
 import * as RNLocalize from "react-native-localize"
 
 import { en } from "./locales/en"
@@ -16,4 +16,6 @@ I18n.translations = {
   pt,
 }
 
-export const i18n = I18n
+type LocalesString = typeof en
+
+export const i18n = { ...I18n, t: (s: keyof LocalesString, options?: TranslateOptions) => I18n.t(s, options) }
