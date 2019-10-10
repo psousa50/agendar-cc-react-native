@@ -104,9 +104,6 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({ endTime: newEndTime })
   }
 
-  console.log("=====>", irnFilter)
-  console.log("=====>", state)
-
   const renderTimePickers = () => {
     return (
       <>

@@ -39,7 +39,6 @@ export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> 
 
   const checkOnlyOneResult = (newFilter: IrnTableRefineFilter) => {
     const { mapLocations, locationType } = getMapLocations(stateSelectors)({ ...filter, ...newFilter })
-    console.log("(locationType=====>", locationType)
     if (locationType === "Place" && mapLocations.length === 1) {
       updateRefineFilter(newFilter)
       goBack()
