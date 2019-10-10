@@ -13,17 +13,17 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Collapsible from "react-native-collapsible"
+import { useGlobalState } from "../../GlobalStateProvider"
+import { Counties, County, DistrictAndCounty, Districts, GpsLocation } from "../../irnTables/models"
+import { allRegions, IrnTableFilter, Region, regionNames } from "../../state/models"
+import { globalStateSelectors } from "../../state/selectors"
+import { getCountyName, properCase } from "../../utils/formaters"
+import { useCurrentGpsLocation } from "../../utils/hooks"
+import { getClosestLocation } from "../../utils/location"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
-import { RadioButton } from "../components/RadioButton"
-import { SelectedLocationView } from "../components/SelectedLocationView"
-import { useGlobalState } from "../GlobalStateProvider"
-import { Counties, County, DistrictAndCounty, Districts, GpsLocation } from "../irnTables/models"
-import { allRegions, IrnTableFilter, Region, regionNames } from "../state/models"
-import { globalStateSelectors } from "../state/selectors"
-import { getCountyName, properCase } from "../utils/formaters"
-import { useCurrentGpsLocation } from "../utils/hooks"
-import { getClosestLocation } from "../utils/location"
+import { RadioButton } from "../RadioButton"
+import { SelectedLocationView } from "../SelectedLocationView"
 import { navigate } from "./screens"
 
 const MINIMUN_DISTANCE_RADIUS = 10
@@ -60,10 +60,9 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
 
   const updateGlobalFilterAndGoBack = () => {
     globalDispatch({
-      type: "IRN_TABLES_SET_FILTER",
+      type: "IRN_TABLES_UPDATE_FILTER",
       payload: {
         filter: {
-          ...stateSelectors.getIrnTablesFilterForEdit,
           ...(state.useGpsLocation ? {} : { gpsLocation: undefined }),
           ...(state.useDistanceRadius ? { distanceRadiusKm: state.distanceRadiusKm } : { distanceRadiusKm: undefined }),
         },

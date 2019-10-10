@@ -1,8 +1,8 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
-import { TimeSlot } from "../irnTables/models"
-import { formatTimeSlot } from "../utils/formaters"
+import { TimeSlot } from "../../irnTables/models"
+import { formatTimeSlot } from "../../utils/formaters"
 
 interface DayTimeSlot {
   timeSlot: TimeSlot

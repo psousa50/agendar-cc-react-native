@@ -1,10 +1,10 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
-import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilter } from "../state/models"
-import { globalStateSelectors } from "../state/selectors"
-import { getCountyName } from "../utils/formaters"
+import { useGlobalState } from "../../GlobalStateProvider"
+import { IrnTableFilter } from "../../state/models"
+import { globalStateSelectors } from "../../state/selectors"
+import { getCountyName } from "../../utils/formaters"
 
 export const IrnTableFilterView: React.FC<IrnTableFilter> = irnFilter => {
   const [globalState] = useGlobalState()

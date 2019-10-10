@@ -1,10 +1,10 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
+import { useGlobalState } from "../../GlobalStateProvider"
+import { globalStateSelectors } from "../../state/selectors"
+import { formatDate, getCountyName } from "../../utils/formaters"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { useGlobalState } from "../GlobalStateProvider"
-import { globalStateSelectors } from "../state/selectors"
-import { formatDate, getCountyName } from "../utils/formaters"
 
 export const SelectedIrnTableScreen: React.FunctionComponent<AppScreenProps> = props => {
   const renderContent = () => {

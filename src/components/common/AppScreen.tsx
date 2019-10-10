@@ -2,7 +2,7 @@ import { Container, Header, Left, Right, View } from "native-base"
 import React from "react"
 import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
-import { appBackgroundImage } from "../assets/images/images"
+import { appBackgroundImage } from "../../assets/images/images"
 import { LoadingPage } from "./LoadingPage"
 
 export interface AppNavigationScreenProps extends NavigationScreenProps {}

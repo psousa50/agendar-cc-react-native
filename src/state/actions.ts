@@ -18,7 +18,7 @@ export type GlobalStateAction =
       }
     }
   | {
-      type: "IRN_TABLES_SET_FILTER"
+      type: "IRN_TABLES_UPDATE_FILTER"
       payload: {
         filter: IrnTableFilter
       }

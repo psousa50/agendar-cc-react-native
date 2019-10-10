@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react"
 import { StyleSheet } from "react-native"
 import MapView, { Marker } from "react-native-maps"
-import { GpsLocation } from "../irnTables/models"
+import { GpsLocation } from "../../irnTables/models"
 
 export interface MapLocation {
   id?: number

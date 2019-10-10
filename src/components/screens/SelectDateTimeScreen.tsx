@@ -3,14 +3,14 @@ import { Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet, Switch } from "react-native"
 import Collapsible from "react-native-collapsible"
+import { useGlobalState } from "../../GlobalStateProvider"
+import { IrnTableFilter } from "../../state/models"
+import { globalStateSelectors } from "../../state/selectors"
+import { dateFromTime } from "../../utils/dates"
+import { extractTime, formatDate, formatTimeSlot } from "../../utils/formaters"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectedDateTimeView } from "../components/SelectedDateTimeView"
-import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilter } from "../state/models"
-import { globalStateSelectors } from "../state/selectors"
-import { dateFromTime } from "../utils/dates"
-import { extractTime, formatDate, formatTimeSlot } from "../utils/formaters"
+import { SelectedDateTimeView } from "../SelectedDateTimeView"
 import { navigate } from "./screens"
 
 interface SelectDateTimeScreenState {
@@ -50,10 +50,9 @@ export const SelectDateTimeScreen: React.FunctionComponent<AppScreenProps> = pro
 
   const updateGlobalFilterAndGoBack = () => {
     globalDispatch({
-      type: "IRN_TABLES_SET_FILTER",
+      type: "IRN_TABLES_UPDATE_FILTER",
       payload: {
         filter: {
-          ...stateSelectors.getIrnTablesFilterForEdit,
           ...(state.useTimeSlot ? {} : { startTime: undefined, endTime: undefined }),
           ...(state.useDatePeriod ? {} : { startDate: undefined, endDate: undefined }),
         },

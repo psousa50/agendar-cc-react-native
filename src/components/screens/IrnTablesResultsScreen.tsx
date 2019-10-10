@@ -1,21 +1,21 @@
 import { Button, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet } from "react-native"
-import { appBackgroundImage } from "../assets/images/images"
-import { AppScreenProps } from "../common/AppScreen"
-import { AppScreen } from "../common/AppScreen"
-import { IrnTableResultView } from "../common/IrnTableResultView"
-import { useIrnDataFetch } from "../dataFetch/useIrnDataFetch"
-import { useGlobalState } from "../GlobalStateProvider"
+import { appBackgroundImage } from "../../assets/images/images"
+import { useIrnDataFetch } from "../../dataFetch/useIrnDataFetch"
+import { useGlobalState } from "../../GlobalStateProvider"
 import {
   getIrnTableResultSummary,
   refineFilterIrnTable,
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
-} from "../irnTables/main"
-import { GpsLocation } from "../irnTables/models"
-import { globalStateSelectors } from "../state/selectors"
-import { useCurrentGpsLocation } from "../utils/hooks"
+} from "../../irnTables/main"
+import { GpsLocation } from "../../irnTables/models"
+import { globalStateSelectors } from "../../state/selectors"
+import { useCurrentGpsLocation } from "../../utils/hooks"
+import { AppScreen } from "../common/AppScreen"
+import { AppScreenProps } from "../common/AppScreen"
+import { IrnTableResultView } from "../common/IrnTableResultView"
 import { navigate } from "./screens"
 
 export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = props => {

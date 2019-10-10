@@ -81,9 +81,9 @@ const irnTablesDataReducer: IrnTablesDataReducer = (state, action) => {
         loading: false,
       }
     }
-    case "IRN_TABLES_SET_FILTER": {
+    case "IRN_TABLES_UPDATE_FILTER": {
       const newFilter = normalizeFilter(action.payload.filter)
-      return { ...state, filter: newFilter, filterForEdit: newFilter }
+      return { ...state, filter: { ...state.filter, ...newFilter }, filterForEdit: newFilter }
     }
     case "IRN_TABLES_SET_FILTER_FOR_EDIT": {
       const newFilter = normalizeFilter(action.payload.filter)

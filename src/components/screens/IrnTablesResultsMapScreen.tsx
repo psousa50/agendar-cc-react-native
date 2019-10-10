@@ -1,13 +1,13 @@
 import { isNil } from "ramda"
 import React, { useState } from "react"
+import { useGlobalState } from "../../GlobalStateProvider"
+import { getIrnTableResultSummary, refineFilterIrnTable } from "../../irnTables/main"
+import { Counties, Districts, IrnPlaces } from "../../irnTables/models"
+import { IrnTableRefineFilter } from "../../state/models"
+import { globalStateSelectors, GlobalStateSelectors } from "../../state/selectors"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
-import { useGlobalState } from "../GlobalStateProvider"
-import { getIrnTableResultSummary, refineFilterIrnTable } from "../irnTables/main"
-import { Counties, Districts, IrnPlaces } from "../irnTables/models"
-import { IrnTableRefineFilter } from "../state/models"
-import { globalStateSelectors, GlobalStateSelectors } from "../state/selectors"
 import { navigate } from "./screens"
 
 export const IrnTablesResultsMapScreen: React.FunctionComponent<AppScreenProps> = props => {
