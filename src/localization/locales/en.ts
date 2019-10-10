@@ -13,6 +13,12 @@ export const en = {
     Until: "Until",
     Asap: "As soon as possible",
   },
+  TimePeriod: {
+    Period: "From {{startTime}} to {{endTime}}",
+    From: "From {{startTime}}",
+    Until: "Until {{endTime}}",
+    Anytime: "Anytime",
+  },
 
   date: {
     formats: {

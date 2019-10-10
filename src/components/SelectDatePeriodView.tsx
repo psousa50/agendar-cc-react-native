@@ -8,7 +8,7 @@ interface SelectPeriodViewProps {
   datePeriod: DatePeriod
   onDateChange: (datePeriod: DatePeriod) => void
 }
-export const SelectPeriodView: React.FunctionComponent<SelectPeriodViewProps> = ({ datePeriod, onDateChange }) => {
+export const SelectDatePeriodView: React.FunctionComponent<SelectPeriodViewProps> = ({ datePeriod, onDateChange }) => {
   const { startDate, endDate } = datePeriod
 
   const onDayPress = (dateObject: DateObject) => {

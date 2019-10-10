@@ -1,16 +1,25 @@
+import DateTimePicker from "@react-native-community/datetimepicker"
 import { Button, Text, View } from "native-base"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
 import { appBackgroundImage } from "../assets/images/images"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { PeriodView } from "../components/PeriodView"
+import { DatePeriodView } from "../components/DatePeriodView"
 import { SelectedLocationView } from "../components/SelectedLocationView"
 import { SelectIrnServiceView } from "../components/SelectIrnServiceView"
+import { TimePeriodView } from "../components/TimePeriodView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { i18n } from "../localization/i18n"
 import { IrnTableFilter, IrnTableRefineFilter } from "../state/models"
 import { globalStateSelectors } from "../state/selectors"
+import { dateFromTime } from "../utils/dates"
+import { extractTime } from "../utils/formaters"
 import { AppScreenName, navigate } from "./screens"
+
+interface HomeScreenState {
+  showStartTime: boolean
+  showEndTime: boolean
+}
 
 export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
@@ -18,7 +27,15 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const stateSelectors = globalStateSelectors(globalState)
 
   const irnFilter = stateSelectors.getIrnTablesFilter
-  const { serviceId } = irnFilter
+  const { serviceId, startTime, endTime } = irnFilter
+
+  const initialState: HomeScreenState = {
+    showStartTime: false,
+    showEndTime: false,
+  }
+  const [state, setState] = useState(initialState)
+
+  const mergeState = (newState: Partial<HomeScreenState>) => setState(oldState => ({ ...oldState, ...newState }))
 
   const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
@@ -40,6 +57,8 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
       serviceId: 1,
       endDate: new Date("2019-10-04"),
       startDate: new Date("2019-10-12"),
+      startTime: "11:35",
+      endTime: "15:40",
     })
   }, [])
 
@@ -65,6 +84,54 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     navigation.goTo("SelectPeriodScreen")
   }
 
+  const onClearTime = () => {
+    updateGlobalFilter({ ...irnFilter, startTime: undefined, endTime: undefined })
+  }
+
+  const onEditTime = () => {
+    mergeState({ showStartTime: true })
+  }
+
+  const onStartTimeChange = (_: any, date?: Date) => {
+    const newStartTime = date && extractTime(date)
+    mergeState({ showStartTime: false, showEndTime: true })
+    updateGlobalFilter({ startTime: newStartTime })
+  }
+
+  const onEndTimeChange = (_: any, date?: Date) => {
+    const newEndTime = date && extractTime(date)
+    mergeState({ showEndTime: false })
+    updateGlobalFilter({ endTime: newEndTime })
+  }
+
+  console.log("=====>", irnFilter)
+  console.log("=====>", state)
+
+  const renderTimePickers = () => {
+    return (
+      <>
+        {state.showStartTime ? (
+          <DateTimePicker
+            value={dateFromTime(irnFilter.startTime, "08:00")}
+            mode={"time"}
+            is24Hour={true}
+            display="default"
+            onChange={onStartTimeChange}
+          />
+        ) : null}
+        {state.showEndTime ? (
+          <DateTimePicker
+            value={dateFromTime(endTime, startTime)}
+            mode={"time"}
+            is24Hour={true}
+            display="default"
+            onChange={onEndTimeChange}
+          />
+        ) : null}
+      </>
+    )
+  }
+
   const renderContent = () => {
     return (
       <View style={styles.container}>
@@ -75,14 +142,14 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
           <SelectedLocationView irnFilter={irnFilter} onSelect={onSelectFilter("SelectLocationScreen")} />
         </InfoCard>
         <InfoCard title={i18n.t("When")}>
-          <PeriodView datePeriod={irnFilter} onClearDate={onClearDate} onEditDate={onEditDate} />
+          <DatePeriodView datePeriod={irnFilter} onClearDatePeriod={onClearDate} onEditDatePeriod={onEditDate} />
+          <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
+          <TimePeriodView timePeriod={irnFilter} onClearTimePeriod={onClearTime} onEditTimePeriod={onEditTime} />
         </InfoCard>
         <Button block success onPress={onSearch}>
           <Text>{"Pesquisar Horários"}</Text>
         </Button>
-        {/* <Button block danger onPress={clearFilter}>
-          <Text>{"Limpar"}</Text>
-        </Button> */}
+        {renderTimePickers()}
       </View>
     )
   }

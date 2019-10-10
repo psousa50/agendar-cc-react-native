@@ -13,6 +13,12 @@ export const pt = {
     Until: "até ao dia",
     Asap: "O mais depressa possível",
   },
+  TimePeriod: {
+    Period: "Das {{startTime}} às {{endTime}}",
+    From: "A partir das {{startTime}}",
+    Until: "Até às {{endTime}}",
+    Anytime: "Em qualquer horário",
+  },
 
   date: {
     month_names: [

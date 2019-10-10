@@ -5,13 +5,13 @@ import { i18n } from "../localization/i18n"
 import { DatePeriod } from "../state/models"
 import { formatDateLocale } from "../utils/formaters"
 
-interface PeriodViewProps {
+interface DatePeriodViewProps {
   datePeriod: DatePeriod
-  onClearDate: () => void
-  onEditDate: () => void
+  onClearDatePeriod: () => void
+  onEditDatePeriod: () => void
 }
 
-export const PeriodView: React.FC<PeriodViewProps> = ({ datePeriod, onClearDate, onEditDate }) => {
+export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onClearDatePeriod, onEditDatePeriod }) => {
   const { startDate, endDate } = datePeriod
   const firstLine1 = startDate ? i18n.t(["DatePeriod", "From"]) : endDate ? i18n.t(["DatePeriod", "To"]) : undefined
   const firstLine2 = startDate
@@ -38,11 +38,11 @@ export const PeriodView: React.FC<PeriodViewProps> = ({ datePeriod, onClearDate,
       </View>
       <View style={styles.icons}>
         {startDate || endDate ? (
-          <TouchableOpacity onPress={onClearDate}>
+          <TouchableOpacity onPress={onClearDatePeriod}>
             <Icon style={styles.icon} name={"close-circle"} />
           </TouchableOpacity>
         ) : null}
-        <TouchableOpacity onPress={onEditDate}>
+        <TouchableOpacity onPress={onEditDatePeriod}>
           <Icon style={styles.icon} name={"create"} />
         </TouchableOpacity>
       </View>
@@ -83,8 +83,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginTop: 5,
     fontSize: 12,
-  },
-  danger: {
-    color: "red",
   },
 })

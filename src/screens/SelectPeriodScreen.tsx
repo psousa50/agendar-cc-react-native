@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectPeriodView } from "../components/SelectPeriodView"
+import { SelectDatePeriodView } from "../components/SelectDatePeriodView"
 import { useGlobalState } from "../GlobalStateProvider"
 import { normalizeFilter } from "../state/main"
 import { DatePeriod, IrnTableFilter } from "../state/models"
@@ -36,7 +36,7 @@ export const SelectPeriodScreen: React.FC<AppScreenProps> = props => {
   }
 
   const renderContent = () => {
-    return <SelectPeriodView datePeriod={datePeriod} onDateChange={onDateChange} />
+    return <SelectDatePeriodView datePeriod={datePeriod} onDateChange={onDateChange} />
   }
   return (
     <AppScreen {...props} right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}>
