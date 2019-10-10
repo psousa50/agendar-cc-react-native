@@ -7,7 +7,7 @@ import { pt } from "./locales/pt"
 const locales = RNLocalize.getLocales()
 
 if (Array.isArray(locales)) {
-  I18n.locale = locales[0].languageTag
+  I18n.locale = "pt" || locales[0].languageTag
 }
 
 I18n.fallbacks = true
@@ -16,6 +16,4 @@ I18n.translations = {
   pt,
 }
 
-// type LocalesString = typeof en
-// export const i18n = { ...I18n, t: (s: keyof LocalesString, options?: TranslateOptions) => I18n.t(s, options) }
 export const i18n = I18n

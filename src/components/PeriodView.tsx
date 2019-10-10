@@ -13,21 +13,29 @@ interface PeriodViewProps {
 
 export const PeriodView: React.FC<PeriodViewProps> = ({ datePeriod, onClearDate, onEditDate }) => {
   const { startDate, endDate } = datePeriod
-  const periodText =
-    startDate && endDate
-      ? i18n.t(["DatePeriod", "OnThePeriod"], {
-          startDate: formatDateLocale(startDate),
-          endDate: formatDateLocale(endDate),
-        })
-      : startDate
-      ? i18n.t(["DatePeriod", "FromTheDay"], { startDate: formatDateLocale(startDate) })
-      : endDate
-      ? i18n.t(["DatePeriod", "UntilTheDay"], { endDate: formatDateLocale(endDate) })
-      : i18n.t(["DatePeriod", "Asap"])
+  const firstLine1 = startDate ? i18n.t(["DatePeriod", "From"]) : endDate ? i18n.t(["DatePeriod", "To"]) : undefined
+  const firstLine2 = startDate
+    ? formatDateLocale(startDate)
+    : endDate
+    ? formatDateLocale(endDate)
+    : i18n.t(["DatePeriod", "Asap"])
+  const secondLine1 = startDate && endDate ? i18n.t(["DatePeriod", "To"]) : undefined
+  const secondLine2 = startDate && endDate ? formatDateLocale(endDate) : undefined
 
   return (
     <View style={styles.container}>
-      <Text style={styles.periodText}>{periodText}</Text>
+      <View style={styles.datesText}>
+        <View style={styles.row}>
+          <Text style={styles.periodText1}>{firstLine1}</Text>
+          <Text style={styles.periodText2}>{firstLine2}</Text>
+        </View>
+        {secondLine1 || secondLine2 ? (
+          <View style={styles.row}>
+            <Text style={styles.periodText1}>{secondLine1}</Text>
+            <Text style={styles.periodText2}>{secondLine2}</Text>
+          </View>
+        ) : null}
+      </View>
       <View style={styles.icons}>
         {startDate || endDate ? (
           <TouchableOpacity onPress={onClearDate}>
@@ -46,11 +54,29 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+  },
+  datesText: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  row: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  periodText1: {
+    margin: 5,
+    fontSize: 12,
+    width: "30%",
+  },
+  periodText2: {
+    margin: 5,
+    fontSize: 12,
+    fontWeight: "bold",
   },
   icons: {
     flex: 1,
     justifyContent: "flex-end",
+    alignItems: "center",
     flexDirection: "row",
   },
   icon: {
@@ -60,9 +86,5 @@ const styles = StyleSheet.create({
   },
   danger: {
     color: "red",
-  },
-  periodText: {
-    margin: 5,
-    fontSize: 12,
   },
 })

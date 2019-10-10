@@ -39,6 +39,7 @@ export const SelectPeriodView: React.FunctionComponent<SelectPeriodViewProps> = 
 
   return (
     <Calendar
+      current={dateRange[0]}
       markedDates={markedDates}
       markingType="period"
       onDayPress={onDayPress}
