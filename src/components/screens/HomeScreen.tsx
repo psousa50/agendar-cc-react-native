@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { appBackgroundImage } from "../../assets/images/images"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { DatePeriod, IrnTableFilter, TimePeriod } from "../../state/models"
+import { globalStateSelectors } from "../../state/selectors"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { HomeView } from "../views/HomeView"
 import { AppScreenName, navigate } from "./screens"
@@ -9,8 +10,7 @@ import { AppScreenName, navigate } from "./screens"
 export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const navigation = navigate(props.navigation)
-
-  const irnFilter = globalState.irnTablesData.filter
+  const stateSelectors = globalStateSelectors(globalState)
 
   const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
@@ -30,10 +30,6 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
-      endDate: new Date("2019-10-04"),
-      startDate: new Date("2019-10-12"),
-      startTime: "11:35",
-      endTime: "15:40",
     })
   }, [])
 
@@ -48,11 +44,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onServiceIdChanged = (serviceId: number) => {
-    updateGlobalFilter({ ...irnFilter, serviceId })
+    updateGlobalFilter({ serviceId })
   }
 
   const onDatePeriodChanged = (datePeriod: DatePeriod) => {
-    updateGlobalFilter({ ...irnFilter, ...datePeriod })
+    updateGlobalFilter({ ...datePeriod })
   }
 
   const onTimePeriodChanged = (timePeriod: TimePeriod) => {
@@ -63,17 +59,19 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     navigation.goTo("SelectPeriodScreen")
   }
 
+  const homeViewProps = {
+    irnFilter: stateSelectors.getIrnTablesFilter,
+    onDatePeriodChanged,
+    onEditDatePeriod,
+    onSearch,
+    onSelectFilter,
+    onServiceIdChanged,
+    onTimePeriodChanged,
+  }
+
   return (
     <AppScreen {...props} backgroundImage={appBackgroundImage}>
-      <HomeView
-        irnFilter={globalState.irnTablesData.filter}
-        onDatePeriodChanged={onDatePeriodChanged}
-        onEditDatePeriod={onEditDatePeriod}
-        onSearch={onSearch}
-        onSelectFilter={onSelectFilter}
-        onServiceIdChanged={onServiceIdChanged}
-        onTimePeriodChanged={onTimePeriodChanged}
-      />
+      <HomeView {...homeViewProps} />
     </AppScreen>
   )
 }

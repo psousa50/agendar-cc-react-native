@@ -65,30 +65,25 @@ export const HomeView: React.FC<HomeViewProps> = ({
     mergeState({ showStartTime: true })
   }
 
-  const renderTimePickers = () => {
-    return (
-      <>
-        {state.showStartTime ? (
-          <DateTimePicker
-            value={dateFromTime(irnFilter.startTime, "08:00")}
-            mode={"time"}
-            is24Hour={true}
-            display="default"
-            onChange={onStartTimeChange}
-          />
-        ) : null}
-        {state.showEndTime ? (
-          <DateTimePicker
-            value={dateFromTime(endTime, startTime)}
-            mode={"time"}
-            is24Hour={true}
-            display="default"
-            onChange={onEndTimeChange}
-          />
-        ) : null}
-      </>
-    )
-  }
+  const renderStartTimePicker = () => (
+    <DateTimePicker
+      value={dateFromTime(irnFilter.startTime, "08:00")}
+      mode={"time"}
+      is24Hour={true}
+      display="default"
+      onChange={onStartTimeChange}
+    />
+  )
+
+  const renderEndTimePicker = () => (
+    <DateTimePicker
+      value={dateFromTime(endTime, startTime || "20:00")}
+      mode={"time"}
+      is24Hour={true}
+      display="default"
+      onChange={onEndTimeChange}
+    />
+  )
 
   return (
     <View>
@@ -114,7 +109,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <Button block success onPress={onSearch}>
         <Text>{"Pesquisar Horários"}</Text>
       </Button>
-      {renderTimePickers()}
+      {state.showStartTime && renderStartTimePicker()}
+      {state.showEndTime && renderEndTimePicker()}
     </View>
   )
 }

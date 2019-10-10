@@ -26,7 +26,7 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onCl
     <View style={styles.container}>
       <View style={styles.datesText}>
         <View style={styles.row}>
-          <Text style={styles.periodText1}>{firstLine1}</Text>
+          {startDate || endDate ? <Text style={styles.periodText1}>{firstLine1}</Text> : null}
           <Text style={styles.periodText2}>{firstLine2}</Text>
         </View>
         {secondLine1 || secondLine2 ? (
