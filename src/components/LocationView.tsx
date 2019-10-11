@@ -85,8 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   icon: {
-    paddingHorizontal: 5,
-    marginTop: 5,
-    fontSize: 12,
+    padding: 5,
+    fontSize: 16,
   },
 })
