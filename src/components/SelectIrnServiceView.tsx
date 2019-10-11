@@ -33,29 +33,35 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
     onServiceIdChanged(newServiceId)
   }
 
+  const serviceIsForCitizenCard = [1, 2].includes(serviceId || 1)
+  const serviceIsForPassport = [3, 4].includes(serviceId || 1)
   return (
     <View>
       <SegmentedControlTab
         activeTabStyle={{ backgroundColor: "#e3b13b" }}
         tabStyle={{ borderColor: "#e3b13b" }}
-        values={[i18n.t("Get_renew"), i18n.t("Pickup")]}
+        values={[i18n.t("Service.Get_renew"), i18n.t("Service.Pickup")]}
         selectedIndex={[1, 3].includes(serviceId || 1) ? 0 : 1}
         onTabPress={onTabPress}
       />
       <View style={styles.serviceImages}>
         <TouchableOpacity
-          style={[styles.serviceImageTouch, [1, 2].includes(serviceId || 1) ? styles.selectedCard : {}]}
+          style={[styles.serviceImageTouch, serviceIsForCitizenCard ? styles.selectedCard : {}]}
           onPress={() => onImagePress(0)}
         >
           <Image style={styles.serviceImage} source={ccImage} />
-          <Text style={styles.cardText}>{i18n.t("CitizenCard")}</Text>
+          <Text style={[styles.cardText, serviceIsForCitizenCard ? styles.cardSelectedText : {}]}>
+            {i18n.t("CitizenCard")}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.serviceImageTouch, [3, 4].includes(serviceId || 1) ? styles.selectedCard : {}]}
+          style={[styles.serviceImageTouch, serviceIsForPassport ? styles.selectedCard : {}]}
           onPress={() => onImagePress(1)}
         >
           <Image style={styles.serviceImage} source={passportImage} />
-          <Text style={styles.cardText}>{i18n.t("Passport")}</Text>
+          <Text style={[styles.cardText, serviceIsForPassport ? styles.cardSelectedText : {}]}>
+            {i18n.t("Passport")}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -80,6 +86,9 @@ const styles = StyleSheet.create({
   cardText: {
     marginTop: 5,
     fontSize: 12,
+  },
+  cardSelectedText: {
+    color: "white",
   },
   selectedCard: {
     backgroundColor: "#e3b13b",
