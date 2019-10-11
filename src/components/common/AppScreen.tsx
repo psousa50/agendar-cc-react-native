@@ -4,6 +4,7 @@ import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { appBackgroundImage } from "../../assets/images/images"
 import { LoadingPage } from "./LoadingPage"
+import { ButtonIcons } from "./ToolbarIcons"
 
 export interface AppNavigationScreenProps extends NavigationScreenProps {}
 
@@ -28,6 +29,16 @@ export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children,
       <View style={styles.content}>{loading ? <LoadingPage /> : children}</View>
     </Container>
   </ImageBackground>
+)
+
+export interface AppModalScreenProps extends AppNavigationScreenProps {
+  backgroundImage?: any
+  loading?: boolean
+  right?: () => JSX.Element
+}
+
+export const AppModalScreen: React.FC<AppModalScreenProps> = props => (
+  <AppScreen {...props} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
 )
 
 const styles = StyleSheet.create({

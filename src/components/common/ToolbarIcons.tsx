@@ -37,12 +37,13 @@ const ButtonIcon = (name: string, type?: IconType) => (onPress: OnPress, disable
 )
 export const ButtonIcons = {
   Add: ButtonIcon("add"),
-  Delete: ButtonIcon("trash"),
-  Edit: ButtonIcon("create"),
-  Refresh: ButtonIcon("refresh"),
   ArrowBack: ButtonIcon("arrow-back"),
   CancelEdit: ButtonIcon("arrow-back"),
   Checkmark: ButtonIcon("checkmark"),
+  Close: ButtonIcon("close"),
+  Delete: ButtonIcon("trash"),
+  Edit: ButtonIcon("create"),
+  Refresh: ButtonIcon("refresh"),
 }
 
 export const buttonIcons = (...buttons: ButtonIcons[]) => buttons

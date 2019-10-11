@@ -37,7 +37,7 @@ export const getClosestLocation = <T extends { gpsLocation?: GpsLocation }>(loca
 export type LocationsType = "District" | "County" | "Place"
 
 export const getMapLocations = (referenceData: ReferenceData) => (location: IrnTableFilterLocation) => {
-  const { districtId, countyId, region } = location
+  const { districtId, countyId, placeName, region } = location
   const districtLocations = referenceData
     .getDistricts(region)
     .filter(d => isNil(districtId) || d.districtId === districtId)
@@ -50,7 +50,12 @@ export const getMapLocations = (referenceData: ReferenceData) => (location: IrnT
 
   const irnPlacesLocations = referenceData
     .getIrnPlaces({})
-    .filter(p => (isNil(districtId) || p.districtId === districtId) && (isNil(countyId) || p.countyId === countyId))
+    .filter(
+      p =>
+        (isNil(districtId) || p.districtId === districtId) &&
+        (isNil(countyId) || p.countyId === countyId) &&
+        (isNil(placeName) || p.name === placeName),
+    )
 
   const locationType: LocationsType =
     districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"
@@ -59,4 +64,27 @@ export const getMapLocations = (referenceData: ReferenceData) => (location: IrnT
     locationType === "District" ? districtLocations : locationType === "County" ? countyLocations : irnPlacesLocations
 
   return { mapLocations, locationType }
+}
+
+export const normalizeLocation = (referenceData: ReferenceData) => ({
+  districtId,
+  countyId,
+  region,
+  placeName: initialPlaceName,
+}: IrnTableFilterLocation) => {
+  const getSinglePlaceName = () => {
+    const irnPlaces = referenceData.getIrnPlaces({ districtId, countyId })
+    console.log("=====>\n", irnPlaces)
+    return irnPlaces.length === 1 ? irnPlaces[0].name : undefined
+  }
+
+  console.log("=====>\n", initialPlaceName)
+  const placeName = initialPlaceName || getSinglePlaceName()
+  const district = referenceData.getDistrict(districtId)
+  return {
+    region: region || (district && district.region),
+    countyId,
+    districtId,
+    placeName,
+  }
 }

@@ -65,15 +65,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
       : []
 
   const onListItemPressed = (districtId: number, countyId?: number) => {
-    const district = referenceData.getDistrict(districtId)
-    const irnPlaces = referenceData.getIrnPlaces({ districtId, countyId })
-    const placeName = irnPlaces.length === 1 ? irnPlaces[0].name : undefined
-    onLocationChange({
-      region: district && district.region,
-      countyId,
-      districtId,
-      placeName,
-    })
+    onLocationChange({ districtId, countyId })
     mergeState({
       locationText: "",
       hideSearchResults: true,

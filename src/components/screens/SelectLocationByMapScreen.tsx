@@ -3,7 +3,7 @@ import { useGlobalState } from "../../GlobalStateProvider"
 import { IrnTableFilterLocation } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
 import { getMapLocations } from "../../utils/location"
-import { AppScreen, AppScreenProps } from "../common/AppScreen"
+import { AppModalScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { SelectLocationByMapView } from "../views/SelectLocationByMapView"
 import { navigate } from "./screens"
@@ -13,7 +13,7 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   const [globalState] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
 
-  const initialLocation = navigation.getParam("location") as IrnTableFilterLocation
+  const initialLocation = navigation.getParam("location", undefined) as IrnTableFilterLocation
   const [location, setLocation] = useState(initialLocation)
 
   const goBack = (newLocation?: IrnTableFilterLocation) => {
@@ -30,8 +30,8 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
     }
   }
   return (
-    <AppScreen {...props} right={() => ButtonIcons.Checkmark(goBack)}>
+    <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => goBack())}>
       <SelectLocationByMapView location={location} referenceData={stateSelectors} onLocationChange={onLocationChange} />
-    </AppScreen>
+    </AppModalScreen>
   )
 }
