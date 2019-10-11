@@ -87,13 +87,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   return (
     <View>
-      <InfoCard title={i18n.t("Service")}>
+      <InfoCard title={i18n.t("Service.Name")}>
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
       </InfoCard>
-      <InfoCard title={i18n.t("Where")}>
+      <InfoCard title={i18n.t("Where.Name")}>
         <SelectedLocationView irnFilter={irnFilter} onSelect={() => onSelectFilter("SelectLocationScreen")} />
       </InfoCard>
-      <InfoCard title={i18n.t("When")}>
+      <InfoCard title={i18n.t("When.Name")}>
         <DatePeriodView
           datePeriod={irnFilter}
           onClearDatePeriod={onClearDatePeriod}

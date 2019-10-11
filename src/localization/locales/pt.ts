@@ -1,12 +1,18 @@
 export const pt = {
-  Service: "Serviço",
-  Where: "Onde",
-  When: "Quando",
+  Service: {
+    Name: "Serviço",
+    Get_renew: "Pedir / Renovar",
+    Pickup: "Levantar",
+  },
+  Where: {
+    Name: "Onde",
+  },
+  When: {
+    Name: "Quando",
+  },
   CitizenCard: "Cartão de Cidadão",
   Passport: "Passaporte",
   SearchTimetables: "Pesquisar Horärios",
-  Get_renew: "Pedir / Renovar",
-  Pickup: "Levantar",
   DatePeriod: {
     From: "Desde o dia",
     To: "até ao dia",
