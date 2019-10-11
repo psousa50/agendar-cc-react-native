@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react"
 import { StyleSheet } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import { GpsLocation } from "../../irnTables/models"
+import { LocationsType } from "../../utils/location"
 
 export interface MapLocation {
   id?: number
@@ -9,7 +10,6 @@ export interface MapLocation {
   name: string
   pinColor?: string
 }
-export type LocationsType = "District" | "County" | "Place"
 interface LocationsMapProps {
   locationType: LocationsType
   mapLocations: MapLocation[]

@@ -70,12 +70,10 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
 
 const styles = StyleSheet.create({
   serviceImages: {
-    display: "flex",
     flexDirection: "row",
     paddingTop: 10,
   },
   serviceImageTouch: {
-    display: "flex",
     width: "50%",
     alignItems: "center",
   },

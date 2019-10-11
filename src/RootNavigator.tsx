@@ -8,11 +8,11 @@ import { HomeScreen } from "./components/screens/HomeScreen"
 import { IrnTablesByDateScreen } from "./components/screens/IrnTablesByDateScreen"
 import { IrnTablesResultsMapScreen } from "./components/screens/IrnTablesResultsMapScreen"
 import { IrnTablesResultsScreen } from "./components/screens/IrnTablesResultsScreen"
+import { SelectDatePeriodScreen } from "./components/screens/SelectDatePeriodScreen"
 import { SelectDateTimeScreen } from "./components/screens/SelectDateTimeScreen"
 import { SelectedIrnTableScreen } from "./components/screens/SelectedIrnTableScreen"
 import { SelectLocationByMapScreen } from "./components/screens/SelectLocationByMapScreen"
 import { SelectLocationScreen } from "./components/screens/SelectLocationScreen"
-import { SelectPeriodScreen } from "./components/screens/SelectPeriodScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
@@ -50,7 +50,7 @@ export const ContentNavigator = createStackNavigator(
     SelectDateTimeScreen,
     SelectLocationScreen,
     SelectLocationByMapScreen,
-    SelectPeriodScreen,
+    SelectDatePeriodScreen,
     Test,
   },
   {

@@ -32,6 +32,8 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
       serviceId: 1,
       districtId: 12,
       countyId: 5,
+      // placeName: "Conservatória",
+      placeName: "Conservatória do Registo Civil Predial Comercial e Automóvel da Horta",
     })
   }, [])
 
@@ -58,7 +60,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onEditDatePeriod = () => {
-    navigation.goTo("SelectPeriodScreen")
+    navigation.goTo("SelectDatePeriodScreen")
+  }
+
+  const onEditLocation = () => {
+    navigation.goTo("SelectLocationScreen")
   }
 
   const onLocationChanged = (location: IrnTableFilterLocation) => {
@@ -69,6 +75,7 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     irnFilter: stateSelectors.getIrnTablesFilter,
     onDatePeriodChanged,
     onEditDatePeriod,
+    onEditLocation,
     onLocationChanged,
     onSearch,
     onSelectFilter,

@@ -1,13 +1,11 @@
-import { View } from "native-base"
-import { isNil } from "ramda"
 import React, { useState } from "react"
-import { StyleSheet } from "react-native"
 import { useGlobalState } from "../../GlobalStateProvider"
-import { IrnTableFilter, IrnTableRefineFilter } from "../../state/models"
-import { globalStateSelectors, GlobalStateSelectors } from "../../state/selectors"
+import { IrnTableFilter, IrnTableFilterLocation } from "../../state/models"
+import { globalStateSelectors } from "../../state/selectors"
+import { getMapLocations } from "../../utils/location"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
+import { SelectLocationByMapView } from "../views/SelectLocationByMapView"
 import { navigate } from "./screens"
 
 export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
@@ -15,98 +13,38 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
 
-  const [filter, setFilter] = useState(stateSelectors.getIrnTablesFilterForEdit)
+  const initialLocation = navigation.getParam("location") as IrnTableFilterLocation
+  const [location, setLocation] = useState(initialLocation)
 
-  const updateGlobalFilterForEdit = (newFilter: Partial<IrnTableFilter>) => {
+  const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
-      type: "IRN_TABLES_SET_FILTER_FOR_EDIT",
-      payload: { filter: { ...stateSelectors.getIrnTablesFilterForEdit, ...newFilter } },
+      type: "IRN_TABLES_UPDATE_FILTER",
+      payload: { filter },
     })
-  }
-
-  const updateFilter = (newFilter: Partial<IrnTableRefineFilter>) => {
-    setFilter({ ...filter, ...newFilter })
   }
 
   const goBack = () => {
     navigation.goBack()
   }
 
-  const updateGlobalFilterForEditAndGoBack = () => {
-    updateGlobalFilterForEdit(filter)
+  const updateGlobalFilterAndGoBack = () => {
+    updateGlobalFilter(location)
     goBack()
   }
 
-  const checkOnlyOneResult = (newFilter: IrnTableRefineFilter) => {
-    const { mapLocations, locationType } = getMapLocations(stateSelectors)({
-      ...filter,
-      ...newFilter,
-    })
+  const onLocationChange = (newLocation: IrnTableFilterLocation) => {
+    const { mapLocations, locationType } = getMapLocations(stateSelectors)(newLocation)
+
     if (locationType === "Place" && mapLocations.length === 1) {
-      updateGlobalFilterForEdit(newFilter)
+      updateGlobalFilter(location)
       goBack()
     } else {
-      updateFilter(newFilter)
+      setLocation(newLocation)
     }
   }
-
-  const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
-    if (type === "District") {
-      checkOnlyOneResult({ districtId: mapLocation.id, countyId: undefined })
-    }
-    if (type === "County") {
-      checkOnlyOneResult({ countyId: mapLocation.id })
-    }
-    if (type === "Place") {
-      updateGlobalFilterForEdit({ placeName: mapLocation.name })
-      goBack()
-    }
-  }
-
-  const renderContent = () => {
-    const { mapLocations, locationType } = getMapLocations(stateSelectors)(filter)
-
-    return (
-      <View style={styles.container}>
-        <LocationsMap mapLocations={mapLocations} locationType={locationType} onLocationPress={onLocationPress} />
-      </View>
-    )
-  }
-
   return (
-    <AppScreen {...props} right={() => ButtonIcons.Checkmark(updateGlobalFilterForEditAndGoBack)}>
-      {renderContent()}
+    <AppScreen {...props} right={() => ButtonIcons.Checkmark(updateGlobalFilterAndGoBack)}>
+      <SelectLocationByMapView location={location} referenceData={stateSelectors} onLocationChange={onLocationChange} />
     </AppScreen>
   )
 }
-
-const getMapLocations = (stateSelectors: GlobalStateSelectors) => (filter: IrnTableFilter) => {
-  const { districtId, countyId, region } = filter
-  const districtLocations = stateSelectors
-    .getDistricts(region)
-    .filter(d => isNil(districtId) || d.districtId === districtId)
-    .map(d => ({ ...d, id: d.districtId }))
-
-  const countyLocations = stateSelectors
-    .getCounties(districtId)
-    .filter(c => isNil(countyId) || c.countyId === countyId)
-    .map(c => ({ ...c, id: c.countyId }))
-
-  const irnPlacesLocations = stateSelectors
-    .getIrnPlaces()
-    .filter(p => (isNil(districtId) || p.districtId === districtId) && (isNil(countyId) || p.countyId === countyId))
-
-  const locationType: LocationsType =
-    districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"
-
-  const mapLocations =
-    locationType === "District" ? districtLocations : locationType === "County" ? countyLocations : irnPlacesLocations
-
-  return { mapLocations, locationType }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-})

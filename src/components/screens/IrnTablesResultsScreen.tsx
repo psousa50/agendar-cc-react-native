@@ -93,7 +93,5 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 }
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-  },
+  container: {},
 })

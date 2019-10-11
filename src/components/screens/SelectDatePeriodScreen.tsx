@@ -5,10 +5,10 @@ import { DatePeriod, IrnTableFilter } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectDatePeriodView } from "../SelectDatePeriodView"
+import { SelectDatePeriodView } from "../views/SelectDatePeriodView"
 import { navigate } from "./screens"
 
-export const SelectPeriodScreen: React.FC<AppScreenProps> = props => {
+export const SelectDatePeriodScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
@@ -31,16 +31,13 @@ export const SelectPeriodScreen: React.FC<AppScreenProps> = props => {
     goBack()
   }
 
-  const onDateChange = (dp: DatePeriod) => {
-    setDatePeriod(normalizeFilter(dp))
+  const onDateChange = (newDatePeriod: DatePeriod) => {
+    setDatePeriod(normalizeFilter(newDatePeriod))
   }
 
-  const renderContent = () => {
-    return <SelectDatePeriodView datePeriod={datePeriod} onDateChange={onDateChange} />
-  }
   return (
     <AppScreen {...props} right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}>
-      {renderContent()}
+      <SelectDatePeriodView datePeriod={datePeriod} onDateChange={onDateChange} />
     </AppScreen>
   )
 }

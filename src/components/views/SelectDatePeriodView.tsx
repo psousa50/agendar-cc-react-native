@@ -1,14 +1,14 @@
 import React from "react"
 import { Calendar, DateObject } from "react-native-calendars"
-import { DatePeriod } from "../state/models"
-import { addDays, createDateRange, datesAreEqual } from "../utils/dates"
-import { formatDateYYYYMMDD } from "../utils/formaters"
+import { DatePeriod } from "../../state/models"
+import { addDays, createDateRange, datesAreEqual } from "../../utils/dates"
+import { formatDateYYYYMMDD } from "../../utils/formaters"
 
 interface SelectPeriodViewProps {
   datePeriod: DatePeriod
   onDateChange: (datePeriod: DatePeriod) => void
 }
-export const SelectDatePeriodView: React.FunctionComponent<SelectPeriodViewProps> = ({ datePeriod, onDateChange }) => {
+export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({ datePeriod, onDateChange }) => {
   const { startDate, endDate } = datePeriod
 
   const onDayPress = (dateObject: DateObject) => {

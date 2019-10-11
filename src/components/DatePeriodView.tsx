@@ -52,15 +52,12 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onCl
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     flexDirection: "row",
   },
   datesText: {
-    display: "flex",
     flexDirection: "column",
   },
   row: {
-    display: "flex",
     flexDirection: "row",
   },
   periodText1: {

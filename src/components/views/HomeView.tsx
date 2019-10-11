@@ -1,5 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { Button, Text, View } from "native-base"
+import { Button, Icon, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet } from "react-native"
 import { i18n } from "../../localization/i18n"
@@ -17,11 +17,12 @@ interface HomeViewProps {
   irnFilter: IrnTableFilter
   onDatePeriodChanged: (dateOPeriod: DatePeriod) => void
   onEditDatePeriod: () => void
+  onEditLocation: () => void
+  onLocationChanged: (location: IrnTableFilterLocation) => void
   onSearch: () => void
   onSelectFilter: (filterScreen: AppScreenName) => void
   onServiceIdChanged: (serviceId: number) => void
   onTimePeriodChanged: (timePeriod: TimePeriod) => void
-  onLocationChanged: (location: IrnTableFilterLocation) => void
 }
 
 interface HomeViewState {
@@ -33,11 +34,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
   irnFilter,
   onDatePeriodChanged,
   onEditDatePeriod,
+  onEditLocation,
+  onLocationChanged,
   onSearch,
-  onSelectFilter,
   onServiceIdChanged,
   onTimePeriodChanged,
-  onLocationChanged,
 }) => {
   const { serviceId, startTime, endTime } = irnFilter
   const initialState: HomeViewState = {
@@ -90,16 +91,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
   )
 
   return (
-    <View>
+    <View style={styles.container}>
       <InfoCard title={i18n.t("Service.Name")}>
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
       </InfoCard>
-      <InfoCard title={i18n.t("Where.Name")}>
-        <LocationView
-          irnFilter={irnFilter}
-          onClear={onClearLocation}
-          onEdit={() => onSelectFilter("SelectLocationScreen")}
-        />
+      <InfoCard title={i18n.t("Where.Name")} onPress={onEditLocation}>
+        <LocationView irnFilter={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")}>
         <DatePeriodView
@@ -114,11 +111,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
           onEditTimePeriod={onEditTimePeriod}
         />
       </InfoCard>
-      <Button style={{ marginTop: 50 }} block success onPress={onSearch}>
-        <Text>{"Pesquisar Horários"}</Text>
+      <Button block success onPress={onSearch}>
+        <Icon name="search" />
+        <Text>{i18n.t("SearchTimetables")}</Text>
       </Button>
       {state.showStartTime && renderStartTimePicker()}
       {state.showEndTime && renderEndTimePicker()}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+})

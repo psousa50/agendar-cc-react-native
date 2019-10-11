@@ -17,6 +17,7 @@ export const en = {
   CitizenCard: "Citizen Card",
   Passport: "Passaport",
   SearchTimetables: "Search",
+  SelectOnMap: "Select on Map",
   DatePeriod: {
     From: "From",
     To: "To",

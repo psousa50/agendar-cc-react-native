@@ -1,18 +1,19 @@
-import { NavigationParams, NavigationRoute, NavigationScreenProp } from "react-navigation"
+import { NavigationAction, NavigationParams, NavigationRoute, NavigationScreenProp } from "react-navigation"
 
 export type AppScreenName =
   | "HomeScreen"
   | "IrnTablesByDateScreen"
-  | "IrnTablesResultsScreen"
   | "IrnTablesResultsMapScreen"
-  | "SelectedIrnTableScreen"
+  | "IrnTablesResultsScreen"
+  | "SelectDatePeriodScreen"
   | "SelectDateTimeScreen"
-  | "SelectLocationScreen"
+  | "SelectedIrnTableScreen"
   | "SelectLocationByMapScreen"
-  | "SelectPeriodScreen"
+  | "SelectLocationScreen"
   | "Test"
 
 export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({
   ...navigation,
-  goTo: (screen: AppScreenName) => navigation.navigate(screen),
+  goTo: (screen: AppScreenName, params?: NavigationParams, action?: NavigationAction) =>
+    navigation.navigate(screen, params, action),
 })

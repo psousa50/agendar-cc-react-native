@@ -129,8 +129,8 @@ export interface ReferenceData {
   getIrnService: (serviceId: number) => IrnService | undefined
   getIrnServices: () => IrnServices
   getIrnPlace: (place: string) => IrnPlace | undefined
-  getIrnPlaces: ({ districtId, countyId }: DistrictAndCounty) => IrnPlaces
-  getDistricts: () => Districts
+  getIrnPlaces: (districtAndCounty: DistrictAndCounty) => IrnPlaces
+  getDistricts: (region?: Region) => Districts
   getDistrict: (districtId?: number) => District | undefined
   getCounties: (districtId?: number) => Counties
   getCounty: (countyId?: number) => County | undefined

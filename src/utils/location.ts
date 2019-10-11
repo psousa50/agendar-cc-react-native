@@ -1,4 +1,6 @@
+import { isNil } from "ramda"
 import { GpsLocation } from "../irnTables/models"
+import { IrnTableFilterLocation, ReferenceData } from "../state/models"
 
 const degreesToRadians = (degrees: number) => {
   return (degrees * Math.PI) / 180
@@ -31,3 +33,30 @@ export const getClosestLocation = <T extends { gpsLocation?: GpsLocation }>(loca
         { location: locations[0], distance: calcDistanceInKm(locations[0].gpsLocation!, locationToMatch) },
       )
     : undefined
+
+export type LocationsType = "District" | "County" | "Place"
+
+export const getMapLocations = (referenceData: ReferenceData) => (location: IrnTableFilterLocation) => {
+  const { districtId, countyId, region } = location
+  const districtLocations = referenceData
+    .getDistricts(region)
+    .filter(d => isNil(districtId) || d.districtId === districtId)
+    .map(d => ({ ...d, id: d.districtId }))
+
+  const countyLocations = referenceData
+    .getCounties(districtId)
+    .filter(c => isNil(countyId) || c.countyId === countyId)
+    .map(c => ({ ...c, id: c.countyId }))
+
+  const irnPlacesLocations = referenceData
+    .getIrnPlaces({})
+    .filter(p => (isNil(districtId) || p.districtId === districtId) && (isNil(countyId) || p.countyId === countyId))
+
+  const locationType: LocationsType =
+    districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"
+
+  const mapLocations =
+    locationType === "District" ? districtLocations : locationType === "County" ? countyLocations : irnPlacesLocations
+
+  return { mapLocations, locationType }
+}

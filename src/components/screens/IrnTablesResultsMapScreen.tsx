@@ -5,8 +5,9 @@ import { getIrnTableResultSummary, refineFilterIrnTable } from "../../irnTables/
 import { Counties, Districts, IrnPlaces } from "../../irnTables/models"
 import { IrnTableRefineFilter } from "../../state/models"
 import { globalStateSelectors, GlobalStateSelectors } from "../../state/selectors"
+import { LocationsType } from "../../utils/location"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { LocationsMap, LocationsType, MapLocation } from "../common/LocationsMap"
+import { LocationsMap, MapLocation } from "../common/LocationsMap"
 import { ButtonIcons } from "../common/ToolbarIcons"
 import { navigate } from "./screens"
 
