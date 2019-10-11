@@ -12,6 +12,7 @@ import {
   IrnServices,
   TimeSlot,
 } from "../irnTables/models"
+import { i18n } from "../localization/i18n"
 
 export interface StaticDataState {
   irnServices: IrnServices
@@ -35,7 +36,7 @@ export interface TimePeriod {
 
 export type Region = "Acores" | "Continente" | "Madeira"
 
-export interface IrnTableFilterLocationState {
+export interface IrnTableFilterLocation {
   countyId?: number
   distanceRadiusKm?: number
   districtId?: number
@@ -44,7 +45,7 @@ export interface IrnTableFilterLocationState {
   region?: Region
 }
 
-export interface IrnTableFilterDateTimeState {
+export interface IrnTableFilterDateTime {
   endDate?: Date
   endTime?: TimeSlot
   onlyOnSaturdays?: boolean
@@ -60,7 +61,7 @@ export interface IrnTableRefineFilter {
   timeSlot?: TimeSlot
 }
 
-export interface IrnTableFilter extends IrnTableFilterLocationState, IrnTableFilterDateTimeState {
+export interface IrnTableFilter extends IrnTableFilterLocation, IrnTableFilterDateTime {
   serviceId?: number
 }
 
@@ -75,9 +76,9 @@ type RegionNames = {
   [k: string]: string
 }
 export const regionNames: RegionNames = {
-  ["Continente"]: "Continente",
-  ["Acores"]: "Açores",
-  ["Madeira"]: "Madeira",
+  ["Continente"]: i18n.t("Regions.Mainland"),
+  ["Acores"]: i18n.t("Regions.Azores"),
+  ["Madeira"]: i18n.t("Regions.Madeira"),
 }
 
 export interface SelectedIrnTableState {

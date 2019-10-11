@@ -22,8 +22,8 @@ import { useCurrentGpsLocation } from "../../utils/hooks"
 import { getClosestLocation } from "../../utils/location"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { ButtonIcons } from "../common/ToolbarIcons"
+import { LocationView } from "../LocationView"
 import { RadioButton } from "../RadioButton"
-import { SelectedLocationView } from "../SelectedLocationView"
 import { navigate } from "./screens"
 
 const MINIMUN_DISTANCE_RADIUS = 10
@@ -171,7 +171,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     const irnPlaces = stateSelectors.getIrnPlaces(irnFilter)
     return (
       <View style={styles.container}>
-        <SelectedLocationView irnFilter={irnFilter} />
+        <LocationView irnFilter={irnFilter} />
         <View style={styles.regions}>
           {allRegions.map(r => (
             <RadioButton

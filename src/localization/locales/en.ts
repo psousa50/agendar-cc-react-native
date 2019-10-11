@@ -6,6 +6,10 @@ export const en = {
   },
   Where: {
     Name: "Where",
+    Region: "Region",
+    District: "District",
+    County: "County",
+    Place: "Place",
   },
   When: {
     Name: "When",
@@ -24,6 +28,11 @@ export const en = {
     From: "From {{startTime}}",
     Until: "Until {{endTime}}",
     Anytime: "Anytime",
+  },
+  Regions: {
+    Mainland: "Mainland",
+    Azores: "Azores",
+    Madeira: "Madeira",
   },
 
   date: {

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   icons: {
     flex: 1,
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "flex-start",
     flexDirection: "row",
   },
   icon: {

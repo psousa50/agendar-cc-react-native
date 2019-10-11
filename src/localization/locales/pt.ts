@@ -6,6 +6,10 @@ export const pt = {
   },
   Where: {
     Name: "Onde",
+    Region: "Região",
+    District: "Districto",
+    County: "Concelho",
+    Place: "Local",
   },
   When: {
     Name: "Quando",
@@ -24,6 +28,11 @@ export const pt = {
     From: "A partir das {{startTime}}",
     Until: "Até às {{endTime}}",
     Anytime: "Em qualquer horário",
+  },
+  Regions: {
+    Mainland: "Continente",
+    Azores: "Açores",
+    Madeira: "Madeira",
   },
 
   date: {

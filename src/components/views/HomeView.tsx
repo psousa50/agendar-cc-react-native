@@ -3,13 +3,13 @@ import { Button, Text, View } from "native-base"
 import React, { useState } from "react"
 import { StyleSheet } from "react-native"
 import { i18n } from "../../localization/i18n"
-import { DatePeriod, IrnTableFilter, TimePeriod } from "../../state/models"
+import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { dateFromTime } from "../../utils/dates"
 import { extractTime } from "../../utils/formaters"
 import { InfoCard } from "../common/InfoCard"
 import { DatePeriodView } from "../DatePeriodView"
+import { LocationView } from "../LocationView"
 import { AppScreenName } from "../screens/screens"
-import { SelectedLocationView } from "../SelectedLocationView"
 import { SelectIrnServiceView } from "../SelectIrnServiceView"
 import { TimePeriodView } from "../TimePeriodView"
 
@@ -21,6 +21,7 @@ interface HomeViewProps {
   onSelectFilter: (filterScreen: AppScreenName) => void
   onServiceIdChanged: (serviceId: number) => void
   onTimePeriodChanged: (timePeriod: TimePeriod) => void
+  onLocationChanged: (location: IrnTableFilterLocation) => void
 }
 
 interface HomeViewState {
@@ -36,6 +37,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onSelectFilter,
   onServiceIdChanged,
   onTimePeriodChanged,
+  onLocationChanged,
 }) => {
   const { serviceId, startTime, endTime } = irnFilter
   const initialState: HomeViewState = {
@@ -48,6 +50,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   const onClearDatePeriod = () => onDatePeriodChanged({ startDate: undefined, endDate: undefined })
   const onClearTimePeriod = () => onTimePeriodChanged({ startTime: undefined, endTime: undefined })
+  const onClearLocation = () =>
+    onLocationChanged({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
 
   const onStartTimeChange = (_: any, date?: Date) => {
     const newStartTime = date && extractTime(date)
@@ -91,7 +95,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
       </InfoCard>
       <InfoCard title={i18n.t("Where.Name")}>
-        <SelectedLocationView irnFilter={irnFilter} onSelect={() => onSelectFilter("SelectLocationScreen")} />
+        <LocationView
+          irnFilter={irnFilter}
+          onClear={onClearLocation}
+          onEdit={() => onSelectFilter("SelectLocationScreen")}
+        />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")}>
         <DatePeriodView
@@ -106,7 +114,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           onEditTimePeriod={onEditTimePeriod}
         />
       </InfoCard>
-      <Button block success onPress={onSearch}>
+      <Button style={{ marginTop: 50 }} block success onPress={onSearch}>
         <Text>{"Pesquisar Horários"}</Text>
       </Button>
       {state.showStartTime && renderStartTimePicker()}

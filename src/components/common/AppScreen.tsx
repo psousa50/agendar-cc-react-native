@@ -15,7 +15,7 @@ export interface AppScreenProps extends AppNavigationScreenProps {
 }
 
 export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children, left, loading, right }) => (
-  <ImageBackground style={styles.container} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
+  <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
     <StatusBar barStyle="light-content" backgroundColor={"#00000020"} translucent={true} />
     <Container>
       <View style={styles.statusBar}></View>
@@ -25,17 +25,20 @@ export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children,
           <Right>{right ? right() : undefined}</Right>
         </Header>
       ) : null}
-      {loading ? <LoadingPage /> : children}
+      <View style={styles.content}>{loading ? <LoadingPage /> : children}</View>
     </Container>
   </ImageBackground>
 )
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
     ...StyleSheet.absoluteFillObject,
     width: "100%",
     height: "100%",
+  },
+  content: {
+    padding: 20,
   },
   statusBar: {
     height: 25,

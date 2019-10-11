@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { appBackgroundImage } from "../../assets/images/images"
 import { useGlobalState } from "../../GlobalStateProvider"
-import { DatePeriod, IrnTableFilter, TimePeriod } from "../../state/models"
+import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
 import { AppScreen, AppScreenProps } from "../common/AppScreen"
 import { HomeView } from "../views/HomeView"
@@ -30,6 +30,8 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
+      districtId: 12,
+      countyId: 5,
     })
   }, [])
 
@@ -59,10 +61,15 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     navigation.goTo("SelectPeriodScreen")
   }
 
+  const onLocationChanged = (location: IrnTableFilterLocation) => {
+    updateGlobalFilter({ ...location })
+  }
+
   const homeViewProps = {
     irnFilter: stateSelectors.getIrnTablesFilter,
     onDatePeriodChanged,
     onEditDatePeriod,
+    onLocationChanged,
     onSearch,
     onSelectFilter,
     onServiceIdChanged,
