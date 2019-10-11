@@ -12,8 +12,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
-  const { region, districtId, countyId, placeName } = stateSelectors.getIrnTablesFilter
-  const [location, setLocation] = useState({ region, districtId, countyId, placeName } as IrnTableFilterLocation)
+  const initialLocation = navigation.getParam("location", stateSelectors.getIrnTablesFilter)
+  const [location, setLocation] = useState(initialLocation)
 
   const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({
