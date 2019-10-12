@@ -38,8 +38,8 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
   return (
     <View>
       <SegmentedControlTab
-        activeTabStyle={{ backgroundColor: "#e3b13b" }}
-        tabStyle={{ borderColor: "#e3b13b" }}
+        activeTabStyle={{ backgroundColor: "#46b7df" }}
+        tabStyle={{ borderColor: "#46b7df" }}
         values={[i18n.t("Service.Get_renew"), i18n.t("Service.Pickup")]}
         selectedIndex={[1, 3].includes(serviceId || 1) ? 0 : 1}
         onTabPress={onTabPress}
@@ -89,6 +89,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   selectedCard: {
-    backgroundColor: "#e3b13b",
+    backgroundColor: "#46b7df",
   },
 })

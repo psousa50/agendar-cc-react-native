@@ -9,31 +9,52 @@ interface InfoCardProps {
 }
 export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress }) => (
   <TouchableOpacity onPress={onPress}>
-    <View style={styles.titleBar}>
-      <Text style={styles.titleBarText}>{title}</Text>
-    </View>
-    <View style={styles.infoCard}>
-      <View style={styles.infoCardContainer}>{children}</View>
+    <View style={styles.container}>
+      <View style={styles.titleBar}>
+        <Text style={styles.titleBarText}>{title}</Text>
+      </View>
+      <View style={styles.infoCard}>
+        <View style={styles.infoCardContent}>{children}</View>
+      </View>
     </View>
   </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
-  infoCard: {
-    backgroundColor: "transparent",
-    marginLeft: 30,
+  container: {
+    padding: 10,
   },
-  infoCardContainer: {
+  infoCard: {
+    backgroundColor: "white",
+    marginTop: -10,
+    marginLeft: 25,
+    marginRight: 15,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+    elevation: 24,
+  },
+  infoCardContent: {
     margin: 5,
     padding: 5,
     backgroundColor: "white",
   },
   titleBar: {
+    alignItems: "flex-start",
     backgroundColor: "#3171a8",
-    padding: 10,
+    borderRadius: 10,
+    paddingLeft: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
   },
   titleBarText: {
+    textAlignVertical: "top",
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
   },
 })
