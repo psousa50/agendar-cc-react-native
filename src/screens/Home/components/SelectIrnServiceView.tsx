@@ -2,8 +2,8 @@ import { Text, View } from "native-base"
 import React from "react"
 import { Image, StyleSheet, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
-import { ccImage, passportImage } from "../assets/images/images"
-import { i18n } from "../localization/i18n"
+import { ccImage, passportImage } from "../../../assets/images/images"
+import { i18n } from "../../../localization/i18n"
 
 interface SelectIrnServiceViewProps {
   serviceId?: number

@@ -1,11 +1,11 @@
 import React, { useState } from "react"
+import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { IrnTableRefineFilterLocation } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
-import { AppModalScreen, AppScreenProps } from "../common/AppScreen"
-import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectAnotherLocationView } from "../views/SelectAnotherLocationView"
-import { navigate } from "./screens"
+import { navigate } from "../screens"
+import { SelectAnotherLocationView } from "./SelectAnotherLocationView"
 
 export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)

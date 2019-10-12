@@ -1,10 +1,10 @@
 import { isNil } from "ramda"
 import React from "react"
+import { LocationsMap, MapLocation } from "../../components/common/LocationsMap"
 import { getIrnTableResultSummary } from "../../irnTables/main"
 import { Counties, Districts, IrnPlaces, IrnRepositoryTables } from "../../irnTables/models"
 import { IrnTableRefineFilter, IrnTableRefineFilterLocation, ReferenceData } from "../../state/models"
 import { LocationsType } from "../../utils/location"
-import { LocationsMap, MapLocation } from "../common/LocationsMap"
 
 interface SelectAnotherLocationViewProps {
   location: IrnTableRefineFilterLocation

@@ -1,9 +1,9 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet, TouchableOpacity } from "react-native"
-import { useGlobalState } from "../GlobalStateProvider"
-import { IrnTableFilter, regionNames } from "../state/models"
-import { globalStateSelectors } from "../state/selectors"
+import { useGlobalState } from "../../../GlobalStateProvider"
+import { IrnTableFilter, regionNames } from "../../../state/models"
+import { globalStateSelectors } from "../../../state/selectors"
 
 interface SelectedLocationViewProps {
   irnFilter: IrnTableFilter

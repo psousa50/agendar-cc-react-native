@@ -1,12 +1,12 @@
 import React, { useState } from "react"
+import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { normalizeFilter } from "../../state/main"
 import { DatePeriod, IrnTableFilter } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
-import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectDatePeriodView } from "../views/SelectDatePeriodView"
-import { navigate } from "./screens"
+import { navigate } from "../screens"
+import { SelectDatePeriodView } from "./SelectDatePeriodView"
 
 export const SelectDatePeriodScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)

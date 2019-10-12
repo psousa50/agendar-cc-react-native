@@ -1,13 +1,13 @@
 import React from "react"
 import { appBackgroundImage } from "../../assets/images/images"
+import { AppScreen } from "../../components/common/AppScreen"
+import { AppScreenProps } from "../../components/common/AppScreen"
 import { useIrnDataFetch } from "../../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { refineFilterIrnTable } from "../../irnTables/main"
 import { globalStateSelectors } from "../../state/selectors"
-import { AppScreen } from "../common/AppScreen"
-import { AppScreenProps } from "../common/AppScreen"
-import { IrnTablesResultsView } from "../views/IrnTablesResultsView"
-import { navigate } from "./screens"
+import { navigate } from "../screens"
+import { IrnTablesResultsView } from "./IrnTablesResultsView"
 
 export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)

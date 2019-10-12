@@ -1,9 +1,9 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet, TouchableOpacity } from "react-native"
-import { i18n } from "../localization/i18n"
-import { DatePeriod } from "../state/models"
-import { formatDateLocale } from "../utils/formaters"
+import { i18n } from "../../../localization/i18n"
+import { DatePeriod } from "../../../state/models"
+import { formatDateLocale } from "../../../utils/formaters"
 
 interface DatePeriodViewProps {
   datePeriod: DatePeriod

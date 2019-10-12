@@ -4,14 +4,13 @@ import { Animated, Easing, Platform, StatusBar } from "react-native"
 import { createStackNavigator } from "react-navigation"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
-import { HomeScreen } from "./components/screens/HomeScreen"
-import { IrnTablesResultsScreen } from "./components/screens/IrnTablesResultsScreen"
-import { SelectAnotherDateScreen } from "./components/screens/SelectAnotherDateScreen"
-import { SelectAnotherLocationScreen } from "./components/screens/SelectAnotherLocationScreen"
-import { SelectDatePeriodScreen } from "./components/screens/SelectDatePeriodScreen"
-import { SelectedIrnTableScreen } from "./components/screens/SelectedIrnTableScreen"
-import { SelectLocationByMapScreen } from "./components/screens/SelectLocationByMapScreen"
-import { SelectLocationScreen } from "./components/screens/SelectLocationScreen"
+import { HomeScreen } from "./screens/Home/HomeScreen"
+import { IrnTablesResultsScreen } from "./screens/IrnTableResults/IrnTablesResultsScreen"
+import { SelectAnotherDateScreen } from "./screens/SelectAnotherDate/SelectAnotherDateScreen"
+import { SelectAnotherLocationScreen } from "./screens/SelectAnotherLocation/SelectAnotherLocationScreen"
+import { SelectDatePeriodScreen } from "./screens/SelectDatePeriod/SelectDatePeriodScreen"
+import { SelectLocationScreen } from "./screens/SelectLocation/SelectLocationScreen"
+import { SelectLocationByMapScreen } from "./screens/SelectLocationByMapScreen/SelectLocationByMapScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
@@ -45,7 +44,6 @@ export const ContentNavigator = createStackNavigator(
     SelectAnotherDateScreen,
     IrnTablesResultsScreen,
     SelectAnotherLocationScreen,
-    SelectedIrnTableScreen,
     SelectLocationScreen,
     SelectLocationByMapScreen,
     SelectDatePeriodScreen,

@@ -1,6 +1,7 @@
 import { Button, Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
+import { InfoCard } from "../../components/common/InfoCard"
 import {
   getIrnTableResultSummary,
   refineFilterIrnTable,
@@ -10,8 +11,7 @@ import {
 import { IrnRepositoryTables } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { IrnTableFilter, IrnTableRefineFilter, ReferenceData } from "../../state/models"
-import { InfoCard } from "../common/InfoCard"
-import { IrnTableResultView } from "../common/IrnTableResultView"
+import { IrnTableResultView } from "./IrnTableResultView"
 
 interface IrnTablesResultsViewProps {
   filter: IrnTableFilter

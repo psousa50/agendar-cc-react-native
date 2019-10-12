@@ -1,6 +1,6 @@
 import { View } from "native-base"
 import React from "react"
-import { RadioButton } from "./components/RadioButton"
+import { RadioButton } from "./components/common/RadioButton"
 
 export const Test = () => {
   return (

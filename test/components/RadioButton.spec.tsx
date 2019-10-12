@@ -1,7 +1,7 @@
 import { Radio } from "native-base"
 import React from "react"
 import { fireEvent, render } from "react-native-testing-library"
-import { RadioButton } from "../../src/components/RadioButton"
+import { RadioButton } from "../../src/components/common/RadioButton"
 
 describe("RadioButtonj", () => {
   it("should render the label", () => {

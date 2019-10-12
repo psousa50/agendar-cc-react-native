@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
 import { appBackgroundImage } from "../../assets/images/images"
+import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
-import { AppScreen, AppScreenProps } from "../common/AppScreen"
-import { HomeView } from "../views/HomeView"
-import { AppScreenName, navigate } from "./screens"
+import { AppScreenName, navigate } from "../screens"
+import { HomeView } from "./HomeView"
 
 export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const [globalState, globalDispatch] = useGlobalState()

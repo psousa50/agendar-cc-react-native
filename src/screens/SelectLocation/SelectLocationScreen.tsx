@@ -1,14 +1,14 @@
 import React, { useState } from "react"
 import { NavigationEvents } from "react-navigation"
 import { NavigationEventPayload } from "react-navigation"
+import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { IrnTableFilter, IrnTableFilterLocation } from "../../state/models"
 import { globalStateSelectors } from "../../state/selectors"
 import { normalizeLocation } from "../../utils/location"
-import { AppModalScreen, AppScreenProps } from "../common/AppScreen"
-import { ButtonIcons } from "../common/ToolbarIcons"
-import { SelectLocationView } from "../views/SelectLocationView"
-import { navigate } from "./screens"
+import { navigate } from "../screens"
+import { SelectLocationView } from "./SelectLocationView"
 
 export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)

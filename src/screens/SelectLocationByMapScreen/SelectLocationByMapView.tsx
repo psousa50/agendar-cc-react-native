@@ -1,9 +1,9 @@
 import { View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
+import { LocationsMap, MapLocation } from "../../components/common/LocationsMap"
 import { IrnTableFilterLocation, ReferenceData } from "../../state/models"
 import { getMapLocations, LocationsType } from "../../utils/location"
-import { LocationsMap, MapLocation } from "../common/LocationsMap"
 
 interface SelectLocationByMapViewProps {
   location: IrnTableFilterLocation

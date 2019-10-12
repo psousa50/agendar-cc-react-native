@@ -1,9 +1,9 @@
 import React from "react"
+import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { globalStateSelectors } from "../../state/selectors"
-import { AppModalScreen, AppScreenProps } from "../common/AppScreen"
-import { SelectAnotherDateView } from "../views/SelectAnotherDateView"
-import { navigate } from "./screens"
+import { navigate } from "../screens"
+import { SelectAnotherDateView } from "./SelectAnotherDateView"
 
 export const SelectAnotherDateScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)

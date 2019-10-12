@@ -1,9 +1,9 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet, TouchableOpacity } from "react-native"
-import { i18n } from "../localization/i18n"
-import { TimePeriod } from "../state/models"
-import { formatTimeSlot } from "../utils/formaters"
+import { i18n } from "../../../localization/i18n"
+import { TimePeriod } from "../../../state/models"
+import { formatTimeSlot } from "../../../utils/formaters"
 
 interface TimePeriodViewProps {
   timePeriod: TimePeriod
