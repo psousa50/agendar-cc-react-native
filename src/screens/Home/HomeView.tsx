@@ -92,18 +92,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   return (
     <ScrollView style={styles.container}>
-      <InfoCard title={i18n.t("Service.Name")}>
+      <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
       </InfoCard>
-      <InfoCard title={i18n.t("Where.Name")} onPress={onEditLocation}>
+      <InfoCard title={i18n.t("Where.Name")} iconType={"MaterialIcons"} iconName="location-on" onPress={onEditLocation}>
         <LocationView irnFilter={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
       </InfoCard>
-      <InfoCard title={i18n.t("When.Name")}>
+      <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
         <DatePeriodView datePeriod={irnFilter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />
         <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
         <TimePeriodView timePeriod={irnFilter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
       </InfoCard>
-      <Button block success onPress={onSearch}>
+      <Button style={styles.button} block success onPress={onSearch}>
         <Icon name="search" />
         <Text>{i18n.t("SearchTimetables")}</Text>
       </Button>
@@ -116,5 +116,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  button: {
+    marginTop: 20,
   },
 })

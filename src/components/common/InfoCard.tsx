@@ -1,16 +1,23 @@
-import { Text, View } from "native-base"
+import { Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import { appTheme } from "../../utils/appTheme"
+import { IconType } from "./ToolbarIcons"
+
+const colorPrimary = appTheme.primaryText
 
 interface InfoCardProps {
   title: string
+  iconName: string
+  iconType?: IconType
   onPress?: () => void
 }
-export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress }) => (
+export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress, iconName, iconType }) => (
   <TouchableOpacity onPress={onPress}>
     <View style={styles.container}>
       <View style={styles.titleBar}>
+        <Icon style={styles.icon} type={iconType} name={iconName} />
         <Text style={styles.titleBarText}>{title}</Text>
       </View>
       <View style={styles.infoCard}>
@@ -44,9 +51,14 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: "white",
   },
+  icon: {
+    padding: 5,
+    color: colorPrimary,
+  },
   titleBar: {
-    alignItems: "flex-start",
-    backgroundColor: "#3171a8",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: appTheme.brandPrimary,
     borderRadius: 10,
     paddingLeft: 10,
     paddingTop: 10,

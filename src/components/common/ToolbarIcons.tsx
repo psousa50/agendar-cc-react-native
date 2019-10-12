@@ -9,7 +9,7 @@ type ButtonIcons = {
   [k: string]: (onPress: OnPress) => JSX.Element
 }
 
-type IconType =
+export type IconType =
   | "AntDesign"
   | "Entypo"
   | "EvilIcons"

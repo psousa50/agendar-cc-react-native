@@ -2,9 +2,10 @@ import color from "color"
 
 import { Dimensions, PixelRatio, Platform } from "react-native"
 
-const COLOR_PRIMARY = "#0D47A1"
-const COLOR_SECONDARY = "#1976D2"
-const COLOR_SECONDARY_TEXT = "#FFFFFF"
+const COLOR_PRIMARY = "#0277bd"
+const COLOR_PRIMARY_TEXT = "#EEEEEE"
+const COLOR_SECONDARY = "#fbc02d"
+const COLOR_SECONDARY_TEXT = "#111111"
 const COLOR_SECONDARY_TEXT_DIMMED = "#BBBBBB"
 
 const deviceHeight = Dimensions.get("window").height
@@ -14,6 +15,9 @@ const platformStyle = undefined
 const isIphoneX = platform === "ios" && deviceHeight === 812 && deviceWidth === 375
 
 export const variables = {
+  primaryText: COLOR_PRIMARY_TEXT,
+  secondaryText: COLOR_SECONDARY_TEXT,
+  secondaryTextDIMMED: COLOR_SECONDARY_TEXT_DIMMED,
   platformStyle,
   platform,
   // Android

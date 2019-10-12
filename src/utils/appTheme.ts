@@ -1,1 +1,1 @@
-export { variable as appTheme } from "../theme/variables/platform"
+export { variables as appTheme } from "../theme/variables/commonColor"

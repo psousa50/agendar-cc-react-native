@@ -4,6 +4,10 @@ import { Image, StyleSheet, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { ccImage, passportImage } from "../../../assets/images/images"
 import { i18n } from "../../../localization/i18n"
+import { appTheme } from "../../../utils/appTheme"
+
+const colorSecondary = appTheme.brandSecondary
+const colorSecondaryText = appTheme.secondaryText
 
 interface SelectIrnServiceViewProps {
   serviceId?: number
@@ -38,8 +42,9 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
   return (
     <View>
       <SegmentedControlTab
-        activeTabStyle={{ backgroundColor: "#46b7df" }}
-        tabStyle={{ borderColor: "#46b7df" }}
+        activeTabStyle={{ backgroundColor: colorSecondary }}
+        activeTabTextStyle={{ color: colorSecondaryText }}
+        tabStyle={{ borderColor: colorSecondary }}
         values={[i18n.t("Service.Get_renew"), i18n.t("Service.Pickup")]}
         selectedIndex={[1, 3].includes(serviceId || 1) ? 0 : 1}
         onTabPress={onTabPress}
@@ -86,9 +91,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   cardSelectedText: {
-    color: "white",
+    color: colorSecondaryText,
   },
   selectedCard: {
-    backgroundColor: "#46b7df",
+    backgroundColor: colorSecondary,
   },
 })
