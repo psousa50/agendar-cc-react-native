@@ -1,7 +1,7 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Button, Icon, Text, View } from "native-base"
 import React, { useState } from "react"
-import { StyleSheet } from "react-native"
+import { ScrollView, StyleSheet } from "react-native"
 import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { dateFromTime } from "../../utils/dates"
@@ -91,7 +91,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   )
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <InfoCard title={i18n.t("Service.Name")}>
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
       </InfoCard>
@@ -99,17 +99,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <LocationView irnFilter={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")}>
-        <DatePeriodView
-          datePeriod={irnFilter}
-          onClearDatePeriod={onClearDatePeriod}
-          onEditDatePeriod={onEditDatePeriod}
-        />
+        <DatePeriodView datePeriod={irnFilter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />
         <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
-        <TimePeriodView
-          timePeriod={irnFilter}
-          onClearTimePeriod={onClearTimePeriod}
-          onEditTimePeriod={onEditTimePeriod}
-        />
+        <TimePeriodView timePeriod={irnFilter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
       </InfoCard>
       <Button block success onPress={onSearch}>
         <Icon name="search" />
@@ -117,13 +109,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </Button>
       {state.showStartTime && renderStartTimePicker()}
       {state.showEndTime && renderEndTimePicker()}
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
   },
 })

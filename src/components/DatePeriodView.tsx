@@ -7,76 +7,53 @@ import { formatDateLocale } from "../utils/formaters"
 
 interface DatePeriodViewProps {
   datePeriod: DatePeriod
-  onClearDatePeriod: () => void
-  onEditDatePeriod: () => void
+  onClear: () => void
+  onEdit: () => void
 }
 
-export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onClearDatePeriod, onEditDatePeriod }) => {
+export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onClear, onEdit }) => {
   const { startDate, endDate } = datePeriod
-  const firstLine1 = startDate ? i18n.t(["DatePeriod", "From"]) : endDate ? i18n.t(["DatePeriod", "To"]) : undefined
-  const firstLine2 = startDate
-    ? formatDateLocale(startDate)
-    : endDate
-    ? formatDateLocale(endDate)
-    : i18n.t(["DatePeriod", "Asap"])
-  const secondLine1 = startDate && endDate ? i18n.t(["DatePeriod", "To"]) : undefined
-  const secondLine2 = startDate && endDate ? formatDateLocale(endDate) : undefined
 
+  const isDefined = startDate || endDate
   return (
     <View style={styles.container}>
-      <View style={styles.datesText}>
-        <View style={styles.row}>
-          {startDate || endDate ? <Text style={styles.periodText1}>{firstLine1}</Text> : null}
-          <Text style={styles.periodText2}>{firstLine2}</Text>
-        </View>
-        {secondLine1 || secondLine2 ? (
-          <View style={styles.row}>
-            <Text style={styles.periodText1}>{secondLine1}</Text>
-            <Text style={styles.periodText2}>{secondLine2}</Text>
-          </View>
-        ) : null}
-      </View>
-      <View style={styles.icons}>
-        {startDate || endDate ? (
-          <TouchableOpacity onPress={onClearDatePeriod}>
-            <Icon style={styles.icon} name={"close-circle"} />
-          </TouchableOpacity>
-        ) : null}
-        <TouchableOpacity onPress={onEditDatePeriod}>
-          <Icon style={styles.icon} name={"create"} />
+      <TouchableOpacity onPress={onEdit}>
+        {isDefined ? (
+          <>
+            {startDate && <Text style={styles.text}>{formatDateLocale(startDate)}</Text>}
+            {endDate && <Text style={styles.text}>{formatDateLocale(endDate)}</Text>}
+          </>
+        ) : (
+          <Text style={styles.text}>{i18n.t("DatePeriod.Asap")}</Text>
+        )}
+      </TouchableOpacity>
+      {isDefined && (
+        <TouchableOpacity style={styles.close} onPress={onClear}>
+          <Icon style={styles.closeIcon} name={"close"} />
         </TouchableOpacity>
-      </View>
+      )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-  },
-  datesText: {
-    flexDirection: "column",
-  },
-  row: {
-    flexDirection: "row",
-  },
-  periodText1: {
-    margin: 5,
-    fontSize: 12,
-    width: "30%",
-  },
-  periodText2: {
-    margin: 5,
-    fontSize: 12,
+  container: {},
+  text: {
+    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
+    paddingVertical: 5,
   },
-  icons: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
-    flexDirection: "row",
+  editIcon: {
+    padding: 5,
+    fontSize: 16,
   },
-  icon: {
+  close: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+  },
+  closeIcon: {
     padding: 5,
     fontSize: 16,
   },

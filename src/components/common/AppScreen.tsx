@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
   },
   statusBar: {
     height: 25,

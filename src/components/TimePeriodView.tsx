@@ -7,56 +7,53 @@ import { formatTimeSlot } from "../utils/formaters"
 
 interface TimePeriodViewProps {
   timePeriod: TimePeriod
-  onClearTimePeriod: () => void
-  onEditTimePeriod: () => void
+  onClear: () => void
+  onEdit: () => void
 }
 
-export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onClearTimePeriod, onEditTimePeriod }) => {
+export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onClear, onEdit }) => {
   const { startTime, endTime } = timePeriod
 
-  const timePeriodText =
-    startTime && endTime
-      ? i18n.t("TimePeriod.Period", { startTime: formatTimeSlot(startTime), endTime: formatTimeSlot(endTime) })
-      : startTime
-      ? i18n.t("TimePeriod.From", { startTime: formatTimeSlot(startTime) })
-      : endTime
-      ? i18n.t("TimePeriod.Until", { endTime: formatTimeSlot(endTime) })
-      : i18n.t("TimePeriod.Anytime")
-
+  const isDefined = startTime || endTime
   return (
     <View style={styles.container}>
-      <Text style={styles.timePeriodText}>{timePeriodText}</Text>
-      <View style={styles.icons}>
-        {startTime || endTime ? (
-          <TouchableOpacity onPress={onClearTimePeriod}>
-            <Icon style={styles.icon} name={"close-circle"} />
-          </TouchableOpacity>
-        ) : null}
-        <TouchableOpacity onPress={onEditTimePeriod}>
-          <Icon style={styles.icon} name={"create"} />
+      <TouchableOpacity onPress={onEdit}>
+        {isDefined ? (
+          <>
+            {startTime && <Text style={styles.text}>{formatTimeSlot(startTime)}</Text>}
+            {endTime && <Text style={styles.text}>{formatTimeSlot(endTime)}</Text>}
+          </>
+        ) : (
+          <Text style={styles.text}>{i18n.t("TimePeriod.Anytime")}</Text>
+        )}
+      </TouchableOpacity>
+      {isDefined && (
+        <TouchableOpacity style={styles.close} onPress={onClear}>
+          <Icon style={styles.closeIcon} name={"close"} />
         </TouchableOpacity>
-      </View>
+      )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  timePeriodText: {
-    margin: 5,
-    fontSize: 12,
+  container: {},
+  text: {
+    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
+    paddingVertical: 5,
   },
-  icons: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    flexDirection: "row",
+  editIcon: {
+    padding: 5,
+    fontSize: 16,
   },
-  icon: {
+  close: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+  },
+  closeIcon: {
     padding: 5,
     fontSize: 16,
   },
