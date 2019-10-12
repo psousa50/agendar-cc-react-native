@@ -30,6 +30,9 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
+      districtId: 12,
+      countyId: 42,
+      placeName: "CRCPCom Arruda dos Vinhos / Conservatória do Registo Civil, Predial e Comercial de Arruda dos Vinhos",
     })
   }, [])
 

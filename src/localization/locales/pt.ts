@@ -31,7 +31,7 @@ export const pt = {
     Anytime: "Em qualquer horário",
   },
   Regions: {
-    Mainland: "Continente",
+    Mainland: "Portugal Continental",
     Azores: "Açores",
     Madeira: "Madeira",
   },
