@@ -30,6 +30,9 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
+      // districtId: 12,
+      // startDate: new Date("2019-11-03"),
+      // endDate: new Date("2019-11-23"),
     })
   }, [])
 

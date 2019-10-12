@@ -27,7 +27,7 @@ export const SelectLocationByMapView: React.FC<SelectLocationByMapViewProps> = (
     }
   }
 
-  {
+  const render = () => {
     const { mapLocations, locationType } = getMapLocations(referenceData)(location)
     return (
       <View style={styles.container}>
@@ -35,6 +35,8 @@ export const SelectLocationByMapView: React.FC<SelectLocationByMapViewProps> = (
       </View>
     )
   }
+
+  return render()
 }
 
 const styles = StyleSheet.create({

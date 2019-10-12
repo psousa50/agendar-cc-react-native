@@ -10,23 +10,18 @@ interface SelectAnotherLocationViewProps {
   location: IrnTableRefineFilterLocation
   irnTables: IrnRepositoryTables
   referenceData: ReferenceData
-  onLocationChange: (location: IrnTableRefineFilterLocation) => void
-  onLocationSelected: (location: IrnTableRefineFilterLocation) => void
+  onLocationChange: (location: IrnTableRefineFilterLocation, isLast: boolean) => void
 }
 export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps> = ({
   irnTables,
   location,
   onLocationChange,
-  onLocationSelected,
   referenceData,
 }) => {
   const checkOnlyOneResult = (newLocation: IrnTableRefineFilterLocation) => {
     const { mapLocations, locationType } = getMapLocations(referenceData)(irnTables, { ...location, ...newLocation })
-    if (locationType === "Place" && mapLocations.length === 1) {
-      onLocationSelected(newLocation)
-    } else {
-      onLocationChange(newLocation)
-    }
+    const isLast = locationType === "Place" && mapLocations.length === 1
+    onLocationChange(newLocation, isLast)
   }
 
   const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
@@ -37,7 +32,7 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
       checkOnlyOneResult({ ...location, countyId: mapLocation.id })
     }
     if (type === "Place") {
-      onLocationChange({ ...location, placeName: mapLocation.name })
+      onLocationChange({ ...location, placeName: mapLocation.name }, true)
     }
   }
 
@@ -66,7 +61,7 @@ const getMapLocations = (referenceDate: ReferenceData) => (
     .map(d => ({ ...d, id: d.districtId }))
 
   const countyLocations = counties
-    .filter(c => isNil(districtId) || (c.districtId === districtId && (isNil(countyId) || c.countyId === countyId)))
+    .filter(c => (isNil(districtId) || c.districtId === districtId) && (isNil(countyId) || c.countyId === countyId))
     .map(c => ({ ...c, id: c.countyId }))
 
   const irnPlacesLocations = irnPlaces.filter(

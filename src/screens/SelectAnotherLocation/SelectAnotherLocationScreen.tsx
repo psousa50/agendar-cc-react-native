@@ -21,13 +21,13 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
     })
   }
 
-  const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>) => {
-    setLocation(newLocation)
-  }
-
-  const onLocationSelected = (newLocation: Partial<IrnTableRefineFilterLocation>) => {
-    updateRefineFilter(newLocation)
-    navigation.goBack()
+  const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>, isLast: boolean) => {
+    if (isLast) {
+      updateRefineFilter(newLocation)
+      navigation.goBack()
+    } else {
+      setLocation(newLocation)
+    }
   }
 
   const updateRefineFilterAndGoBack = () => {
@@ -40,7 +40,6 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
     location,
     referenceData: stateSelectors,
     onLocationChange,
-    onLocationSelected,
   }
 
   return (
