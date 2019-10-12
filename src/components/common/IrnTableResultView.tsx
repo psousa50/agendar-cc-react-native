@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   county: {},
   place: {
-    fontSize: 11,
+    fontSize: 12,
   },
   date: {},
   timeSlot: {},

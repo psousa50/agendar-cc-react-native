@@ -25,7 +25,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     refineFilter,
     irnTables: irnTablesFiltered,
     referenceData: stateSelectors,
-    onSearchLocation: () => navigation.goTo("IrnTablesResultsMapScreen"),
+    onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
     onSchedule: () => undefined,
     onNewSearch: () => navigation.goBack(),

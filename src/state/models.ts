@@ -53,11 +53,14 @@ export interface IrnTableFilterDateTime {
   startTime?: TimeSlot
 }
 
-export interface IrnTableRefineFilter {
+export interface IrnTableRefineFilterLocation {
   countyId?: number
   districtId?: number
-  date?: Date
   placeName?: string
+}
+
+export interface IrnTableRefineFilter extends IrnTableRefineFilterLocation {
+  date?: Date
   timeSlot?: TimeSlot
 }
 

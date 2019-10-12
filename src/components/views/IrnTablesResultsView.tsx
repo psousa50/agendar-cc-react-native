@@ -2,6 +2,7 @@ import { Button, Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import {
+  getIrnTableResultSummary,
   refineFilterIrnTable,
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
@@ -52,12 +53,12 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
       ? selectOneIrnTableResultByClosestDate(referenceData)(irnTablesFiltered, location, timeSlotsFilter)
       : selectOneIrnTableResultByClosestPlace(referenceData)(irnTablesFiltered, location, timeSlotsFilter)
 
-  // const irnTableResultSummary = getIrnTableResultSummary(irnTables)
+  const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
   const title = irnTableResult
     ? isAsap
-      ? i18n.t("Results.Closest")
-      : i18n.t("Results.Soonest")
+      ? i18n.t("Results.Soonest")
+      : i18n.t("Results.Closest")
     : i18n.t("Results.NoneTitle")
   return (
     <View style={styles.container}>
@@ -74,14 +75,18 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
         <Icon type={"MaterialIcons"} name="location-on" />
         <Text>{i18n.t("Results.ChooseLocation")}</Text>
       </Button>
-      <Button style={styles.button} block success onPress={onSearchDate}>
-        <Icon name="calendar" />
-        <Text>{i18n.t("Results.ChooseDate")}</Text>
-      </Button>
-      <Button style={styles.button} block danger onPress={onSchedule}>
-        <Icon type={"MaterialIcons"} name="schedule" />
-        <Text>{i18n.t("Results.Schedule")}</Text>
-      </Button>
+      {irnTableResultSummary.dates.length > 1 && (
+        <Button style={styles.button} block success onPress={onSearchDate}>
+          <Icon name="calendar" />
+          <Text>{i18n.t("Results.ChooseDate")}</Text>
+        </Button>
+      )}
+      {irnTableResultSummary.irnPlaceNames.length > 1 && (
+        <Button style={styles.button} block danger onPress={onSchedule}>
+          <Icon type={"MaterialIcons"} name="schedule" />
+          <Text>{i18n.t("Results.Schedule")}</Text>
+        </Button>
+      )}
       <Button style={styles.button} block info onPress={onNewSearch}>
         <Icon name="search" />
         <Text>{i18n.t("Results.NewSearch")}</Text>
