@@ -49,19 +49,19 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
           style={[styles.serviceImageTouch, serviceIsForCitizenCard ? styles.selectedCard : {}]}
           onPress={() => onImagePress(0)}
         >
-          <Image style={styles.serviceImage} source={ccImage} />
           <Text style={[styles.cardText, serviceIsForCitizenCard ? styles.cardSelectedText : {}]}>
             {i18n.t("CitizenCard")}
           </Text>
+          <Image style={styles.serviceImage} source={ccImage} />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.serviceImageTouch, serviceIsForPassport ? styles.selectedCard : {}]}
           onPress={() => onImagePress(1)}
         >
-          <Image style={styles.serviceImage} source={passportImage} />
           <Text style={[styles.cardText, serviceIsForPassport ? styles.cardSelectedText : {}]}>
             {i18n.t("Passport")}
           </Text>
+          <Image style={styles.serviceImage} source={passportImage} />
         </TouchableOpacity>
       </View>
     </View>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
     marginTop: 5,
-    fontSize: 12,
+    fontSize: 14,
   },
   cardSelectedText: {
     color: "white",
