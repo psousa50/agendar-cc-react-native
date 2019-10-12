@@ -3,6 +3,7 @@ import React from "react"
 import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { appBackgroundImage } from "../../assets/images/images"
+import { appTheme } from "../../utils/appTheme"
 import { LoadingPage } from "./LoadingPage"
 import { ButtonIcons } from "./ToolbarIcons"
 
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     height: 25,
   },
   header: {
-    backgroundColor: "#00000090",
+    backgroundColor: `${appTheme.primaryColorDark}C0`,
     borderWidth: 0,
   },
 })

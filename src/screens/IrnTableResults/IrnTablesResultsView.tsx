@@ -64,7 +64,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   console.log("=====>", irnTableResultSummary)
   return (
     <View style={styles.container}>
-      <InfoCard iconType={"MaterialIcons"} iconName="schedulen" title={title}>
+      <InfoCard iconType={"MaterialIcons"} iconName="schedule" title={title}>
         {irnTableResult ? (
           <IrnTableResultView irnTableResult={irnTableResult} referenceData={referenceData} />
         ) : (

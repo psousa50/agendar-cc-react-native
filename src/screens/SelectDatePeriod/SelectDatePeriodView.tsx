@@ -1,8 +1,11 @@
 import React from "react"
 import { Calendar, DateObject } from "react-native-calendars"
 import { DatePeriod } from "../../state/models"
+import { appTheme } from "../../utils/appTheme"
 import { addDays, createDateRange, datesAreEqual } from "../../utils/dates"
 import { formatDateYYYYMMDD } from "../../utils/formaters"
+
+const selectedColor = appTheme.secondaryColor
 
 interface SelectPeriodViewProps {
   datePeriod: DatePeriod
@@ -25,16 +28,18 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({ datePeri
   const dateRange = startDate && endDate ? createDateRange(addDays(startDate, 1), addDays(endDate, -1)) : []
   const markedDates = {
     ...(startDate
-      ? { [formatDateYYYYMMDD(startDate)]: { selected: true, color: "green", startingDay: hasBothDates } }
+      ? { [formatDateYYYYMMDD(startDate)]: { selected: true, color: selectedColor, startingDay: hasBothDates } }
       : {}),
     ...dateRange.reduce(
       (acc, date) => ({
         ...acc,
-        [formatDateYYYYMMDD(date)]: { selected: true, color: "green" },
+        [formatDateYYYYMMDD(date)]: { selected: true, color: selectedColor },
       }),
       {},
     ),
-    ...(endDate ? { [formatDateYYYYMMDD(endDate)]: { selected: true, color: "green", endingDay: hasBothDates } } : {}),
+    ...(endDate
+      ? { [formatDateYYYYMMDD(endDate)]: { selected: true, color: selectedColor, endingDay: hasBothDates } }
+      : {}),
   }
 
   return (

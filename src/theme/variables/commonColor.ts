@@ -2,11 +2,12 @@ import color from "color"
 
 import { Dimensions, PixelRatio, Platform } from "react-native"
 
-const COLOR_PRIMARY = "#0277bd"
-const COLOR_PRIMARY_TEXT = "#EEEEEE"
-const COLOR_SECONDARY = "#fbc02d"
-const COLOR_SECONDARY_TEXT = "#111111"
-const COLOR_SECONDARY_TEXT_DIMMED = "#BBBBBB"
+const PRIMARY_COLOR = "#0277bd"
+const PRIMARY_DARK_COLOR = "#004c8c"
+const PRIMARY_TEXT_COLOR = "#EEEEEE"
+const SECONDARY_COLOR = "#fbc02d"
+const SECONDARY_TEXT_COLOR = "#111111"
+const SECONDARY_TEXT_DIMMED_COLOR = "#BBBBBB"
 
 const deviceHeight = Dimensions.get("window").height
 const deviceWidth = Dimensions.get("window").width
@@ -15,9 +16,12 @@ const platformStyle = undefined
 const isIphoneX = platform === "ios" && deviceHeight === 812 && deviceWidth === 375
 
 export const variables = {
-  primaryText: COLOR_PRIMARY_TEXT,
-  secondaryText: COLOR_SECONDARY_TEXT,
-  secondaryTextDIMMED: COLOR_SECONDARY_TEXT_DIMMED,
+  primaryColor: PRIMARY_COLOR,
+  primaryColorDark: PRIMARY_DARK_COLOR,
+  secondaryColor: SECONDARY_COLOR,
+  primaryText: PRIMARY_TEXT_COLOR,
+  secondaryText: SECONDARY_TEXT_COLOR,
+  secondaryTextDIMMED: SECONDARY_TEXT_DIMMED_COLOR,
   platformStyle,
   platform,
   // Android
@@ -97,13 +101,13 @@ export const variables = {
   CheckboxIconMarginTop: platform === "ios" ? undefined : 1,
   CheckboxFontSize: platform === "ios" ? 23 / 0.9 : 17,
   DefaultFontSize: 17,
-  checkboxBgColor: COLOR_SECONDARY,
+  checkboxBgColor: SECONDARY_COLOR,
   checkboxSize: 20,
   checkboxTickColor: "#fff",
 
   // Color
-  brandPrimary: platform === "ios" ? "#007aff" : COLOR_PRIMARY,
-  brandSecondary: platform === "ios" ? "#007aff" : COLOR_SECONDARY,
+  brandPrimary: platform === "ios" ? "#007aff" : PRIMARY_COLOR,
+  brandSecondary: platform === "ios" ? "#007aff" : SECONDARY_COLOR,
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
@@ -126,7 +130,7 @@ export const variables = {
 
   // Footer
   footerHeight: isIphoneX ? 89 : 55,
-  footerDefaultBg: platform === "ios" ? "#F8F8F8" : COLOR_PRIMARY,
+  footerDefaultBg: platform === "ios" ? "#F8F8F8" : PRIMARY_COLOR,
   footerPaddingBottom: isIphoneX ? 34 : 0,
 
   // FooterTab
@@ -135,11 +139,11 @@ export const variables = {
   activeTab: platform === "ios" ? "#007aff" : "#fff",
   sTabBarActiveTextColor: "#007aff",
   tabBarActiveTextColor: platform === "ios" ? "#2874F0" : "#fff",
-  tabActiveBgColor: platform === "ios" ? "#cde1f9" : COLOR_PRIMARY,
+  tabActiveBgColor: platform === "ios" ? "#cde1f9" : PRIMARY_COLOR,
 
   // Header
   toolbarBtnColor: platform === "ios" ? "#007aff" : "#fff",
-  toolbarDefaultBg: platform === "ios" ? "#F8F8F8" : COLOR_PRIMARY,
+  toolbarDefaultBg: platform === "ios" ? "#F8F8F8" : PRIMARY_COLOR,
   toolbarHeight: platform === "ios" ? (isIphoneX ? 88 : 64) : 56,
   toolbarSearchIconSize: platform === "ios" ? 20 : 23,
   toolbarInputColor: platform === "ios" ? "#CECDD2" : "#fff",
@@ -147,7 +151,7 @@ export const variables = {
   searchBarInputHeight: platform === "ios" ? 30 : 50,
   toolbarBtnTextColor: platform === "ios" ? "#007aff" : "#fff",
   iosStatusbar: "dark-content",
-  toolbarDefaultBorder: platform === "ios" ? "#a7a6ab" : COLOR_PRIMARY,
+  toolbarDefaultBorder: platform === "ios" ? "#a7a6ab" : PRIMARY_COLOR,
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
       .darken(0.2)
@@ -199,30 +203,30 @@ export const variables = {
 
   // Radio Button
   radioBtnSize: platform === "ios" ? 25 : 23,
-  radioSelectedColorAndroid: COLOR_PRIMARY,
+  radioSelectedColorAndroid: PRIMARY_COLOR,
   radioBtnLineHeight: platform === "ios" ? 29 : 24,
   get radioColor() {
     return this.brandPrimary
   },
 
   // Segment
-  segmentBackgroundColor: platform === "ios" ? "#F8F8F8" : COLOR_PRIMARY,
+  segmentBackgroundColor: platform === "ios" ? "#F8F8F8" : PRIMARY_COLOR,
   segmentActiveBackgroundColor: platform === "ios" ? "#007aff" : "#fff",
   segmentTextColor: platform === "ios" ? "#007aff" : "#fff",
-  segmentActiveTextColor: platform === "ios" ? "#fff" : COLOR_PRIMARY,
+  segmentActiveTextColor: platform === "ios" ? "#fff" : PRIMARY_COLOR,
   segmentBorderColor: platform === "ios" ? "#007aff" : "#fff",
-  segmentBorderColorMain: platform === "ios" ? "#a7a6ab" : COLOR_PRIMARY,
+  segmentBorderColorMain: platform === "ios" ? "#a7a6ab" : PRIMARY_COLOR,
 
   // Spinner
   defaultSpinnerColor: "#45D56E",
   inverseSpinnerColor: "#1A191B",
 
   // Tab
-  tabDefaultBg: platform === "ios" ? "#F8F8F8" : COLOR_SECONDARY,
-  topTabBarTextColor: platform === "ios" ? "#6b6b6b" : COLOR_SECONDARY_TEXT_DIMMED,
-  topTabBarActiveTextColor: platform === "ios" ? "#007aff" : COLOR_SECONDARY_TEXT,
+  tabDefaultBg: platform === "ios" ? "#F8F8F8" : SECONDARY_COLOR,
+  topTabBarTextColor: platform === "ios" ? "#6b6b6b" : SECONDARY_TEXT_DIMMED_COLOR,
+  topTabBarActiveTextColor: platform === "ios" ? "#007aff" : SECONDARY_TEXT_COLOR,
   topTabBarBorderColor: platform === "ios" ? "#a7a6ab" : "#fff",
-  topTabBarActiveBorderColor: platform === "ios" ? "#007aff" : COLOR_SECONDARY_TEXT,
+  topTabBarActiveBorderColor: platform === "ios" ? "#007aff" : SECONDARY_TEXT_COLOR,
 
   // Tabs
   tabBgColor: "#F8F8F8",

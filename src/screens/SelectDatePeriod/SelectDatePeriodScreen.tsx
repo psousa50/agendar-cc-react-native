@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { useGlobalState } from "../../GlobalStateProvider"
 import { normalizeFilter } from "../../state/main"
@@ -36,8 +36,8 @@ export const SelectDatePeriodScreen: React.FC<AppScreenProps> = props => {
   }
 
   return (
-    <AppScreen {...props} right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}>
+    <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}>
       <SelectDatePeriodView datePeriod={datePeriod} onDateChange={onDateChange} />
-    </AppScreen>
+    </AppModalScreen>
   )
 }
