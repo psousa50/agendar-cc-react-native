@@ -1,4 +1,4 @@
-import { Text, View } from "native-base"
+import { Button, Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import {
@@ -17,12 +17,20 @@ interface IrnTablesResultsViewProps {
   refineFilter: IrnTableRefineFilter
   irnTables: IrnRepositoryTables
   referenceData: ReferenceData
+  onSearchLocation: () => void
+  onSearchDate: () => void
+  onSchedule: () => void
+  onNewSearch: () => void
 }
 export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   filter,
   refineFilter,
   irnTables,
   referenceData,
+  onSearchDate,
+  onSearchLocation,
+  onNewSearch,
+  onSchedule,
 }) => {
   const { startDate, endDate } = filter
   const irnTablesFiltered = irnTables.filter(refineFilterIrnTable(refineFilter))
@@ -62,6 +70,22 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           </View>
         )}
       </InfoCard>
+      <Button style={styles.button} block success onPress={onSearchLocation}>
+        <Icon type={"MaterialIcons"} name="location-on" />
+        <Text>{i18n.t("Results.ChooseLocation")}</Text>
+      </Button>
+      <Button style={styles.button} block success onPress={onSearchDate}>
+        <Icon name="calendar" />
+        <Text>{i18n.t("Results.ChooseDate")}</Text>
+      </Button>
+      <Button style={styles.button} block danger onPress={onSchedule}>
+        <Icon type={"MaterialIcons"} name="schedule" />
+        <Text>{i18n.t("Results.Schedule")}</Text>
+      </Button>
+      <Button style={styles.button} block info onPress={onNewSearch}>
+        <Icon name="search" />
+        <Text>{i18n.t("Results.NewSearch")}</Text>
+      </Button>
     </View>
   )
 }
@@ -69,5 +93,8 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
+  },
+  button: {
+    marginTop: 20,
   },
 })

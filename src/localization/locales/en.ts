@@ -41,6 +41,10 @@ export const en = {
     NoneTitle: "No Results",
     None: "No result was found for...",
     Table: "Table",
+    ChooseDate: "Select another date",
+    ChooseLocation: "Select another place",
+    Schedule: "Schedule",
+    NewSearch: "New Search",
   },
 
   date: {
