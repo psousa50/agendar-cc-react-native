@@ -30,10 +30,6 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
-      districtId: 12,
-      countyId: 5,
-      // placeName: "Conservatória",
-      placeName: "Conservatória do Registo Civil Predial Comercial e Automóvel da Horta",
     })
   }, [])
 

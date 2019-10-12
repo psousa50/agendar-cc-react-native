@@ -56,10 +56,10 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const renderContent = () => {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>{`Resultados encontrados: ${irnTables.length}`}</Text>
         {irnTableResult ? (
-          <View style={styles.container}>
+          <View>
             <Text>{`Mais ${isAsap ? "perto" : "próximo"}:`}</Text>
             <IrnTableResultView {...irnTableResult} />
           </View>
@@ -93,5 +93,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "white",
+  },
 })
