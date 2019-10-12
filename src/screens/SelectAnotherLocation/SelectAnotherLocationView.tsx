@@ -23,9 +23,9 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   const checkOnlyOneResult = (newLocation: IrnTableRefineFilterLocation) => {
     const { mapLocations, locationType } = getMapLocations(referenceData)(irnTables, { ...location, ...newLocation })
     if (locationType === "Place" && mapLocations.length === 1) {
-      onLocationChange(newLocation)
-    } else {
       onLocationSelected(newLocation)
+    } else {
+      onLocationChange(newLocation)
     }
   }
 
