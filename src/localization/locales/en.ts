@@ -35,6 +35,13 @@ export const en = {
     Azores: "Azores",
     Madeira: "Madeira",
   },
+  Results: {
+    Closest: "Closest Apointment",
+    Soonest: "Soonest Apointment",
+    NoneTitle: "No Results",
+    None: "No result was found for...",
+    Table: "Table",
+  },
 
   date: {
     formats: {

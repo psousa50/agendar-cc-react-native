@@ -35,6 +35,14 @@ export const pt = {
     Azores: "Açores",
     Madeira: "Madeira",
   },
+  Results: {
+    Closest: "Agendamento mais perto",
+    Soonest: "Agendamento mais rápido",
+    NoneTitle: "Sem Resultados",
+    None:
+      "Não foram encontrados resultados para os critérios de pesquisa que definiu. Tente um critério mais abrangente.",
+    Table: "Mesa",
+  },
 
   date: {
     month_names: [

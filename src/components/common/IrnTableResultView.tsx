@@ -1,36 +1,49 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
-import { useGlobalState } from "../../GlobalStateProvider"
 import { IrnTableResult } from "../../irnTables/models"
-import { globalStateSelectors } from "../../state/selectors"
-import { formatDateLocale, formatTimeSlot, getCountyName } from "../../utils/formaters"
+import { i18n } from "../../localization/i18n"
+import { ReferenceData } from "../../state/models"
+import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 
-export const IrnTableResultView: React.FC<IrnTableResult> = ({
-  countyId,
-  districtId,
-  date,
-  placeName,
-  timeSlot,
-  tableNumber,
-}) => {
-  const [globalState] = useGlobalState()
-  const stateSelectors = globalStateSelectors(globalState)
-
-  const county = stateSelectors.getCounty(countyId)
-  const district = stateSelectors.getDistrict(districtId)
-  const countyName = getCountyName(county, district)
+interface IrnTableResultViewProps {
+  irnTableResult: IrnTableResult
+  referenceData: ReferenceData
+}
+export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTableResult, referenceData }) => {
+  const { countyId, districtId, placeName, date, tableNumber, timeSlot } = irnTableResult
+  const county = referenceData.getCounty(countyId)
+  const district = referenceData.getDistrict(districtId)
+  const countyCount = referenceData.getCounties(districtId).length
 
   return (
-    <View style={styles.container}>
-      <Text>{countyName}</Text>
-      <Text>{formatDateLocale(date)}</Text>
-      <Text>{placeName}</Text>
-      <Text>{`Hora: ${formatTimeSlot(timeSlot)} - Mesa: ${tableNumber}`}</Text>
+    <View>
+      {district && <Text style={[styles.text, styles.district]}>{district.name}</Text>}
+      {county && countyCount > 1 && <Text style={[styles.text, styles.county]}>{county.name}</Text>}
+      <Text style={[styles.text, styles.date]}>{formatDateLocale(date)}</Text>
+      <Text style={[styles.text, styles.timeSlot]}>{formatTimeSlot(timeSlot)}</Text>
+      <Text style={[styles.text, styles.place]}>{placeName}</Text>
+      <Text style={[styles.text, styles.table]}>{`${i18n.t("Results.Table")} ${tableNumber}`}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {},
+  text: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    paddingVertical: 5,
+  },
+  district: {
+    fontSize: 18,
+  },
+  county: {},
+  place: {
+    fontSize: 11,
+  },
+  date: {},
+  timeSlot: {},
+  table: {},
 })

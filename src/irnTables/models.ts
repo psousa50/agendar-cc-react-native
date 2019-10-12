@@ -55,35 +55,6 @@ export type IrnRepositoryTable = {
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]
 
-export type DaySchedule = {
-  date: Date
-  timeSlots: TimeSlot[]
-}
-
-export type PlaceSchedule = {
-  placeName: string
-  timeSlots: TimeSlot[]
-}
-
-export interface IrnTableGrouped {
-  serviceId: number
-  districtId: number
-  countyId: number
-  address: string
-  postalCode: string
-  phone: string
-}
-
-export interface IrnTableLocationSchedules extends IrnTableGrouped {
-  placeName: string
-  daySchedules: DaySchedule[]
-}
-
-export interface IrnTableDateSchedules extends IrnTableGrouped {
-  date: Date
-  placeSchedules: PlaceSchedule[]
-}
-
 export type GetTableParams = Partial<{
   serviceId: number
   districtId: number
