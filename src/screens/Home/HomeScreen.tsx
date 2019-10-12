@@ -51,11 +51,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onDatePeriodChanged = (datePeriod: DatePeriod) => {
-    updateGlobalFilter({ ...datePeriod })
+    updateGlobalFilter(datePeriod)
   }
 
   const onTimePeriodChanged = (timePeriod: TimePeriod) => {
-    updateGlobalFilter({ ...timePeriod })
+    updateGlobalFilter(timePeriod)
   }
 
   const onEditDatePeriod = () => {

@@ -14,15 +14,21 @@ interface TimePeriodViewProps {
 export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onClear, onEdit }) => {
   const { startTime, endTime } = timePeriod
 
+  const timePeriodText =
+    startTime && endTime
+      ? i18n.t("TimePeriod.Period", { startTime: formatTimeSlot(startTime), endTime: formatTimeSlot(endTime) })
+      : startTime
+      ? i18n.t("TimePeriod.From", { startTime: formatTimeSlot(startTime) })
+      : endTime
+      ? i18n.t("TimePeriod.Until", { endTime: formatTimeSlot(endTime) })
+      : i18n.t("TimePeriod.Anytime")
+
   const isDefined = startTime || endTime
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onEdit}>
         {isDefined ? (
-          <>
-            {startTime && <Text style={styles.text}>{formatTimeSlot(startTime)}</Text>}
-            {endTime && <Text style={styles.text}>{formatTimeSlot(endTime)}</Text>}
-          </>
+          <Text style={styles.text}>{timePeriodText}</Text>
         ) : (
           <Text style={styles.text}>{i18n.t("TimePeriod.Anytime")}</Text>
         )}
