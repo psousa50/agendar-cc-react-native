@@ -5,9 +5,9 @@ import { createStackNavigator } from "react-navigation"
 import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
 import { HomeScreen } from "./components/screens/HomeScreen"
-import { IrnTablesByDateScreen } from "./components/screens/IrnTablesByDateScreen"
 import { IrnTablesResultsMapScreen } from "./components/screens/IrnTablesResultsMapScreen"
 import { IrnTablesResultsScreen } from "./components/screens/IrnTablesResultsScreen"
+import { SelectAnotherDateScreen } from "./components/screens/SelectAnotherDateScreen"
 import { SelectDatePeriodScreen } from "./components/screens/SelectDatePeriodScreen"
 import { SelectedIrnTableScreen } from "./components/screens/SelectedIrnTableScreen"
 import { SelectLocationByMapScreen } from "./components/screens/SelectLocationByMapScreen"
@@ -42,7 +42,7 @@ const transitionConfig = () => {
 export const ContentNavigator = createStackNavigator(
   {
     HomeScreen,
-    IrnTablesByDateScreen,
+    SelectAnotherDateScreen,
     IrnTablesResultsScreen,
     IrnTablesResultsMapScreen,
     SelectedIrnTableScreen,

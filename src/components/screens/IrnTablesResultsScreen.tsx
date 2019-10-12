@@ -26,7 +26,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     irnTables: irnTablesFiltered,
     referenceData: stateSelectors,
     onSearchLocation: () => navigation.goTo("IrnTablesResultsMapScreen"),
-    onSearchDate: () => navigation.goTo("IrnTablesByDateScreen"),
+    onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
     onSchedule: () => undefined,
     onNewSearch: () => navigation.goBack(),
   }

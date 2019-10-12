@@ -2,9 +2,9 @@ import { NavigationAction, NavigationParams, NavigationRoute, NavigationScreenPr
 
 export type AppScreenName =
   | "HomeScreen"
-  | "IrnTablesByDateScreen"
   | "IrnTablesResultsMapScreen"
   | "IrnTablesResultsScreen"
+  | "SelectAnotherDateScreen"
   | "SelectDatePeriodScreen"
   | "SelectedIrnTableScreen"
   | "SelectLocationByMapScreen"
