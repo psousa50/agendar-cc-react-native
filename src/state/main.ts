@@ -34,12 +34,15 @@ const staticDataReducer: StaticDataReducer = (state, action) => {
 }
 
 export const normalizeFilter = (filter: IrnTableFilter) => {
-  const { startDate, endDate } = filter
+  const { startDate, endDate, startTime, endTime } = filter
   const swapDates = startDate && endDate ? startDate > endDate : false
+  const swapTimes = startTime && endTime ? startTime > endTime : false
   return {
     ...filter,
     startDate: swapDates ? endDate : startDate,
     endDate: swapDates ? startDate : endDate,
+    startTime: swapTimes ? endTime : startTime,
+    endTime: swapTimes ? startTime : endTime,
   }
 }
 
@@ -82,8 +85,8 @@ const irnTablesDataReducer: IrnTablesDataReducer = (state, action) => {
       }
     }
     case "IRN_TABLES_UPDATE_FILTER": {
-      const newFilter = normalizeFilter(action.payload.filter)
-      return { ...state, filter: { ...state.filter, ...newFilter }, filterForEdit: newFilter }
+      const newFilter = action.payload.filter
+      return { ...state, filter: normalizeFilter({ ...state.filter, ...newFilter }), filterForEdit: newFilter }
     }
     case "IRN_TABLES_SET_FILTER_FOR_EDIT": {
       const newFilter = normalizeFilter(action.payload.filter)

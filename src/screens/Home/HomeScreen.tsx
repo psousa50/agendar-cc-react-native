@@ -56,15 +56,12 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onDatePeriodChanged = (datePeriod: DatePeriod) => {
+    console.log("onDatePeriodChanged=====>", datePeriod)
     updateGlobalFilter(datePeriod)
   }
 
   const onTimePeriodChanged = (timePeriod: TimePeriod) => {
     updateGlobalFilter(timePeriod)
-  }
-
-  const onEditDatePeriod = () => {
-    navigation.goTo("SelectDatePeriodScreen")
   }
 
   const onEditLocation = () => {
@@ -78,7 +75,6 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   const homeViewProps = {
     irnFilter: stateSelectors.getIrnTablesFilter,
     onDatePeriodChanged,
-    onEditDatePeriod,
     onEditLocation,
     onLocationChanged,
     onSearch,

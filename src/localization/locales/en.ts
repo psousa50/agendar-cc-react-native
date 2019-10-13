@@ -19,9 +19,9 @@ export const en = {
   SearchTimetables: "Search",
   SelectOnMap: "Select on Map",
   DatePeriod: {
-    From: "From",
-    To: "To",
-    Until: "Until",
+    From: "From {{startDate}}",
+    To: "To {{endDate}}",
+    OneDay: "On {{startDate}}",
     Asap: "As soon as possible",
   },
   TimePeriod: {

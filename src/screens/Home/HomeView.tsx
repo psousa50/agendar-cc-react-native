@@ -1,4 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
+import moment from "moment"
+import "moment/locale/pt"
 import { Button, Icon, Text, View } from "native-base"
 import React, { useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
@@ -13,10 +15,11 @@ import { LocationView } from "./components/LocationView"
 import { SelectIrnServiceView } from "./components/SelectIrnServiceView"
 import { TimePeriodView } from "./components/TimePeriodView"
 
+moment.locale("pt")
+
 interface HomeViewProps {
   irnFilter: IrnTableFilter
   onDatePeriodChanged: (dateOPeriod: DatePeriod) => void
-  onEditDatePeriod: () => void
   onEditLocation: () => void
   onLocationChanged: (location: IrnTableFilterLocation) => void
   onSearch: () => void
@@ -26,48 +29,82 @@ interface HomeViewProps {
 }
 
 interface HomeViewState {
-  showStartTime: boolean
-  showEndTime: boolean
+  showStartDatePickerModal: boolean
+  showEndDatePickerModal: boolean
+  showStartTimePickerModal: boolean
+  showEndTimePickerModal: boolean
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
   irnFilter,
   onDatePeriodChanged,
-  onEditDatePeriod,
   onEditLocation,
   onLocationChanged,
   onSearch,
   onServiceIdChanged,
   onTimePeriodChanged,
 }) => {
-  const { serviceId, startTime, endTime } = irnFilter
+  const { serviceId, startDate, endDate, startTime, endTime } = irnFilter
   const initialState: HomeViewState = {
-    showStartTime: false,
-    showEndTime: false,
+    showStartDatePickerModal: false,
+    showEndDatePickerModal: false,
+    showStartTimePickerModal: false,
+    showEndTimePickerModal: false,
   }
   const [state, setState] = useState(initialState)
 
+  console.log("state=====>", state)
+  console.log("SD=====>", startDate)
+  console.log("ED=====>", endDate)
+
   const mergeState = (newState: Partial<HomeViewState>) => setState(oldState => ({ ...oldState, ...newState }))
 
-  const onClearDatePeriod = () => onDatePeriodChanged({ startDate: undefined, endDate: undefined })
-  const onClearTimePeriod = () => onTimePeriodChanged({ startTime: undefined, endTime: undefined })
   const onClearLocation = () =>
     onLocationChanged({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
+  const onClearDatePeriod = () => onDatePeriodChanged({ startDate: undefined, endDate: undefined })
+  const onClearTimePeriod = () => onTimePeriodChanged({ startTime: undefined, endTime: undefined })
+
+  const onEditDatePeriod = () => {
+    mergeState({ showStartDatePickerModal: true })
+  }
+
+  const onEditTimePeriod = () => {
+    mergeState({ showStartTimePickerModal: true })
+  }
+
+  const onStartDateChange = (_: any, date?: Date) => {
+    mergeState({ showStartDatePickerModal: false, showEndDatePickerModal: true })
+    onDatePeriodChanged({ startDate: date })
+  }
+
+  const onEndDateChange = (_: any, date?: Date) => {
+    mergeState({ showEndDatePickerModal: false })
+    onDatePeriodChanged({ endDate: date })
+  }
+
+  const renderStartDatePicker = () => (
+    <DateTimePicker value={startDate || new Date()} mode={"date"} display="default" onChange={onStartDateChange} />
+  )
+
+  const renderEndDatePicker = () => (
+    <DateTimePicker
+      value={startDate || endDate || new Date()}
+      mode={"date"}
+      display="default"
+      onChange={onEndDateChange}
+    />
+  )
 
   const onStartTimeChange = (_: any, date?: Date) => {
     const newStartTime = date && extractTime(date)
-    mergeState({ showStartTime: false, showEndTime: true })
+    mergeState({ showStartTimePickerModal: false, showEndTimePickerModal: true })
     onTimePeriodChanged({ startTime: newStartTime })
   }
 
   const onEndTimeChange = (_: any, date?: Date) => {
     const newEndTime = date && extractTime(date)
-    mergeState({ showEndTime: false })
+    mergeState({ showEndTimePickerModal: false })
     onTimePeriodChanged({ endTime: newEndTime })
-  }
-
-  const onEditTimePeriod = () => {
-    mergeState({ showStartTime: true })
   }
 
   const renderStartTimePicker = () => (
@@ -107,8 +144,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <Icon name="search" />
         <Text>{i18n.t("SearchTimetables")}</Text>
       </Button>
-      {state.showStartTime && renderStartTimePicker()}
-      {state.showEndTime && renderEndTimePicker()}
+      {state.showStartDatePickerModal && renderStartDatePicker()}
+      {state.showEndDatePickerModal && renderEndDatePicker()}
+      {state.showStartTimePickerModal && renderStartTimePicker()}
+      {state.showEndTimePickerModal && renderEndTimePicker()}
     </ScrollView>
   )
 }

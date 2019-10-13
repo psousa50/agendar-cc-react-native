@@ -19,9 +19,9 @@ export const pt = {
   SearchTimetables: "Pesquisar Agendamentos",
   SelectOnMap: "Seleccionar no mapa",
   DatePeriod: {
-    From: "Desde o dia",
-    To: "até ao dia",
-    Until: "até ao dia",
+    From: "A partir do dia {{startDate}}",
+    To: "até ao dia {{endDate}}",
+    OneDay: "No dia {{startDate}}",
     Asap: "O mais depressa possível",
   },
   TimePeriod: {
