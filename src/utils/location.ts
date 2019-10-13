@@ -45,11 +45,14 @@ export const getMapLocations = (referenceData: ReferenceData) => (location: IrnT
 
   const countyLocations = referenceData
     .getCounties(districtId)
+    .filter(c => districtLocations.map(d => d.districtId).includes(c.districtId))
     .filter(c => isNil(countyId) || c.countyId === countyId)
     .map(c => ({ ...c, id: c.countyId }))
 
   const irnPlacesLocations = referenceData
     .getIrnPlaces({})
+    .filter(p => districtLocations.map(d => d.districtId).includes(p.districtId))
+    .filter(p => countyLocations.map(d => d.countyId).includes(p.countyId))
     .filter(
       p =>
         (isNil(districtId) || p.districtId === districtId) &&
@@ -74,11 +77,9 @@ export const normalizeLocation = (referenceData: ReferenceData) => ({
 }: IrnTableFilterLocation) => {
   const getSinglePlaceName = () => {
     const irnPlaces = referenceData.getIrnPlaces({ districtId, countyId })
-    console.log("=====>\n", irnPlaces)
     return irnPlaces.length === 1 ? irnPlaces[0].name : undefined
   }
 
-  console.log("=====>\n", initialPlaceName)
   const placeName = initialPlaceName || getSinglePlaceName()
   const district = referenceData.getDistrict(districtId)
   return {

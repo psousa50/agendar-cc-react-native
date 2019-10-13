@@ -71,5 +71,3 @@ const styles = EStyleSheet.create({
     fontSize: "1rem",
   },
 })
-
-console.log("styles=====>", JSON.stringify(styles, null, 2))

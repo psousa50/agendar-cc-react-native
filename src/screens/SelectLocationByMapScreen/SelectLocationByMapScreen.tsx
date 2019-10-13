@@ -29,6 +29,7 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
       setLocation(newLocation)
     }
   }
+
   return (
     <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => goBack())}>
       <SelectLocationByMapView location={location} referenceData={stateSelectors} onLocationChange={onLocationChange} />

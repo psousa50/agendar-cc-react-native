@@ -61,7 +61,6 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
       : i18n.t("Results.Closest")
     : i18n.t("Results.NoneTitle")
 
-  console.log("=====>", irnTableResultSummary)
   return (
     <View style={styles.container}>
       <InfoCard iconType={"MaterialIcons"} iconName="schedule" title={title}>

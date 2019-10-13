@@ -9,10 +9,17 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
+import SegmentedControlTab from "react-native-segmented-control-tab"
 import { Counties, County, Districts } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
-import { IrnTableFilterLocation, ReferenceData, Region } from "../../state/models"
+import { allRegions, IrnTableFilterLocation, ReferenceData, Region, regionNames } from "../../state/models"
+import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
+import { LocationView } from "../Home/components/LocationView"
+
+const colorSecondary = appTheme.brandSecondary
+const colorSecondaryText = appTheme.secondaryText
 
 interface SearchableCounty {
   countyId?: number
@@ -30,7 +37,7 @@ interface SelectLocationViewProps {
   location: IrnTableFilterLocation
   referenceData: ReferenceData
   onLocationChange: (location: IrnTableFilterLocation) => void
-  onSelectOnMap: () => void
+  onSelectLocationOnMap: () => void
 }
 
 const Separator = () => <View style={styles.separator} />
@@ -39,8 +46,9 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   location,
   referenceData,
   onLocationChange,
-  onSelectOnMap: selectOnMap,
+  onSelectLocationOnMap: selectOnMap,
 }) => {
+  const { region } = location
   const initialState: SelectLocationViewState = {
     locationText: "",
     hideSearchResults: false,
@@ -61,7 +69,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
               (isNil(location.region) || sc.region === location.region) &&
               sc.searchText.toLocaleLowerCase().includes(state.locationText.toLocaleLowerCase()),
           )
-          .slice(0, 5)
+          .slice(0, 8)
       : []
 
   const onListItemPressed = (districtId: number, countyId?: number) => {
@@ -83,16 +91,23 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   const onChangeText = (locationText: string) => mergeState({ locationText, hideSearchResults: false })
   const onClearText = () => mergeState({ locationText: "" })
 
-  const searchableCounty = searchableCounties.find(
-    sc => sc.districtId === location.districtId && sc.countyId === location.countyId,
-  )
-  const countyName = searchableCounty && searchableCounty.searchText
+  const onRegionTabPress = (index: number) => {
+    onLocationChange({ region: allRegions[index] })
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.chosenTextContainer}>
-        <Text style={styles.chosenText}>{countyName}</Text>
-        <Text style={[styles.chosenText, styles.placeNameText]}>{location.placeName}</Text>
+      <View style={styles.location}>
+        <SegmentedControlTab
+          activeTabStyle={styles.activeTabStyle}
+          activeTabTextStyle={styles.activeTabTextStyle}
+          tabStyle={styles.tabStyle}
+          tabTextStyle={styles.tabTextStyle}
+          values={allRegions.map(r => regionNames[r])}
+          selectedIndex={allRegions.findIndex(r => r === region) || 0}
+          onTabPress={onRegionTabPress}
+        />
+        <LocationView location={location} />
       </View>
       <View style={styles.locationInputContainer}>
         <TextInput
@@ -152,9 +167,12 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
   return sort((n1, n2) => n1.searchText.localeCompare(n2.searchText), [...districtNames, ...countyNames])
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flexDirection: "column",
+  },
+  location: {
+    backgroundColor: "white",
   },
   locationInputContainer: {
     flexDirection: "row",
@@ -166,19 +184,6 @@ const styles = StyleSheet.create({
     flex: 9,
     textAlign: "center",
     backgroundColor: "white",
-  },
-  chosenTextContainer: {
-    backgroundColor: "white",
-  },
-  chosenText: {
-    padding: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "white",
-  },
-  placeNameText: {
-    fontSize: 14,
   },
   locationText: {
     paddingHorizontal: 30,
@@ -198,5 +203,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     margin: 5,
     fontSize: 14,
+  },
+  activeTabStyle: {
+    backgroundColor: colorSecondary,
+  },
+  activeTabTextStyle: {
+    color: colorSecondaryText,
+  },
+  tabStyle: {
+    borderColor: colorSecondary,
+  },
+  tabTextStyle: {
+    fontSize: "0.8rem",
   },
 })

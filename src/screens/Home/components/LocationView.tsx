@@ -3,16 +3,16 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { useGlobalState } from "../../../GlobalStateProvider"
-import { IrnTableFilter, regionNames } from "../../../state/models"
+import { IrnTableFilterLocation, regionNames } from "../../../state/models"
 import { globalStateSelectors } from "../../../state/selectors"
 
-interface SelectedLocationViewProps {
-  irnFilter: IrnTableFilter
+interface LocationViewProps {
+  location: IrnTableFilterLocation
   onClear?: () => void
   onEdit?: () => void
 }
-export const LocationView: React.FC<SelectedLocationViewProps> = ({
-  irnFilter: { districtId, countyId, placeName, region },
+export const LocationView: React.FC<LocationViewProps> = ({
+  location: { districtId, countyId, placeName, region },
   onClear,
   onEdit,
 }) => {
@@ -37,7 +37,7 @@ export const LocationView: React.FC<SelectedLocationViewProps> = ({
           regionName && <Text style={[styles.text, styles.region]}>{regionName}</Text>
         )}
       </TouchableOpacity>
-      {isDefined && (
+      {isDefined && onClear && (
         <TouchableOpacity style={styles.close} onPress={onClear}>
           <Icon style={styles.closeIcon} name={"close"} />
         </TouchableOpacity>

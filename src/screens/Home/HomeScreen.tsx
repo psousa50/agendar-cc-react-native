@@ -56,7 +56,6 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onDatePeriodChanged = (datePeriod: DatePeriod) => {
-    console.log("onDatePeriodChanged=====>", datePeriod)
     updateGlobalFilter(datePeriod)
   }
 

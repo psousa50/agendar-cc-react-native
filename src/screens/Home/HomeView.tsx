@@ -53,10 +53,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   }
   const [state, setState] = useState(initialState)
 
-  console.log("state=====>", state)
-  console.log("SD=====>", startDate)
-  console.log("ED=====>", endDate)
-
   const mergeState = (newState: Partial<HomeViewState>) => setState(oldState => ({ ...oldState, ...newState }))
 
   const onClearLocation = () =>
@@ -133,7 +129,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
       </InfoCard>
       <InfoCard title={i18n.t("Where.Name")} iconType={"MaterialIcons"} iconName="location-on" onPress={onEditLocation}>
-        <LocationView irnFilter={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
+        <LocationView location={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
         <DatePeriodView datePeriod={irnFilter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />

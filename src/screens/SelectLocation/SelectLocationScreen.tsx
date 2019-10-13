@@ -37,7 +37,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     setLocation(normalizeLocation(stateSelectors)(newLocation))
   }
 
-  const onSelectOnMap = () => {
+  const onSelectLocationOnMap = () => {
     navigation.goTo("SelectLocationByMapScreen", { location })
   }
 
@@ -53,7 +53,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
         location={location}
         referenceData={stateSelectors}
         onLocationChange={onLocationChange}
-        onSelectOnMap={onSelectOnMap}
+        onSelectLocationOnMap={onSelectLocationOnMap}
       />
     </AppModalScreen>
   )
