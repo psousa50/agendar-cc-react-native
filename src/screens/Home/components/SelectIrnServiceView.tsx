@@ -1,6 +1,7 @@
 import { Text, View } from "native-base"
 import React from "react"
-import { Image, StyleSheet, TouchableOpacity } from "react-native"
+import { Image, TouchableOpacity } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { ccImage, passportImage } from "../../../assets/images/images"
 import { i18n } from "../../../localization/i18n"
@@ -42,9 +43,10 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
   return (
     <View>
       <SegmentedControlTab
-        activeTabStyle={{ backgroundColor: colorSecondary }}
-        activeTabTextStyle={{ color: colorSecondaryText }}
-        tabStyle={{ borderColor: colorSecondary }}
+        activeTabStyle={styles.activeTabStyle}
+        activeTabTextStyle={styles.activeTabTextStyle}
+        tabStyle={styles.tabStyle}
+        tabTextStyle={styles.tabTextStyle}
         values={[i18n.t("Service.Get_renew"), i18n.t("Service.Pickup")]}
         selectedIndex={[1, 3].includes(serviceId || 1) ? 0 : 1}
         onTabPress={onTabPress}
@@ -73,7 +75,7 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   serviceImages: {
     flexDirection: "row",
     paddingTop: 10,
@@ -83,17 +85,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   serviceImage: {
-    width: 50,
-    height: 50,
+    width: "4rem",
+    height: "4rem",
   },
   cardText: {
     marginTop: 5,
-    fontSize: 14,
+    fontSize: "0.8rem",
   },
   cardSelectedText: {
     color: colorSecondaryText,
   },
   selectedCard: {
     backgroundColor: colorSecondary,
+  },
+  activeTabStyle: {
+    backgroundColor: colorSecondary,
+  },
+  activeTabTextStyle: {
+    color: colorSecondaryText,
+  },
+  tabStyle: {
+    borderColor: colorSecondary,
+  },
+  tabTextStyle: {
+    fontSize: "0.8rem",
   },
 })

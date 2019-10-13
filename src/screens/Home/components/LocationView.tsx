@@ -1,6 +1,7 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { StyleSheet, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
 import { useGlobalState } from "../../../GlobalStateProvider"
 import { IrnTableFilter, regionNames } from "../../../state/models"
 import { globalStateSelectors } from "../../../state/selectors"
@@ -45,23 +46,27 @@ export const LocationView: React.FC<SelectedLocationViewProps> = ({
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {},
   text: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: "1rem",
     textAlign: "center",
     paddingVertical: 5,
   },
   region: {
-    fontSize: 20,
+    fontSize: "1.3rem",
+    fontWeight: "bold",
   },
   district: {
-    fontSize: 18,
+    fontSize: "1.5rem",
+    fontWeight: "bold",
   },
-  county: {},
+  county: {
+    fontSize: "1.1rem",
+    fontWeight: "bold",
+  },
   place: {
-    fontSize: 11,
+    fontSize: "0.7rem",
   },
   close: {
     position: "absolute",
@@ -70,6 +75,6 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     padding: 5,
-    fontSize: 16,
+    fontSize: "1rem",
   },
 })

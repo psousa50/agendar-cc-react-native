@@ -1,6 +1,7 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { StyleSheet, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
 import { i18n } from "../../../localization/i18n"
 import { TimePeriod } from "../../../state/models"
 import { formatTimeSlot } from "../../../utils/formaters"
@@ -42,17 +43,12 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onCl
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {},
   text: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: "0.9rem",
     textAlign: "center",
-    paddingVertical: 5,
-  },
-  editIcon: {
-    padding: 5,
-    fontSize: 16,
+    paddingVertical: "0.1rem",
   },
   close: {
     position: "absolute",
@@ -60,7 +56,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   closeIcon: {
-    padding: 5,
-    fontSize: 16,
+    padding: "0.1rem",
+    fontSize: "1rem",
   },
 })

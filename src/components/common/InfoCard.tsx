@@ -1,6 +1,6 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { StyleSheet } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { appTheme } from "../../utils/appTheme"
 import { IconType } from "./ToolbarIcons"
@@ -27,16 +27,16 @@ export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress, ic
   </TouchableOpacity>
 )
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     padding: 10,
   },
   infoCard: {
     backgroundColor: "white",
-    marginTop: -10,
-    marginLeft: 25,
-    marginRight: 15,
-    borderRadius: 10,
+    marginTop: "-0.9rem",
+    marginLeft: "1.5rem",
+    marginRight: "1.0rem",
+    borderRadius: "0.6rem",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -47,26 +47,29 @@ const styles = StyleSheet.create({
     elevation: 24,
   },
   infoCardContent: {
-    margin: 5,
-    padding: 5,
+    margin: "0.3rem",
+    padding: "0.3rem",
     backgroundColor: "white",
   },
   icon: {
-    padding: 5,
+    padding: "0.3rem",
     color: colorPrimary,
+    fontSize: "1.5rem",
   },
   titleBar: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: appTheme.brandPrimary,
-    borderRadius: 10,
-    paddingLeft: 10,
-    paddingTop: 10,
-    paddingBottom: 20,
+    borderRadius: "0.6rem",
+    paddingLeft: "1rem",
+    paddingTop: "0.5rem",
+    paddingBottom: "1rem",
   },
   titleBarText: {
     textAlignVertical: "top",
-    color: "white",
-    fontSize: 18,
+    color: appTheme.primaryText,
+    fontSize: "1rem",
   },
 })
+
+console.log("styles=====>", JSON.stringify(styles, null, 2))
