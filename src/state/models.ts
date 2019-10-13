@@ -93,7 +93,6 @@ export interface SelectedIrnTableState {
 
 export interface IrnTablesDataState {
   filter: IrnTableFilter
-  filterForEdit: IrnTableFilter
   refineFilter: IrnTableRefineFilter
   irnTables: IrnRepositoryTables
   filterCache?: IrnTableFilter
@@ -120,7 +119,6 @@ export const initialGlobalState: GlobalState = {
   },
   irnTablesData: {
     filter: {},
-    filterForEdit: {},
     refineFilter: {},
     irnTables: [],
     error: null,
