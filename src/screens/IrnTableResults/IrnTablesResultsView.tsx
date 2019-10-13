@@ -72,6 +72,12 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           </View>
         )}
       </InfoCard>
+      {irnTableResult && (
+        <Button style={styles.button} block danger onPress={onSchedule}>
+          <Icon type={"MaterialIcons"} name="schedule" />
+          <Text>{i18n.t("Results.Schedule")}</Text>
+        </Button>
+      )}
       {irnTableResultSummary.irnPlaceNames.length > 1 && (
         <Button style={styles.button} block success onPress={onSearchLocation}>
           <Icon type={"MaterialIcons"} name="location-on" />
@@ -84,10 +90,6 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           <Text>{i18n.t("Results.ChooseDate")}</Text>
         </Button>
       )}
-      <Button style={styles.button} block danger onPress={onSchedule}>
-        <Icon type={"MaterialIcons"} name="schedule" />
-        <Text>{i18n.t("Results.Schedule")}</Text>
-      </Button>
       <Button style={styles.button} block info onPress={onNewSearch}>
         <Icon name="search" />
         <Text>{i18n.t("Results.NewSearch")}</Text>

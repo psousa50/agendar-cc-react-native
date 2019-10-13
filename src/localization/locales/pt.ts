@@ -16,7 +16,7 @@ export const pt = {
   },
   CitizenCard: "Cartão de Cidadão",
   Passport: "Passaporte",
-  SearchTimetables: "Pesquisar Agendamentos",
+  SearchTimetables: "Procurar Agendamentos",
   SelectOnMap: "Seleccionar no mapa",
   DatePeriod: {
     From: "A partir do dia {{startDate}}",

@@ -30,14 +30,15 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     updateGlobalFilter({
       region: "Continente",
       serviceId: 1,
-      districtId: 12,
-      countyId: 5,
-      placeName:
-        "Centro Comercial Arrábida Shoping - R. Manuel Moreira de Barros e Praceta Henrique Moreira 244, Afurada, loja A nº 029",
-      startDate: new Date("2019-11-03"),
-      endDate: new Date("2019-11-23"),
-      startTime: "12:45",
-      endTime: "15:50",
+      // districtId: 12,
+      // countyId: 5,
+      // placeName:
+      // tslint:disable-next-line: max-line-length
+      //   "Centro Comercial Arrábida Shoping - R. Manuel Moreira de Barros e Praceta Henrique Moreira 244, Afurada, loja A nº 029",
+      // startDate: new Date("2019-11-03"),
+      // endDate: new Date("2019-11-23"),
+      // startTime: "12:45",
+      // endTime: "15:50",
     })
   }, [])
 
