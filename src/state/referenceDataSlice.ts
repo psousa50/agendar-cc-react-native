@@ -7,6 +7,7 @@ import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchReferenceData } from "../api/referenceData"
 import { Counties, County, District, Districts, IrnService, IrnServices } from "../irnTables/models"
 import { Region } from "./models"
+import { AppThunk } from "./store"
 
 interface ReferenceDataState {
   irnServices: IrnServices
@@ -65,7 +66,7 @@ const referenceDataSlice = createSlice({
   },
 })
 
-export const getReferenceData = async (dispatch: Dispatch) => {
+export const getReferenceData = (): AppThunk => async (dispatch: Dispatch) => {
   dispatch(initFetch())
   await pipe(
     fetchReferenceData(),

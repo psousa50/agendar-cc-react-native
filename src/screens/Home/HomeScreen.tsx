@@ -30,11 +30,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   }
 
   useEffect(() => {
-    const fetch = async () => {
-      await getReferenceData(dispatch)
-      await getIrnPlaces(dispatch)
-    }
-    fetch()
+    dispatch(getReferenceData())
+    dispatch(getIrnPlaces())
     dispatch(
       updateFilter({
         region: "Continente",
@@ -50,7 +47,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
         // endTime: "15:50",
       }),
     )
-  }, [])
+  }, [dispatch])
 
   const onSearch = () => {
     clearRefineFilter()

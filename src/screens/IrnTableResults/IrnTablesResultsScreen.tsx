@@ -20,18 +20,15 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
       irnTables: state.irnTablesData.irnTables,
       filter: state.irnTablesData.filter,
       refineFilter: state.irnTablesData.refineFilter,
-      loading: state.irnTablesData.loading || state.referenceData.loading,
+      loading: state.irnTablesData.loading || state.referenceData.loading || state.irnPlacesData.loading,
       irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
       referenceDataProxy: buildReferenceDataProxy(state.referenceData),
     }),
   )
 
   useEffect(() => {
-    const fetch = async () => {
-      await getIrnTables(dispatch, filter)
-    }
-    fetch()
-  }, [])
+    dispatch(getIrnTables(filter))
+  }, [filter])
 
   const irnTablesResultsViewProps = {
     filter,

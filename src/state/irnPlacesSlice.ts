@@ -6,6 +6,7 @@ import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnPlaces } from "../api/irnPlaces"
 import { DistrictAndCounty, IrnPlace, IrnPlaces } from "../irnTables/models"
+import { AppThunk } from "./store"
 
 interface IrnPlacesDataState {
   irnPlaces: IrnPlaces
@@ -46,7 +47,7 @@ const irnPlacesSlice = createSlice({
   },
 })
 
-export const getIrnPlaces = async (dispatch: Dispatch) => {
+export const getIrnPlaces = (): AppThunk => async (dispatch: Dispatch) => {
   dispatch(initIrnPlacesFetch())
   await pipe(
     fetchIrnPlaces(),

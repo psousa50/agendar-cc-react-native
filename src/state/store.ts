@@ -1,8 +1,8 @@
-import { Action, createStore } from "redux"
-import { composeWithDevTools } from "redux-devtools-extension"
+import { Action } from "redux"
+import { configureStore } from "redux-starter-kit"
 import { ThunkAction } from "redux-thunk"
 import { rootReducer, RootState } from "./rootReducer"
 
-export const store = createStore(rootReducer, {}, composeWithDevTools())
+export const store = configureStore({ reducer: rootReducer })
 
 export type AppThunk = ThunkAction<void, RootState, null, Action<string>>

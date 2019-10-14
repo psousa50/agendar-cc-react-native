@@ -7,6 +7,7 @@ import { fetchIrnTables } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables } from "../irnTables/models"
 import { IrnTableFilter, IrnTableRefineFilter, SelectedIrnTable } from "./models"
+import { AppThunk } from "./store"
 
 interface IrnTablesDataState {
   filter: IrnTableFilter
@@ -68,7 +69,7 @@ const irnTablesSlice = createSlice({
   },
 })
 
-export const getIrnTables = async (dispatch: Dispatch, filter: IrnTableFilter) => {
+export const getIrnTables = (filter: IrnTableFilter): AppThunk => async (dispatch: Dispatch) => {
   dispatch(initIrnTablesFetch())
   await pipe(
     fetchIrnTables(filter),
