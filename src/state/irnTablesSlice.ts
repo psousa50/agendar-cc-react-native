@@ -4,8 +4,8 @@ import { fold } from "fp-ts/lib/TaskEither"
 import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
+import { normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables } from "../irnTables/models"
-import { normalizeFilter } from "./main"
 import { IrnTableFilter, IrnTableRefineFilter, SelectedIrnTable } from "./models"
 
 interface IrnTablesDataState {

@@ -1,4 +1,4 @@
-import { flatten, isNil, keys, mergeDeepWith, sort, uniq } from "ramda"
+import { flatten, isNil, sort, uniq } from "ramda"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
 import { IrnTableFilter, IrnTableRefineFilter, TimeSlotsFilter } from "../state/models"
 import { min } from "../utils/collections"
@@ -16,63 +16,6 @@ import {
 } from "./models"
 
 export const sortTimes = (t1: TimeSlot, t2: TimeSlot) => t1.localeCompare(t2)
-
-export interface IrnTablesByPlace {
-  [placeName: string]: IrnRepositoryTables
-}
-
-interface IrnTablesByTimeSlotAndPlace {
-  [timeSlot: string]: IrnTablesByPlace
-}
-
-interface IrnTablesByTimeSlot {
-  [timeSlot: string]: IrnRepositoryTables
-}
-
-const checkArray = <T>(col?: T[]) => col || []
-
-export const mergeIrnTablesByPlace = (irnTables: IrnRepositoryTables) =>
-  irnTables.reduce(
-    (acc, irnTable) => ({
-      ...acc,
-      [irnTable.placeName]: [...checkArray(acc[irnTable.placeName]), irnTable],
-    }),
-    {} as IrnTablesByPlace,
-  )
-
-const mergeByTimeSlot = (irnTable: IrnRepositoryTable) => (
-  irnTableByTimeSlot: IrnTablesByTimeSlot,
-  timeSlot: TimeSlot,
-) => ({
-  ...irnTableByTimeSlot,
-  [timeSlot]: [...checkArray(irnTableByTimeSlot[timeSlot]), irnTable],
-})
-
-const mergeByPlace = (irnTablesByTimeSlot: IrnTablesByTimeSlot) => (
-  tsal: IrnTablesByTimeSlotAndPlace,
-  timeSlot: string | number,
-) => ({
-  ...tsal,
-  [timeSlot]: mergeIrnTablesByPlace(irnTablesByTimeSlot[timeSlot]),
-})
-
-export const mergeIrnTablesByTimeSlotAndPlace = (irnTables: IrnRepositoryTables) =>
-  irnTables.reduce(
-    (acc, irnTable) => {
-      const irnTablesByTimeSlot = irnTable.timeSlots.reduce(mergeByTimeSlot(irnTable), {} as IrnTablesByTimeSlot)
-      const irnTableByTimeSlotAndPlace = keys(irnTablesByTimeSlot).reduce(
-        mergeByPlace(irnTablesByTimeSlot),
-        {} as IrnTablesByTimeSlotAndPlace,
-      )
-
-      return mergeDeepWith(
-        (t1: IrnRepositoryTables, t2: IrnRepositoryTables) => [...t1, ...t2],
-        acc,
-        irnTableByTimeSlotAndPlace,
-      )
-    },
-    {} as IrnTablesByTimeSlotAndPlace,
-  )
 
 export const getIrnTableResultSummary = (irnTables: IrnRepositoryTables) => {
   const districtIds = uniq(irnTables.map(t => t.districtId))
@@ -204,4 +147,17 @@ export const refineFilterIrnTable = ({ countyId, date, districtId, placeName, ti
     (isNil(date) || datesAreEqual(irnTable.date, date)) &&
     (isNil(timeSlot) || irnTable.timeSlots.includes(timeSlot))
   )
+}
+
+export const normalizeFilter = (filter: IrnTableFilter) => {
+  const { startDate, endDate, startTime, endTime } = filter
+  const swapDates = startDate && endDate ? startDate > endDate : false
+  const swapTimes = startTime && endTime ? startTime > endTime : false
+  return {
+    ...filter,
+    startDate: swapDates ? endDate : startDate,
+    endDate: swapDates ? startDate : endDate,
+    startTime: swapTimes ? endTime : startTime,
+    endTime: swapTimes ? startTime : endTime,
+  }
 }
