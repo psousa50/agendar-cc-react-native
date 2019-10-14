@@ -14,8 +14,8 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const navigation = navigate(props.navigation)
   const [globalState, globalDispatch] = useGlobalState()
   const stateSelectors = globalStateSelectors(globalState)
-  const initialLocation = stateSelectors.getIrnTablesFilter
-  const [location, setLocation] = useState(initialLocation)
+
+  const [location, setLocation] = useState(stateSelectors.getIrnTablesFilter)
 
   const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
     globalDispatch({

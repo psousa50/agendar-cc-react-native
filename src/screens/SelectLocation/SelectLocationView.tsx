@@ -95,6 +95,9 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
     onLocationChange({ region: allRegions[index] })
   }
 
+  const onClearLocation = () =>
+    onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
+
   return (
     <View style={styles.container}>
       <View style={styles.location}>
@@ -107,12 +110,14 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           selectedIndex={allRegions.findIndex(r => r === region) || 0}
           onTabPress={onRegionTabPress}
         />
-        <LocationView location={location} />
+        <View style={styles.locationContainer}>
+          <LocationView location={location} onClear={onClearLocation} />
+        </View>
       </View>
       <View style={styles.locationInputContainer}>
         <TextInput
           style={styles.locationInput}
-          placeholder="Distrito - Concelho"
+          placeholder="Procurar Distrito - Concelho"
           value={state.locationText}
           onChangeText={onChangeText}
         />
@@ -171,6 +176,9 @@ const styles = EStyleSheet.create({
   container: {
     flexDirection: "column",
   },
+  locationContainer: {
+    padding: "1rem",
+  },
   location: {
     backgroundColor: "white",
   },
@@ -214,6 +222,7 @@ const styles = EStyleSheet.create({
     borderColor: colorSecondary,
   },
   tabTextStyle: {
+    paddingVertical: 10,
     fontSize: "0.8rem",
   },
 })

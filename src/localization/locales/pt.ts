@@ -42,8 +42,8 @@ export const pt = {
     None:
       "Não foram encontrados resultados para os critérios de pesquisa que definiu. Tente um critério mais abrangente.",
     Table: "Mesa",
-    ChooseDate: "Escolha outra data",
-    ChooseLocation: "Escolha outro local",
+    ChooseDate: "Escolher outra data",
+    ChooseLocation: "Escolher outro local",
     Schedule: "Agendar",
     NewSearch: "Nova Pesquisa",
   },

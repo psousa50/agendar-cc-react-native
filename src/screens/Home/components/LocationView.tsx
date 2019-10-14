@@ -74,7 +74,7 @@ const styles = EStyleSheet.create({
     top: 0,
   },
   closeIcon: {
-    padding: 5,
+    padding: "0.2rem",
     fontSize: "1rem",
   },
 })
