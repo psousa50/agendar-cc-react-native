@@ -13,14 +13,12 @@ export const SelectAnotherDateScreen: React.FC<AppScreenProps> = props => {
 
   const irnTables = useSelector((state: RootState) => state.irnTablesData.irnTables)
 
-  const onDateSelected = (date: Date) => {
-    dispatch(setRefineFilter({ date }))
-    navigation.goBack()
-  }
-
   const selectAnotherDateViewProps = {
     irnTables,
-    onDateSelected,
+    onDateSelected: (date: Date) => {
+      dispatch(setRefineFilter({ date }))
+      navigation.goBack()
+    },
   }
   return (
     <AppModalScreen {...props}>

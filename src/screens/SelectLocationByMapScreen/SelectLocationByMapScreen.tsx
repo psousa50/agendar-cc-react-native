@@ -38,14 +38,15 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
     }
   }
 
+  const selectLocationByMapViewProps = {
+    location,
+    irnPlacesProxy,
+    referenceDataProxy,
+    onLocationChange,
+  }
   return (
     <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => goBack())}>
-      <SelectLocationByMapView
-        location={location}
-        irnPlacesProxy={irnPlacesProxy}
-        referenceDataProxy={referenceDataProxy}
-        onLocationChange={onLocationChange}
-      />
+      <SelectLocationByMapView {...selectLocationByMapViewProps} />
     </AppModalScreen>
   )
 }

@@ -27,23 +27,11 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))
 
-  const [location, setLocation] = useState(filter)
-
-  const goBack = () => {
-    navigation.goBack()
-  }
+  const [location, setLocation] = useState(filter as IrnTableFilterLocation)
 
   const updateGlobalFilterAndGoBack = () => {
     dispatch(updateFilter(location))
-    goBack()
-  }
-
-  const onLocationChange = (newLocation: IrnTableFilterLocation) => {
-    setLocation(normalizeLocation(referenceDataProxy, irnPlacesProxy)(newLocation))
-  }
-
-  const onSelectLocationOnMap = () => {
-    navigation.goTo("SelectLocationByMapScreen", { location })
+    navigation.goBack()
   }
 
   const onWillFocus = (payload: NavigationEventPayload) => {
@@ -51,15 +39,20 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     locationParam && setLocation(normalizeLocation(referenceDataProxy, irnPlacesProxy)(locationParam))
   }
 
+  const selectLocationViewProps = {
+    location,
+    referenceDataProxy,
+    onSelectLocationOnMap: () => {
+      navigation.goTo("SelectLocationByMapScreen", { location })
+    },
+    onLocationChange: (newLocation: IrnTableFilterLocation) => {
+      setLocation(normalizeLocation(referenceDataProxy, irnPlacesProxy)(newLocation))
+    },
+  }
   return (
     <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}>
       <NavigationEvents onWillFocus={onWillFocus} />
-      <SelectLocationView
-        location={location}
-        referenceDataProxy={referenceDataProxy}
-        onLocationChange={onLocationChange}
-        onSelectLocationOnMap={onSelectLocationOnMap}
-      />
+      <SelectLocationView {...selectLocationViewProps} />
     </AppModalScreen>
   )
 }

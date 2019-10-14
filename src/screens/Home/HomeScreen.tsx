@@ -32,62 +32,23 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   useEffect(() => {
     dispatch(getReferenceData())
     dispatch(getIrnPlaces())
-    dispatch(
-      updateFilter({
-        region: "Continente",
-        serviceId: 1,
-        // districtId: 12,
-        // countyId: 5,
-        // placeName:
-        // tslint:disable-next-line: max-line-length
-        //   "Centro Comercial Arrábida Shoping - R. Manuel Moreira de Barros e Praceta Henrique Moreira 244, Afurada, loja A nº 029",
-        // startDate: new Date("2019-11-03"),
-        // endDate: new Date("2019-11-23"),
-        // startTime: "12:45",
-        // endTime: "15:50",
-      }),
-    )
   }, [dispatch])
-
-  const onSearch = () => {
-    clearRefineFilter()
-    navigation.goTo("IrnTablesResultsScreen")
-  }
-
-  const onSelectFilter = (filterScreen: AppScreenName) => {
-    clearRefineFilter()
-    navigation.goTo(filterScreen)
-  }
-
-  const onServiceIdChange = (serviceId: number) => {
-    dispatch(updateFilter({ serviceId }))
-  }
-
-  const onDatePeriodChange = (datePeriod: DatePeriod) => {
-    dispatch(updateFilter(datePeriod))
-  }
-
-  const onTimePeriodChange = (timePeriod: TimePeriod) => {
-    dispatch(updateFilter(timePeriod))
-  }
-
-  const onEditLocation = () => {
-    navigation.goTo("SelectLocationScreen")
-  }
-
-  const onLocationChange = (location: IrnTableFilterLocation) => {
-    dispatch(updateFilter({ ...location }))
-  }
 
   const homeViewProps: HomeViewProps = {
     filter,
-    onDatePeriodChange,
-    onEditLocation,
-    onLocationChange,
-    onSearch,
-    onSelectFilter,
-    onServiceIdChange,
-    onTimePeriodChange,
+    onDatePeriodChange: (datePeriod: DatePeriod) => dispatch(updateFilter(datePeriod)),
+    onEditLocation: () => navigation.goTo("SelectLocationScreen"),
+    onLocationChange: (location: IrnTableFilterLocation) => dispatch(updateFilter(location)),
+    onSearch: () => {
+      clearRefineFilter()
+      navigation.goTo("IrnTablesResultsScreen")
+    },
+    onSelectFilter: (filterScreen: AppScreenName) => {
+      clearRefineFilter()
+      navigation.goTo(filterScreen)
+    },
+    onServiceIdChange: (serviceId: number) => dispatch(updateFilter({ serviceId })),
+    onTimePeriodChange: (timePeriod: TimePeriod) => dispatch(updateFilter(timePeriod)),
     referenceDataProxy,
   }
 
