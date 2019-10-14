@@ -52,15 +52,15 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     navigation.goTo(filterScreen)
   }
 
-  const onServiceIdChanged = (serviceId: number) => {
+  const onServiceIdChange = (serviceId: number) => {
     updateGlobalFilter({ serviceId })
   }
 
-  const onDatePeriodChanged = (datePeriod: DatePeriod) => {
+  const onDatePeriodChange = (datePeriod: DatePeriod) => {
     updateGlobalFilter(datePeriod)
   }
 
-  const onTimePeriodChanged = (timePeriod: TimePeriod) => {
+  const onTimePeriodChange = (timePeriod: TimePeriod) => {
     updateGlobalFilter(timePeriod)
   }
 
@@ -68,19 +68,19 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     navigation.goTo("SelectLocationScreen")
   }
 
-  const onLocationChanged = (location: IrnTableFilterLocation) => {
+  const onLocationChange = (location: IrnTableFilterLocation) => {
     updateGlobalFilter({ ...location })
   }
 
   const homeViewProps = {
     irnFilter: stateSelectors.getIrnTablesFilter,
-    onDatePeriodChanged,
+    onDatePeriodChange,
     onEditLocation,
-    onLocationChanged,
+    onLocationChange,
     onSearch,
     onSelectFilter,
-    onServiceIdChanged,
-    onTimePeriodChanged,
+    onServiceIdChange,
+    onTimePeriodChange,
   }
 
   return (

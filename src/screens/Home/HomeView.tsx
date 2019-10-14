@@ -19,13 +19,13 @@ moment.locale("pt")
 
 interface HomeViewProps {
   irnFilter: IrnTableFilter
-  onDatePeriodChanged: (dateOPeriod: DatePeriod) => void
+  onDatePeriodChange: (dateOPeriod: DatePeriod) => void
   onEditLocation: () => void
-  onLocationChanged: (location: IrnTableFilterLocation) => void
+  onLocationChange: (location: IrnTableFilterLocation) => void
   onSearch: () => void
   onSelectFilter: (filterScreen: AppScreenName) => void
-  onServiceIdChanged: (serviceId: number) => void
-  onTimePeriodChanged: (timePeriod: TimePeriod) => void
+  onServiceIdChange: (serviceId: number) => void
+  onTimePeriodChange: (timePeriod: TimePeriod) => void
 }
 
 interface HomeViewState {
@@ -37,12 +37,12 @@ interface HomeViewState {
 
 export const HomeView: React.FC<HomeViewProps> = ({
   irnFilter,
-  onDatePeriodChanged,
+  onDatePeriodChange,
   onEditLocation,
-  onLocationChanged,
+  onLocationChange,
   onSearch,
-  onServiceIdChanged,
-  onTimePeriodChanged,
+  onServiceIdChange,
+  onTimePeriodChange,
 }) => {
   const { serviceId, startDate, endDate, startTime, endTime } = irnFilter
   const initialState: HomeViewState = {
@@ -56,9 +56,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const mergeState = (newState: Partial<HomeViewState>) => setState(oldState => ({ ...oldState, ...newState }))
 
   const onClearLocation = () =>
-    onLocationChanged({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
-  const onClearDatePeriod = () => onDatePeriodChanged({ startDate: undefined, endDate: undefined })
-  const onClearTimePeriod = () => onTimePeriodChanged({ startTime: undefined, endTime: undefined })
+    onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
+  const onClearDatePeriod = () => onDatePeriodChange({ startDate: undefined, endDate: undefined })
+  const onClearTimePeriod = () => onTimePeriodChange({ startTime: undefined, endTime: undefined })
 
   const onEditDatePeriod = () => {
     mergeState({ showStartDatePickerModal: true })
@@ -70,12 +70,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   const onStartDateChange = (_: any, date?: Date) => {
     mergeState({ showStartDatePickerModal: false, showEndDatePickerModal: true })
-    onDatePeriodChanged({ startDate: date })
+    onDatePeriodChange({ startDate: date })
   }
 
   const onEndDateChange = (_: any, date?: Date) => {
     mergeState({ showEndDatePickerModal: false })
-    onDatePeriodChanged({ endDate: date })
+    onDatePeriodChange({ endDate: date })
   }
 
   const renderStartDatePicker = () => (
@@ -94,13 +94,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const onStartTimeChange = (_: any, date?: Date) => {
     const newStartTime = date && extractTime(date)
     mergeState({ showStartTimePickerModal: false, showEndTimePickerModal: true })
-    onTimePeriodChanged({ startTime: newStartTime })
+    onTimePeriodChange({ startTime: newStartTime })
   }
 
   const onEndTimeChange = (_: any, date?: Date) => {
     const newEndTime = date && extractTime(date)
     mergeState({ showEndTimePickerModal: false })
-    onTimePeriodChanged({ endTime: newEndTime })
+    onTimePeriodChange({ endTime: newEndTime })
   }
 
   const renderStartTimePicker = () => (
@@ -126,7 +126,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <ScrollView style={styles.container}>
       <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
-        <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChanged} />
+        <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
       </InfoCard>
       <InfoCard title={i18n.t("Where.Name")} iconType={"MaterialIcons"} iconName="location-on" onPress={onEditLocation}>
         <LocationView location={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
