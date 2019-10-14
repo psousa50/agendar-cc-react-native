@@ -4,7 +4,6 @@ import { AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
 import { useIrnDataFetch } from "../../dataFetch/useIrnDataFetch"
 import { useGlobalState } from "../../GlobalStateProvider"
-import { refineFilterIrnTable } from "../../irnTables/main"
 import { globalStateSelectors } from "../../state/selectors"
 import { navigate } from "../screens"
 import { IrnTablesResultsView } from "./IrnTablesResultsView"
@@ -18,12 +17,11 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const filter = stateSelectors.getIrnTablesFilter
   const refineFilter = stateSelectors.getIrnTablesRefineFilter
-  const irnTablesFiltered = irnTablesData.irnTables.filter(refineFilterIrnTable(refineFilter))
 
   const irnTablesResultsViewProps = {
     filter,
     refineFilter,
-    irnTables: irnTablesFiltered,
+    irnTables: irnTablesData.irnTables,
     referenceData: stateSelectors,
     onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
