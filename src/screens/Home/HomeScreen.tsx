@@ -1,45 +1,55 @@
 import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
 import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
-import { useGlobalState } from "../../GlobalStateProvider"
-import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
-import { globalStateSelectors } from "../../state/selectors"
-import { AppScreenName, navigate } from "../screens"
-import { HomeView } from "./HomeView"
+import { getIrnPlaces } from "../../state/irnPlacesSlice"
+import { setRefineFilter, updateFilter } from "../../state/irnTablesSlice"
+import { DatePeriod, IrnTableFilterLocation, TimePeriod } from "../../state/models"
+import { buildReferenceDataProxy, getReferenceData } from "../../state/referenceDataSlice"
+import { RootState } from "../../state/rootReducer"
+import { AppScreenName, enhancedNavigation } from "../screens"
+import { HomeView, HomeViewProps } from "./HomeView"
 
-export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
-  const [globalState, globalDispatch] = useGlobalState()
-  const navigation = navigate(props.navigation)
-  const stateSelectors = globalStateSelectors(globalState)
+interface HomeScreenProps extends AppScreenProps {
+  loading: boolean
+}
 
-  const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
-    globalDispatch({
-      type: "IRN_TABLES_UPDATE_FILTER",
-      payload: { filter },
-    })
-  }
+export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
+  const navigation = enhancedNavigation(props.navigation)
+
+  const dispatch = useDispatch()
+
+  const { filter, loading, referenceDataProxy } = useSelector((state: RootState) => ({
+    filter: state.irnTablesData.filter,
+    loading: state.irnTablesData.loading || state.referenceData.loading || state.irnPlacesData.loading,
+    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+  }))
 
   const clearRefineFilter = () => {
-    globalDispatch({
-      type: "IRN_TABLES_SET_REFINE_FILTER",
-      payload: { filter: {} },
-    })
+    setRefineFilter({})
   }
 
   useEffect(() => {
-    updateGlobalFilter({
-      region: "Continente",
-      serviceId: 1,
-      // districtId: 12,
-      // countyId: 5,
-      // placeName:
-      // tslint:disable-next-line: max-line-length
-      //   "Centro Comercial Arrábida Shoping - R. Manuel Moreira de Barros e Praceta Henrique Moreira 244, Afurada, loja A nº 029",
-      // startDate: new Date("2019-11-03"),
-      // endDate: new Date("2019-11-23"),
-      // startTime: "12:45",
-      // endTime: "15:50",
-    })
+    const fetch = async () => {
+      await getReferenceData(dispatch)
+      await getIrnPlaces(dispatch)
+    }
+    fetch()
+    dispatch(
+      updateFilter({
+        region: "Continente",
+        serviceId: 1,
+        // districtId: 12,
+        // countyId: 5,
+        // placeName:
+        // tslint:disable-next-line: max-line-length
+        //   "Centro Comercial Arrábida Shoping - R. Manuel Moreira de Barros e Praceta Henrique Moreira 244, Afurada, loja A nº 029",
+        // startDate: new Date("2019-11-03"),
+        // endDate: new Date("2019-11-23"),
+        // startTime: "12:45",
+        // endTime: "15:50",
+      }),
+    )
   }, [])
 
   const onSearch = () => {
@@ -53,15 +63,15 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onServiceIdChange = (serviceId: number) => {
-    updateGlobalFilter({ serviceId })
+    dispatch(updateFilter({ serviceId }))
   }
 
   const onDatePeriodChange = (datePeriod: DatePeriod) => {
-    updateGlobalFilter(datePeriod)
+    dispatch(updateFilter(datePeriod))
   }
 
   const onTimePeriodChange = (timePeriod: TimePeriod) => {
-    updateGlobalFilter(timePeriod)
+    dispatch(updateFilter(timePeriod))
   }
 
   const onEditLocation = () => {
@@ -69,11 +79,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
   }
 
   const onLocationChange = (location: IrnTableFilterLocation) => {
-    updateGlobalFilter({ ...location })
+    dispatch(updateFilter({ ...location }))
   }
 
-  const homeViewProps = {
-    irnFilter: stateSelectors.getIrnTablesFilter,
+  const homeViewProps: HomeViewProps = {
+    filter,
     onDatePeriodChange,
     onEditLocation,
     onLocationChange,
@@ -81,10 +91,11 @@ export const HomeScreen: React.FunctionComponent<AppScreenProps> = props => {
     onSelectFilter,
     onServiceIdChange,
     onTimePeriodChange,
+    referenceDataProxy,
   }
 
   return (
-    <AppScreen {...props} loading={stateSelectors.getStaticData.loading} backgroundImage={appBackgroundImage}>
+    <AppScreen {...props} loading={loading} backgroundImage={appBackgroundImage}>
       <HomeView {...homeViewProps} />
     </AppScreen>
   )

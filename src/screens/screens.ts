@@ -10,7 +10,9 @@ export type AppScreenName =
   | "SelectLocationScreen"
   | "Test"
 
-export const navigate = (navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>) => ({
+export const enhancedNavigation = (
+  navigation: NavigationScreenProp<NavigationRoute<NavigationParams>, NavigationParams>,
+) => ({
   ...navigation,
   goTo: (screen: AppScreenName, params?: NavigationParams, action?: NavigationAction) =>
     navigation.navigate(screen, params, action),

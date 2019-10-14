@@ -10,14 +10,17 @@ import {
 } from "../../irnTables/main"
 import { IrnRepositoryTables } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
-import { IrnTableFilter, IrnTableRefineFilter, ReferenceData } from "../../state/models"
+import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
+import { IrnTableFilter, IrnTableRefineFilter } from "../../state/models"
+import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { IrnTableResultView } from "./IrnTableResultView"
 
 interface IrnTablesResultsViewProps {
   filter: IrnTableFilter
   refineFilter: IrnTableRefineFilter
   irnTables: IrnRepositoryTables
-  referenceData: ReferenceData
+  referenceDataProxy: ReferenceDataProxy
+  irnPlacesProxy: IrnPlacesProxy
   onSearchLocation: () => void
   onSearchDate: () => void
   onSchedule: () => void
@@ -27,7 +30,8 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   filter,
   refineFilter,
   irnTables,
-  referenceData,
+  irnPlacesProxy,
+  referenceDataProxy,
   onSearchDate,
   onSearchLocation,
   onNewSearch,
@@ -38,8 +42,8 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
 
   const { countyId, districtId, gpsLocation } = filter
   const { date: refinedDate } = refineFilter
-  const county = referenceData.getCounty(countyId)
-  const district = referenceData.getDistrict(districtId)
+  const county = referenceDataProxy.getCounty(countyId)
+  const district = referenceDataProxy.getDistrict(districtId)
   const location = gpsLocation || (county && county.gpsLocation) || (district && district.gpsLocation)
 
   const timeSlotsFilter = {
@@ -50,8 +54,8 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   const isAsap = !startDate && !endDate && !refinedDate
   const irnTableResult =
     isAsap || !location
-      ? selectOneIrnTableResultByClosestDate(referenceData)(irnTablesFiltered, location, timeSlotsFilter)
-      : selectOneIrnTableResultByClosestPlace(referenceData)(irnTablesFiltered, location, timeSlotsFilter)
+      ? selectOneIrnTableResultByClosestDate(irnPlacesProxy)(irnTablesFiltered, location, timeSlotsFilter)
+      : selectOneIrnTableResultByClosestPlace(irnPlacesProxy)(irnTablesFiltered, location, timeSlotsFilter)
 
   const irnTableResultSummary = getIrnTableResultSummary(irnTables)
 
@@ -65,7 +69,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
     <View style={styles.container}>
       <InfoCard iconType={"MaterialIcons"} iconName="schedule" title={title}>
         {irnTableResult ? (
-          <IrnTableResultView irnTableResult={irnTableResult} referenceData={referenceData} />
+          <IrnTableResultView irnTableResult={irnTableResult} referenceDataProxy={referenceDataProxy} />
         ) : (
           <View>
             <Text>{i18n.t("Results.None")}</Text>

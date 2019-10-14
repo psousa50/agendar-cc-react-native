@@ -13,7 +13,8 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { Counties, County, Districts } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
-import { allRegions, IrnTableFilterLocation, ReferenceData, Region, regionNames } from "../../state/models"
+import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
+import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
 import { LocationView } from "../Home/components/LocationView"
@@ -35,7 +36,7 @@ interface SelectLocationViewState {
 }
 interface SelectLocationViewProps {
   location: IrnTableFilterLocation
-  referenceData: ReferenceData
+  referenceDataProxy: ReferenceDataProxy
   onLocationChange: (location: IrnTableFilterLocation) => void
   onSelectLocationOnMap: () => void
 }
@@ -44,7 +45,7 @@ const Separator = () => <View style={styles.separator} />
 
 export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   location,
-  referenceData,
+  referenceDataProxy,
   onLocationChange,
   onSelectLocationOnMap: selectOnMap,
 }) => {
@@ -57,8 +58,8 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   const mergeState = (newState: Partial<SelectLocationViewState>) =>
     setState(oldState => ({ ...oldState, ...newState }))
 
-  const districts = referenceData.getDistricts()
-  const counties = referenceData.getCounties()
+  const districts = referenceDataProxy.getDistricts()
+  const counties = referenceDataProxy.getCounties()
   const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
 
   const listItems =
@@ -111,7 +112,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           onTabPress={onRegionTabPress}
         />
         <View style={styles.locationContainer}>
-          <LocationView location={location} onClear={onClearLocation} />
+          <LocationView location={location} onClear={onClearLocation} referenceDataProxy={referenceDataProxy} />
         </View>
       </View>
       <View style={styles.locationInputContainer}>

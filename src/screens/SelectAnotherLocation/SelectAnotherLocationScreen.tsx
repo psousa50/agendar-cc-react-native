@@ -1,29 +1,31 @@
 import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
-import { useGlobalState } from "../../GlobalStateProvider"
+import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
+import { setRefineFilter } from "../../state/irnTablesSlice"
 import { IrnTableRefineFilterLocation } from "../../state/models"
-import { globalStateSelectors } from "../../state/selectors"
-import { navigate } from "../screens"
+import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
+import { RootState } from "../../state/rootReducer"
+import { enhancedNavigation } from "../screens"
 import { SelectAnotherLocationView } from "./SelectAnotherLocationView"
 
 export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps> = props => {
-  const navigation = navigate(props.navigation)
-  const [globalState, globalDispatch] = useGlobalState()
-  const stateSelectors = globalStateSelectors(globalState)
+  const navigation = enhancedNavigation(props.navigation)
   const initialLocation: IrnTableRefineFilterLocation = {}
   const [location, setLocation] = useState(initialLocation)
 
-  const updateRefineFilter = (newFilter: Partial<IrnTableRefineFilterLocation>) => {
-    globalDispatch({
-      type: "IRN_TABLES_SET_REFINE_FILTER",
-      payload: { filter: newFilter },
-    })
-  }
+  const dispatch = useDispatch()
+
+  const { irnTables, irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
+    irnTables: state.irnTablesData.irnTables,
+    irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
+    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+  }))
 
   const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>, isLast: boolean) => {
     if (isLast) {
-      updateRefineFilter(newLocation)
+      dispatch(setRefineFilter)(location)
       navigation.goBack()
     } else {
       setLocation(newLocation)
@@ -31,14 +33,15 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   }
 
   const updateRefineFilterAndGoBack = () => {
-    updateRefineFilter(location)
+    dispatch(setRefineFilter)(location)
     navigation.goBack()
   }
 
   const selectAnotherLocationViewProps = {
-    irnTables: stateSelectors.getIrnTables,
+    irnTables,
     location,
-    referenceData: stateSelectors,
+    irnPlacesProxy,
+    referenceDataProxy,
     onLocationChange,
   }
 

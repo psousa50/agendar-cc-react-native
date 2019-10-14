@@ -1,16 +1,15 @@
 import { StyleProvider } from "native-base"
 import React from "react"
-import { GlobalStateInitializer } from "./GlobalStateInitializer"
-import { GlobalStateProvider } from "./GlobalStateProvider"
+import { Provider } from "react-redux"
 import { RootNavigator } from "./RootNavigator"
+import { store } from "./state/store"
 import { getTheme } from "./theme/components"
 import { appTheme } from "./utils/appTheme"
 
 export const App = () => (
   <StyleProvider style={getTheme(appTheme)}>
-    <GlobalStateProvider>
-      <GlobalStateInitializer />
+    <Provider store={store}>
       <RootNavigator />
-    </GlobalStateProvider>
+    </Provider>
   </StyleProvider>
 )

@@ -1,40 +1,45 @@
 import React, { useState } from "react"
-import { NavigationEvents } from "react-navigation"
 import { NavigationEventPayload } from "react-navigation"
+import { NavigationEvents } from "react-navigation"
+import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
-import { useGlobalState } from "../../GlobalStateProvider"
-import { IrnTableFilter, IrnTableFilterLocation } from "../../state/models"
-import { globalStateSelectors } from "../../state/selectors"
+import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
+import { updateFilter } from "../../state/irnTablesSlice"
+import { IrnTableFilterLocation } from "../../state/models"
+import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
+import { RootState } from "../../state/rootReducer"
 import { normalizeLocation } from "../../utils/location"
-import { navigate } from "../screens"
+import { enhancedNavigation } from "../screens"
 import { SelectLocationView } from "./SelectLocationView"
 
 export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
-  const navigation = navigate(props.navigation)
-  const [globalState, globalDispatch] = useGlobalState()
-  const stateSelectors = globalStateSelectors(globalState)
+  const navigation = enhancedNavigation(props.navigation)
 
-  const [location, setLocation] = useState(stateSelectors.getIrnTablesFilter)
+  const dispatch = useDispatch()
 
-  const updateGlobalFilter = (filter: Partial<IrnTableFilter>) => {
-    globalDispatch({
-      type: "IRN_TABLES_UPDATE_FILTER",
-      payload: { filter },
-    })
-  }
+  const { filter, irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
+    irnTables: state.irnTablesData.irnTables,
+    filter: state.irnTablesData.filter,
+    refineFilter: state.irnTablesData.refineFilter,
+    loading: state.irnTablesData.loading || state.referenceData.loading,
+    irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
+    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+  }))
+
+  const [location, setLocation] = useState(filter)
 
   const goBack = () => {
     navigation.goBack()
   }
 
   const updateGlobalFilterAndGoBack = () => {
-    updateGlobalFilter(location)
+    dispatch(updateFilter(location))
     goBack()
   }
 
   const onLocationChange = (newLocation: IrnTableFilterLocation) => {
-    setLocation(normalizeLocation(stateSelectors)(newLocation))
+    setLocation(normalizeLocation(referenceDataProxy, irnPlacesProxy)(newLocation))
   }
 
   const onSelectLocationOnMap = () => {
@@ -43,7 +48,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
 
   const onWillFocus = (payload: NavigationEventPayload) => {
     const locationParam = payload.state.params && payload.state.params.location
-    locationParam && setLocation(normalizeLocation(stateSelectors)(locationParam))
+    locationParam && setLocation(normalizeLocation(referenceDataProxy, irnPlacesProxy)(locationParam))
   }
 
   return (
@@ -51,7 +56,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
       <NavigationEvents onWillFocus={onWillFocus} />
       <SelectLocationView
         location={location}
-        referenceData={stateSelectors}
+        referenceDataProxy={referenceDataProxy}
         onLocationChange={onLocationChange}
         onSelectLocationOnMap={onSelectLocationOnMap}
       />

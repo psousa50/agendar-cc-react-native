@@ -1,6 +1,8 @@
 import { isNil } from "ramda"
 import { GpsLocation } from "../irnTables/models"
-import { IrnTableFilterLocation, ReferenceData } from "../state/models"
+import { IrnPlacesProxy } from "../state/irnPlacesSlice"
+import { IrnTableFilterLocation } from "../state/models"
+import { ReferenceDataProxy } from "../state/referenceDataSlice"
 
 const degreesToRadians = (degrees: number) => {
   return (degrees * Math.PI) / 180
@@ -36,20 +38,22 @@ export const getClosestLocation = <T extends { gpsLocation?: GpsLocation }>(loca
 
 export type LocationsType = "District" | "County" | "Place"
 
-export const getMapLocations = (referenceData: ReferenceData) => (location: IrnTableFilterLocation) => {
+export const getMapLocations = (referenceDataProxy: ReferenceDataProxy, irnPlacesProxy: IrnPlacesProxy) => (
+  location: IrnTableFilterLocation,
+) => {
   const { districtId, countyId, placeName, region } = location
-  const districtLocations = referenceData
+  const districtLocations = referenceDataProxy
     .getDistricts(region)
     .filter(d => isNil(districtId) || d.districtId === districtId)
     .map(d => ({ ...d, id: d.districtId }))
 
-  const countyLocations = referenceData
+  const countyLocations = referenceDataProxy
     .getCounties(districtId)
     .filter(c => districtLocations.map(d => d.districtId).includes(c.districtId))
     .filter(c => isNil(countyId) || c.countyId === countyId)
     .map(c => ({ ...c, id: c.countyId }))
 
-  const irnPlacesLocations = referenceData
+  const irnPlacesLocations = irnPlacesProxy
     .getIrnPlaces({})
     .filter(p => districtLocations.map(d => d.districtId).includes(p.districtId))
     .filter(p => countyLocations.map(d => d.countyId).includes(p.countyId))
@@ -69,19 +73,19 @@ export const getMapLocations = (referenceData: ReferenceData) => (location: IrnT
   return { mapLocations, locationType }
 }
 
-export const normalizeLocation = (referenceData: ReferenceData) => ({
+export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPlacesProxy: IrnPlacesProxy) => ({
   districtId,
   countyId,
   region,
   placeName: initialPlaceName,
 }: IrnTableFilterLocation) => {
   const getSinglePlaceName = () => {
-    const irnPlaces = referenceData.getIrnPlaces({ districtId, countyId })
+    const irnPlaces = irnPlacesProxy.getIrnPlaces({ districtId, countyId })
     return irnPlaces.length === 1 ? irnPlaces[0].name : undefined
   }
 
   const placeName = initialPlaceName || getSinglePlaceName()
-  const district = referenceData.getDistrict(districtId)
+  const district = referenceDataProxy.getDistrict(districtId)
   return {
     region: region || (district && district.region),
     countyId,

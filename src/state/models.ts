@@ -1,14 +1,9 @@
 import {
   Counties,
-  County,
-  District,
-  DistrictAndCounty,
   Districts,
   GpsLocation,
-  IrnPlace,
   IrnPlaces,
   IrnRepositoryTables,
-  IrnService,
   IrnServices,
   TimeSlot,
 } from "../irnTables/models"
@@ -84,7 +79,7 @@ export const regionNames: RegionNames = {
   ["Madeira"]: i18n.t("Regions.Madeira"),
 }
 
-export interface SelectedIrnTableState {
+export interface SelectedIrnTable {
   countyId?: number
   districtId: number
   date: Date
@@ -99,7 +94,7 @@ export interface IrnTablesDataState {
   irnTablesCache?: IrnRepositoryTables
   error: Error | null
   loading: boolean
-  selectedIrnTable?: SelectedIrnTableState
+  selectedIrnTable?: SelectedIrnTable
 }
 
 export interface GlobalState {
@@ -124,15 +119,4 @@ export const initialGlobalState: GlobalState = {
     error: null,
     loading: false,
   },
-}
-
-export interface ReferenceData {
-  getIrnService: (serviceId: number) => IrnService | undefined
-  getIrnServices: () => IrnServices
-  getIrnPlace: (place: string) => IrnPlace | undefined
-  getIrnPlaces: (districtAndCounty: DistrictAndCounty) => IrnPlaces
-  getDistricts: (region?: Region) => Districts
-  getDistrict: (districtId?: number) => District | undefined
-  getCounties: (districtId?: number) => Counties
-  getCounty: (countyId?: number) => County | undefined
 }

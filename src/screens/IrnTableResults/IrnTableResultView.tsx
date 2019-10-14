@@ -3,18 +3,18 @@ import React from "react"
 import { StyleSheet } from "react-native"
 import { IrnTableResult } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
-import { ReferenceData } from "../../state/models"
+import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 
 interface IrnTableResultViewProps {
   irnTableResult: IrnTableResult
-  referenceData: ReferenceData
+  referenceDataProxy: ReferenceDataProxy
 }
-export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTableResult, referenceData }) => {
+export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTableResult, referenceDataProxy }) => {
   const { countyId, districtId, placeName, date, tableNumber, timeSlot } = irnTableResult
-  const county = referenceData.getCounty(countyId)
-  const district = referenceData.getDistrict(districtId)
-  const countyCount = referenceData.getCounties(districtId).length
+  const county = referenceDataProxy.getCounty(countyId)
+  const district = referenceDataProxy.getDistrict(districtId)
+  const countyCount = referenceDataProxy.getCounties(districtId).length
 
   return (
     <View>

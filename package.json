@@ -38,7 +38,11 @@
     "react-native-modal": "^11.4.0",
     "react-native-segmented-control-tab": "^3.4.1",
     "react-native-vector-icons": "^6.6.0",
-    "react-navigation": "^3.9.1"
+    "react-navigation": "^3.9.1",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-starter-kit": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -59,7 +63,10 @@
     "@types/react-native-modal": "^4.1.1",
     "@types/react-native-vector-icons": "^6.4.1",
     "@types/react-navigation": "^3.0.8",
+    "@types/react-redux": "^7.1.4",
     "@types/react-test-renderer": "^16.9.0",
+    "@types/redux": "^3.6.0",
+    "@types/redux-devtools-extension": "^2.13.2",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "react-native-testing-library": "^1.11.1",

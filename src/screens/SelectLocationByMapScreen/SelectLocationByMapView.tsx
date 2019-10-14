@@ -2,17 +2,21 @@ import { View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import { LocationsMap, MapLocation } from "../../components/common/LocationsMap"
-import { IrnTableFilterLocation, ReferenceData } from "../../state/models"
+import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
+import { IrnTableFilterLocation } from "../../state/models"
+import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { getMapLocations, LocationsType } from "../../utils/location"
 
 interface SelectLocationByMapViewProps {
   location: IrnTableFilterLocation
-  referenceData: ReferenceData
+  irnPlacesProxy: IrnPlacesProxy
+  referenceDataProxy: ReferenceDataProxy
   onLocationChange: (location: IrnTableFilterLocation) => void
 }
 export const SelectLocationByMapView: React.FC<SelectLocationByMapViewProps> = ({
   location,
-  referenceData,
+  irnPlacesProxy,
+  referenceDataProxy,
   onLocationChange,
 }) => {
   const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
@@ -28,7 +32,7 @@ export const SelectLocationByMapView: React.FC<SelectLocationByMapViewProps> = (
   }
 
   const render = () => {
-    const { mapLocations, locationType } = getMapLocations(referenceData)(location)
+    const { mapLocations, locationType } = getMapLocations(referenceDataProxy, irnPlacesProxy)(location)
     return (
       <View style={styles.container}>
         <LocationsMap mapLocations={mapLocations} locationType={locationType} onLocationPress={onLocationPress} />

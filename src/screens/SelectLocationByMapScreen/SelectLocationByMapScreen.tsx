@@ -1,17 +1,25 @@
 import React, { useState } from "react"
+import { useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
-import { useGlobalState } from "../../GlobalStateProvider"
+import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilterLocation } from "../../state/models"
-import { globalStateSelectors } from "../../state/selectors"
+import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
+import { RootState } from "../../state/rootReducer"
 import { getMapLocations } from "../../utils/location"
-import { navigate } from "../screens"
+import { enhancedNavigation } from "../screens"
 import { SelectLocationByMapView } from "./SelectLocationByMapView"
 
 export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
-  const navigation = navigate(props.navigation)
-  const [globalState] = useGlobalState()
-  const stateSelectors = globalStateSelectors(globalState)
+  const navigation = enhancedNavigation(props.navigation)
+
+  const { irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
+    irnTables: state.irnTablesData.irnTables,
+    refineFilter: state.irnTablesData.refineFilter,
+    loading: state.irnTablesData.loading || state.referenceData.loading,
+    irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
+    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+  }))
 
   const initialLocation = navigation.getParam("location", undefined) as IrnTableFilterLocation
   const [location, setLocation] = useState(initialLocation)
@@ -21,7 +29,7 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   }
 
   const onLocationChange = (newLocation: IrnTableFilterLocation) => {
-    const { mapLocations, locationType } = getMapLocations(stateSelectors)(newLocation)
+    const { mapLocations, locationType } = getMapLocations(referenceDataProxy, irnPlacesProxy)(newLocation)
 
     if (locationType === "Place" && mapLocations.length === 1) {
       goBack(newLocation)
@@ -32,7 +40,12 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
 
   return (
     <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => goBack())}>
-      <SelectLocationByMapView location={location} referenceData={stateSelectors} onLocationChange={onLocationChange} />
+      <SelectLocationByMapView
+        location={location}
+        irnPlacesProxy={irnPlacesProxy}
+        referenceDataProxy={referenceDataProxy}
+        onLocationChange={onLocationChange}
+      />
     </AppModalScreen>
   )
 }

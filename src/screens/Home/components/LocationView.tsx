@@ -2,12 +2,12 @@ import { Icon, Text, View } from "native-base"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
-import { useGlobalState } from "../../../GlobalStateProvider"
 import { IrnTableFilterLocation, regionNames } from "../../../state/models"
-import { globalStateSelectors } from "../../../state/selectors"
+import { ReferenceDataProxy } from "../../../state/referenceDataSlice"
 
 interface LocationViewProps {
   location: IrnTableFilterLocation
+  referenceDataProxy: ReferenceDataProxy
   onClear?: () => void
   onEdit?: () => void
 }
@@ -15,13 +15,11 @@ export const LocationView: React.FC<LocationViewProps> = ({
   location: { districtId, countyId, placeName, region },
   onClear,
   onEdit,
+  referenceDataProxy,
 }) => {
-  const [globalState] = useGlobalState()
-  const stateSelectors = globalStateSelectors(globalState)
-
   const regionName = region && regionNames[region]
-  const county = stateSelectors.getCounty(countyId)
-  const district = stateSelectors.getDistrict(districtId)
+  const county = referenceDataProxy.getCounty(countyId)
+  const district = referenceDataProxy.getDistrict(districtId)
 
   const isDefined = district || county || placeName
   return (

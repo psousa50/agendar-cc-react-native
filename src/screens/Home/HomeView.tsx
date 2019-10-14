@@ -1,12 +1,11 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import moment from "moment"
-import "moment/locale/pt"
 import { Button, Icon, Text, View } from "native-base"
 import React, { useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
 import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
+import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { dateFromTime } from "../../utils/dates"
 import { extractTime } from "../../utils/formaters"
 import { AppScreenName } from "../screens"
@@ -15,10 +14,9 @@ import { LocationView } from "./components/LocationView"
 import { SelectIrnServiceView } from "./components/SelectIrnServiceView"
 import { TimePeriodView } from "./components/TimePeriodView"
 
-moment.locale("pt")
-
-interface HomeViewProps {
-  irnFilter: IrnTableFilter
+export interface HomeViewProps {
+  filter: IrnTableFilter
+  referenceDataProxy: ReferenceDataProxy
   onDatePeriodChange: (dateOPeriod: DatePeriod) => void
   onEditLocation: () => void
   onLocationChange: (location: IrnTableFilterLocation) => void
@@ -36,15 +34,16 @@ interface HomeViewState {
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
-  irnFilter,
+  filter,
   onDatePeriodChange,
   onEditLocation,
   onLocationChange,
   onSearch,
   onServiceIdChange,
   onTimePeriodChange,
+  referenceDataProxy,
 }) => {
-  const { serviceId, startDate, endDate, startTime, endTime } = irnFilter
+  const { serviceId, startDate, endDate, startTime, endTime } = filter
   const initialState: HomeViewState = {
     showStartDatePickerModal: false,
     showEndDatePickerModal: false,
@@ -105,7 +104,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   const renderStartTimePicker = () => (
     <DateTimePicker
-      value={dateFromTime(irnFilter.startTime, "08:00")}
+      value={dateFromTime(filter.startTime, "08:00")}
       mode={"time"}
       is24Hour={true}
       display="default"
@@ -129,12 +128,17 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
       </InfoCard>
       <InfoCard title={i18n.t("Where.Name")} iconType={"MaterialIcons"} iconName="location-on" onPress={onEditLocation}>
-        <LocationView location={irnFilter} onClear={onClearLocation} onEdit={onEditLocation} />
+        <LocationView
+          location={filter}
+          onClear={onClearLocation}
+          onEdit={onEditLocation}
+          referenceDataProxy={referenceDataProxy}
+        />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
-        <DatePeriodView datePeriod={irnFilter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />
+        <DatePeriodView datePeriod={filter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />
         <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
-        <TimePeriodView timePeriod={irnFilter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
+        <TimePeriodView timePeriod={filter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
       </InfoCard>
       <Button style={styles.button} block success onPress={onSearch}>
         <Icon name="search" />
