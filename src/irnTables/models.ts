@@ -55,16 +55,6 @@ export type IrnRepositoryTable = {
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]
 
-export type GetTableParams = Partial<{
-  serviceId: number
-  districtId: number
-  countyId: number
-  startDate: Date
-  endDate: Date
-  startTime: TimeSlot
-  endTime: TimeSlot
-}>
-
 export interface IrnTableResult {
   serviceId: number
   countyId: number
@@ -73,12 +63,4 @@ export interface IrnTableResult {
   placeName: string
   timeSlot: TimeSlot
   tableNumber: string
-}
-
-export interface IrnTableResultSummary {
-  districtIds: number[]
-  countyIds: number[]
-  dates: Date[]
-  irnPlaceNames: string[]
-  timeSlots: TimeSlot[]
 }
