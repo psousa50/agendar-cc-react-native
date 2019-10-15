@@ -1,7 +1,7 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
-import { TouchableOpacity } from "react-native-gesture-handler"
 import { appTheme } from "../../utils/appTheme"
 import { IconType } from "./ToolbarIcons"
 

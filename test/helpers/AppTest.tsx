@@ -1,6 +1,11 @@
-import { StyleProvider } from "native-base"
 import React from "react"
-import { getTheme } from "../../src/theme/components"
-import { appTheme } from "../../src/utils/appTheme"
+import { configureStore } from "redux-starter-kit"
+import { AppContainer } from "../../src/App"
+import { rootReducer } from "../../src/state/rootReducer"
 
-export const AppTest: React.FC = ({ children }) => <StyleProvider style={getTheme(appTheme)}>{children}</StyleProvider>
+const store = configureStore({ reducer: rootReducer })
+
+const props = {
+  store,
+}
+export const AppTest: React.FC = ({ children }) => <AppContainer {...props}>{children}</AppContainer>
