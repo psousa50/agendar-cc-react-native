@@ -6,9 +6,15 @@ import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables } from "../irnTables/models"
-import { IrnTableFilter, IrnTableRefineFilter, SelectedIrnTable } from "./models"
+import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
+interface SelectedIrnTable {
+  countyId?: number
+  districtId: number
+  date: Date
+  placeName: string
+}
 interface IrnTablesDataState {
   filter: IrnTableFilter
   refineFilter: IrnTableRefineFilter

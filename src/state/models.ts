@@ -1,23 +1,5 @@
-import {
-  Counties,
-  Districts,
-  GpsLocation,
-  IrnPlaces,
-  IrnRepositoryTables,
-  IrnServices,
-  TimeSlot,
-} from "../irnTables/models"
+import { GpsLocation, TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
-
-export interface StaticDataState {
-  irnServices: IrnServices
-  counties: Counties
-  districts: Districts
-  irnPlaces: IrnPlaces
-  error: Error | null
-  loaded: boolean
-  loading: boolean
-}
 
 export interface DatePeriod {
   endDate?: Date
@@ -77,46 +59,4 @@ export const regionNames: RegionNames = {
   ["Continente"]: i18n.t("Regions.Mainland"),
   ["Acores"]: i18n.t("Regions.Azores"),
   ["Madeira"]: i18n.t("Regions.Madeira"),
-}
-
-export interface SelectedIrnTable {
-  countyId?: number
-  districtId: number
-  date: Date
-  placeName: string
-}
-
-export interface IrnTablesDataState {
-  filter: IrnTableFilter
-  refineFilter: IrnTableRefineFilter
-  irnTables: IrnRepositoryTables
-  filterCache?: IrnTableFilter
-  irnTablesCache?: IrnRepositoryTables
-  error: Error | null
-  loading: boolean
-  selectedIrnTable?: SelectedIrnTable
-}
-
-export interface GlobalState {
-  staticData: StaticDataState
-  irnTablesData: IrnTablesDataState
-}
-
-export const initialGlobalState: GlobalState = {
-  staticData: {
-    irnServices: [],
-    districts: [],
-    counties: [],
-    irnPlaces: [],
-    error: null,
-    loaded: false,
-    loading: false,
-  },
-  irnTablesData: {
-    filter: {},
-    refineFilter: {},
-    irnTables: [],
-    error: null,
-    loading: false,
-  },
 }
