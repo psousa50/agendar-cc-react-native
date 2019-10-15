@@ -41,6 +41,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
 
   const selectLocationViewProps = {
     location,
+    irnPlacesProxy,
     referenceDataProxy,
     onSelectLocationOnMap: () => {
       navigation.goTo("SelectLocationByMapScreen", { location })

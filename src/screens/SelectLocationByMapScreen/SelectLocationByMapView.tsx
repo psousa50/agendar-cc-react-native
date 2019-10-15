@@ -5,7 +5,7 @@ import { LocationsMap, MapLocation } from "../../components/common/LocationsMap"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilterLocation } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
-import { getMapLocations, LocationsType } from "../../utils/location"
+import { getAllMapLocations } from "../../utils/location"
 
 interface SelectLocationByMapViewProps {
   location: IrnTableFilterLocation
@@ -19,23 +19,38 @@ export const SelectLocationByMapView: React.FC<SelectLocationByMapViewProps> = (
   referenceDataProxy,
   onLocationChange,
 }) => {
-  const onLocationPress = (type: LocationsType, mapLocation: MapLocation) => {
-    if (type === "District") {
-      onLocationChange({ ...location, districtId: mapLocation.id, countyId: undefined })
-    }
-    if (type === "County") {
-      onLocationChange({ ...location, countyId: mapLocation.id })
-    }
-    if (type === "Place") {
-      onLocationChange({ ...location, placeName: mapLocation.name })
+  const onLocationPress = (mapLocation: MapLocation) => {
+    switch (mapLocation.locationType) {
+      case "District":
+        onLocationChange({ ...location, districtId: mapLocation.id, countyId: undefined, placeName: undefined })
+        break
+      case "County":
+        onLocationChange({ ...location, countyId: mapLocation.id, placeName: undefined })
+        break
+      case "Place":
+        onLocationChange({ ...location, placeName: mapLocation.name })
+        break
     }
   }
 
   const render = () => {
-    const { mapLocations, locationType } = getMapLocations(referenceDataProxy, irnPlacesProxy)(location)
+    const { districtLocations, countyLocations, irnPlacesLocations } = getAllMapLocations(
+      referenceDataProxy.getDistricts(),
+      referenceDataProxy.getCounties(),
+      irnPlacesProxy.getIrnPlaces({}),
+      location,
+    )
+
+    const mapLocations =
+      districtLocations.length !== 1
+        ? districtLocations
+        : countyLocations.length !== 1
+        ? countyLocations
+        : irnPlacesLocations
+
     return (
       <View style={styles.container}>
-        <LocationsMap mapLocations={mapLocations} locationType={locationType} onLocationPress={onLocationPress} />
+        <LocationsMap mapLocations={mapLocations} onLocationPress={onLocationPress} />
       </View>
     )
   }

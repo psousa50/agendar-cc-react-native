@@ -6,7 +6,7 @@ import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilterLocation } from "../../state/models"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
-import { getMapLocations } from "../../utils/location"
+import { getFilteredLocations } from "../../utils/location"
 import { enhancedNavigation } from "../screens"
 import { SelectLocationByMapView } from "./SelectLocationByMapView"
 
@@ -29,9 +29,14 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   }
 
   const onLocationChange = (newLocation: IrnTableFilterLocation) => {
-    const { mapLocations, locationType } = getMapLocations(referenceDataProxy, irnPlacesProxy)(newLocation)
+    const { filteredIrnPlaces } = getFilteredLocations(
+      referenceDataProxy.getDistricts(),
+      referenceDataProxy.getCounties(),
+      irnPlacesProxy.getIrnPlaces(),
+      newLocation,
+    )
 
-    if (locationType === "Place" && mapLocations.length === 1) {
+    if (filteredIrnPlaces.length === 1) {
       goBack(newLocation)
     } else {
       setLocation(newLocation)

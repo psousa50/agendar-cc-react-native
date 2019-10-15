@@ -1,5 +1,6 @@
 import { isNil } from "ramda"
-import { GpsLocation } from "../irnTables/models"
+import { MapLocations } from "../components/common/LocationsMap"
+import { Counties, County, District, Districts, GpsLocation, IrnPlace, IrnPlaces } from "../irnTables/models"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
 import { IrnTableFilterLocation } from "../state/models"
 import { ReferenceDataProxy } from "../state/referenceDataSlice"
@@ -36,60 +37,83 @@ export const getClosestLocation = <T extends { gpsLocation?: GpsLocation }>(loca
       )
     : undefined
 
-export type LocationsType = "District" | "County" | "Place"
-
-export const getMapLocations = (referenceDataProxy: ReferenceDataProxy, irnPlacesProxy: IrnPlacesProxy) => (
+export const getFilteredLocations = (
+  districts: Districts,
+  counties: Counties,
+  irnPlaces: IrnPlaces,
   location: IrnTableFilterLocation,
 ) => {
   const { districtId, countyId, placeName, region } = location
-  const districtLocations = referenceDataProxy
-    .getDistricts(region)
-    .filter(d => isNil(districtId) || d.districtId === districtId)
-    .map(d => ({ ...d, id: d.districtId }))
 
-  const countyLocations = referenceDataProxy
-    .getCounties(districtId)
-    .filter(c => districtLocations.map(d => d.districtId).includes(c.districtId))
-    .filter(c => isNil(countyId) || c.countyId === countyId)
-    .map(c => ({ ...c, id: c.countyId }))
+  const byRegionAndDistrict = (d: District) =>
+    (isNil(region) || d.region === region) && (isNil(districtId) || d.districtId === districtId)
+  const byDistrictsAndCounty = (ds: Districts) => (c: County) =>
+    (ds.map(d => d.districtId).includes(c.districtId) && isNil(countyId)) || c.countyId === countyId
+  const byDistrictsAndCounties = (ds: Districts, cs: Counties) => (p: IrnPlace) =>
+    ds.map(d => d.districtId).includes(p.districtId) && cs.map(c => c.countyId).includes(p.countyId)
+  const byDistrictAndCountyAndPlace = (p: IrnPlace) =>
+    (isNil(districtId) || p.districtId === districtId) &&
+    (isNil(countyId) || p.countyId === countyId) &&
+    (isNil(placeName) || p.name === placeName)
 
-  const irnPlacesLocations = irnPlacesProxy
-    .getIrnPlaces({})
-    .filter(p => districtLocations.map(d => d.districtId).includes(p.districtId))
-    .filter(p => countyLocations.map(d => d.countyId).includes(p.countyId))
-    .filter(
-      p =>
-        (isNil(districtId) || p.districtId === districtId) &&
-        (isNil(countyId) || p.countyId === countyId) &&
-        (isNil(placeName) || p.name === placeName),
-    )
+  const filteredDistricts = districts.filter(byRegionAndDistrict)
+  const filteredCounties = counties.filter(byDistrictsAndCounty(filteredDistricts))
+  const filteredIrnPlaces = irnPlaces
+    .filter(byDistrictsAndCounties(filteredDistricts, filteredCounties))
+    .filter(byDistrictAndCountyAndPlace)
 
-  const locationType: LocationsType =
-    districtLocations.length !== 1 ? "District" : countyLocations.length !== 1 ? "County" : "Place"
-
-  const mapLocations =
-    locationType === "District" ? districtLocations : locationType === "County" ? countyLocations : irnPlacesLocations
-
-  return { mapLocations, locationType }
+  return {
+    filteredDistricts,
+    filteredCounties,
+    filteredIrnPlaces,
+  }
 }
 
-export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPlacesProxy: IrnPlacesProxy) => ({
-  districtId,
-  countyId,
-  region,
-  placeName: initialPlaceName,
-}: IrnTableFilterLocation) => {
-  const getSinglePlaceName = () => {
-    const irnPlaces = irnPlacesProxy.getIrnPlaces({ districtId, countyId })
-    return irnPlaces.length === 1 ? irnPlaces[0].name : undefined
+export const getAllMapLocations = (
+  districts: Districts,
+  counties: Counties,
+  irnPlaces: IrnPlaces,
+  location: IrnTableFilterLocation,
+) => {
+  const { filteredDistricts, filteredCounties, filteredIrnPlaces } = getFilteredLocations(
+    districts,
+    counties,
+    irnPlaces,
+    location,
+  )
+
+  const districtLocations: MapLocations = filteredDistricts.map(d => ({
+    ...d,
+    id: d.districtId,
+    locationType: "District",
+  }))
+  const countyLocations: MapLocations = filteredCounties.map(c => ({ ...c, id: c.countyId, locationType: "County" }))
+  const irnPlacesLocations: MapLocations = filteredIrnPlaces.map(p => ({ ...p, locationType: "Place" }))
+
+  return {
+    districtLocations,
+    countyLocations,
+    irnPlacesLocations,
+  }
+}
+
+export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPlacesProxy: IrnPlacesProxy) => (
+  location: IrnTableFilterLocation,
+) => {
+  const { filteredDistricts, filteredCounties, filteredIrnPlaces } = getFilteredLocations(
+    referenceDataProxy.getDistricts(),
+    referenceDataProxy.getCounties(),
+    irnPlacesProxy.getIrnPlaces({}),
+    location,
+  )
+
+  const singleDistrict = filteredDistricts.length === 1 && filteredDistricts[0]
+  const normalizedLocation = {
+    region: singleDistrict ? singleDistrict.region : location.region,
+    districtId: singleDistrict ? singleDistrict.districtId : location.districtId,
+    countyId: filteredCounties.length === 1 ? filteredCounties[0].countyId : location.countyId,
+    placeName: filteredIrnPlaces.length === 1 ? filteredIrnPlaces[0].name : location.placeName,
   }
 
-  const placeName = initialPlaceName || getSinglePlaceName()
-  const district = referenceDataProxy.getDistrict(districtId)
-  return {
-    region: region || (district && district.region),
-    countyId,
-    districtId,
-    placeName,
-  }
+  return normalizedLocation
 }

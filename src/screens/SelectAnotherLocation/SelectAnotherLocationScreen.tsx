@@ -12,8 +12,7 @@ import { SelectAnotherLocationView } from "./SelectAnotherLocationView"
 
 export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps> = props => {
   const navigation = enhancedNavigation(props.navigation)
-  const initialLocation: IrnTableRefineFilterLocation = {}
-  const [location, setLocation] = useState(initialLocation)
+  const [refineLocation, setRefineLocation] = useState<IrnTableRefineFilterLocation>({})
 
   const dispatch = useDispatch()
 
@@ -23,23 +22,23 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))
 
-  const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>, isLast: boolean) => {
-    if (isLast) {
-      dispatch(setRefineFilter)(location)
+  const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>) => {
+    if (newLocation.placeName !== undefined) {
+      dispatch(setRefineFilter(newLocation))
       navigation.goBack()
     } else {
-      setLocation(newLocation)
+      setRefineLocation(newLocation)
     }
   }
 
   const updateRefineFilterAndGoBack = () => {
-    dispatch(setRefineFilter)(location)
+    dispatch(setRefineFilter(refineLocation))
     navigation.goBack()
   }
 
   const selectAnotherLocationViewProps = {
     irnTables,
-    location,
+    refineLocation,
     irnPlacesProxy,
     referenceDataProxy,
     onLocationChange,

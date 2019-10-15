@@ -2,21 +2,24 @@ import React, { useEffect, useRef } from "react"
 import { StyleSheet } from "react-native"
 import MapView, { Marker } from "react-native-maps"
 import { GpsLocation } from "../../irnTables/models"
-import { LocationsType } from "../../utils/location"
+
+export type LocationsType = "District" | "County" | "Place"
 
 export interface MapLocation {
   id?: number
   gpsLocation?: GpsLocation
   name: string
   pinColor?: string
-}
-interface LocationsMapProps {
   locationType: LocationsType
+}
+export type MapLocations = MapLocation[]
+
+interface LocationsMapProps {
   mapLocations: MapLocation[]
-  onLocationPress: (locationType: LocationsType, mapLocation: MapLocation) => void
+  onLocationPress: (mapLocation: MapLocation) => void
 }
 
-export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLocationPress, locationType }) => {
+export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLocationPress }) => {
   const map = useRef(null as MapView | null)
 
   const fitToElements = () => {
@@ -49,7 +52,7 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
           coordinate={mapLocation.gpsLocation!}
           title={mapLocation.name}
           pinColor={mapLocation.pinColor}
-          onCalloutPress={() => onLocationPress(locationType, mapLocation)}
+          onCalloutPress={() => onLocationPress(mapLocation)}
         />
       ))}
     </MapView>

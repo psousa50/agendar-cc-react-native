@@ -13,10 +13,12 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { Counties, County, Districts } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
+import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
+import { getFilteredLocations } from "../../utils/location"
 import { LocationView } from "../Home/components/LocationView"
 
 const colorSecondary = appTheme.brandSecondary
@@ -36,6 +38,7 @@ interface SelectLocationViewState {
 }
 interface SelectLocationViewProps {
   location: IrnTableFilterLocation
+  irnPlacesProxy: IrnPlacesProxy
   referenceDataProxy: ReferenceDataProxy
   onLocationChange: (location: IrnTableFilterLocation) => void
   onSelectLocationOnMap: () => void
@@ -45,6 +48,7 @@ const Separator = () => <View style={styles.separator} />
 
 export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   location,
+  irnPlacesProxy,
   referenceDataProxy,
   onLocationChange,
   onSelectLocationOnMap: selectOnMap,
@@ -74,7 +78,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
       : []
 
   const onListItemPressed = (districtId: number, countyId?: number) => {
-    onLocationChange({ districtId, countyId })
+    onLocationChange({ ...location, districtId, countyId, placeName: undefined })
     mergeState({
       locationText: "",
       hideSearchResults: true,
@@ -98,6 +102,14 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
 
   const onClearLocation = () =>
     onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
+
+  const { filteredDistricts, filteredCounties, filteredIrnPlaces } = getFilteredLocations(
+    referenceDataProxy.getDistricts(),
+    referenceDataProxy.getCounties(),
+    irnPlacesProxy.getIrnPlaces({}),
+    location,
+  )
+  const showSelectOnMap = filteredDistricts.length > 1 || filteredCounties.length > 1 || filteredIrnPlaces.length > 1
 
   return (
     <View style={styles.container}>
@@ -138,10 +150,12 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           />
         </KeyboardAvoidingView>
       ) : null}
-      <Button style={{ marginTop: 50 }} block success onPress={selectOnMap}>
-        <Icon type={"MaterialIcons"} name="location-on" />
-        <Text>{i18n.t("SelectOnMap")}</Text>
-      </Button>
+      {showSelectOnMap && (
+        <Button style={{ marginTop: 50 }} block success onPress={selectOnMap}>
+          <Icon type={"MaterialIcons"} name="location-on" />
+          <Text>{i18n.t("SelectOnMap")}</Text>
+        </Button>
+      )}
     </View>
   )
 }
@@ -193,11 +207,12 @@ const styles = EStyleSheet.create({
     flex: 9,
     textAlign: "center",
     backgroundColor: "white",
+    fontSize: "1.2rem",
   },
   locationText: {
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-    fontSize: 12,
+    paddingHorizontal: "2rem",
+    paddingVertical: "0.6rem",
+    fontSize: "0.8rem",
     backgroundColor: "white",
   },
   separator: {
@@ -209,9 +224,9 @@ const styles = EStyleSheet.create({
     justifyContent: "flex-end",
   },
   icon: {
-    paddingHorizontal: 5,
-    margin: 5,
-    fontSize: 14,
+    paddingHorizontal: "0.3rem",
+    margin: "0.5rem",
+    fontSize: "1rem",
   },
   activeTabStyle: {
     backgroundColor: colorSecondary,
@@ -223,7 +238,7 @@ const styles = EStyleSheet.create({
     borderColor: colorSecondary,
   },
   tabTextStyle: {
-    paddingVertical: 10,
+    paddingVertical: "0.6rem",
     fontSize: "0.8rem",
   },
 })
