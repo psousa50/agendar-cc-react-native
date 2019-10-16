@@ -2,7 +2,7 @@ import { flatten, isNil, sort, uniq } from "ramda"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
 import { IrnTableFilter, IrnTableRefineFilter, TimeSlotsFilter } from "../state/models"
 import { min } from "../utils/collections"
-import { datesAreEqual } from "../utils/dates"
+import { DateOnly } from "../utils/dates"
 import { filterTimeSlots } from "../utils/filters"
 import { getClosestLocation } from "../utils/location"
 import {
@@ -58,7 +58,7 @@ export const getIrnTablesByClosestPlace = (irnPlacesProxy: IrnPlacesProxy) => (
 }
 
 const getOneIrnTableResult = (
-  date: Date,
+  date: DateOnly,
   irnPlace: IrnPlace,
   irnTables: IrnRepositoryTables,
   timeSlotsFilter: TimeSlotsFilter,
@@ -137,14 +137,14 @@ export const filterIrnTable = ({
   )
 }
 
-export const refineFilterIrnTable = ({ countyId, date, districtId, placeName, timeSlot }: IrnTableRefineFilter) => (
+export const byRefineFilter = ({ countyId, date, districtId, placeName, timeSlot }: IrnTableRefineFilter) => (
   irnTable: IrnRepositoryTable,
 ) => {
   return (
     (isNil(districtId) || irnTable.districtId === districtId) &&
     (isNil(countyId) || irnTable.countyId === countyId) &&
     (isNil(placeName) || irnTable.placeName === placeName) &&
-    (isNil(date) || datesAreEqual(irnTable.date, date)) &&
+    (isNil(date) || irnTable.date === date) &&
     (isNil(timeSlot) || irnTable.timeSlots.includes(timeSlot))
   )
 }

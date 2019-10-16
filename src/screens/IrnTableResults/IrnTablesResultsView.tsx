@@ -3,8 +3,8 @@ import React from "react"
 import { StyleSheet } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
 import {
+  byRefineFilter,
   getIrnTableResultSummary,
-  refineFilterIrnTable,
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
 } from "../../irnTables/main"
@@ -38,7 +38,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   onSchedule,
 }) => {
   const { startDate, endDate } = filter
-  const irnTablesFiltered = irnTables.filter(refineFilterIrnTable(refineFilter))
+  const irnTablesFiltered = irnTables.filter(byRefineFilter(refineFilter))
 
   const { countyId, districtId, gpsLocation } = filter
   const { date: refinedDate } = refineFilter

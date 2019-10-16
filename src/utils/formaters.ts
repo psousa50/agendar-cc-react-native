@@ -2,26 +2,9 @@ import moment from "moment"
 
 import { County, District, TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
-import { calcDiffDays, dateFromTime } from "./dates"
+import { dateFromTime, DateOnly, toDate } from "./dates"
 
-const dayNames = ["Hoje", "Amanhã", "Depois de Amanhã"]
-
-export const formatDateLocale = (date: Date) => {
-  // momentLoc.locale("pt")
-  // return momentLoc(date).format("LL")
-  return i18n.toTime("date.formats.long", date)
-}
-
-export const formatDateYYYYMMDD = (date: Date) => moment(date).format("YYYY-MM-DD")
-
-export const formatDate = (date?: Date, defaultDate: string = "--") => {
-  if (date) {
-    const diffDays = calcDiffDays(new Date(Date.now()), date)
-    return diffDays >= 0 && diffDays <= 2 ? dayNames[diffDays] : formatDateLocale(date)
-  } else {
-    return defaultDate
-  }
-}
+export const formatDateLocale = (date: DateOnly) => i18n.toTime("date.formats.long", toDate(date))
 
 const twoDigits = (v: number) => `${v < 10 ? 0 : ""}${v}`
 

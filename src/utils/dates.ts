@@ -1,5 +1,24 @@
 import moment from "moment"
 
+type DateOnlyBrand = { DateOnly: "" }
+
+export type DateOnly = string & DateOnlyBrand
+
+function validDateOnly(d: string): d is DateOnly {
+  return moment(d, "YYYY-MM-DD", true).isValid()
+}
+
+export const toDateOnly = (d: Date | string | undefined): DateOnly | undefined =>
+  d
+    ? typeof d === "string"
+      ? validDateOnly(d)
+        ? d
+        : undefined
+      : (d.toISOString().substr(0, 10) as DateOnly)
+    : undefined
+export const toMaybeDate = (d: DateOnly | undefined) => (d ? new Date(d) : undefined)
+export const toDate = (d: DateOnly) => new Date(d)
+
 export const dateOnly = (date: Date) =>
   moment(date)
     .startOf("day")
@@ -16,11 +35,6 @@ export const calcDiffDays = (d1: Date, d2: Date) =>
   moment(d2)
     .startOf("day")
     .diff(moment(d1).startOf("day"), "days")
-
-export const datesAreEqual = (d1: Date, d2: Date) =>
-  moment(d1)
-    .startOf("day")
-    .isSame(moment(d2).startOf("day"))
 
 export const createDateRange = (startDate: Date, endDate: Date) => {
   const nrDays = calcDiffDays(startDate, endDate) + 1

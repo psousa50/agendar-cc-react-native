@@ -6,7 +6,7 @@ import { InfoCard } from "../../components/common/InfoCard"
 import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
-import { dateFromTime } from "../../utils/dates"
+import { dateFromTime, toDateOnly, toMaybeDate } from "../../utils/dates"
 import { extractTime } from "../../utils/formaters"
 import { AppScreenName } from "../screens"
 import { DatePeriodView } from "./components/DatePeriodView"
@@ -69,21 +69,26 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   const onStartDateChange = (_: any, date?: Date) => {
     mergeState({ showStartDatePickerModal: false, showEndDatePickerModal: true })
-    onDatePeriodChange({ startDate: date })
+    onDatePeriodChange({ startDate: toDateOnly(date) })
   }
 
   const onEndDateChange = (_: any, date?: Date) => {
     mergeState({ showEndDatePickerModal: false })
-    onDatePeriodChange({ endDate: date })
+    onDatePeriodChange({ endDate: toDateOnly(date) })
   }
 
   const renderStartDatePicker = () => (
-    <DateTimePicker value={startDate || new Date()} mode={"date"} display="default" onChange={onStartDateChange} />
+    <DateTimePicker
+      value={toMaybeDate(startDate) || new Date()}
+      mode={"date"}
+      display="default"
+      onChange={onStartDateChange}
+    />
   )
 
   const renderEndDatePicker = () => (
     <DateTimePicker
-      value={startDate || endDate || new Date()}
+      value={toMaybeDate(startDate) || toMaybeDate(endDate) || new Date()}
       mode={"date"}
       display="default"
       onChange={onEndDateChange}

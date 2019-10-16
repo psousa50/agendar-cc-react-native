@@ -5,12 +5,11 @@ import { StyleSheet } from "react-native"
 import { CalendarList, DateObject } from "react-native-calendars"
 import { IrnRepositoryTables } from "../../irnTables/models"
 import { groupCollection, max, min } from "../../utils/collections"
-import { dateOnly } from "../../utils/dates"
-import { formatDateYYYYMMDD } from "../../utils/formaters"
+import { DateOnly, toDateOnly } from "../../utils/dates"
 
 interface SelectAnotherDateViewProps {
   irnTables: IrnRepositoryTables
-  onDateSelected: (date: Date) => void
+  onDateSelected: (date: DateOnly) => void
 }
 export const SelectAnotherDateView: React.FC<SelectAnotherDateViewProps> = ({ irnTables, onDateSelected }) => {
   const irnTablesByDate = groupCollection(t => t.date, irnTables)
@@ -23,20 +22,20 @@ export const SelectAnotherDateView: React.FC<SelectAnotherDateViewProps> = ({ ir
   const markedDates = irnTablesByDate.reduce(
     (acc, cur) => ({
       ...acc,
-      [formatDateYYYYMMDD(cur.key)]: { selected: true },
+      [cur.key]: { selected: true },
     }),
     {},
   )
 
   const onDayPress = (dateObject: DateObject) => {
-    const date = dateOnly(new Date(dateObject.dateString))
-    onDateSelected(date)
+    const date = toDateOnly(new Date(dateObject.dateString))
+    date && onDateSelected(date)
   }
 
   return (
     <View style={styles.container}>
       <CalendarList
-        current={formatDateYYYYMMDD(currentDate)}
+        current={currentDate}
         pastScrollRange={0}
         futureScrollRange={diffMonths}
         markedDates={markedDates}

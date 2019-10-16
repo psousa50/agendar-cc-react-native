@@ -4,7 +4,6 @@ import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { i18n } from "../../../localization/i18n"
 import { DatePeriod } from "../../../state/models"
-import { datesAreEqual } from "../../../utils/dates"
 import { formatDateLocale } from "../../../utils/formaters"
 
 interface DatePeriodViewProps {
@@ -16,7 +15,7 @@ interface DatePeriodViewProps {
 export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onClear, onEdit }) => {
   const { startDate, endDate } = datePeriod
 
-  const isPeriod = !!startDate && !!endDate && !datesAreEqual(startDate, endDate)
+  const isPeriod = !!startDate && !!endDate && startDate !== endDate
   const startDateText = startDate && formatDateLocale(startDate)
   const endDateText = endDate && formatDateLocale(endDate)
 
