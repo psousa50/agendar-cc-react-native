@@ -49,11 +49,11 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onCl
       ? startTime === endTime
         ? replace(i18n.t("TimePeriod.At"))
         : replace(i18n.t("TimePeriod.Period"))
-      : emphasizedText(startTimeText)
+      : startTime
       ? replace(i18n.t("TimePeriod.From"))
-      : emphasizedText(endTimeText)
+      : endTime
       ? replace(i18n.t("TimePeriod.Until"))
-      : normalText(i18n.t("TimePeriod.Anytime"))
+      : emphasizedText(i18n.t("TimePeriod.Anytime"))
 
   return (
     <View style={styles.container}>

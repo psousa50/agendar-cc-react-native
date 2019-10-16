@@ -1,5 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { Button, Icon, Text, View } from "native-base"
+import { View } from "native-base"
 import React, { useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
@@ -11,6 +11,7 @@ import { extractTime } from "../../utils/formaters"
 import { AppScreenName } from "../screens"
 import { DatePeriodView } from "./components/DatePeriodView"
 import { LocationView } from "./components/LocationView"
+import { MainButton } from "./components/MainButton"
 import { SelectIrnServiceView } from "./components/SelectIrnServiceView"
 import { TimePeriodView } from "./components/TimePeriodView"
 
@@ -145,10 +146,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
         <TimePeriodView timePeriod={filter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
       </InfoCard>
-      <Button style={styles.button} block success onPress={onSearch}>
-        <Icon name="search" />
-        <Text>{i18n.t("SearchTimetables")}</Text>
-      </Button>
+      <MainButton onPress={onSearch} text={i18n.t("SearchTimetables")} iconName={"search"} />
       {state.showStartDatePickerModal && renderStartDatePicker()}
       {state.showEndDatePickerModal && renderEndDatePicker()}
       {state.showStartTimePickerModal && renderStartTimePicker()}
@@ -160,8 +158,5 @@ export const HomeView: React.FC<HomeViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  button: {
-    marginTop: 20,
   },
 })

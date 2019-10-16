@@ -1,4 +1,4 @@
-import { Button, Icon, Text, View } from "native-base"
+import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
@@ -13,6 +13,7 @@ import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilter, IrnTableRefineFilter } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { MainButton } from "../Home/components/MainButton"
 import { IrnTableResultView } from "./IrnTableResultView"
 
 interface IrnTablesResultsViewProps {
@@ -77,27 +78,26 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
         )}
       </InfoCard>
       {irnTableResult && (
-        <Button style={styles.button} block danger onPress={onSchedule}>
-          <Icon type={"MaterialIcons"} name="schedule" />
-          <Text>{i18n.t("Results.Schedule")}</Text>
-        </Button>
+        <MainButton
+          onPress={onSchedule}
+          danger
+          text={i18n.t("Results.Schedule")}
+          iconType={"MaterialIcons"}
+          iconName={"schedule"}
+        />
       )}
       {irnTableResultSummary.irnPlaceNames.length > 1 && (
-        <Button style={styles.button} block success onPress={onSearchLocation}>
-          <Icon type={"MaterialIcons"} name="location-on" />
-          <Text>{i18n.t("Results.ChooseLocation")}</Text>
-        </Button>
+        <MainButton
+          onPress={onSearchLocation}
+          text={i18n.t("Results.ChooseLocation")}
+          iconType={"MaterialIcons"}
+          iconName={"location-on"}
+        />
       )}
       {irnTableResultSummary.dates.length > 1 && (
-        <Button style={styles.button} block success onPress={onSearchDate}>
-          <Icon name="calendar" />
-          <Text>{i18n.t("Results.ChooseDate")}</Text>
-        </Button>
+        <MainButton onPress={onSearchDate} text={i18n.t("Results.ChooseDate")} iconName={"calendar"} />
       )}
-      <Button style={styles.button} block info onPress={onNewSearch}>
-        <Icon name="search" />
-        <Text>{i18n.t("Results.NewSearch")}</Text>
-      </Button>
+      <MainButton onPress={onNewSearch} info text={i18n.t("Results.NewSearch")} iconName={"search"} />
     </View>
   )
 }

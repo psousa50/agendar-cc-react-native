@@ -6,7 +6,6 @@ import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables } from "../irnTables/models"
-import { toDateOnly } from "../utils/dates"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
