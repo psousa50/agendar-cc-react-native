@@ -19,15 +19,17 @@ export const en = {
   SearchTimetables: "Search",
   SelectOnMap: "Select on Map",
   DatePeriod: {
-    From: "From {{startDate}}",
-    To: "To {{endDate}}",
-    OneDay: "On {{startDate}}",
+    From: "From",
+    To: "To",
+    Until: "Until",
+    OneDay: "On",
     Asap: "As soon as possible",
   },
   TimePeriod: {
-    Period: "From {{startTime}} to {{endTime}}",
-    From: "From {{startTime}}",
-    Until: "Until {{endTime}}",
+    Period: "From ##startTime## to ##endTime##",
+    From: "From ##startTime##",
+    Until: "Until ##endTime##",
+    At: "At ##startTime##",
     Anytime: "Anytime",
   },
   Regions: {

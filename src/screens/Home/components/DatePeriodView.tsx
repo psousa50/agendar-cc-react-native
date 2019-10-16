@@ -15,27 +15,38 @@ interface DatePeriodViewProps {
 export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onClear, onEdit }) => {
   const { startDate, endDate } = datePeriod
 
-  const isPeriod = !!startDate && !!endDate && startDate !== endDate
-  const startDateText = startDate && formatDateLocale(startDate)
-  const endDateText = endDate && formatDateLocale(endDate)
+  const startDateText = startDate ? formatDateLocale(startDate) : endDate ? undefined : i18n.t("DatePeriod.Asap")
+  const endDateText = endDate && startDate !== endDate ? formatDateLocale(endDate) : undefined
 
-  const startText = isPeriod
-    ? startDateText
-    : startDate && endDate
-    ? i18n.t("DatePeriod.OneDay", { startDate: startDateText })
-    : startDate
-    ? i18n.t("DatePeriod.From", { startDate: startDateText })
-    : endDate
-    ? i18n.t("DatePeriod.To", { endDate: endDateText })
-    : i18n.t("DatePeriod.Asap")
+  const startText =
+    startDate && endDate
+      ? startDate === endDate
+        ? i18n.t("DatePeriod.OneDay")
+        : i18n.t("DatePeriod.From")
+      : startDate
+      ? i18n.t("DatePeriod.From")
+      : undefined
 
-  const endText = isPeriod ? endDateText : ""
+  const endText = endDate
+    ? startDate
+      ? startDate === endDate
+        ? undefined
+        : i18n.t("DatePeriod.To")
+      : i18n.t("DatePeriod.Until")
+    : undefined
+
+  const textRow = (text?: string, emphasizedText?: string) => (
+    <View style={styles.textContainer}>
+      {text && <Text style={styles.text}>{text}</Text>}
+      {emphasizedText && <Text style={styles.emphasizedText}>{emphasizedText}</Text>}
+    </View>
+  )
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onEdit}>
-        <Text style={styles.text}>{startText}</Text>
-        <Text style={styles.text}>{endText}</Text>
+        {textRow(startText, startDateText)}
+        {endDateText && textRow(endText, endDateText)}
       </TouchableOpacity>
       {startDate || endDate ? (
         <TouchableOpacity style={styles.close} onPress={onClear}>
@@ -47,11 +58,23 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onCl
 }
 
 const styles = EStyleSheet.create({
-  container: {},
-  text: {
-    fontSize: "0.9rem",
-    textAlign: "center",
+  container: {
+    alignItems: "center",
+  },
+  textContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: "0.2rem",
+  },
+  text: {
+    fontSize: "0.8rem",
+    textAlign: "center",
+  },
+  emphasizedText: {
+    fontSize: "1.1rem",
+    textAlign: "center",
+    fontWeight: "bold",
+    paddingHorizontal: "0.5rem",
   },
   close: {
     position: "absolute",

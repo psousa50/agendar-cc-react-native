@@ -15,7 +15,7 @@ interface InfoCardProps {
   onPress?: () => void
 }
 export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress, iconName, iconType }) => (
-  <TouchableOpacity onPress={onPress}>
+  <TouchableOpacity onPress={onPress} disabled={!onPress}>
     <View style={styles.container}>
       <View style={styles.titleBar}>
         <Icon style={styles.icon} type={iconType} name={iconName} />

@@ -6,6 +6,7 @@ import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables } from "../irnTables/models"
+import { toDateOnly } from "../utils/dates"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
@@ -37,8 +38,8 @@ export const initialState: IrnTablesDataState = {
     serviceId: 1,
     districtId: 12,
     countyId: 5,
-    // startDate: new Date("2019-11-03"),
-    // endDate: new Date("2019-11-23"),
+    // startDate: toDateOnly("2019-11-03"),
+    // endDate: toDateOnly("2019-11-23"),
     // startTime: "12:45",
     // endTime: "15:50",
   },

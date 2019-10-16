@@ -1,4 +1,5 @@
 import { Icon, Text, View } from "native-base"
+import { flatten } from "ramda"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
@@ -15,40 +16,79 @@ interface TimePeriodViewProps {
 export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onClear, onEdit }) => {
   const { startTime, endTime } = timePeriod
 
-  const timePeriodText =
-    startTime && endTime
-      ? i18n.t("TimePeriod.Period", { startTime: formatTimeSlot(startTime), endTime: formatTimeSlot(endTime) })
-      : startTime
-      ? i18n.t("TimePeriod.From", { startTime: formatTimeSlot(startTime) })
-      : endTime
-      ? i18n.t("TimePeriod.Until", { endTime: formatTimeSlot(endTime) })
-      : i18n.t("TimePeriod.Anytime")
+  const startTimeText = formatTimeSlot(startTime)
+  const endTimeText = formatTimeSlot(endTime)
 
-  const isDefined = startTime || endTime
+  const split = (block: string) => (text: string) => {
+    const p = text.search(block)
+    return p >= 0 ? [text.substring(0, p - 1), text.substr(p, block.length), text.substring(p + block.length)] : [text]
+  }
+
+  const normalText = (text: string, key?: string) => (
+    <Text key={key} style={styles.text}>
+      {text}
+    </Text>
+  )
+  const emphasizedText = (text: string, key?: string) => (
+    <Text key={key} style={styles.emphasizedText}>
+      {text}
+    </Text>
+  )
+
+  const replace = (text: string) =>
+    flatten(split("##startTime##")(text).map(split("##endTime##"))).map((part, i) =>
+      part === "##startTime##"
+        ? emphasizedText(startTimeText, i.toString())
+        : part === "##endTime##"
+        ? emphasizedText(endTimeText, i.toString())
+        : normalText(part, i.toString()),
+    )
+
+  const timePeriodElement =
+    startTime && endTime
+      ? startTime === endTime
+        ? replace(i18n.t("TimePeriod.At"))
+        : replace(i18n.t("TimePeriod.Period"))
+      : emphasizedText(startTimeText)
+      ? replace(i18n.t("TimePeriod.From"))
+      : emphasizedText(endTimeText)
+      ? replace(i18n.t("TimePeriod.Until"))
+      : normalText(i18n.t("TimePeriod.Anytime"))
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onEdit}>
-        {isDefined ? (
-          <Text style={styles.text}>{timePeriodText}</Text>
-        ) : (
-          <Text style={styles.text}>{i18n.t("TimePeriod.Anytime")}</Text>
-        )}
+        <View style={styles.textContainer}>{timePeriodElement}</View>
       </TouchableOpacity>
-      {isDefined && (
+      {startTime || endTime ? (
         <TouchableOpacity style={styles.close} onPress={onClear}>
           <Icon style={styles.closeIcon} name={"close"} />
         </TouchableOpacity>
-      )}
+      ) : null}
     </View>
   )
 }
 
 const styles = EStyleSheet.create({
-  container: {},
+  container: {
+    alignItems: "center",
+  },
+  textContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: "0.2rem",
+  },
   text: {
-    fontSize: "0.9rem",
+    fontSize: "0.8rem",
     textAlign: "center",
-    paddingVertical: "0.1rem",
+    textAlignVertical: "bottom",
+  },
+  emphasizedText: {
+    fontSize: "1.1rem",
+    textAlign: "center",
+    textAlignVertical: "bottom",
+    fontWeight: "bold",
+    paddingHorizontal: "0.5rem",
   },
   close: {
     position: "absolute",
