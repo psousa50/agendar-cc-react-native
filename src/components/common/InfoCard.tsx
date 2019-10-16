@@ -2,6 +2,7 @@ import { Icon, Text, View } from "native-base"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
+import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { IconType } from "./ToolbarIcons"
 
@@ -37,14 +38,7 @@ const styles = EStyleSheet.create({
     marginLeft: "1.5rem",
     marginRight: "1.0rem",
     borderRadius: "0.6rem",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
-    elevation: 24,
+    ...shadow,
   },
   infoCardContent: {
     margin: "0.3rem",
