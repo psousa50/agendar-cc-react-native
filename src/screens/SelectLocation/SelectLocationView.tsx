@@ -16,6 +16,7 @@ import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
 import { getFilteredLocations } from "../../utils/location"
@@ -193,12 +194,17 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
 const styles = EStyleSheet.create({
   container: {
     flexDirection: "column",
+    paddingHorizontal: "1rem",
   },
   locationContainer: {
-    padding: "1rem",
+    padding: "0.5rem",
+    margin: "1.0rem",
+    backgroundColor: "white",
+    borderRadius: "0.6rem",
+    ...shadow,
   },
   location: {
-    backgroundColor: "white",
+    margin: "1.0rem",
   },
   locationInputContainer: {
     flexDirection: "row",
@@ -242,6 +248,6 @@ const styles = EStyleSheet.create({
   },
   tabTextStyle: {
     paddingVertical: "0.6rem",
-    fontSize: "0.8rem",
+    fontSize: "1.0rem",
   },
 })

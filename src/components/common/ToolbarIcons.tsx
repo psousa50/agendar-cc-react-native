@@ -1,5 +1,6 @@
 import { Button, Icon } from "native-base"
 import React from "react"
+import EStyleSheet from "react-native-extended-stylesheet"
 
 export const editBackgroundColor = "gray"
 
@@ -31,7 +32,7 @@ const ButtonIcon = (name: string, type?: IconType) => (onPress: OnPress, disable
       ios={`ios-${name}`}
       android={`md-${name}`}
       color={color}
-      style={color ? { color } : undefined}
+      style={[styles.icon, color ? { color } : undefined]}
     />
   </Button>
 )
@@ -47,3 +48,9 @@ export const ButtonIcons = {
 }
 
 export const buttonIcons = (...buttons: ButtonIcons[]) => buttons
+
+const styles = EStyleSheet.create({
+  icon: {
+    fontSize: "2.0rem",
+  },
+})

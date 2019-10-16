@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: `${appTheme.primaryColorDark}C0`,
-    borderWidth: 0,
+    height: 30,
   },
 })

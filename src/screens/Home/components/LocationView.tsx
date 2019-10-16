@@ -45,7 +45,9 @@ export const LocationView: React.FC<LocationViewProps> = ({
 }
 
 const styles = EStyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "white",
+  },
   text: {
     fontSize: "1rem",
     textAlign: "center",

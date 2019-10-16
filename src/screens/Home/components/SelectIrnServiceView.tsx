@@ -90,7 +90,7 @@ const styles = EStyleSheet.create({
   },
   cardText: {
     marginTop: 5,
-    fontSize: "0.8rem",
+    fontSize: "1.0rem",
   },
   cardSelectedText: {
     color: colorSecondaryText,
@@ -108,6 +108,6 @@ const styles = EStyleSheet.create({
     borderColor: colorSecondary,
   },
   tabTextStyle: {
-    fontSize: "0.8rem",
+    fontSize: "1.0rem",
   },
 })

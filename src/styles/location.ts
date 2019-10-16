@@ -1,6 +1,5 @@
 export const locationStyle = {
   text: {
-    fontSize: "1rem",
     textAlign: "center",
     paddingVertical: 5,
   },
@@ -13,10 +12,10 @@ export const locationStyle = {
     fontWeight: "bold",
   },
   county: {
-    fontSize: "1.1rem",
+    fontSize: "1.2rem",
     fontWeight: "bold",
   },
   place: {
-    fontSize: "0.8rem",
+    fontSize: "1.0rem",
   },
 }

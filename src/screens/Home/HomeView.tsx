@@ -165,6 +165,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    marginTop: "0.5rem",
   },
   switchContainer: {
     flexDirection: "row",
