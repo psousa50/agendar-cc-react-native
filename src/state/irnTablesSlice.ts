@@ -4,9 +4,9 @@ import { fold } from "fp-ts/lib/TaskEither"
 import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
-import { normalizeFilter } from "../irnTables/main"
+import { byIrnTableFilter, normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables } from "../irnTables/models"
-import { toDateOnly } from "../utils/dates"
+import { filtersAreCompatible } from "../utils/filters"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
@@ -36,14 +36,14 @@ export const initialState: IrnTablesDataState = {
   filter: {
     region: "Continente",
     serviceId: 1,
-    districtId: 12,
-    countyId: 44,
-    placeName: "Conservatória do Registo Civil, Predial e Comercial de Sobral de Monte Agraço",
-    startDate: toDateOnly("2019-11-03"),
-    endDate: toDateOnly("2019-11-23"),
-    startTime: "12:45",
-    endTime: "15:50",
-    onlyOnSaturdays: true,
+    // districtId: 12,
+    // countyId: 44,
+    // placeName: "Conservatória do Registo Civil, Predial e Comercial de Sobral de Monte Agraço",
+    // startDate: toDateOnly("2019-11-03"),
+    // endDate: toDateOnly("2019-11-23"),
+    // startTime: "12:45",
+    // endTime: "15:50",
+    // onlyOnSaturdays: true,
   },
   refineFilter: {},
   irnTables: [],
@@ -87,21 +87,31 @@ const irnTablesSlice = createSlice({
   },
 })
 
-export const getIrnTables = (filter: IrnTableFilter): AppThunk => async (dispatch: Dispatch) => {
-  dispatch(initIrnTablesFetch())
-  await pipe(
-    fetchIrnTables(filter),
-    fold(
-      error => {
-        dispatch(irnTablesFetchError(error.message))
-        return task.of(undefined)
-      },
-      irnTables => {
-        dispatch(irnTablesFetchWasSuccessful(irnTables))
-        return task.of(undefined)
-      },
-    ),
-  )()
+export const getIrnTables = (irnTablesDataState: IrnTablesDataState): AppThunk => async (dispatch: Dispatch) => {
+  const filter = irnTablesDataState.filter
+  const filterCache = irnTablesDataState.filterCache
+  const irnTablesCache = irnTablesDataState.irnTablesCache
+
+  const inCache = irnTablesCache && filterCache && (filtersAreCompatible(filterCache, filter) && false)
+
+  if (inCache && irnTablesCache) {
+    dispatch(updateIrnTables({ irnTables: irnTablesCache.filter(byIrnTableFilter(filter)), filter }))
+  } else {
+    dispatch(initIrnTablesFetch())
+    await pipe(
+      fetchIrnTables(filter),
+      fold(
+        error => {
+          dispatch(irnTablesFetchError(error.message))
+          return task.of(undefined)
+        },
+        irnTables => {
+          dispatch(irnTablesFetchWasSuccessful(irnTables))
+          return task.of(undefined)
+        },
+      ),
+    )()
+  }
 }
 
 export const {
@@ -110,5 +120,6 @@ export const {
   initIrnTablesFetch,
   irnTablesFetchWasSuccessful,
   irnTablesFetchError,
+  updateIrnTables,
 } = irnTablesSlice.actions
 export const reducer = irnTablesSlice.reducer
