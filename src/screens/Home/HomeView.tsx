@@ -1,7 +1,8 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { View } from "native-base"
+import { Text, View } from "native-base"
 import React, { useState } from "react"
-import { ScrollView, StyleSheet } from "react-native"
+import { ScrollView, StyleSheet, Switch } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
 import { InfoCard } from "../../components/common/InfoCard"
 import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
@@ -25,6 +26,7 @@ export interface HomeViewProps {
   onSelectFilter: (filterScreen: AppScreenName) => void
   onServiceIdChange: (serviceId: number) => void
   onTimePeriodChange: (timePeriod: TimePeriod) => void
+  onSaturdaysChange: (value: boolean) => void
 }
 
 interface HomeViewState {
@@ -42,9 +44,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onSearch,
   onServiceIdChange,
   onTimePeriodChange,
+  onSaturdaysChange,
   referenceDataProxy,
 }) => {
-  const { serviceId, startDate, endDate, startTime, endTime } = filter
+  const { serviceId, startDate, endDate, startTime, endTime, onlyOnSaturdays } = filter
   const initialState: HomeViewState = {
     showStartDatePickerModal: false,
     showEndDatePickerModal: false,
@@ -145,6 +148,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <DatePeriodView datePeriod={filter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />
         <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
         <TimePeriodView timePeriod={filter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
+        <View style={styles.switchContainer}>
+          <Text style={styles.emphasizedText}>{i18n.t("DatePeriod.OnlyOnSaturdays")}</Text>
+          <Switch style={styles.switch} value={onlyOnSaturdays} onValueChange={onSaturdaysChange} />
+        </View>
       </InfoCard>
       <MainButton onPress={onSearch} text={i18n.t("SearchTimetables")} iconName={"search"} />
       {state.showStartDatePickerModal && renderStartDatePicker()}
@@ -155,8 +162,24 @@ export const HomeView: React.FC<HomeViewProps> = ({
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
+  },
+  switchContainer: {
+    flexDirection: "row",
+    paddingVertical: 5,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  switch: {
+    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
+  },
+  emphasizedText: {
+    fontSize: "1.1rem",
+    textAlign: "center",
+    textAlignVertical: "bottom",
+    fontWeight: "bold",
+    paddingHorizontal: "0.5rem",
   },
 })

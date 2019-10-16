@@ -62,6 +62,7 @@ const styles = EStyleSheet.create({
   titleBarText: {
     textAlignVertical: "top",
     color: appTheme.primaryText,
-    fontSize: "1rem",
+    fontSize: "1.3rem",
+    fontWeight: "bold",
   },
 })

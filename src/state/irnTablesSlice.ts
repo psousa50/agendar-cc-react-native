@@ -41,6 +41,7 @@ export const initialState: IrnTablesDataState = {
     // endDate: toDateOnly("2019-11-23"),
     // startTime: "12:45",
     // endTime: "15:50",
+    onlyOnSaturdays: true,
   },
   refineFilter: {},
   irnTables: [],

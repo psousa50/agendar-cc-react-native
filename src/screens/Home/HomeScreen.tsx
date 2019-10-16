@@ -49,6 +49,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     },
     onServiceIdChange: (serviceId: number) => dispatch(updateFilter({ serviceId })),
     onTimePeriodChange: (timePeriod: TimePeriod) => dispatch(updateFilter(timePeriod)),
+    onSaturdaysChange: (onlyOnSaturdays: boolean) => dispatch(updateFilter({ onlyOnSaturdays })),
     referenceDataProxy,
   }
 

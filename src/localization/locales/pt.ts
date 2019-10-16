@@ -24,6 +24,7 @@ export const pt = {
     Until: "Até ao dia",
     OneDay: "No dia",
     Asap: "O mais depressa possível",
+    OnlyOnSaturdays: "Só aos Sábados",
   },
   TimePeriod: {
     Period: "Das ##startTime## às ##endTime##",

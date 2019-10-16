@@ -1,4 +1,4 @@
-import { Button, Icon, Text, View } from "native-base"
+import { Icon, Text, View } from "native-base"
 import { isNil, sort } from "ramda"
 import React, { useMemo, useState } from "react"
 import {
@@ -20,6 +20,7 @@ import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
 import { getFilteredLocations } from "../../utils/location"
 import { LocationView } from "../Home/components/LocationView"
+import { MainButton } from "../Home/components/MainButton"
 
 const colorSecondary = appTheme.brandSecondary
 const colorSecondaryText = appTheme.secondaryText
@@ -151,10 +152,12 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         </KeyboardAvoidingView>
       ) : null}
       {showSelectOnMap && (
-        <Button style={{ marginTop: 50 }} block success onPress={selectOnMap}>
-          <Icon type={"MaterialIcons"} name="location-on" />
-          <Text>{i18n.t("SelectOnMap")}</Text>
-        </Button>
+        <MainButton
+          onPress={selectOnMap}
+          text={i18n.t("SelectOnMap")}
+          iconType={"MaterialIcons"}
+          iconName={"location-on"}
+        />
       )}
     </View>
   )
