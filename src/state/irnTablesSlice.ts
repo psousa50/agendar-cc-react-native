@@ -92,7 +92,7 @@ export const getIrnTables = (irnTablesDataState: IrnTablesDataState): AppThunk =
   const filterCache = irnTablesDataState.filterCache
   const irnTablesCache = irnTablesDataState.irnTablesCache
 
-  const inCache = irnTablesCache && filterCache && (filtersAreCompatible(filterCache, filter) && false)
+  const inCache = irnTablesCache && filterCache && filtersAreCompatible(filterCache, filter)
 
   if (inCache && irnTablesCache) {
     dispatch(updateIrnTables({ irnTables: irnTablesCache.filter(byIrnTableFilter(filter)), filter }))

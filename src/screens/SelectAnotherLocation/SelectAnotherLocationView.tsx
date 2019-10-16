@@ -1,6 +1,6 @@
 import React from "react"
 import { LocationsMap, MapLocation } from "../../components/common/LocationsMap"
-import { byRefineFilter, getIrnTableResultSummary } from "../../irnTables/main"
+import { byIrnTableRefineFilter, getIrnTableResultSummary } from "../../irnTables/main"
 import { Counties, Districts, IrnPlaces, IrnRepositoryTables } from "../../irnTables/models"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableRefineFilterLocation } from "../../state/models"
@@ -22,7 +22,7 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   referenceDataProxy,
 }) => {
   const checkOnlyOneResult = (newLocation: IrnTableRefineFilterLocation) => {
-    const irnTablesFiltered = irnTables.filter(byRefineFilter({ ...refineLocation, ...newLocation }))
+    const irnTablesFiltered = irnTables.filter(byIrnTableRefineFilter({ ...refineLocation, ...newLocation }))
     const irnTableResultSummary = getIrnTableResultSummary(irnTablesFiltered)
 
     onLocationChange(
@@ -47,7 +47,7 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   }
 
   const render = () => {
-    const irnTablesFiltered = irnTables.filter(byRefineFilter(refineLocation))
+    const irnTablesFiltered = irnTables.filter(byIrnTableRefineFilter(refineLocation))
     const irnTableResultSummary = getIrnTableResultSummary(irnTablesFiltered)
     const districts = irnTableResultSummary.districtIds
       .map(referenceDataProxy.getDistrict)

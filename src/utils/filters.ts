@@ -30,6 +30,7 @@ export const filtersAreCompatible = (filter1: IrnTableFilter, filter2: IrnTableF
   const rangeEq = rangeCompatible(filter1, filter2)
   return (
     eq("region") &&
+    eq("serviceId") &&
     eq("districtId") &&
     eq("countyId") &&
     eq("placeName") &&

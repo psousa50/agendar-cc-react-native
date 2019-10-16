@@ -25,9 +25,10 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
       referenceDataProxy: buildReferenceDataProxy(state.referenceData),
     }),
   )
+  const irnTablesDataState = useSelector((state: RootState) => state.irnTablesData)
 
   useEffect(() => {
-    dispatch(getIrnTables(filter))
+    dispatch(getIrnTables(irnTablesDataState))
   }, [filter])
 
   const irnTablesResultsViewProps = {
