@@ -10,13 +10,13 @@ import { AppThunk } from "./store"
 
 interface IrnPlacesDataState {
   irnPlaces: IrnPlaces
-  error: Error | null
+  error: string | undefined
   loading: boolean
 }
 
 export const initialState: IrnPlacesDataState = {
   irnPlaces: [],
-  error: null,
+  error: undefined,
   loading: false,
 }
 
@@ -30,17 +30,17 @@ const irnPlacesSlice = createSlice({
   initialState,
   reducers: {
     initIrnPlacesFetch(state) {
-      state.error = null
+      state.error = undefined
       state.loading = true
     },
     irnPlacesFetchWasSuccessful(state, action: PayloadAction<IrnPlaces>) {
       const irnPlaces = action.payload
 
       state.irnPlaces = irnPlaces
-      state.error = null
+      state.error = undefined
       state.loading = false
     },
-    irnPlacesFetchError(state, action: PayloadAction<Error>) {
+    irnPlacesFetchError(state, action: PayloadAction<string>) {
       state.error = action.payload
       state.loading = false
     },
@@ -53,7 +53,7 @@ export const getIrnPlaces = (): AppThunk => async (dispatch: Dispatch) => {
     fetchIrnPlaces(),
     fold(
       error => {
-        dispatch(irnPlacesFetchError(error))
+        dispatch(irnPlacesFetchError(error.message))
         return task.of(undefined)
       },
       irnPlaces => {

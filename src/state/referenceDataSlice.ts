@@ -13,7 +13,7 @@ interface ReferenceDataState {
   irnServices: IrnServices
   counties: Counties
   districts: Districts
-  error: Error | null
+  error: string | undefined
   loaded: boolean
   loading: boolean
 }
@@ -22,7 +22,7 @@ const initialState: ReferenceDataState = {
   irnServices: [],
   districts: [],
   counties: [],
-  error: null,
+  error: undefined,
   loaded: false,
   loading: false,
 }
@@ -47,7 +47,7 @@ const referenceDataSlice = createSlice({
   initialState,
   reducers: {
     initFetch(state) {
-      state.error = null
+      state.error = undefined
       state.loading = true
     },
     fetchSuccessful(state, action: PayloadAction<SuccessfulFetchPayload>) {
@@ -55,11 +55,11 @@ const referenceDataSlice = createSlice({
       state.irnServices = irnServices
       state.districts = districts
       state.counties = counties
-      state.error = null
+      state.error = undefined
       state.loading = false
       state.loaded = true
     },
-    fetchError(state, action: PayloadAction<Error>) {
+    fetchError(state, action: PayloadAction<string>) {
       state.error = action.payload
       state.loading = false
     },
@@ -72,7 +72,7 @@ export const getReferenceData = (): AppThunk => async (dispatch: Dispatch) => {
     fetchReferenceData(),
     fold(
       error => {
-        dispatch(fetchError(error))
+        dispatch(fetchError(error.message))
         return task.of(undefined)
       },
       referenceData => {

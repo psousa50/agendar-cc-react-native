@@ -21,7 +21,7 @@ interface IrnTablesDataState {
   irnTables: IrnRepositoryTables
   filterCache?: IrnTableFilter
   irnTablesCache?: IrnRepositoryTables
-  error: Error | null
+  error: string | undefined
   loading: boolean
   selectedIrnTable?: SelectedIrnTable
 }
@@ -44,7 +44,7 @@ export const initialState: IrnTablesDataState = {
   },
   refineFilter: {},
   irnTables: [],
-  error: null,
+  error: undefined,
   loading: false,
 }
 
@@ -53,7 +53,7 @@ const irnTablesSlice = createSlice({
   initialState,
   reducers: {
     initIrnTablesFetch(state) {
-      state.error = null
+      state.error = undefined
       state.loading = true
     },
     irnTablesFetchWasSuccessful(state, action: PayloadAction<IrnRepositoryTables>) {
@@ -62,10 +62,10 @@ const irnTablesSlice = createSlice({
       state.irnTables = irnTables
       state.irnTablesCache = irnTables
       state.filterCache = state.filter
-      state.error = null
+      state.error = undefined
       state.loading = false
     },
-    irnTablesFetchError(state, action: PayloadAction<Error>) {
+    irnTablesFetchError(state, action: PayloadAction<string>) {
       state.error = action.payload
       state.loading = false
     },
@@ -90,7 +90,7 @@ export const getIrnTables = (filter: IrnTableFilter): AppThunk => async (dispatc
     fetchIrnTables(filter),
     fold(
       error => {
-        dispatch(irnTablesFetchError(error))
+        dispatch(irnTablesFetchError(error.message))
         return task.of(undefined)
       },
       irnTables => {
