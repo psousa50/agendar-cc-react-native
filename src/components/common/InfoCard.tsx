@@ -31,7 +31,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress, ic
 const styles = EStyleSheet.create({
   container: {
     paddingHorizontal: "1.0rem",
-    paddingBottom: "1.0rem",
+    paddingBottom: "0.5rem",
   },
   infoCard: {
     backgroundColor: "white",
@@ -57,13 +57,13 @@ const styles = EStyleSheet.create({
     backgroundColor: appTheme.brandPrimary,
     borderRadius: "0.6rem",
     paddingLeft: "1rem",
-    paddingTop: "0.5rem",
-    paddingBottom: "1rem",
+    paddingTop: "0.3rem",
+    paddingBottom: "0.8rem",
   },
   titleBarText: {
     textAlignVertical: "top",
     color: appTheme.primaryText,
-    fontSize: "1.3rem",
+    fontSize: "1.2rem",
     fontWeight: "bold",
   },
 })

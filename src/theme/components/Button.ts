@@ -231,7 +231,7 @@ export const theme = (variables = variable) => {
 
     ".rounded": {
       // paddingHorizontal: variables.buttonPadding + 20,
-      borderRadius: variables.borderRadiusLarge,
+      borderRadius: 15,
     },
 
     ".transparent": {

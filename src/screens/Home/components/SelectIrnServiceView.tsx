@@ -85,12 +85,12 @@ const styles = EStyleSheet.create({
     alignItems: "center",
   },
   serviceImage: {
-    width: "4rem",
-    height: "4rem",
+    width: "3rem",
+    height: "3rem",
   },
   cardText: {
     marginTop: 5,
-    fontSize: "1.0rem",
+    fontSize: "0.9rem",
   },
   cardSelectedText: {
     color: colorSecondaryText,
@@ -108,6 +108,6 @@ const styles = EStyleSheet.create({
     borderColor: colorSecondary,
   },
   tabTextStyle: {
-    fontSize: "1.0rem",
+    fontSize: "0.9rem",
   },
 })

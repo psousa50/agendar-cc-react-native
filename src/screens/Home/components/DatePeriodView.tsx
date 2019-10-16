@@ -62,7 +62,6 @@ const styles = EStyleSheet.create({
     alignItems: "center",
   },
   textContainer: {
-    flexDirection: "row",
     alignItems: "center",
     paddingVertical: "0.2rem",
   },
@@ -71,10 +70,10 @@ const styles = EStyleSheet.create({
     textAlign: "center",
   },
   emphasizedText: {
-    fontSize: "1.1rem",
+    fontSize: "0.9rem",
     textAlign: "center",
     fontWeight: "bold",
-    paddingHorizontal: "0.5rem",
+    paddingHorizontal: "0.3rem",
   },
   close: {
     position: "absolute",

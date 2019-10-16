@@ -171,13 +171,13 @@ const styles = EStyleSheet.create({
     flexDirection: "row",
     paddingVertical: 5,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   switch: {
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
   },
   emphasizedText: {
-    fontSize: "1.1rem",
+    fontSize: "0.9rem",
     textAlign: "center",
     textAlignVertical: "bottom",
     fontWeight: "bold",

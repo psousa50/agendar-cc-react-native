@@ -84,7 +84,7 @@ const styles = EStyleSheet.create({
     textAlignVertical: "bottom",
   },
   emphasizedText: {
-    fontSize: "1.1rem",
+    fontSize: "0.9rem",
     textAlign: "center",
     textAlignVertical: "bottom",
     fontWeight: "bold",

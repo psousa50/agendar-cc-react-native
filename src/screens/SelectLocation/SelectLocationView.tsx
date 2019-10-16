@@ -248,6 +248,7 @@ const styles = EStyleSheet.create({
   },
   tabTextStyle: {
     paddingVertical: "0.6rem",
-    fontSize: "1.0rem",
+    fontSize: "0.8rem",
+    flexWrap: "wrap",
   },
 })
