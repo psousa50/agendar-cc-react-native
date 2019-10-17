@@ -32,7 +32,7 @@ const ButtonIcon = (name: string, type?: IconType) => (onPress: OnPress, disable
       ios={`ios-${name}`}
       android={`md-${name}`}
       color={color}
-      style={[styles.icon, color ? { color } : undefined]}
+      style={[styles.buttonIcon, color ? { color } : undefined]}
     />
   </Button>
 )
@@ -50,7 +50,7 @@ export const ButtonIcons = {
 export const buttonIcons = (...buttons: ButtonIcons[]) => buttons
 
 const styles = EStyleSheet.create({
-  icon: {
-    fontSize: "2.0rem",
+  buttonIcon: {
+    fontSize: "1.3rem",
   },
 })

@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
+import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilterLocation } from "../../state/models"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
@@ -50,7 +51,11 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
     onLocationChange,
   }
   return (
-    <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => goBack())}>
+    <AppModalScreen
+      {...props}
+      title={i18n.t("Title.SelectLocationByMap")}
+      right={() => ButtonIcons.Checkmark(() => goBack())}
+    >
       <SelectLocationByMapView {...selectLocationByMapViewProps} />
     </AppModalScreen>
   )

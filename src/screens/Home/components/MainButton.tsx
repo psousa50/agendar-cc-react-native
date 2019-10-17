@@ -7,10 +7,18 @@ interface MainButtonProps extends NativeBase.Button {
   iconName: string
   iconType?: IconType
   text: string
+  color?: string
 }
 
-export const MainButton: React.FC<MainButtonProps> = ({ iconName, iconType, text, ...props }) => (
-  <Button style={styles.button} iconLeft block success rounded {...props}>
+export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconType, text, ...props }) => (
+  <Button
+    style={[styles.button, color ? { backgroundColor: color } : undefined]}
+    iconLeft
+    block
+    success
+    rounded
+    {...props}
+  >
     <Icon type={iconType} name={iconName} />
     <Text>{text}</Text>
   </Button>

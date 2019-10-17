@@ -49,6 +49,12 @@ export const en = {
     Schedule: "Schedule",
     NewSearch: "New Search",
   },
+  Title: {
+    SelectAnotherDate: "Select Another Date",
+    SelectAnotherLocation: "Select Another Location",
+    SelectLocation: "Select Location",
+    SelectLocationByMap: "Select Location by Map",
+  },
 
   date: {
     formats: {

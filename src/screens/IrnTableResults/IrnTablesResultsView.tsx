@@ -13,6 +13,7 @@ import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilter, IrnTableRefineFilter } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { appTheme } from "../../utils/appTheme"
 import { MainButton } from "../Home/components/MainButton"
 import { IrnTableResultView } from "./IrnTableResultView"
 
@@ -84,6 +85,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           text={i18n.t("Results.Schedule")}
           iconType={"MaterialIcons"}
           iconName={"schedule"}
+          color={appTheme.secondaryColor}
         />
       )}
       {irnTableResultSummary.irnPlaceNames.length > 1 && (

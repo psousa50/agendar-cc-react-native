@@ -1,4 +1,4 @@
-import { Container, Header, Left, Right, View } from "native-base"
+import { Body, Container, Header, Left, Right, Title, View } from "native-base"
 import React from "react"
 import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
@@ -14,9 +14,10 @@ export interface AppScreenProps extends AppNavigationScreenProps {
   loading?: boolean
   left?: () => JSX.Element
   right?: () => JSX.Element
+  title?: string
 }
 
-export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children, left, loading, right }) => (
+export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children, left, loading, right, title }) => (
   <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
     <StatusBar barStyle="light-content" backgroundColor={"#00000020"} translucent={true} />
     <Container>
@@ -24,6 +25,11 @@ export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children,
       {left || right ? (
         <Header style={styles.header}>
           <Left>{left ? left() : undefined}</Left>
+          {title && (
+            <Body>
+              <Title>{title}</Title>
+            </Body>
+          )}
           <Right>{right ? right() : undefined}</Right>
         </Header>
       ) : null}
@@ -36,6 +42,7 @@ export interface AppModalScreenProps extends AppNavigationScreenProps {
   backgroundImage?: any
   loading?: boolean
   right?: () => JSX.Element
+  title?: string
 }
 
 export const AppModalScreen: React.FC<AppModalScreenProps> = props => (
@@ -56,7 +63,6 @@ const styles = StyleSheet.create({
     height: 25,
   },
   header: {
-    backgroundColor: `${appTheme.primaryColorDark}C0`,
-    height: 30,
+    backgroundColor: `${appTheme.primaryColorDark}D0`,
   },
 })

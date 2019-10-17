@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
+import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { setRefineFilter } from "../../state/irnTablesSlice"
 import { IrnTableRefineFilterLocation } from "../../state/models"
@@ -45,7 +46,11 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   }
 
   return (
-    <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}>
+    <AppModalScreen
+      title={i18n.t("Title.SelectAnotherLocation")}
+      {...props}
+      right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}
+    >
       <SelectAnotherLocationView {...selectAnotherLocationViewProps} />
     </AppModalScreen>
   )
