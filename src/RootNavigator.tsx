@@ -6,6 +6,7 @@ import { createAppContainer } from "react-navigation"
 import { NavigationSceneRendererProps } from "react-navigation"
 import { HomeScreen } from "./screens/Home/HomeScreen"
 import { IrnTablesResultsScreen } from "./screens/IrnTableResults/IrnTablesResultsScreen"
+import { ScheduleIrnTableScreen } from "./screens/ScheduleIrnTable/ScheduleIrnTableScreen"
 import { SelectAnotherDateScreen } from "./screens/SelectAnotherDate/SelectAnotherDateScreen"
 import { SelectAnotherLocationScreen } from "./screens/SelectAnotherLocation/SelectAnotherLocationScreen"
 import { SelectLocationScreen } from "./screens/SelectLocation/SelectLocationScreen"
@@ -42,6 +43,7 @@ export const ContentNavigator = createStackNavigator(
     HomeScreen,
     SelectAnotherDateScreen,
     IrnTablesResultsScreen,
+    ScheduleIrnTableScreen,
     SelectAnotherLocationScreen,
     SelectLocationScreen,
     SelectLocationByMapScreen,

@@ -5,17 +5,11 @@ import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
 import { byIrnTableFilter, normalizeFilter } from "../irnTables/main"
-import { IrnRepositoryTables } from "../irnTables/models"
+import { IrnRepositoryTables, IrnTableResult } from "../irnTables/models"
 import { filtersAreCompatible } from "../utils/filters"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
-interface SelectedIrnTable {
-  countyId?: number
-  districtId: number
-  date: Date
-  placeName: string
-}
 interface IrnTablesDataState {
   filter: IrnTableFilter
   refineFilter: IrnTableRefineFilter
@@ -24,7 +18,7 @@ interface IrnTablesDataState {
   irnTablesCache?: IrnRepositoryTables
   error: string | undefined
   loading: boolean
-  selectedIrnTable?: SelectedIrnTable
+  irnTableResult?: IrnTableResult
 }
 
 interface UpdateIrnTablesPayload {
@@ -84,6 +78,9 @@ const irnTablesSlice = createSlice({
     setRefineFilter(state, action: PayloadAction<IrnTableRefineFilter>) {
       state.refineFilter = action.payload
     },
+    setIrnTableResult(state, action: PayloadAction<IrnTableResult>) {
+      state.irnTableResult = action.payload
+    },
   },
 })
 
@@ -121,5 +118,6 @@ export const {
   irnTablesFetchWasSuccessful,
   irnTablesFetchError,
   updateIrnTables,
+  setIrnTableResult,
 } = irnTablesSlice.actions
 export const reducer = irnTablesSlice.reducer

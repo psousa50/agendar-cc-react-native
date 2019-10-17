@@ -8,7 +8,7 @@ import {
   selectOneIrnTableResultByClosestDate,
   selectOneIrnTableResultByClosestPlace,
 } from "../../irnTables/main"
-import { IrnRepositoryTables } from "../../irnTables/models"
+import { IrnRepositoryTables, IrnTableResult } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableFilter, IrnTableRefineFilter } from "../../state/models"
@@ -24,7 +24,7 @@ interface IrnTablesResultsViewProps {
   irnPlacesProxy: IrnPlacesProxy
   onSearchLocation: () => void
   onSearchDate: () => void
-  onSchedule: () => void
+  onSchedule: (irnTableResult: IrnTableResult) => void
   onNewSearch: () => void
 }
 export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
@@ -79,7 +79,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
       </InfoCard>
       {irnTableResult && (
         <MainButton
-          onPress={onSchedule}
+          onPress={() => onSchedule(irnTableResult)}
           danger
           text={i18n.t("Results.Schedule")}
           iconType={"MaterialIcons"}

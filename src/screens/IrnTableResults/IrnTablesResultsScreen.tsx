@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
 import { AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
+import { IrnTableResult } from "../../irnTables/models"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { getIrnTables } from "../../state/irnTablesSlice"
+import { getIrnTables, setIrnTableResult } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { enhancedNavigation } from "../screens"
@@ -39,7 +40,10 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     referenceDataProxy,
     onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
-    onSchedule: () => undefined,
+    onSchedule: (irnTableResult: IrnTableResult) => {
+      dispatch(setIrnTableResult(irnTableResult))
+      navigation.goTo("ScheduleIrnTableScreen")
+    },
     onNewSearch: () => navigation.goBack(),
   }
 
