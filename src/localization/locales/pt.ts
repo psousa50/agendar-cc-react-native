@@ -56,7 +56,9 @@ export const pt = {
     SelectLocation: "Escolher Local",
     SelectLocationByMap: "Escolher Local",
   },
-
+  Schedule: {
+    NotFound: "Este horário já não se encontra disponível. Seleccione outro ou altere os seus critérios de pesquisa.",
+  },
   date: {
     month_names: [
       null,

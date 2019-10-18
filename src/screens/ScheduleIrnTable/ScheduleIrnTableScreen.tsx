@@ -8,6 +8,7 @@ import { fetchIrnTablesScheduleHtml } from "../../api/irnTables"
 import { ErrorPage } from "../../components/common/ErrorPage"
 import { LoadingPage } from "../../components/common/LoadingPage"
 import { IrnPlace, IrnTableResult } from "../../irnTables/models"
+import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { RootState } from "../../state/rootReducer"
 
@@ -27,6 +28,10 @@ const jsCode = (
       selectFound = selects[i];
       break;
     }
+  }
+
+  if (!selectFound) {
+    alert('${i18n.t("Schedule.NotFound")}')
   }
 
   selectFound.value = "${timeSlot}"

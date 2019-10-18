@@ -55,6 +55,9 @@ export const en = {
     SelectLocation: "Select Location",
     SelectLocationByMap: "Select Location by Map",
   },
+  Schedule: {
+    NotFound: "This schedule no longer exists. Please select another one or change your search criteria.",
+  },
 
   date: {
     formats: {
