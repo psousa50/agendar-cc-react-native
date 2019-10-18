@@ -16,6 +16,10 @@ export const toDateOnly = (d: Date | string | undefined): DateOnly | undefined =
         : undefined
       : (d.toISOString().substr(0, 10) as DateOnly)
     : undefined
+
+export const toExistingDateOnly = (d: Date | string): DateOnly =>
+  typeof d === "string" ? (d as DateOnly) : (d.toISOString().substr(0, 10) as DateOnly)
+
 export const toMaybeDate = (d: DateOnly | undefined) => (d ? new Date(d) : undefined)
 export const toDate = (d: DateOnly) => new Date(d)
 

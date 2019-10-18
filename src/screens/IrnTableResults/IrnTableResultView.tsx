@@ -21,9 +21,9 @@ export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTable
     <View>
       {district && <Text style={[styles.text, styles.district]}>{district.name}</Text>}
       {county && countyCount > 1 && <Text style={[styles.text, styles.county]}>{county.name}</Text>}
+      <Text style={[styles.text, styles.place]}>{placeName}</Text>
       <Text style={[styles.text, styles.date]}>{formatDateLocale(date)}</Text>
       <Text style={[styles.text, styles.timeSlot]}>{formatTimeSlot(timeSlot)}</Text>
-      <Text style={[styles.text, styles.place]}>{placeName}</Text>
       <Text style={[styles.text, styles.table]}>{`${i18n.t("Results.Table")} ${tableNumber}`}</Text>
     </View>
   )

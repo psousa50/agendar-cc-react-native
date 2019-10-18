@@ -1,15 +1,23 @@
 import { pipe } from "fp-ts/lib/pipeable"
 import { map } from "fp-ts/lib/TaskEither"
 import { isNil, keys } from "ramda"
-import { IrnRepositoryTable } from "../irnTables/models"
+import { IrnRepositoryTable, IrnTableResult } from "../irnTables/models"
 import { IrnTableFilter } from "../state/models"
 import { toDateOnly } from "../utils/dates"
 import { fetchJson } from "../utils/fetch"
 import { apiUrl } from "./config"
 import { fromBoolean, fromDateOnly, fromNumber, fromTimeSlot } from "./utils"
 
-const buildParams = (params: IrnTableFilter) => {
-  const fieldValues = {
+const buildParams = (fieldValues: {}) => {
+  const p = keys(fieldValues).reduce(
+    (acc, key) => (isNil(fieldValues[key]) ? acc : `${acc}${acc === "" ? "" : "&"}${key}=${fieldValues[key]}`),
+    "",
+  )
+
+  return p.length > 0 ? `?${p}` : ""
+}
+const buildIrnTablesParams = (params: IrnTableFilter) =>
+  buildParams({
     countyId: fromNumber(params.countyId),
     districtId: fromNumber(params.districtId),
     endDate: fromDateOnly(params.endDate),
@@ -20,15 +28,7 @@ const buildParams = (params: IrnTableFilter) => {
     serviceId: fromNumber(params.serviceId),
     startDate: fromDateOnly(params.startDate),
     startTime: fromTimeSlot(params.startTime),
-  }
-
-  const p = keys(fieldValues).reduce(
-    (acc, key) => (isNil(fieldValues[key]) ? acc : `${acc}${acc === "" ? "" : "&"}${key}=${fieldValues[key]}`),
-    "",
-  )
-
-  return p.length > 0 ? `?${p}` : ""
-}
+  })
 
 type IrnRepositoryTableJSON = IrnRepositoryTable
 
@@ -38,6 +38,23 @@ const transformTable = (irnTable: IrnRepositoryTableJSON) =>
 const transformTables = (irnTables: unknown) => (irnTables as IrnRepositoryTableJSON[]).map(transformTable)
 export const fetchIrnTables = (params: IrnTableFilter) =>
   pipe(
-    fetchJson(`${apiUrl}/irnTables${buildParams(params)}`),
+    fetchJson(`${apiUrl}/irnTables${buildIrnTablesParams(params)}`),
     map(transformTables),
   )
+
+const buildIrnTablesRequestOptionsParams = (params: IrnTableResult) =>
+  buildParams({
+    countyId: fromNumber(params.countyId),
+    districtId: fromNumber(params.districtId),
+    date: fromDateOnly(params.date),
+    serviceId: fromNumber(params.serviceId),
+  })
+
+export interface IrnTableResultRequestOptions {
+  body: string
+  headers: {}
+  method: string
+}
+
+export const fetchIrnTablesScheduleHtml = (params: IrnTableResult) =>
+  fetchJson<string>(`${apiUrl}/irnTableScheduleHtml${buildIrnTablesRequestOptionsParams(params)}`)
