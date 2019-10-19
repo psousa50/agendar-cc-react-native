@@ -16,11 +16,16 @@ interface IrnTablesDataState {
   irnTables: IrnRepositoryTables
   filterCache?: IrnTableFilter
   irnTablesCache?: IrnRepositoryTables
+  irnTablesCacheTimestamp?: number
   error: string | undefined
   loading: boolean
   irnTableResult?: IrnTableResult
 }
 
+interface IrnTablesFetchSuccessfulPayload {
+  irnTables: IrnRepositoryTables
+  timestamp: number
+}
 interface UpdateIrnTablesPayload {
   filter: IrnTableFilter
   irnTables: IrnRepositoryTables
@@ -53,11 +58,12 @@ const irnTablesSlice = createSlice({
       state.error = undefined
       state.loading = true
     },
-    irnTablesFetchWasSuccessful(state, action: PayloadAction<IrnRepositoryTables>) {
-      const irnTables = action.payload
+    irnTablesFetchWasSuccessful(state, action: PayloadAction<IrnTablesFetchSuccessfulPayload>) {
+      const { irnTables, timestamp } = action.payload
 
       state.irnTables = irnTables
       state.irnTablesCache = irnTables
+      state.irnTablesCacheTimestamp = timestamp
       state.filterCache = state.filter
       state.error = undefined
       state.loading = false
@@ -89,7 +95,10 @@ export const getIrnTables = (irnTablesDataState: IrnTablesDataState): AppThunk =
   const filterCache = irnTablesDataState.filterCache
   const irnTablesCache = irnTablesDataState.irnTablesCache
 
-  const inCache = irnTablesCache && filterCache && filtersAreCompatible(filterCache, filter)
+  const cacheIsValid =
+    irnTablesDataState.irnTablesCacheTimestamp &&
+    Date.now() - irnTablesDataState.irnTablesCacheTimestamp < 5 * 60 * 1000
+  const inCache = cacheIsValid && irnTablesCache && filterCache && filtersAreCompatible(filterCache, filter)
 
   if (inCache && irnTablesCache) {
     dispatch(updateIrnTables({ irnTables: irnTablesCache.filter(byIrnTableFilter(filter)), filter }))
@@ -103,7 +112,7 @@ export const getIrnTables = (irnTablesDataState: IrnTablesDataState): AppThunk =
           return task.of(undefined)
         },
         irnTables => {
-          dispatch(irnTablesFetchWasSuccessful(irnTables))
+          dispatch(irnTablesFetchWasSuccessful({ irnTables, timestamp: Date.now() }))
           return task.of(undefined)
         },
       ),
