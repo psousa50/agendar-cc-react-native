@@ -17,22 +17,50 @@ const jsCode = (
   { name: placeName, address, postalCode, phone }: IrnPlace,
 ) => `
 
+  function replaceAll(s, searchValue, replaceValue) {
+    const newString = s.replace(searchValue, replaceValue)
+    return newString === s ? newString : replaceAll(newString, searchValue, replaceValue)
+  }
+
+  function fix(s) {
+    return replaceAll(s, '"', "").normalize().trim()
+  }
+
   var selects = document.getElementsByTagName("select")
-  var searchText = "'${date}', '${placeName}', '${tableNumber}', '${address}','${postalCode}','${phone}');";
   var selectFound;
 
   for (var i = 0; i < selects.length; i++) {
     var s = selects[i].getAttribute("onChange")
-    var pos = s.indexOf(",", 12)
-    if ( s.substring(pos + 2).normalize()  === searchText.normalize()) {
+
+    s = replaceAll(s, "'", '"').replace(");", "")
+
+    var p = s.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || []
+    var parts = p.map(fix)
+
+    var date = parts[2]
+    var placeName = parts[3]
+    var tableNumber = parts[4]
+    var address = parts[5]
+    var postalCode = parts[6]
+    var phone = parts[7]
+
+    var found =
+      date === '${date}' &&
+      placeName === '${placeName}' &&
+      tableNumber === '${tableNumber}' &&
+      address === '${address}' &&
+      postalCode === '${postalCode}' &&
+      phone === '${phone}'
+
+    if ( found ) {
       selectFound = selects[i];
       break;
     }
   }
 
-  if (!selectFound) {
-    alert('${i18n.t("Schedule.NotFound")}')
-  }
+  // if (!selectFound) {
+  //   alert('${i18n.t("Schedule.NotFound")}')
+  // }
 
   selectFound.value = "${timeSlot}"
   var evt = document.createEvent("HTMLEvents");
