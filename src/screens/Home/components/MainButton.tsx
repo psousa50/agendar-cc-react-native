@@ -26,7 +26,8 @@ export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconTyp
 
 const styles = EStyleSheet.create({
   button: {
-    marginTop: "1rem",
+    marginTop: "0.2rem",
+    marginBottom: "0.8rem",
     marginHorizontal: "1.0rem",
   },
 })

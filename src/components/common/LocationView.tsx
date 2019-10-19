@@ -2,8 +2,8 @@ import { Icon, Text, View } from "native-base"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
-import { IrnTableFilterLocation, regionNames } from "../../../state/models"
-import { ReferenceDataProxy } from "../../../state/referenceDataSlice"
+import { IrnTableFilterLocation, regionNames } from "../../state/models"
+import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 
 interface LocationViewProps {
   location: IrnTableFilterLocation
@@ -70,8 +70,9 @@ const styles = EStyleSheet.create({
   },
   close: {
     position: "absolute",
-    left: 0,
+    right: 0,
     top: 0,
+    padding: "0.5rem",
   },
   closeIcon: {
     padding: "0.2rem",

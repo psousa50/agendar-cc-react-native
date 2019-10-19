@@ -4,7 +4,7 @@ import { County, District, TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
 import { dateFromTime, DateOnly, toDate } from "./dates"
 
-export const formatDateLocale = (date: DateOnly) => i18n.toTime("date.formats.long", toDate(date))
+export const formatDateLocale = (date?: DateOnly) => date && i18n.toTime("date.formats.long", toDate(date))
 
 const twoDigits = (v: number) => `${v < 10 ? 0 : ""}${v}`
 

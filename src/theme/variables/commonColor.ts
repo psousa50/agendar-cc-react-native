@@ -21,7 +21,7 @@ export const variables = {
   secondaryColor: SECONDARY_COLOR,
   primaryText: PRIMARY_TEXT_COLOR,
   secondaryText: SECONDARY_TEXT_COLOR,
-  secondaryTextDIMMED: SECONDARY_TEXT_DIMMED_COLOR,
+  secondaryTextDimmed: SECONDARY_TEXT_DIMMED_COLOR,
   platformStyle,
   platform,
   // Android

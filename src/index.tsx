@@ -8,7 +8,7 @@ import { localeConfig } from "./utils/calendar"
 
 const { scale } = Dimensions.get("window")
 EStyleSheet.build({
-  $rem: scale > 1.5 ? 16 : 10,
+  $rem: scale > 1.5 ? 15 : 10,
 })
 
 YellowBox.ignoreWarnings(["Warning: componentWillReceiveProps is deprecated"])

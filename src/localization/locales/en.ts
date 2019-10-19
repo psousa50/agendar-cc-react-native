@@ -21,16 +21,12 @@ export const en = {
   DatePeriod: {
     From: "From",
     To: "To",
-    Until: "Until",
-    OneDay: "On",
     Asap: "As soon as possible",
     OnlyOnSaturdays: "Only on Saturdays",
   },
   TimePeriod: {
-    Period: "From ##startTime## to ##endTime##",
-    From: "From ##startTime##",
-    Until: "Until ##endTime##",
-    At: "At ##startTime##",
+    From: "From",
+    To: "Until",
     Anytime: "Anytime",
   },
   Regions: {

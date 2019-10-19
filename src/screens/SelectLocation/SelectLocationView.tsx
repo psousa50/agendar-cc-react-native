@@ -11,6 +11,7 @@ import {
 } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
+import { LocationView } from "../../components/common/LocationView"
 import { Counties, County, Districts } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
@@ -20,7 +21,6 @@ import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
 import { getFilteredLocations } from "../../utils/location"
-import { LocationView } from "../Home/components/LocationView"
 import { MainButton } from "../Home/components/MainButton"
 
 const colorSecondary = appTheme.brandSecondary

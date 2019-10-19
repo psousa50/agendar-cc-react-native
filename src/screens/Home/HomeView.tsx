@@ -4,17 +4,17 @@ import React, { useState } from "react"
 import { ScrollView, StyleSheet, Switch } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { InfoCard } from "../../components/common/InfoCard"
+import { LocationView } from "../../components/common/LocationView"
 import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { appTheme } from "../../utils/appTheme"
 import { dateFromTime, toDateOnly, toMaybeDate } from "../../utils/dates"
-import { extractTime } from "../../utils/formaters"
+import { extractTime, formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { AppScreenName } from "../screens"
-import { DatePeriodView } from "./components/DatePeriodView"
-import { LocationView } from "./components/LocationView"
 import { MainButton } from "./components/MainButton"
+import { PeriodRow } from "./components/PeriodRow"
 import { SelectIrnServiceView } from "./components/SelectIrnServiceView"
-import { TimePeriodView } from "./components/TimePeriodView"
 
 export interface HomeViewProps {
   filter: IrnTableFilter
@@ -60,25 +60,31 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   const onClearLocation = () =>
     onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
-  const onClearDatePeriod = () => onDatePeriodChange({ startDate: undefined, endDate: undefined })
-  const onClearTimePeriod = () => onTimePeriodChange({ startTime: undefined, endTime: undefined })
 
-  const onEditDatePeriod = () => {
+  const clearDatePeriod = () => onDatePeriodChange({ startDate: undefined, endDate: undefined })
+  const clearStartDate = () => onDatePeriodChange({ startDate: undefined })
+  const clearEndDate = () => onDatePeriodChange({ endDate: undefined })
+
+  const showStartDatePicker = () => {
     mergeState({ showStartDatePickerModal: true })
   }
 
-  const onEditTimePeriod = () => {
-    mergeState({ showStartTimePickerModal: true })
+  const showEndDatePicker = () => {
+    mergeState({ showEndDatePickerModal: true })
   }
 
   const onStartDateChange = (_: any, date?: Date) => {
-    mergeState({ showStartDatePickerModal: false, showEndDatePickerModal: true })
-    onDatePeriodChange({ startDate: toDateOnly(date) })
+    if (date) {
+      mergeState({ showStartDatePickerModal: false })
+      onDatePeriodChange({ startDate: toDateOnly(date) })
+    }
   }
 
   const onEndDateChange = (_: any, date?: Date) => {
-    mergeState({ showEndDatePickerModal: false })
-    onDatePeriodChange({ endDate: toDateOnly(date) })
+    if (date) {
+      mergeState({ showEndDatePickerModal: false })
+      onDatePeriodChange({ endDate: toDateOnly(date) })
+    }
   }
 
   const renderStartDatePicker = () => (
@@ -99,9 +105,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
     />
   )
 
+  const clearTimePeriod = () => onTimePeriodChange({ startTime: undefined, endTime: undefined })
+  const clearStartTime = () => onTimePeriodChange({ startTime: undefined })
+  const clearEndTime = () => onTimePeriodChange({ endTime: undefined })
+
+  const showStartTimePicker = () => {
+    mergeState({ showStartTimePickerModal: true })
+  }
+
+  const showEndTimePicker = () => {
+    mergeState({ showEndTimePickerModal: true })
+  }
+
   const onStartTimeChange = (_: any, date?: Date) => {
     const newStartTime = date && extractTime(date)
-    mergeState({ showStartTimePickerModal: false, showEndTimePickerModal: true })
+    mergeState({ showStartTimePickerModal: false })
     onTimePeriodChange({ startTime: newStartTime })
   }
 
@@ -145,11 +163,54 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
-        <DatePeriodView datePeriod={filter} onClear={onClearDatePeriod} onEdit={onEditDatePeriod} />
-        <View style={{ borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 3 }}></View>
-        <TimePeriodView timePeriod={filter} onClear={onClearTimePeriod} onEdit={onEditTimePeriod} />
+        <PeriodRow active={!startDate && !endDate} title={i18n.t("DatePeriod.Asap")} onEdit={clearDatePeriod} />
+        <PeriodRow
+          active={!!startDate}
+          title={i18n.t("DatePeriod.From")}
+          value={formatDateLocale(startDate)}
+          onEdit={showStartDatePicker}
+          onClear={clearStartDate}
+        />
+        <PeriodRow
+          active={!!endDate}
+          title={i18n.t("DatePeriod.To")}
+          value={formatDateLocale(endDate)}
+          onEdit={showEndDatePicker}
+          onClear={clearEndDate}
+        />
+        <View
+          style={{
+            borderTopWidth: StyleSheet.hairlineWidth,
+            paddingVertical: 3,
+            borderColor: appTheme.secondaryTextDimmed,
+          }}
+        ></View>
+        <PeriodRow active={!startTime && !endTime} title={i18n.t("TimePeriod.Anytime")} onEdit={clearTimePeriod} />
+        <PeriodRow
+          active={!!startTime}
+          title={i18n.t("TimePeriod.From")}
+          value={formatTimeSlot(startTime, "")}
+          onEdit={showStartTimePicker}
+          onClear={clearStartTime}
+        />
+        <PeriodRow
+          active={!!endTime}
+          title={i18n.t("TimePeriod.To")}
+          value={formatTimeSlot(endTime, "")}
+          onEdit={showEndTimePicker}
+          onClear={clearEndTime}
+        />
+        <View
+          style={{
+            borderTopWidth: StyleSheet.hairlineWidth,
+            paddingVertical: 3,
+            borderColor: appTheme.secondaryTextDimmed,
+          }}
+        ></View>
         <View style={styles.switchContainer}>
-          <Text style={styles.emphasizedText}>{i18n.t("DatePeriod.OnlyOnSaturdays")}</Text>
+          <Text style={[styles.onlyOnSaturdays, !onlyOnSaturdays && styles.onlyOnSaturdaysDimmed]}>
+            {i18n.t("DatePeriod.OnlyOnSaturdays")}
+          </Text>
           <Switch style={styles.switch} value={onlyOnSaturdays} onValueChange={onSaturdaysChange} />
         </View>
       </InfoCard>
@@ -171,16 +232,19 @@ const styles = EStyleSheet.create({
     flexDirection: "row",
     paddingVertical: 5,
     alignItems: "center",
-    justifyContent: "center",
   },
   switch: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
+    flex: 1,
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
-  emphasizedText: {
+  onlyOnSaturdays: {
+    flex: 19,
     fontSize: "0.9rem",
-    textAlign: "center",
     textAlignVertical: "bottom",
-    fontWeight: "bold",
     paddingHorizontal: "0.5rem",
+    color: appTheme.secondaryText,
+  },
+  onlyOnSaturdaysDimmed: {
+    color: appTheme.secondaryTextDimmed,
   },
 })

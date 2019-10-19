@@ -24,7 +24,7 @@ const jsCode = (
   for (var i = 0; i < selects.length; i++) {
     var s = selects[i].getAttribute("onChange")
     var pos = s.indexOf(",", 12)
-    if ( s.substring(pos + 2) === searchText) {
+    if ( s.substring(pos + 2).normalize()  === searchText.normalize()) {
       selectFound = selects[i];
       break;
     }
