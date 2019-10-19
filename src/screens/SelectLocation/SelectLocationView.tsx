@@ -13,7 +13,6 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { LocationView } from "../../components/common/LocationView"
 import { Counties, County, Districts } from "../../irnTables/models"
-import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
@@ -21,7 +20,6 @@ import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
 import { getFilteredLocations } from "../../utils/location"
-import { MainButton } from "../Home/components/MainButton"
 
 const colorSecondary = appTheme.brandSecondary
 const colorSecondaryText = appTheme.secondaryText
@@ -137,6 +135,11 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           onChangeText={onChangeText}
         />
         <View style={styles.icons}>
+          {showSelectOnMap && (
+            <TouchableOpacity onPress={selectOnMap}>
+              <Icon style={styles.icon} type="MaterialIcons" name={"location-on"} />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity onPress={onClearText}>
             <Icon style={styles.icon} name={"close"} />
           </TouchableOpacity>
@@ -152,14 +155,6 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           />
         </KeyboardAvoidingView>
       ) : null}
-      {showSelectOnMap && (
-        <MainButton
-          onPress={selectOnMap}
-          text={i18n.t("SelectOnMap")}
-          iconType={"MaterialIcons"}
-          iconName={"location-on"}
-        />
-      )}
     </View>
   )
 }
@@ -230,6 +225,7 @@ const styles = EStyleSheet.create({
     backgroundColor: "#707070",
   },
   icons: {
+    flexDirection: "row",
     justifyContent: "flex-end",
   },
   icon: {
