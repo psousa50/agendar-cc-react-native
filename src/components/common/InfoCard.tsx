@@ -58,7 +58,7 @@ const styles = EStyleSheet.create({
     borderRadius: "0.6rem",
     paddingLeft: "1rem",
     paddingTop: "0.3rem",
-    paddingBottom: "0.8rem",
+    paddingBottom: "1.2rem",
   },
   titleBarText: {
     textAlignVertical: "top",

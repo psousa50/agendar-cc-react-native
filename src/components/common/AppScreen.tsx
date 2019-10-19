@@ -3,7 +3,6 @@ import React from "react"
 import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { appBackgroundImage } from "../../assets/images/images"
-import { appTheme } from "../../utils/appTheme"
 import { LoadingPage } from "./LoadingPage"
 import { ButtonIcons } from "./ToolbarIcons"
 
@@ -19,9 +18,8 @@ export interface AppScreenProps extends AppNavigationScreenProps {
 
 export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children, left, loading, right, title }) => (
   <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
-    <StatusBar barStyle="light-content" backgroundColor={"#00000020"} translucent={true} />
     <Container>
-      <View style={styles.statusBar}></View>
+      <View style={{ height: StatusBar.currentHeight }}></View>
       {left || right ? (
         <Header style={styles.header}>
           <Left>{left ? left() : undefined}</Left>
@@ -33,6 +31,7 @@ export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children,
           <Right>{right ? right() : undefined}</Right>
         </Header>
       ) : null}
+      <StatusBar barStyle="light-content" translucent={true} />
       <View style={styles.content}>{loading ? <LoadingPage /> : children}</View>
     </Container>
   </ImageBackground>
@@ -59,10 +58,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-  statusBar: {
-    height: 25,
-  },
   header: {
-    backgroundColor: `${appTheme.primaryColorDark}D0`,
+    borderWidth: 0,
   },
 })

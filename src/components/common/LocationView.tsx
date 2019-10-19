@@ -24,7 +24,7 @@ export const LocationView: React.FC<LocationViewProps> = ({
   const isDefined = district || county || placeName
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onEdit}>
+      <TouchableOpacity disabled={!onEdit} onPress={onEdit}>
         {isDefined ? (
           <>
             {district && <Text style={[styles.text, styles.district]}>{district.name}</Text>}

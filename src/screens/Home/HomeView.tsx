@@ -1,7 +1,7 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Text, View } from "native-base"
 import React, { useState } from "react"
-import { ScrollView, StyleSheet, Switch } from "react-native"
+import { StyleSheet, Switch, TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { InfoCard } from "../../components/common/InfoCard"
 import { LocationView } from "../../components/common/LocationView"
@@ -150,7 +150,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   )
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
       </InfoCard>
@@ -208,9 +208,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
           }}
         ></View>
         <View style={styles.switchContainer}>
-          <Text style={[styles.onlyOnSaturdays, !onlyOnSaturdays && styles.onlyOnSaturdaysDimmed]}>
-            {i18n.t("DatePeriod.OnlyOnSaturdays")}
-          </Text>
+          <TouchableOpacity onPress={() => onSaturdaysChange(!onlyOnSaturdays)}>
+            <Text style={[styles.onlyOnSaturdays, !onlyOnSaturdays && styles.onlyOnSaturdaysDimmed]}>
+              {i18n.t("DatePeriod.OnlyOnSaturdays")}
+            </Text>
+          </TouchableOpacity>
           <Switch style={styles.switch} value={onlyOnSaturdays} onValueChange={onSaturdaysChange} />
         </View>
       </InfoCard>
@@ -219,7 +221,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {state.showEndDatePickerModal && renderEndDatePicker()}
       {state.showStartTimePickerModal && renderStartTimePicker()}
       {state.showEndTimePickerModal && renderEndTimePicker()}
-    </ScrollView>
+    </View>
   )
 }
 
@@ -227,6 +229,8 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     marginTop: "0.5rem",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   switchContainer: {
     flexDirection: "row",

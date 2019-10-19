@@ -100,8 +100,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
     onLocationChange({ region: allRegions[index] })
   }
 
-  const onClearLocation = () =>
-    onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
+  const clearLocation = () => onLocationChange({ districtId: undefined, countyId: undefined, placeName: undefined })
 
   const { filteredDistricts, filteredCounties, filteredIrnPlaces } = getFilteredLocations(
     referenceDataProxy.getDistricts(),
@@ -113,7 +112,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.location}>
+      <View style={styles.regionContainer}>
         <SegmentedControlTab
           activeTabStyle={styles.activeTabStyle}
           activeTabTextStyle={styles.activeTabTextStyle}
@@ -123,9 +122,9 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           selectedIndex={allRegions.findIndex(r => r === region) || 0}
           onTabPress={onRegionTabPress}
         />
-        <View style={styles.locationContainer}>
-          <LocationView location={location} onClear={onClearLocation} referenceDataProxy={referenceDataProxy} />
-        </View>
+      </View>
+      <View style={styles.locationContainer}>
+        <LocationView location={location} onClear={clearLocation} referenceDataProxy={referenceDataProxy} />
       </View>
       <View style={styles.locationInputContainer}>
         <TextInput
@@ -193,13 +192,17 @@ const styles = EStyleSheet.create({
   },
   locationContainer: {
     padding: "0.5rem",
-    margin: "1.0rem",
+    marginVertical: "1.0rem",
     backgroundColor: "white",
     borderRadius: "0.6rem",
     ...shadow,
   },
-  location: {
-    margin: "1.0rem",
+  regionContainer: {
+    marginTop: "0.2rem",
+    padding: "0.6rem",
+    backgroundColor: "white",
+    borderRadius: "0.6rem",
+    ...shadow,
   },
   locationInputContainer: {
     flexDirection: "row",
@@ -244,7 +247,7 @@ const styles = EStyleSheet.create({
   },
   tabTextStyle: {
     paddingVertical: "0.6rem",
-    fontSize: "0.8rem",
+    fontSize: "1.0rem",
     flexWrap: "wrap",
   },
 })
