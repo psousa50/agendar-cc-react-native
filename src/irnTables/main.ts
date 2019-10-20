@@ -63,10 +63,10 @@ const getOneIrnTableResult = (
   irnTables: IrnRepositoryTables,
   timeSlotsFilter: TimeSlotsFilter,
 ): IrnTableResult => {
-  const timeSlots = sort(sortTimes, flatten(irnTables.map(t => t.timeSlots))).filter(filterTimeSlots(timeSlotsFilter))
-  const earlierTimeSlot = timeSlots[0]
-
   const selectedIrnTable = irnTables[0]
+
+  const timeSlots = sort(sortTimes, selectedIrnTable.timeSlots).filter(filterTimeSlots(timeSlotsFilter))
+  const earlierTimeSlot = timeSlots[0]
 
   return {
     serviceId: selectedIrnTable.serviceId,
