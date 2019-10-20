@@ -7,7 +7,7 @@ const PRIMARY_DARK_COLOR = "#004c8c"
 const PRIMARY_TEXT_COLOR = "#EEEEEE"
 const SECONDARY_COLOR = "#fbc02d"
 const SECONDARY_TEXT_COLOR = "#111111"
-const SECONDARY_TEXT_DIMMED_COLOR = "#BBBBBB"
+const SECONDARY_TEXT_DIMMED_COLOR = "#777777"
 
 const deviceHeight = Dimensions.get("window").height
 const deviceWidth = Dimensions.get("window").width

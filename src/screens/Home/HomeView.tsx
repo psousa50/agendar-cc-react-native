@@ -1,10 +1,11 @@
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Text, View } from "native-base"
 import React, { useState } from "react"
-import { StyleSheet, Switch, TouchableOpacity } from "react-native"
+import { Switch, TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { InfoCard } from "../../components/common/InfoCard"
 import { LocationView } from "../../components/common/LocationView"
+import { Separator } from "../../components/common/Separator"
 import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
@@ -61,7 +62,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const onClearLocation = () =>
     onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
 
-  const clearDatePeriod = () => onDatePeriodChange({ startDate: undefined, endDate: undefined })
   const clearStartDate = () => onDatePeriodChange({ startDate: undefined })
   const clearEndDate = () => onDatePeriodChange({ endDate: undefined })
 
@@ -105,7 +105,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
     />
   )
 
-  const clearTimePeriod = () => onTimePeriodChange({ startTime: undefined, endTime: undefined })
   const clearStartTime = () => onTimePeriodChange({ startTime: undefined })
   const clearEndTime = () => onTimePeriodChange({ endTime: undefined })
 
@@ -163,7 +162,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
-        <PeriodRow active={!startDate && !endDate} title={i18n.t("DatePeriod.Asap")} onEdit={clearDatePeriod} />
         <PeriodRow
           active={!!startDate}
           title={i18n.t("DatePeriod.From")}
@@ -178,14 +176,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           onEdit={showEndDatePicker}
           onClear={clearEndDate}
         />
-        <View
-          style={{
-            borderTopWidth: StyleSheet.hairlineWidth,
-            paddingVertical: 3,
-            borderColor: appTheme.secondaryTextDimmed,
-          }}
-        ></View>
-        <PeriodRow active={!startTime && !endTime} title={i18n.t("TimePeriod.Anytime")} onEdit={clearTimePeriod} />
+        <Separator />
         <PeriodRow
           active={!!startTime}
           title={i18n.t("TimePeriod.From")}
@@ -200,13 +191,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           onEdit={showEndTimePicker}
           onClear={clearEndTime}
         />
-        <View
-          style={{
-            borderTopWidth: StyleSheet.hairlineWidth,
-            paddingVertical: 3,
-            borderColor: appTheme.secondaryTextDimmed,
-          }}
-        ></View>
+        <Separator />
         <View style={styles.switchContainer}>
           <TouchableOpacity onPress={() => onSaturdaysChange(!onlyOnSaturdays)}>
             <Text style={[styles.onlyOnSaturdays, !onlyOnSaturdays && styles.onlyOnSaturdaysDimmed]}>
@@ -236,19 +221,18 @@ const styles = EStyleSheet.create({
     flexDirection: "row",
     paddingVertical: 5,
     alignItems: "center",
-  },
-  switch: {
-    flex: 1,
-    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+    justifyContent: "space-between",
   },
   onlyOnSaturdays: {
-    flex: 19,
     fontSize: "0.9rem",
-    textAlignVertical: "bottom",
+    textAlignVertical: "center",
     paddingHorizontal: "0.5rem",
     color: appTheme.secondaryText,
   },
   onlyOnSaturdaysDimmed: {
     color: appTheme.secondaryTextDimmed,
+  },
+  switch: {
+    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
   },
 })

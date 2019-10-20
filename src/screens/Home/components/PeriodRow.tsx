@@ -36,7 +36,8 @@ const styles = EStyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: "0.2rem",
+    paddingTop: "0.2rem",
+    paddingBottom: "1.2rem",
     paddingHorizontal: "0.5rem",
     justifyContent: "space-between",
   },
@@ -65,7 +66,7 @@ const styles = EStyleSheet.create({
   closeContainer: {
     width: "10%",
     alignItems: "flex-end",
-    padding: "0.5rem",
+    paddingHorizontal: "0.5rem",
   },
   closeIcon: {
     fontSize: "1rem",
