@@ -46,11 +46,11 @@ const jsCode = (
 
     var found =
       date === '${date}' &&
-      placeName === '${placeName}' &&
-      tableNumber === '${tableNumber}' &&
-      address === '${address}' &&
-      postalCode === '${postalCode}' &&
-      phone === '${phone}'
+      placeName === '${placeName}'.normalize() &&
+      tableNumber === '${tableNumber}'.normalize() &&
+      address === '${address}'.normalize() &&
+      postalCode === '${postalCode}'.normalize() &&
+      phone === '${phone}'.normalize()
 
     if ( found ) {
       selectFound = selects[i];
@@ -58,16 +58,30 @@ const jsCode = (
     }
   }
 
-  // if (!selectFound) {
-  //   alert('${i18n.t("Schedule.NotFound")}')
-  // }
+  if (!selectFound) {
+    alert('${i18n.t("Schedule.NotFound")}')
+  }
 
   selectFound.value = "${timeSlot}"
   var evt = document.createEvent("HTMLEvents");
   evt.initEvent("change", false, true);
   selectFound.dispatchEvent(evt);
 
-  document.getElementsByClassName("btn btn-warning btn-responsive")[0].style.display='none'
+  if (selectFound.value !== "${timeSlot}") {
+    alert('${i18n.t("Schedule.NotFound")}')
+  }
+
+  var buttons = document.getElementsByTagName("button")
+  for (var i = 0; i < buttons.length; i++) {
+    var b = buttons[i]
+    if (b.getAttribute("onclick").startsWith("window.history.back")) {
+      b.style.display='none'
+    }
+    if (b.getAttribute("onclick").startsWith("window.location.href='../index.php'")) {
+      b.style.display='none'
+    }
+  }
+
 `
 
 export const ScheduleIrnTableScreen = () => {
