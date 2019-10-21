@@ -2,7 +2,7 @@ import { flatten, isNil, sort, uniq } from "ramda"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
 import { IrnTableFilter, IrnTableRefineFilter, TimeSlotsFilter } from "../state/models"
 import { min } from "../utils/collections"
-import { DateOnly } from "../utils/dates"
+import { DateString } from "../utils/dates"
 import { filterTimeSlots } from "../utils/filters"
 import { getClosestLocation } from "../utils/location"
 import {
@@ -58,7 +58,7 @@ export const getIrnTablesByClosestPlace = (irnPlacesProxy: IrnPlacesProxy) => (
 }
 
 const getOneIrnTableResult = (
-  date: DateOnly,
+  date: DateString,
   irnPlace: IrnPlace,
   irnTables: IrnRepositoryTables,
   timeSlotsFilter: TimeSlotsFilter,

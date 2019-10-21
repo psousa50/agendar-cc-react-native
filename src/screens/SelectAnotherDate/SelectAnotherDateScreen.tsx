@@ -4,7 +4,7 @@ import { AppModalScreen, AppScreenProps } from "../../components/common/AppScree
 import { i18n } from "../../localization/i18n"
 import { setRefineFilter } from "../../state/irnTablesSlice"
 import { RootState } from "../../state/rootReducer"
-import { DateOnly } from "../../utils/dates"
+import { DateString } from "../../utils/dates"
 import { enhancedNavigation } from "../screens"
 import { SelectAnotherDateView } from "./SelectAnotherDateView"
 
@@ -17,7 +17,7 @@ export const SelectAnotherDateScreen: React.FC<AppScreenProps> = props => {
 
   const selectAnotherDateViewProps = {
     irnTables,
-    onDateSelected: (date: DateOnly) => {
+    onDateSelected: (date: DateString) => {
       dispatch(setRefineFilter({ date }))
       navigation.goBack()
     },

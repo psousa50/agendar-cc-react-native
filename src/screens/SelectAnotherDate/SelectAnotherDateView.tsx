@@ -5,11 +5,11 @@ import { StyleSheet } from "react-native"
 import { CalendarList, DateObject } from "react-native-calendars"
 import { IrnRepositoryTables } from "../../irnTables/models"
 import { groupCollection, max, min } from "../../utils/collections"
-import { DateOnly, toDateOnly } from "../../utils/dates"
+import { DateString, toDateOnly } from "../../utils/dates"
 
 interface SelectAnotherDateViewProps {
   irnTables: IrnRepositoryTables
-  onDateSelected: (date: DateOnly) => void
+  onDateSelected: (date: DateString) => void
 }
 export const SelectAnotherDateView: React.FC<SelectAnotherDateViewProps> = ({ irnTables, onDateSelected }) => {
   const irnTablesByDate = groupCollection(t => t.date, irnTables)

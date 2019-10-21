@@ -1,5 +1,5 @@
 import { Region } from "../state/models"
-import { DateOnly } from "../utils/dates"
+import { DateString } from "../utils/dates"
 
 export type TimeSlot = string
 
@@ -46,7 +46,7 @@ export type IrnPlaces = IrnPlace[]
 
 export type IrnRepositoryTable = {
   countyId: number
-  date: DateOnly
+  date: DateString
   districtId: number
   placeName: string
   region: string
@@ -60,7 +60,7 @@ export interface IrnTableResult {
   serviceId: number
   countyId: number
   districtId: number
-  date: DateOnly
+  date: DateString
   placeName: string
   timeSlot: TimeSlot
   tableNumber: string

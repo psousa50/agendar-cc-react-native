@@ -1,10 +1,10 @@
 import { GpsLocation, TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
-import { DateOnly } from "../utils/dates"
+import { DateString } from "../utils/dates"
 
 export interface DatePeriod {
-  endDate?: DateOnly
-  startDate?: DateOnly
+  endDate?: DateString
+  startDate?: DateString
 }
 
 export interface TimePeriod {
@@ -24,10 +24,10 @@ export interface IrnTableFilterLocation {
 }
 
 export interface IrnTableFilterDateTime {
-  endDate?: DateOnly
+  endDate?: DateString
   endTime?: TimeSlot
   onlyOnSaturdays?: boolean
-  startDate?: DateOnly
+  startDate?: DateString
   startTime?: TimeSlot
 }
 
@@ -38,7 +38,7 @@ export interface IrnTableRefineFilterLocation {
 }
 
 export interface IrnTableRefineFilter extends IrnTableRefineFilterLocation {
-  date?: DateOnly
+  date?: DateString
   timeSlot?: TimeSlot
 }
 
