@@ -10,7 +10,7 @@ import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
-import { dateFromTime, toDateOnly, toMaybeDate } from "../../utils/dates"
+import { dateFromTime, toDateString, toUtcMaybeDate } from "../../utils/dates"
 import { extractTime, formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { AppScreenName } from "../screens"
 import { MainButton } from "./components/MainButton"
@@ -76,20 +76,20 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const onStartDateChange = (_: any, date?: Date) => {
     if (date) {
       mergeState({ showStartDatePickerModal: false })
-      onDatePeriodChange({ startDate: toDateOnly(date) })
+      onDatePeriodChange({ startDate: toDateString(date) })
     }
   }
 
   const onEndDateChange = (_: any, date?: Date) => {
     if (date) {
       mergeState({ showEndDatePickerModal: false })
-      onDatePeriodChange({ endDate: toDateOnly(date) })
+      onDatePeriodChange({ endDate: toDateString(date) })
     }
   }
 
   const renderStartDatePicker = () => (
     <DateTimePicker
-      value={toMaybeDate(startDate) || new Date()}
+      value={toUtcMaybeDate(startDate) || new Date()}
       mode={"date"}
       display="default"
       onChange={onStartDateChange}
@@ -98,7 +98,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   const renderEndDatePicker = () => (
     <DateTimePicker
-      value={toMaybeDate(startDate) || toMaybeDate(endDate) || new Date()}
+      value={toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate) || new Date()}
       mode={"date"}
       display="default"
       onChange={onEndDateChange}

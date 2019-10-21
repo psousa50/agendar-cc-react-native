@@ -1,5 +1,5 @@
 import { IrnTableFilter, Region } from "../../src/state/models"
-import { toDateOnly } from "../../src/utils/dates"
+import { toDateString } from "../../src/utils/dates"
 import { equalCompatible, filtersAreCompatible, rangeCompatible } from "../../src/utils/filters"
 
 describe("equalCompatible", () => {
@@ -74,7 +74,7 @@ describe("filtersAreCompatible", () => {
     countyId: 1,
     distanceRadiusKm: 20,
     districtId: 4,
-    endDate: toDateOnly("2000-01-31"),
+    endDate: toDateString("2000-01-31"),
     endTime: "10:00",
     gpsLocation: {
       latitude: 1.3,
@@ -83,7 +83,7 @@ describe("filtersAreCompatible", () => {
     onlyOnSaturdays: true,
     placeName: "some place",
     region: "Continente",
-    startDate: toDateOnly("2000-01-01"),
+    startDate: toDateString("2000-01-01"),
     startTime: "20:00",
   }
 
@@ -102,8 +102,8 @@ describe("filtersAreCompatible", () => {
     })
 
     it("if the second date range is included on the first one", () => {
-      const filter1 = { ...defaultFilter, startDate: toDateOnly("2000-01-01"), endDate: toDateOnly("2000-01-31") }
-      const filter2 = { ...defaultFilter, startDate: toDateOnly("2000-01-02"), endDate: toDateOnly("2000-01-30") }
+      const filter1 = { ...defaultFilter, startDate: toDateString("2000-01-01"), endDate: toDateString("2000-01-31") }
+      const filter2 = { ...defaultFilter, startDate: toDateString("2000-01-02"), endDate: toDateString("2000-01-30") }
 
       expect(filtersAreCompatible(filter1, filter2)).toBeTruthy()
     })
@@ -167,8 +167,8 @@ describe("filtersAreCompatible", () => {
     })
 
     it("if the second date range is NOT included on the first one", () => {
-      const filter1 = { ...defaultFilter, startDate: toDateOnly("2000-01-10"), endDate: toDateOnly("2000-01-31") }
-      const filter2 = { ...defaultFilter, startDate: toDateOnly("2000-01-02"), endDate: toDateOnly("2000-01-30") }
+      const filter1 = { ...defaultFilter, startDate: toDateString("2000-01-10"), endDate: toDateString("2000-01-31") }
+      const filter2 = { ...defaultFilter, startDate: toDateString("2000-01-02"), endDate: toDateString("2000-01-30") }
 
       expect(filtersAreCompatible(filter1, filter2)).toBeFalsy()
     })

@@ -1,32 +1,28 @@
 import moment from "moment"
 
+const DateStringFormat = "YYYY-MM-DD"
 type DateStringBrand = { DateString: "" }
 
 export type DateString = string & DateStringBrand
 
-function validDateOnly(d: string): d is DateString {
-  return moment(d, "YYYY-MM-DD", true).isValid()
-}
+const validDateString = (d: string): d is DateString => moment(d, DateStringFormat, true).isValid()
 
-export const toDateOnly = (d: Date | string | undefined): DateString | undefined =>
+export const toDateString = (d: Date | string | undefined): DateString | undefined =>
   d
     ? typeof d === "string"
-      ? validDateOnly(d)
+      ? validDateString(d)
         ? d
         : undefined
-      : (d.toISOString().substr(0, 10) as DateString)
+      : (moment.utc(d).format(DateStringFormat) as DateString)
     : undefined
 
-export const toExistingDateOnly = (d: Date | string): DateString =>
-  typeof d === "string" ? (d as DateString) : (d.toISOString().substr(0, 10) as DateString)
+export const toExistingDateString = (d: Date | string): DateString =>
+  typeof d === "string" ? (d as DateString) : (moment.utc(d).format(DateStringFormat) as DateString)
 
-export const toMaybeDate = (d: DateString | undefined) => (d ? new Date(d) : undefined)
-export const toDate = (d: DateString) => new Date(d)
-
-export const dateOnly = (date: Date) =>
-  moment(date)
-    .startOf("day")
-    .toDate()
+export const toUtcMaybeDate = (d: DateString | undefined) => (d ? toUtcDate(d) : undefined)
+export const toUtcDate = (d: DateString) => moment.utc(d).toDate()
+export const currentUtcDateString = () => toExistingDateString(moment.utc().toDate())
+export const currentUtcDateTime = () => moment.utc()
 
 export const dateFromTime = (time?: string, defaultTime: string = "") => new Date(`2000-01-01T${time || defaultTime}`)
 

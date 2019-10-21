@@ -1,9 +1,6 @@
-import { pipe } from "fp-ts/lib/pipeable"
-import { map } from "fp-ts/lib/TaskEither"
 import { isNil, keys } from "ramda"
-import { IrnRepositoryTable, IrnTableResult } from "../irnTables/models"
+import { IrnRepositoryTables, IrnTableResult } from "../irnTables/models"
 import { IrnTableFilter } from "../state/models"
-import { toDateOnly } from "../utils/dates"
 import { fetchJson } from "../utils/fetch"
 import { apiUrl } from "./config"
 import { fromBoolean, fromDateOnly, fromNumber, fromTimeSlot } from "./utils"
@@ -30,17 +27,8 @@ const buildIrnTablesParams = (params: IrnTableFilter) =>
     startTime: fromTimeSlot(params.startTime),
   })
 
-type IrnRepositoryTableJSON = IrnRepositoryTable
-
-const transformTable = (irnTable: IrnRepositoryTableJSON) =>
-  ({ ...irnTable, date: toDateOnly(new Date(irnTable.date)) } as IrnRepositoryTable)
-
-const transformTables = (irnTables: unknown) => (irnTables as IrnRepositoryTableJSON[]).map(transformTable)
 export const fetchIrnTables = (params: IrnTableFilter) =>
-  pipe(
-    fetchJson(`${apiUrl}/irnTables${buildIrnTablesParams(params)}`),
-    map(transformTables),
-  )
+  fetchJson<IrnRepositoryTables>(`${apiUrl}/irnTables${buildIrnTablesParams(params)}`)
 
 const buildIrnTablesRequestOptionsParams = (params: IrnTableResult) =>
   buildParams({

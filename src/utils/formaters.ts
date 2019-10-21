@@ -2,9 +2,9 @@ import moment from "moment"
 
 import { County, District, TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
-import { dateFromTime, DateString, toDate } from "./dates"
+import { dateFromTime, DateString, toUtcDate } from "./dates"
 
-export const formatDateLocale = (date?: DateString) => date && i18n.toTime("date.formats.long", toDate(date))
+export const formatDateLocale = (date?: DateString) => date && i18n.toTime("date.formats.long", toUtcDate(date))
 
 const twoDigits = (v: number) => `${v < 10 ? 0 : ""}${v}`
 
