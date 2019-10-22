@@ -1,6 +1,5 @@
-import DateTimePicker from "@react-native-community/datetimepicker"
 import { Text, View } from "native-base"
-import React, { useState } from "react"
+import React from "react"
 import { Switch, TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { InfoCard } from "../../components/common/InfoCard"
@@ -10,12 +9,11 @@ import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
-import { dateFromTime, toDateString, toUtcMaybeDate } from "../../utils/dates"
-import { extractTime, formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { AppScreenName } from "../screens"
+import { DatePeriodView } from "./components/DatePeriodView"
 import { MainButton } from "./components/MainButton"
-import { PeriodRow } from "./components/PeriodRow"
 import { SelectIrnServiceView } from "./components/SelectIrnServiceView"
+import { TimePeriodView } from "./components/TimePeriodView"
 
 export interface HomeViewProps {
   filter: IrnTableFilter
@@ -30,13 +28,6 @@ export interface HomeViewProps {
   onSaturdaysChange: (value: boolean) => void
 }
 
-interface HomeViewState {
-  showStartDatePickerModal: boolean
-  showEndDatePickerModal: boolean
-  showStartTimePickerModal: boolean
-  showEndTimePickerModal: boolean
-}
-
 export const HomeView: React.FC<HomeViewProps> = ({
   filter,
   onDatePeriodChange,
@@ -48,109 +39,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onSaturdaysChange,
   referenceDataProxy,
 }) => {
-  const { serviceId, startDate, endDate, startTime, endTime, onlyOnSaturdays } = filter
-  const initialState: HomeViewState = {
-    showStartDatePickerModal: false,
-    showEndDatePickerModal: false,
-    showStartTimePickerModal: false,
-    showEndTimePickerModal: false,
-  }
-  const [state, setState] = useState(initialState)
-
-  const mergeState = (newState: Partial<HomeViewState>) => setState(oldState => ({ ...oldState, ...newState }))
+  const { serviceId, onlyOnSaturdays } = filter
 
   const onClearLocation = () =>
     onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
-
-  const clearStartDate = () => onDatePeriodChange({ startDate: undefined })
-  const clearEndDate = () => onDatePeriodChange({ endDate: undefined })
-
-  const showStartDatePicker = () => {
-    mergeState({ showStartDatePickerModal: true })
-  }
-
-  const showEndDatePicker = () => {
-    mergeState({ showEndDatePickerModal: true })
-  }
-
-  const onStartDateChange = (_: any, date?: Date) => {
-    mergeState({ showStartDatePickerModal: false })
-    if (date) {
-      onDatePeriodChange({ startDate: toDateString(date) })
-    }
-  }
-
-  const onEndDateChange = (_: any, date?: Date) => {
-    mergeState({ showEndDatePickerModal: false })
-    if (date) {
-      onDatePeriodChange({ endDate: toDateString(date) })
-    }
-  }
-
-  const renderStartDatePicker = () => (
-    <DateTimePicker
-      value={toUtcMaybeDate(startDate) || new Date()}
-      mode={"date"}
-      display="default"
-      onChange={onStartDateChange}
-    />
-  )
-
-  const renderEndDatePicker = () => (
-    <DateTimePicker
-      value={toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate) || new Date()}
-      mode={"date"}
-      display="default"
-      onChange={onEndDateChange}
-    />
-  )
-
-  const clearStartTime = () => onTimePeriodChange({ startTime: undefined })
-  const clearEndTime = () => onTimePeriodChange({ endTime: undefined })
-
-  const showStartTimePicker = () => {
-    mergeState({ showStartTimePickerModal: true })
-  }
-
-  const showEndTimePicker = () => {
-    mergeState({ showEndTimePickerModal: true })
-  }
-
-  const onStartTimeChange = (_: any, date?: Date) => {
-    mergeState({ showStartTimePickerModal: false })
-    if (date) {
-      const newStartTime = extractTime(date)
-      onTimePeriodChange({ startTime: newStartTime })
-    }
-  }
-
-  const onEndTimeChange = (_: any, date?: Date) => {
-    mergeState({ showEndTimePickerModal: false })
-    if (date) {
-      const newEndTime = extractTime(date)
-      onTimePeriodChange({ endTime: newEndTime })
-    }
-  }
-
-  const renderStartTimePicker = () => (
-    <DateTimePicker
-      value={dateFromTime(filter.startTime, "08:00")}
-      mode={"time"}
-      is24Hour={true}
-      display="default"
-      onChange={onStartTimeChange}
-    />
-  )
-
-  const renderEndTimePicker = () => (
-    <DateTimePicker
-      value={dateFromTime(endTime, startTime || "20:00")}
-      mode={"time"}
-      is24Hour={true}
-      display="default"
-      onChange={onEndTimeChange}
-    />
-  )
 
   return (
     <View style={styles.container}>
@@ -166,35 +58,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </InfoCard>
       <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
-        <PeriodRow
-          active={!!startDate}
-          title={i18n.t("DatePeriod.From")}
-          value={formatDateLocale(startDate)}
-          onEdit={showStartDatePicker}
-          onClear={clearStartDate}
-        />
-        <PeriodRow
-          active={!!endDate}
-          title={i18n.t("DatePeriod.To")}
-          value={formatDateLocale(endDate)}
-          onEdit={showEndDatePicker}
-          onClear={clearEndDate}
-        />
+        <DatePeriodView {...filter} onDatePeriodChange={onDatePeriodChange} />
         <Separator />
-        <PeriodRow
-          active={!!startTime}
-          title={i18n.t("TimePeriod.From")}
-          value={formatTimeSlot(startTime, "")}
-          onEdit={showStartTimePicker}
-          onClear={clearStartTime}
-        />
-        <PeriodRow
-          active={!!endTime}
-          title={i18n.t("TimePeriod.To")}
-          value={formatTimeSlot(endTime, "")}
-          onEdit={showEndTimePicker}
-          onClear={clearEndTime}
-        />
+        <TimePeriodView {...filter} onTimePeriodChange={onTimePeriodChange} />
         <Separator />
         <View style={styles.switchContainer}>
           <TouchableOpacity onPress={() => onSaturdaysChange(!onlyOnSaturdays)}>
@@ -206,10 +72,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </View>
       </InfoCard>
       <MainButton onPress={onSearch} text={i18n.t("SearchTimetables")} iconName={"search"} />
-      {state.showStartDatePickerModal && renderStartDatePicker()}
-      {state.showEndDatePickerModal && renderEndDatePicker()}
-      {state.showStartTimePickerModal && renderStartTimePicker()}
-      {state.showEndTimePickerModal && renderEndTimePicker()}
     </View>
   )
 }

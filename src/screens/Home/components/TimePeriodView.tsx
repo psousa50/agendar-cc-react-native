@@ -1,102 +1,97 @@
-import { Icon, Text, View } from "native-base"
-import { flatten } from "ramda"
-import React from "react"
-import { TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import DateTimePicker from "@react-native-community/datetimepicker"
+import React, { useState } from "react"
+import { TimeSlot } from "../../../irnTables/models"
 import { i18n } from "../../../localization/i18n"
 import { TimePeriod } from "../../../state/models"
-import { formatTimeSlot } from "../../../utils/formaters"
+import { dateFromTime } from "../../../utils/dates"
+import { extractTime, formatTimeSlot } from "../../../utils/formaters"
+import { PeriodRow } from "./PeriodRow"
 
 interface TimePeriodViewProps {
-  timePeriod: TimePeriod
-  onClear: () => void
-  onEdit: () => void
+  startTime?: TimeSlot
+  endTime?: TimeSlot
+  onTimePeriodChange: (timePeriod: TimePeriod) => void
 }
 
-export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ timePeriod, onClear, onEdit }) => {
-  const { startTime, endTime } = timePeriod
+interface TimePeriodViewState {
+  showStartTimePickerModal: boolean
+  showEndTimePickerModal: boolean
+}
 
-  const startTimeText = formatTimeSlot(startTime)
-  const endTimeText = formatTimeSlot(endTime)
+export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTime, onTimePeriodChange }) => {
+  const initialState: TimePeriodViewState = {
+    showStartTimePickerModal: false,
+    showEndTimePickerModal: false,
+  }
+  const [state, setState] = useState(initialState)
 
-  const split = (block: string) => (text: string) => {
-    const p = text.search(block)
-    return p >= 0 ? [text.substring(0, p - 1), text.substr(p, block.length), text.substring(p + block.length)] : [text]
+  const mergeState = (newState: Partial<TimePeriodViewState>) => setState(oldState => ({ ...oldState, ...newState }))
+
+  const clearStartTime = () => onTimePeriodChange({ startTime: undefined })
+  const clearEndTime = () => onTimePeriodChange({ endTime: undefined })
+
+  const showStartTimePicker = () => {
+    mergeState({ showStartTimePickerModal: true })
   }
 
-  const normalText = (text: string, key?: string) => (
-    <Text key={key} style={styles.text}>
-      {text}
-    </Text>
-  )
-  const emphasizedText = (text: string, key?: string) => (
-    <Text key={key} style={styles.emphasizedText}>
-      {text}
-    </Text>
+  const showEndTimePicker = () => {
+    mergeState({ showEndTimePickerModal: true })
+  }
+
+  const onStartTimeChange = (_: any, date?: Date) => {
+    mergeState({ showStartTimePickerModal: false })
+    if (date) {
+      const newStartTime = extractTime(date)
+      onTimePeriodChange({ startTime: newStartTime })
+    }
+  }
+
+  const onEndTimeChange = (_: any, date?: Date) => {
+    mergeState({ showEndTimePickerModal: false })
+    if (date) {
+      const newEndTime = extractTime(date)
+      onTimePeriodChange({ endTime: newEndTime })
+    }
+  }
+
+  const renderStartTimePicker = () => (
+    <DateTimePicker
+      value={dateFromTime(startTime, "08:00")}
+      mode={"time"}
+      is24Hour={true}
+      display="default"
+      onChange={onStartTimeChange}
+    />
   )
 
-  const replace = (text: string) =>
-    flatten(split("##startTime##")(text).map(split("##endTime##"))).map((part, i) =>
-      part === "##startTime##"
-        ? emphasizedText(startTimeText, i.toString())
-        : part === "##endTime##"
-        ? emphasizedText(endTimeText, i.toString())
-        : normalText(part, i.toString()),
-    )
-
-  const timePeriodElement =
-    startTime && endTime
-      ? startTime === endTime
-        ? replace(i18n.t("TimePeriod.At"))
-        : replace(i18n.t("TimePeriod.Period"))
-      : startTime
-      ? replace(i18n.t("TimePeriod.From"))
-      : endTime
-      ? replace(i18n.t("TimePeriod.Until"))
-      : emphasizedText(i18n.t("TimePeriod.Anytime"))
+  const renderEndTimePicker = () => (
+    <DateTimePicker
+      value={dateFromTime(endTime, startTime || "20:00")}
+      mode={"time"}
+      is24Hour={true}
+      display="default"
+      onChange={onEndTimeChange}
+    />
+  )
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onEdit}>
-        <View style={styles.textContainer}>{timePeriodElement}</View>
-      </TouchableOpacity>
-      {startTime || endTime ? (
-        <TouchableOpacity style={styles.close} onPress={onClear}>
-          <Icon style={styles.closeIcon} name={"close"} />
-        </TouchableOpacity>
-      ) : null}
-    </View>
+    <>
+      <PeriodRow
+        active={!!startTime}
+        title={i18n.t("TimePeriod.From")}
+        value={formatTimeSlot(startTime, "")}
+        onEdit={showStartTimePicker}
+        onClear={clearStartTime}
+      />
+      <PeriodRow
+        active={!!endTime}
+        title={i18n.t("TimePeriod.To")}
+        value={formatTimeSlot(endTime, "")}
+        onEdit={showEndTimePicker}
+        onClear={clearEndTime}
+      />
+      {state.showStartTimePickerModal && renderStartTimePicker()}
+      {state.showEndTimePickerModal && renderEndTimePicker()}
+    </>
   )
 }
-
-const styles = EStyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-  textContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: "0.2rem",
-  },
-  text: {
-    fontSize: "0.8rem",
-    textAlign: "center",
-    textAlignVertical: "bottom",
-  },
-  emphasizedText: {
-    fontSize: "0.9rem",
-    textAlign: "center",
-    textAlignVertical: "bottom",
-    fontWeight: "bold",
-    paddingHorizontal: "0.5rem",
-  },
-  close: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-  },
-  closeIcon: {
-    padding: "0.2rem",
-    fontSize: "1rem",
-  },
-})

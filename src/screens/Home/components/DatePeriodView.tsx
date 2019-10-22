@@ -1,87 +1,92 @@
-import { Icon, Text, View } from "native-base"
-import React from "react"
-import { TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import DateTimePicker from "@react-native-community/datetimepicker"
+import React, { useState } from "react"
 import { i18n } from "../../../localization/i18n"
 import { DatePeriod } from "../../../state/models"
+import { DateString, toDateString, toUtcMaybeDate } from "../../../utils/dates"
 import { formatDateLocale } from "../../../utils/formaters"
+import { PeriodRow } from "./PeriodRow"
 
 interface DatePeriodViewProps {
-  datePeriod: DatePeriod
-  onClear: () => void
-  onEdit: () => void
+  startDate?: DateString
+  endDate?: DateString
+  onDatePeriodChange: (datePeriod: DatePeriod) => void
 }
 
-export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ datePeriod, onClear, onEdit }) => {
-  const { startDate, endDate } = datePeriod
+interface DatePeriodViewState {
+  showStartDatePickerModal: boolean
+  showEndDatePickerModal: boolean
+}
 
-  const startDateText = startDate ? formatDateLocale(startDate) : endDate ? undefined : i18n.t("DatePeriod.Asap")
-  const endDateText = endDate && startDate !== endDate ? formatDateLocale(endDate) : undefined
+export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ startDate, endDate, onDatePeriodChange }) => {
+  const initialState: DatePeriodViewState = {
+    showStartDatePickerModal: false,
+    showEndDatePickerModal: false,
+  }
+  const [state, setState] = useState(initialState)
 
-  const startText =
-    startDate && endDate
-      ? startDate === endDate
-        ? i18n.t("DatePeriod.OneDay")
-        : i18n.t("DatePeriod.From")
-      : startDate
-      ? i18n.t("DatePeriod.From")
-      : undefined
+  const mergeState = (newState: Partial<DatePeriodViewState>) => setState(oldState => ({ ...oldState, ...newState }))
 
-  const endText = endDate
-    ? startDate
-      ? startDate === endDate
-        ? undefined
-        : i18n.t("DatePeriod.To")
-      : i18n.t("DatePeriod.Until")
-    : undefined
+  const clearStartDate = () => onDatePeriodChange({ startDate: undefined })
+  const clearEndDate = () => onDatePeriodChange({ endDate: undefined })
 
-  const textRow = (text?: string, emphasizedText?: string) => (
-    <View style={styles.textContainer}>
-      {text && <Text style={styles.text}>{text}</Text>}
-      {emphasizedText && <Text style={styles.emphasizedText}>{emphasizedText}</Text>}
-    </View>
+  const showStartDatePicker = () => {
+    mergeState({ showStartDatePickerModal: true })
+  }
+
+  const showEndDatePicker = () => {
+    mergeState({ showEndDatePickerModal: true })
+  }
+
+  const onStartDateChange = (_: any, date?: Date) => {
+    mergeState({ showStartDatePickerModal: false })
+    if (date) {
+      onDatePeriodChange({ startDate: toDateString(date) })
+    }
+  }
+
+  const onEndDateChange = (_: any, date?: Date) => {
+    mergeState({ showEndDatePickerModal: false })
+    if (date) {
+      onDatePeriodChange({ endDate: toDateString(date) })
+    }
+  }
+
+  const renderStartDatePicker = () => (
+    <DateTimePicker
+      value={toUtcMaybeDate(startDate) || new Date()}
+      mode={"date"}
+      display="default"
+      onChange={onStartDateChange}
+    />
+  )
+
+  const renderEndDatePicker = () => (
+    <DateTimePicker
+      value={toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate) || new Date()}
+      mode={"date"}
+      display="default"
+      onChange={onEndDateChange}
+    />
   )
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onEdit}>
-        {textRow(startText, startDateText)}
-        {endDateText && textRow(endText, endDateText)}
-      </TouchableOpacity>
-      {startDate || endDate ? (
-        <TouchableOpacity style={styles.close} onPress={onClear}>
-          <Icon style={styles.closeIcon} name={"close"} />
-        </TouchableOpacity>
-      ) : null}
-    </View>
+    <>
+      <PeriodRow
+        active={!!startDate}
+        title={i18n.t("DatePeriod.From")}
+        value={formatDateLocale(startDate)}
+        onEdit={showStartDatePicker}
+        onClear={clearStartDate}
+      />
+      <PeriodRow
+        active={!!endDate}
+        title={i18n.t("DatePeriod.To")}
+        value={formatDateLocale(endDate)}
+        onEdit={showEndDatePicker}
+        onClear={clearEndDate}
+      />
+      {state.showStartDatePickerModal && renderStartDatePicker()}
+      {state.showEndDatePickerModal && renderEndDatePicker()}
+    </>
   )
 }
-
-const styles = EStyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-  textContainer: {
-    alignItems: "center",
-    paddingVertical: "0.2rem",
-  },
-  text: {
-    fontSize: "0.8rem",
-    textAlign: "center",
-  },
-  emphasizedText: {
-    fontSize: "0.9rem",
-    textAlign: "center",
-    fontWeight: "bold",
-    paddingHorizontal: "0.3rem",
-  },
-  close: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-  },
-  closeIcon: {
-    padding: "0.2rem",
-    fontSize: "1rem",
-  },
-})
