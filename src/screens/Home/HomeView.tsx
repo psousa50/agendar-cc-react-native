@@ -74,15 +74,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
   }
 
   const onStartDateChange = (_: any, date?: Date) => {
+    mergeState({ showStartDatePickerModal: false })
     if (date) {
-      mergeState({ showStartDatePickerModal: false })
       onDatePeriodChange({ startDate: toDateString(date) })
     }
   }
 
   const onEndDateChange = (_: any, date?: Date) => {
+    mergeState({ showEndDatePickerModal: false })
     if (date) {
-      mergeState({ showEndDatePickerModal: false })
       onDatePeriodChange({ endDate: toDateString(date) })
     }
   }
@@ -117,15 +117,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
   }
 
   const onStartTimeChange = (_: any, date?: Date) => {
-    const newStartTime = date && extractTime(date)
     mergeState({ showStartTimePickerModal: false })
-    onTimePeriodChange({ startTime: newStartTime })
+    if (date) {
+      const newStartTime = extractTime(date)
+      onTimePeriodChange({ startTime: newStartTime })
+    }
   }
 
   const onEndTimeChange = (_: any, date?: Date) => {
-    const newEndTime = date && extractTime(date)
     mergeState({ showEndTimePickerModal: false })
-    onTimePeriodChange({ endTime: newEndTime })
+    if (date) {
+      const newEndTime = extractTime(date)
+      onTimePeriodChange({ endTime: newEndTime })
+    }
   }
 
   const renderStartTimePicker = () => (
