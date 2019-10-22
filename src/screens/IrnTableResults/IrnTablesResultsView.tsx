@@ -1,6 +1,6 @@
 import { Text, View } from "native-base"
 import React from "react"
-import { StyleSheet } from "react-native"
+import EStyleSheet from "react-native-extended-stylesheet"
 import { InfoCard } from "../../components/common/InfoCard"
 import {
   byIrnTableRefineFilter,
@@ -104,8 +104,9 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
+    marginTop: "0.5rem",
     flexDirection: "column",
   },
   button: {

@@ -4,7 +4,7 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import { IconType } from "../../../components/common/ToolbarIcons"
 
 interface MainButtonProps extends NativeBase.Button {
-  iconName: string
+  iconName?: string
   iconType?: IconType
   text: string
   color?: string
@@ -19,7 +19,7 @@ export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconTyp
     rounded
     {...props}
   >
-    <Icon type={iconType} name={iconName} />
+    {iconName && <Icon type={iconType} name={iconName} />}
     <Text>{text}</Text>
   </Button>
 )
