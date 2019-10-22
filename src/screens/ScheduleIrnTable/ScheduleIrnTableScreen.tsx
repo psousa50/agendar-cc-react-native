@@ -5,8 +5,9 @@ import React, { useEffect, useState } from "react"
 import WebView from "react-native-webview"
 import { useSelector } from "react-redux"
 import { fetchIrnTablesScheduleHtml } from "../../api/irnTables"
-import { ErrorPage } from "../../components/common/ErrorPage"
-import { LoadingPage } from "../../components/common/LoadingPage"
+import { appBackgroundImage } from "../../assets/images/images"
+import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { ErrorBox, MessageBox } from "../../components/common/MessageBox"
 import { IrnPlace, IrnTableResult } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
@@ -16,6 +17,8 @@ const jsCode = (
   { date, tableNumber, timeSlot }: IrnTableResult,
   { name: placeName, address, postalCode, phone }: IrnPlace,
 ) => `
+
+  try {
 
   function replaceAll(s, searchValue, replaceValue) {
     const newString = s.replace(searchValue, replaceValue)
@@ -58,34 +61,38 @@ const jsCode = (
     }
   }
 
-  if (!selectFound) {
-    alert('${i18n.t("Schedule.NotFound")}')
-  }
-
-  selectFound.value = "${timeSlot}"
-  var evt = document.createEvent("HTMLEvents");
-  evt.initEvent("change", false, true);
-  selectFound.dispatchEvent(evt);
-
-  if (selectFound.value !== "${timeSlot}") {
-    alert('${i18n.t("Schedule.NotFound")}')
-  }
-
   var buttons = document.getElementsByTagName("button")
   for (var i = 0; i < buttons.length; i++) {
     var b = buttons[i]
-    if (b.getAttribute("onclick").startsWith("window.history.back")) {
+    var onClick = b.getAttribute("onclick")
+    if (onClick && onClick.startsWith("window.history.back")) {
       b.style.display='none'
     }
-    if (b.getAttribute("onclick").startsWith("window.location.href='../index.php'")) {
+    if (onClick && onClick.startsWith("window.location.href='../index.php'")) {
       b.style.display='none'
     }
   }
 
+  if (selectFound) {
+    selectFound.value = "${timeSlot}"
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("change", false, true);
+    selectFound.dispatchEvent(evt);
+  }
+
+  if (!selectFound || selectFound.value !== "${timeSlot}") {
+    alert('${i18n.t("Schedule.NotFound")}')
+  }
+
+}
+catch (e) {
+  alert(e)
+}
+
+
 `
 
-export const ScheduleIrnTableScreen = () => {
-  const [loading, setLoading] = useState<boolean>(true)
+export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
   const [error, setError] = useState<string | undefined>(undefined)
   const [html, setHtml] = useState<string | undefined>(undefined)
 
@@ -107,7 +114,11 @@ export const ScheduleIrnTableScreen = () => {
               return task.of(undefined)
             },
             h => {
-              setHtml(h)
+              if (h.includes("<title>IRN - Agendamento Online</title>")) {
+                setHtml(h)
+              } else {
+                setError("Invalid page")
+              }
               return task.of(undefined)
             },
           ),
@@ -116,7 +127,6 @@ export const ScheduleIrnTableScreen = () => {
     }
 
     fetchHtml()
-    setLoading(false)
   }, [])
 
   return !error && irnTableResult && irnPlace && html ? (
@@ -127,9 +137,13 @@ export const ScheduleIrnTableScreen = () => {
       javaScriptEnabled={true}
       startInLoadingState={true}
     />
-  ) : error ? (
-    <ErrorPage errorMessage={error} />
   ) : (
-    loading && <LoadingPage />
+    <AppScreen {...props} backgroundImage={appBackgroundImage}>
+      {error ? (
+        <ErrorBox lines={[i18n.t("Schedule.Error1"), i18n.t("Schedule.Error2")]} />
+      ) : (
+        <MessageBox lines={[i18n.t("Schedule.Wait1"), i18n.t("Schedule.Wait2")]} activityIndicator={true} />
+      )}
+    </AppScreen>
   )
 }

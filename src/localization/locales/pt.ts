@@ -53,7 +53,11 @@ export const pt = {
     SelectLocationByMap: "Escolher Local",
   },
   Schedule: {
+    Wait1: "A redirecionar para o site do IRN...",
+    Wait2: " Por favor aguarde.",
     NotFound: "Este horário já não se encontra disponível. Seleccione outro ou altere os seus critérios de pesquisa.",
+    Error1: "Ocorreu um erro na ligação ao site do IRN.",
+    Error2: "Por favor tente mais tarde.",
   },
   date: {
     month_names: [
