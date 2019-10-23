@@ -39,7 +39,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   onNewSearch,
   onSchedule,
 }) => {
-  const { startDate, endDate } = filter
+  const { endDate } = filter
   const irnTablesFiltered = irnTables.filter(byIrnTableRefineFilter(refineFilter))
 
   const { countyId, districtId, gpsLocation } = filter
@@ -53,7 +53,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
     startTime: filter.startTime,
     timeSlot: refineFilter.timeSlot,
   }
-  const isAsap = !startDate && !endDate && !refinedDate
+  const isAsap = !endDate && !refinedDate
   const irnTableResult =
     isAsap || !location
       ? selectOneIrnTableResultByClosestDate(irnPlacesProxy)(irnTablesFiltered, location, timeSlotsFilter)
