@@ -6,6 +6,7 @@ import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTables } from "../api/irnTables"
 import { byIrnTableFilter, normalizeFilter } from "../irnTables/main"
 import { IrnRepositoryTables, IrnTableResult } from "../irnTables/models"
+import { currentUtcDateString } from "../utils/dates"
 import { filtersAreCompatible } from "../utils/filters"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
@@ -105,7 +106,7 @@ export const getIrnTables = (irnTablesDataState: IrnTablesDataState): AppThunk =
   } else {
     dispatch(initIrnTablesFetch())
     await pipe(
-      fetchIrnTables(filter),
+      fetchIrnTables({ ...filter, startDate: filter.startDate || currentUtcDateString() }),
       fold(
         error => {
           dispatch(irnTablesFetchError(error.message))
