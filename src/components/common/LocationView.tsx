@@ -4,6 +4,8 @@ import { TouchableOpacity } from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet"
 import { IrnTableFilterLocation, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { locationStyle } from "../../styles/location"
+import { getDistrictName } from "../../utils/location"
 
 interface LocationViewProps {
   location: IrnTableFilterLocation
@@ -18,17 +20,15 @@ export const LocationView: React.FC<LocationViewProps> = ({
   referenceDataProxy,
 }) => {
   const regionName = region && regionNames[region]
-  const county = referenceDataProxy.getCounty(countyId)
-  const district = referenceDataProxy.getDistrict(districtId)
+  const districtName = getDistrictName(referenceDataProxy)(districtId, countyId)
 
-  const isDefined = district || county || placeName
+  const isDefined = districtId || countyId || placeName
   return (
     <View style={styles.container}>
       <TouchableOpacity disabled={!onEdit} onPress={onEdit}>
         {isDefined ? (
           <>
-            {district && <Text style={[styles.text, styles.district]}>{district.name}</Text>}
-            {county && <Text style={[styles.text, styles.county]}>{county.name}</Text>}
+            {districtName && <Text style={[styles.text, styles.district]}>{`${districtName}`}</Text>}
             {placeName && <Text style={[styles.text, styles.place]}>{placeName}</Text>}
           </>
         ) : (
@@ -48,26 +48,7 @@ const styles = EStyleSheet.create({
   container: {
     backgroundColor: "white",
   },
-  text: {
-    fontSize: "1rem",
-    textAlign: "center",
-    paddingVertical: 5,
-  },
-  region: {
-    fontSize: "1.3rem",
-    fontWeight: "bold",
-  },
-  district: {
-    fontSize: "1.5rem",
-    fontWeight: "bold",
-  },
-  county: {
-    fontSize: "1.1rem",
-    fontWeight: "bold",
-  },
-  place: {
-    fontSize: "0.7rem",
-  },
+  ...locationStyle,
   close: {
     position: "absolute",
     right: 0,

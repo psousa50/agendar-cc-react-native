@@ -12,16 +12,14 @@ import {
 import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { LocationView } from "../../components/common/LocationView"
-import { Counties, County, Districts } from "../../irnTables/models"
-import { i18n } from "../../localization/i18n"
+import { County } from "../../irnTables/models"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
-import { getCountyName, properCase } from "../../utils/formaters"
-import { getFilteredLocations } from "../../utils/location"
-import { removeAccents } from "../../utils/strings"
+import { getDistrictName, getFilteredLocations } from "../../utils/location"
+import { searchNormalizer } from "../../utils/strings"
 
 const colorSecondary = appTheme.brandSecondary
 const colorSecondaryText = appTheme.secondaryText
@@ -49,8 +47,6 @@ interface SelectLocationViewProps {
 
 const Separator = () => <View style={styles.separator} />
 
-const searchNormalizer = (s: string) => removeAccents(s.toLocaleLowerCase().trim())
-
 export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   location,
   irnPlacesProxy,
@@ -67,9 +63,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   const mergeState = (newState: Partial<SelectLocationViewState>) =>
     setState(oldState => ({ ...oldState, ...newState }))
 
-  const districts = referenceDataProxy.getDistricts()
-  const counties = referenceDataProxy.getCounties()
-  const searchableCounties = useMemo(() => buildSearchableCounties(counties, districts), [counties, districts])
+  const searchableCounties = useMemo(() => buildSearchableCounties(referenceDataProxy), [])
 
   const listItems =
     state.locationText.length > 1
@@ -79,7 +73,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
               (isNil(location.region) || sc.region === location.region) &&
               sc.searchText.includes(searchNormalizer(state.locationText)),
           )
-          .slice(0, 8)
+          .slice(0, 20)
       : []
 
   const onListItemPressed = (districtId: number, countyId?: number) => {
@@ -163,40 +157,45 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   )
 }
 
-const buildSearchableCounties = (counties: Counties, districts: Districts): SearchableCounty[] => {
-  const countyIsNotSingle = (county: County) => counties.filter(c => c.districtId === county.districtId).length > 1
-  const countyNames = counties.filter(countyIsNotSingle).map(county => {
-    const district = districts.find(d => d.districtId === county.districtId)!
-    const countyName = getCountyName(county, district)
-    const displayText = countyName
-    return {
-      countyId: county.countyId,
-      districtId: county.districtId,
-      key: countyName,
-      displayText,
-      searchText: searchNormalizer(displayText),
-      region: district.region,
-    }
-  })
-  const districtNames = districts.map(district => {
-    const districtName = properCase(district.name)
-    const displayText = `${districtName} - ( ${i18n.t("Where.AllCounties")} )`
-    const searchText = searchNormalizer(districtName)
+const buildSearchableCounties = (referenceDataProxy: ReferenceDataProxy): SearchableCounty[] => {
+  const countyIsNotSingle = (county: County) => referenceDataProxy.getCounties(county.districtId).length > 1
+  const countyNames = referenceDataProxy
+    .getCounties()
+    .filter(countyIsNotSingle)
+    .map(county => {
+      const district = referenceDataProxy.getDistrict(county.districtId)!
+      const displayText = getDistrictName(referenceDataProxy)(district.districtId, county.countyId)!
+      return {
+        countyId: county.countyId,
+        districtId: county.districtId,
+        key: displayText,
+        displayText,
+        searchText: searchNormalizer(displayText),
+        region: district.region,
+      }
+    })
+  const districtNames = referenceDataProxy.getDistricts().map(district => {
+    const displayText = getDistrictName(referenceDataProxy)(district.districtId)!
+    const searchText = searchNormalizer(displayText)
     return {
       countyId: undefined,
       districtId: district.districtId,
-      key: districtName,
+      key: displayText,
       displayText,
       searchText,
       region: district.region,
     }
   })
 
-  return sort((n1, n2) => n1.displayText.localeCompare(n2.displayText), [...districtNames, ...countyNames])
+  return [
+    ...sort((n1, n2) => n1.displayText.localeCompare(n2.displayText), districtNames),
+    ...sort((n1, n2) => n1.displayText.localeCompare(n2.displayText), countyNames),
+  ]
 }
 
 const styles = EStyleSheet.create({
   container: {
+    marginTop: "0.5rem",
     flexDirection: "column",
     paddingHorizontal: "1rem",
   },
@@ -245,6 +244,7 @@ const styles = EStyleSheet.create({
     paddingHorizontal: "0.3rem",
     margin: "0.5rem",
     fontSize: "1rem",
+    color: appTheme.secondaryTextDimmed,
   },
   activeTabStyle: {
     backgroundColor: colorSecondary,

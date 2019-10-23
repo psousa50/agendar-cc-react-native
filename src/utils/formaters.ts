@@ -1,6 +1,6 @@
 import moment from "moment"
 
-import { County, District, TimeSlot } from "../irnTables/models"
+import { TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
 import { dateFromTime, DateString, toUtcDate } from "./dates"
 
@@ -26,10 +26,3 @@ export const properCase = (s: string) =>
     .split(" ")
     .map(w => `${w[0].toUpperCase()}${w.substring(1)}`)
     .join(" ")
-
-export const getCountyName = (county?: County, district?: District) => {
-  const countyName = county ? properCase(county.name) : ""
-  const districtName = district ? properCase(district.name) : ""
-  const countyNamePart = countyName ? ` - ${countyName}` : ""
-  return district || county ? `${districtName}${countyNamePart}` : ""
-}

@@ -1,9 +1,12 @@
 import { isNil } from "ramda"
 import { MapLocations } from "../components/common/LocationsMap"
 import { Counties, County, District, Districts, GpsLocation, IrnPlace, IrnPlaces } from "../irnTables/models"
+import { i18n } from "../localization/i18n"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
 import { IrnTableFilterLocation } from "../state/models"
 import { ReferenceDataProxy } from "../state/referenceDataSlice"
+import { properCase } from "./formaters"
+import { searchNormalizer } from "./strings"
 
 const degreesToRadians = (degrees: number) => {
   return (degrees * Math.PI) / 180
@@ -116,4 +119,20 @@ export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPla
   }
 
   return normalizedLocation
+}
+
+export const getDistrictName = (referenceDataProxy: ReferenceDataProxy) => (districtId?: number, countyId?: number) => {
+  const isSingleCounty = referenceDataProxy.getCounties(districtId).length === 1
+  const county = referenceDataProxy.getCounty(countyId)
+  const district = referenceDataProxy.getDistrict(districtId)
+  const countyName = county
+    ? isSingleCounty || (district && searchNormalizer(county.name) === searchNormalizer(district.name))
+      ? ""
+      : properCase(county.name)
+    : isSingleCounty
+    ? ""
+    : i18n.t("Where.AllCounties")
+  const separator = countyName ? " - " : ""
+  const districtName = district && `${properCase(district.name)}${separator}${countyName}`
+  return districtName
 }

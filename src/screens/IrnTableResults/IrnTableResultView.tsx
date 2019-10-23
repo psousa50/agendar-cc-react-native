@@ -6,6 +6,7 @@ import { i18n } from "../../localization/i18n"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { locationStyle } from "../../styles/location"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
+import { getDistrictName } from "../../utils/location"
 
 interface IrnTableResultViewProps {
   irnTableResult: IrnTableResult
@@ -13,14 +14,11 @@ interface IrnTableResultViewProps {
 }
 export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTableResult, referenceDataProxy }) => {
   const { countyId, districtId, placeName, date, tableNumber, timeSlot } = irnTableResult
-  const county = referenceDataProxy.getCounty(countyId)
-  const district = referenceDataProxy.getDistrict(districtId)
-  const countyCount = referenceDataProxy.getCounties(districtId).length
+  const districtName = getDistrictName(referenceDataProxy)(districtId, countyId)
 
   return (
     <View>
-      {district && <Text style={[styles.text, styles.district]}>{district.name}</Text>}
-      {county && countyCount > 1 && <Text style={[styles.text, styles.county]}>{county.name}</Text>}
+      {districtName && <Text style={[styles.text, styles.district]}>{districtName}</Text>}
       <Text style={[styles.text, styles.place]}>{placeName}</Text>
       <Text style={[styles.text, styles.date]}>{formatDateLocale(date)}</Text>
       <Text style={[styles.text, styles.timeSlot]}>{formatTimeSlot(timeSlot)}</Text>
