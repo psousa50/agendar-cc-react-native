@@ -10,6 +10,7 @@ export const en = {
     District: "District",
     County: "County",
     Place: "Place",
+    AllCounties: "All Counties",
   },
   When: {
     Name: "When",
@@ -52,7 +53,11 @@ export const en = {
     SelectLocationByMap: "Select Location by Map",
   },
   Schedule: {
+    Wait1: "Redirecting to IRN site...",
+    Wait2: " PLease wait....",
     NotFound: "This schedule no longer exists. Please select another one or change your search criteria.",
+    Error1: "There was an error connecting with the IRN site.",
+    Error2: "PLease try again later.",
   },
 
   date: {

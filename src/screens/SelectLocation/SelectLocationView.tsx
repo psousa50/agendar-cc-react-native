@@ -13,6 +13,7 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { LocationView } from "../../components/common/LocationView"
 import { Counties, County, Districts } from "../../irnTables/models"
+import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
@@ -20,6 +21,7 @@ import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { getCountyName, properCase } from "../../utils/formaters"
 import { getFilteredLocations } from "../../utils/location"
+import { removeAccents } from "../../utils/strings"
 
 const colorSecondary = appTheme.brandSecondary
 const colorSecondaryText = appTheme.secondaryText
@@ -29,6 +31,7 @@ interface SearchableCounty {
   districtId: number
   key: string
   searchText: string
+  displayText: string
   region: Region
 }
 
@@ -45,6 +48,8 @@ interface SelectLocationViewProps {
 }
 
 const Separator = () => <View style={styles.separator} />
+
+const searchNormalizer = (s: string) => removeAccents(s.toLocaleLowerCase().trim())
 
 export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   location,
@@ -72,7 +77,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           .filter(
             sc =>
               (isNil(location.region) || sc.region === location.region) &&
-              sc.searchText.toLocaleLowerCase().includes(state.locationText.toLocaleLowerCase()),
+              sc.searchText.includes(searchNormalizer(state.locationText)),
           )
           .slice(0, 8)
       : []
@@ -87,8 +92,8 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
 
   const renderItem = ({ item }: ListRenderItemInfo<SearchableCounty>) => (
     <TouchableOpacity onPress={() => onListItemPressed(item.districtId, item.countyId)}>
-      <Text key={item.searchText} style={styles.locationText}>
-        {item.searchText}
+      <Text key={item.displayText} style={styles.locationText}>
+        {item.displayText}
       </Text>
     </TouchableOpacity>
   )
@@ -163,26 +168,31 @@ const buildSearchableCounties = (counties: Counties, districts: Districts): Sear
   const countyNames = counties.filter(countyIsNotSingle).map(county => {
     const district = districts.find(d => d.districtId === county.districtId)!
     const countyName = getCountyName(county, district)
+    const displayText = countyName
     return {
       countyId: county.countyId,
       districtId: county.districtId,
       key: countyName,
-      searchText: countyName,
+      displayText,
+      searchText: searchNormalizer(displayText),
       region: district.region,
     }
   })
   const districtNames = districts.map(district => {
     const districtName = properCase(district.name)
+    const displayText = `${districtName} - ( ${i18n.t("Where.AllCounties")} )`
+    const searchText = searchNormalizer(districtName)
     return {
       countyId: undefined,
       districtId: district.districtId,
       key: districtName,
-      searchText: `${districtName} - (Todos os Concelhos)`,
+      displayText,
+      searchText,
       region: district.region,
     }
   })
 
-  return sort((n1, n2) => n1.searchText.localeCompare(n2.searchText), [...districtNames, ...countyNames])
+  return sort((n1, n2) => n1.displayText.localeCompare(n2.displayText), [...districtNames, ...countyNames])
 }
 
 const styles = EStyleSheet.create({
