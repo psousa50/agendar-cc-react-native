@@ -92,6 +92,7 @@ const styles = EStyleSheet.create({
   },
   cardText: {
     flex: 1,
+    textAlign: "center",
     marginTop: 5,
     fontSize: "0.8rem",
     flexWrap: "wrap",
