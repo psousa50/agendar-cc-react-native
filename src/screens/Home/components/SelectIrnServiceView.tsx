@@ -91,8 +91,10 @@ const styles = EStyleSheet.create({
     height: "3rem",
   },
   cardText: {
+    flex: 1,
     marginTop: 5,
     fontSize: "0.8rem",
+    flexWrap: "wrap",
   },
   cardSelectedText: {
     color: colorSecondaryText,

@@ -106,8 +106,8 @@ export const variables = {
   checkboxTickColor: "#fff",
 
   // Color
-  brandPrimary: platform === "ios" ? "#007aff" : PRIMARY_COLOR,
-  brandSecondary: platform === "ios" ? "#007aff" : SECONDARY_COLOR,
+  brandPrimary: PRIMARY_COLOR,
+  brandSecondary: SECONDARY_COLOR,
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
@@ -130,28 +130,28 @@ export const variables = {
 
   // Footer
   footerHeight: isIphoneX ? 89 : 55,
-  footerDefaultBg: platform === "ios" ? "#F8F8F8" : PRIMARY_COLOR,
+  footerDefaultBg: PRIMARY_COLOR,
   footerPaddingBottom: isIphoneX ? 34 : 0,
 
   // FooterTab
-  tabBarTextColor: platform === "ios" ? "#737373" : "#bfc6ea",
+  tabBarTextColor: "#bfc6ea",
   tabBarTextSize: platform === "ios" ? 14 : 11,
-  activeTab: platform === "ios" ? "#007aff" : "#fff",
+  activeTab: "#fff",
   sTabBarActiveTextColor: "#007aff",
-  tabBarActiveTextColor: platform === "ios" ? "#2874F0" : "#fff",
-  tabActiveBgColor: platform === "ios" ? "#cde1f9" : PRIMARY_COLOR,
+  tabBarActiveTextColor: "#fff",
+  tabActiveBgColor: PRIMARY_COLOR,
 
   // Header
-  toolbarBtnColor: platform === "ios" ? "#007aff" : "#fff",
-  toolbarDefaultBg: platform === "ios" ? "#F8F8F8" : PRIMARY_COLOR,
+  toolbarBtnColor: "#fff",
+  toolbarDefaultBg: PRIMARY_COLOR,
   toolbarHeight: platform === "ios" ? (isIphoneX ? 88 : 64) : 56,
   toolbarSearchIconSize: platform === "ios" ? 20 : 23,
-  toolbarInputColor: platform === "ios" ? "#CECDD2" : "#fff",
+  toolbarInputColor: "#fff",
   searchBarHeight: platform === "ios" ? 30 : 40,
   searchBarInputHeight: platform === "ios" ? 30 : 50,
-  toolbarBtnTextColor: platform === "ios" ? "#007aff" : "#fff",
+  toolbarBtnTextColor: "#fff",
   iosStatusbar: "dark-content",
-  toolbarDefaultBorder: platform === "ios" ? "#a7a6ab" : PRIMARY_COLOR,
+  toolbarDefaultBorder: PRIMARY_COLOR,
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
       .darken(0.2)
@@ -210,23 +210,23 @@ export const variables = {
   },
 
   // Segment
-  segmentBackgroundColor: platform === "ios" ? "#F8F8F8" : PRIMARY_COLOR,
-  segmentActiveBackgroundColor: platform === "ios" ? "#007aff" : "#fff",
-  segmentTextColor: platform === "ios" ? "#007aff" : "#fff",
-  segmentActiveTextColor: platform === "ios" ? "#fff" : PRIMARY_COLOR,
-  segmentBorderColor: platform === "ios" ? "#007aff" : "#fff",
-  segmentBorderColorMain: platform === "ios" ? "#a7a6ab" : PRIMARY_COLOR,
+  segmentBackgroundColor: PRIMARY_COLOR,
+  segmentActiveBackgroundColor: "#fff",
+  segmentTextColor: "#fff",
+  segmentActiveTextColor: PRIMARY_COLOR,
+  segmentBorderColor: "#fff",
+  segmentBorderColorMain: PRIMARY_COLOR,
 
   // Spinner
   defaultSpinnerColor: "#45D56E",
   inverseSpinnerColor: "#1A191B",
 
   // Tab
-  tabDefaultBg: platform === "ios" ? "#F8F8F8" : SECONDARY_COLOR,
-  topTabBarTextColor: platform === "ios" ? "#6b6b6b" : SECONDARY_TEXT_DIMMED_COLOR,
-  topTabBarActiveTextColor: platform === "ios" ? "#007aff" : SECONDARY_TEXT_COLOR,
-  topTabBarBorderColor: platform === "ios" ? "#a7a6ab" : "#fff",
-  topTabBarActiveBorderColor: platform === "ios" ? "#007aff" : SECONDARY_TEXT_COLOR,
+  tabDefaultBg: SECONDARY_COLOR,
+  topTabBarTextColor: SECONDARY_TEXT_DIMMED_COLOR,
+  topTabBarActiveTextColor: SECONDARY_TEXT_COLOR,
+  topTabBarBorderColor: "#fff",
+  topTabBarActiveBorderColor: SECONDARY_TEXT_COLOR,
 
   // Tabs
   tabBgColor: "#F8F8F8",
@@ -244,8 +244,8 @@ export const variables = {
   titleFontfamily: platform === "ios" ? "System" : "Roboto_medium",
   titleFontSize: platform === "ios" ? 17 : 19,
   subTitleFontSize: platform === "ios" ? 12 : 14,
-  subtitleColor: platform === "ios" ? "#000" : "#fff",
-  titleFontColor: platform === "ios" ? "#000" : "#fff",
+  subtitleColor: "#fff",
+  titleFontColor: "#fff",
 
   // Other
   borderRadiusBase: platform === "ios" ? 5 : 2,

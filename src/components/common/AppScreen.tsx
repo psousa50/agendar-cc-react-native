@@ -19,7 +19,7 @@ export interface AppScreenProps extends AppNavigationScreenProps {
 export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children, left, loading, right, title }) => (
   <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
     <Container>
-      <View style={{ height: StatusBar.currentHeight }}></View>
+      <View style={{ height: StatusBar.currentHeight || 20 }}></View>
       {left || right ? (
         <Header style={styles.header}>
           <Left>{left ? left() : undefined}</Left>
