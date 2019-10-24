@@ -1,5 +1,5 @@
-import DateTimePicker from "@react-native-community/datetimepicker"
 import React, { useState } from "react"
+import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { i18n } from "../../../localization/i18n"
 import { DatePeriod } from "../../../state/models"
 import { DateString, toDateString, toUtcMaybeDate } from "../../../utils/dates"
@@ -37,35 +37,50 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ startDate, endDa
     mergeState({ showEndDatePickerModal: true })
   }
 
-  const onStartDateChange = (_: any, date?: Date) => {
+  const hideStartDatePicker = () => {
     mergeState({ showStartDatePickerModal: false })
-    if (date) {
-      onDatePeriodChange({ startDate: toDateString(date) })
-    }
   }
 
-  const onEndDateChange = (_: any, date?: Date) => {
+  const hideEndDatePicker = () => {
     mergeState({ showEndDatePickerModal: false })
-    if (date) {
-      onDatePeriodChange({ endDate: toDateString(date) })
-    }
   }
 
+  const confirmStartDate = (date: Date) => {
+    mergeState({ showStartDatePickerModal: false })
+    onDatePeriodChange({ startDate: toDateString(date) })
+  }
+
+  const confirmEndDate = (date?: Date) => {
+    mergeState({ showEndDatePickerModal: false })
+    onDatePeriodChange({ endDate: toDateString(date) })
+  }
+
+  const oldVersionProps = {
+    headerTextIOS: "",
+  }
   const renderStartDatePicker = () => (
-    <DateTimePicker
-      value={toUtcMaybeDate(startDate) || new Date()}
+    <DateTimePickerModal
+      isVisible={state.showStartDatePickerModal}
+      date={toUtcMaybeDate(startDate)}
       mode={"date"}
-      display="default"
-      onChange={onStartDateChange}
+      onCancel={hideStartDatePicker}
+      onConfirm={confirmStartDate}
+      confirmTextIOS={i18n.t("DatePeriod.Confirm")}
+      cancelTextIOS={i18n.t("DatePeriod.Cancel")}
+      {...oldVersionProps}
     />
   )
 
   const renderEndDatePicker = () => (
-    <DateTimePicker
-      value={toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate) || new Date()}
+    <DateTimePickerModal
+      isVisible={state.showEndDatePickerModal}
+      date={toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate)}
       mode={"date"}
-      display="default"
-      onChange={onEndDateChange}
+      onCancel={hideEndDatePicker}
+      onConfirm={confirmEndDate}
+      confirmTextIOS={i18n.t("DatePeriod.Confirm")}
+      cancelTextIOS={i18n.t("DatePeriod.Cancel")}
+      {...oldVersionProps}
     />
   )
 

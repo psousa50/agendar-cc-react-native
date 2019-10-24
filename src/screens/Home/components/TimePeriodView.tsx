@@ -1,5 +1,5 @@
-import DateTimePicker from "@react-native-community/datetimepicker"
 import React, { useState } from "react"
+import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { TimeSlot } from "../../../irnTables/models"
 import { i18n } from "../../../localization/i18n"
 import { TimePeriod } from "../../../state/models"
@@ -38,39 +38,50 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
     mergeState({ showEndTimePickerModal: true })
   }
 
-  const onStartTimeChange = (_: any, date?: Date) => {
+  const hideStartTimePicker = () => {
     mergeState({ showStartTimePickerModal: false })
-    if (date) {
-      const newStartTime = extractTime(date)
-      onTimePeriodChange({ startTime: newStartTime })
-    }
   }
 
-  const onEndTimeChange = (_: any, date?: Date) => {
+  const hideEndTimePicker = () => {
     mergeState({ showEndTimePickerModal: false })
-    if (date) {
-      const newEndTime = extractTime(date)
-      onTimePeriodChange({ endTime: newEndTime })
-    }
   }
 
+  const confirmStartTime = (date: Date) => {
+    mergeState({ showStartTimePickerModal: false })
+    onTimePeriodChange({ startTime: extractTime(date) })
+  }
+
+  const confirmEndTime = (date: Date) => {
+    mergeState({ showEndTimePickerModal: false })
+    onTimePeriodChange({ endTime: extractTime(date) })
+  }
+
+  const oldVersionProps = {
+    headerTextIOS: "",
+  }
   const renderStartTimePicker = () => (
-    <DateTimePicker
-      value={dateFromTime(startTime, "08:00")}
+    <DateTimePickerModal
+      isVisible={state.showStartTimePickerModal}
+      date={dateFromTime(startTime, "08:00")}
       mode={"time"}
+      onCancel={hideStartTimePicker}
+      onConfirm={confirmStartTime}
       is24Hour={true}
-      display="default"
-      onChange={onStartTimeChange}
+      minuteInterval={5}
+      {...oldVersionProps}
     />
   )
 
   const renderEndTimePicker = () => (
-    <DateTimePicker
-      value={dateFromTime(endTime, startTime || "20:00")}
+    <DateTimePickerModal
+      isVisible={state.showEndTimePickerModal}
+      date={dateFromTime(endTime, startTime || "20:00")}
       mode={"time"}
+      onCancel={hideEndTimePicker}
+      onConfirm={confirmEndTime}
       is24Hour={true}
-      display="default"
-      onChange={onEndTimeChange}
+      minuteInterval={5}
+      {...oldVersionProps}
     />
   )
 

@@ -24,6 +24,8 @@ export const pt = {
     To: "Até ao dia",
     Asap: "O mais depressa possível",
     OnlyOnSaturdays: "Só aos Sábados",
+    Confirm: "Ok",
+    Cancel: "Cancelar",
   },
   TimePeriod: {
     From: "A partir das",

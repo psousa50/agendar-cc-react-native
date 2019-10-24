@@ -37,7 +37,7 @@ const styles = EStyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: "0.2rem",
-    paddingBottom: "1.2rem",
+    paddingBottom: "1.0rem",
     paddingHorizontal: "0.5rem",
     justifyContent: "space-between",
   },
@@ -51,16 +51,16 @@ const styles = EStyleSheet.create({
     width: "60%",
   },
   title: {
-    fontSize: "0.9rem",
+    fontSize: "0.7rem",
     color: appTheme.secondaryText,
   },
   inactiveTitle: {
-    fontSize: "0.9rem",
+    fontSize: "0.7rem",
     color: appTheme.secondaryTextDimmed,
   },
   value: {
-    fontSize: "1.0rem",
-    fontWeight: "bold",
+    fontSize: "0.8rem",
+    fontWeight: "800",
     color: appTheme.secondaryText,
   },
   closeContainer: {
@@ -69,6 +69,6 @@ const styles = EStyleSheet.create({
     paddingHorizontal: "0.5rem",
   },
   closeIcon: {
-    fontSize: "1rem",
+    fontSize: "1.3rem",
   },
 })

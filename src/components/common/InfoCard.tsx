@@ -36,8 +36,8 @@ const styles = EStyleSheet.create({
   infoCard: {
     backgroundColor: "white",
     marginTop: "-0.9rem",
-    marginLeft: "1.5rem",
-    marginRight: "1.0rem",
+    marginLeft: "0.9rem",
+    marginRight: "0.9rem",
     borderRadius: "0.6rem",
     ...shadow,
   },

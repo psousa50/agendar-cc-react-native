@@ -53,10 +53,9 @@ const styles = EStyleSheet.create({
     position: "absolute",
     right: 0,
     top: 0,
-    padding: "0.5rem",
+    paddingHorizontal: "0.5rem",
   },
   closeIcon: {
-    padding: "0.2rem",
-    fontSize: "1rem",
+    fontSize: "1.3rem",
   },
 })

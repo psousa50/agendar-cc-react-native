@@ -24,6 +24,8 @@ export const en = {
     To: "To",
     Asap: "As soon as possible",
     OnlyOnSaturdays: "Only on Saturdays",
+    Confirm: "Ok",
+    Cancel: "Cancel",
   },
   TimePeriod: {
     From: "From",
