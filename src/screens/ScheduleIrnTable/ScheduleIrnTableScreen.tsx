@@ -19,11 +19,12 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
   const [error, setError] = useState<string | undefined>(undefined)
   const [html, setHtml] = useState<string | undefined>(undefined)
 
-  const { irnTableResult, irnPlacesProxy } = useSelector((state: RootState) => ({
-    irnTableResult: state.irnTablesData.irnTableResult,
+  const { irnTableMatchResult, irnPlacesProxy } = useSelector((state: RootState) => ({
+    irnTableMatchResult: state.irnTablesData.irnTableMatchResult,
     irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
   }))
 
+  const irnTableResult = irnTableMatchResult.irnTableResult
   const irnPlace = irnTableResult && irnPlacesProxy.getIrnPlace(irnTableResult.placeName)
 
   useEffect(() => {

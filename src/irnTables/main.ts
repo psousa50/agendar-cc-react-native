@@ -1,19 +1,11 @@
-import { flatten, isNil, sort, uniq } from "ramda"
+import { flatten, sort, uniq } from "ramda"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
-import { IrnTableFilter, IrnTableRefineFilter, TimeSlotsFilter } from "../state/models"
+import { IrnTableFilter, TimeSlotsFilter } from "../state/models"
 import { min } from "../utils/collections"
 import { DateString } from "../utils/dates"
 import { filterTimeSlots } from "../utils/filters"
 import { getClosestLocation } from "../utils/location"
-import {
-  GpsLocation,
-  IrnPlace,
-  IrnPlaces,
-  IrnRepositoryTable,
-  IrnRepositoryTables,
-  IrnTableResult,
-  TimeSlot,
-} from "./models"
+import { GpsLocation, IrnPlace, IrnPlaces, IrnRepositoryTables, IrnTableResult, TimeSlot } from "./models"
 
 export const sortTimes = (t1: TimeSlot, t2: TimeSlot) => t1.localeCompare(t2)
 
@@ -112,40 +104,6 @@ export const selectOneIrnTableResultByClosestPlace = (irnPlacesProxy: IrnPlacesP
   const { closestDate, irnTablesByClosestDate } = getIrnTablesByClosestDate(irnTablesByClosestPlace)
 
   return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestDate, timeSlotsFilter)
-}
-
-export const byIrnTableFilter = ({
-  serviceId,
-  countyId,
-  districtId,
-  placeName,
-  startDate,
-  endDate,
-  startTime,
-  endTime,
-}: IrnTableFilter) => (irnTable: IrnRepositoryTable) => {
-  return (
-    (isNil(serviceId) || irnTable.serviceId === serviceId) &&
-    (isNil(districtId) || irnTable.districtId === districtId) &&
-    (isNil(countyId) || irnTable.countyId === countyId) &&
-    (isNil(placeName) || irnTable.placeName === placeName) &&
-    (isNil(startDate) || irnTable.date >= startDate) &&
-    (isNil(endDate) || irnTable.date <= endDate) &&
-    (isNil(startTime) || irnTable.timeSlots.some(ts => ts >= startTime)) &&
-    (isNil(endTime) || irnTable.timeSlots.some(ts => ts <= endTime))
-  )
-}
-
-export const byIrnTableRefineFilter = ({ countyId, date, districtId, placeName, timeSlot }: IrnTableRefineFilter) => (
-  irnTable: IrnRepositoryTable,
-) => {
-  return (
-    (isNil(districtId) || irnTable.districtId === districtId) &&
-    (isNil(countyId) || irnTable.countyId === countyId) &&
-    (isNil(placeName) || irnTable.placeName === placeName) &&
-    (isNil(date) || irnTable.date === date) &&
-    (isNil(timeSlot) || irnTable.timeSlots.includes(timeSlot))
-  )
 }
 
 export const normalizeFilter = (filter: IrnTableFilter) => {

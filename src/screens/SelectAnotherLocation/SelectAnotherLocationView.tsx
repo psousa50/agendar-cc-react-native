@@ -1,34 +1,40 @@
+import { isNil, uniq } from "ramda"
 import React from "react"
 import { LocationsMap, MapLocation } from "../../components/common/LocationsMap"
-import { byIrnTableRefineFilter, getIrnTableResultSummary } from "../../irnTables/main"
-import { Counties, Districts, IrnPlaces, IrnRepositoryTables } from "../../irnTables/models"
+import { Counties, Districts, IrnPlace, IrnPlaces } from "../../irnTables/models"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { IrnTableRefineFilterLocation } from "../../state/models"
+import { IrnTableRefineFilter, IrnTableRefineFilterLocation } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { getAllMapLocations } from "../../utils/location"
 
 interface SelectAnotherLocationViewProps {
-  refineLocation: IrnTableRefineFilterLocation
-  irnTables: IrnRepositoryTables
   irnPlacesProxy: IrnPlacesProxy
+  places: string[]
   referenceDataProxy: ReferenceDataProxy
+  refineLocation: IrnTableRefineFilterLocation
   onLocationChange: (location: IrnTableRefineFilterLocation) => void
 }
+
 export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps> = ({
-  irnTables,
+  places,
   refineLocation,
   irnPlacesProxy,
   onLocationChange,
   referenceDataProxy,
 }) => {
+  const irnPlaces = places.map(irnPlacesProxy.getIrnPlace).filter(p => !!p) as IrnPlaces
+  const districts = uniq(irnPlaces.map(p => p.districtId))
+    .map(referenceDataProxy.getDistrict)
+    .filter(d => !!d) as Districts
+  const counties = uniq(irnPlaces.map(p => p.countyId))
+    .map(referenceDataProxy.getCounty)
+    .filter(d => !!d) as Counties
+
   const checkOnlyOneResult = (newLocation: IrnTableRefineFilterLocation) => {
-    const irnTablesFiltered = irnTables.filter(byIrnTableRefineFilter({ ...refineLocation, ...newLocation }))
-    const irnTableResultSummary = getIrnTableResultSummary(irnTablesFiltered)
+    const irnPlacesFiltered = irnPlaces.filter(byIrnTableRefineFilter({ ...refineLocation, ...newLocation }))
 
     onLocationChange(
-      irnTableResultSummary.irnPlaceNames.length === 1
-        ? { ...newLocation, placeName: irnTableResultSummary.irnPlaceNames[0] }
-        : newLocation,
+      irnPlacesFiltered.length === 1 ? { ...newLocation, placeName: irnPlacesFiltered[0].name } : newLocation,
     )
   }
 
@@ -47,14 +53,6 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   }
 
   const render = () => {
-    const irnTablesFiltered = irnTables.filter(byIrnTableRefineFilter(refineLocation))
-    const irnTableResultSummary = getIrnTableResultSummary(irnTablesFiltered)
-    const districts = irnTableResultSummary.districtIds
-      .map(referenceDataProxy.getDistrict)
-      .filter(d => !!d) as Districts
-    const counties = irnTableResultSummary.countyIds.map(referenceDataProxy.getCounty).filter(d => !!d) as Counties
-    const irnPlaces = irnTableResultSummary.irnPlaceNames.map(irnPlacesProxy.getIrnPlace).filter(d => !!d) as IrnPlaces
-
     const { districtLocations, countyLocations, irnPlacesLocations } = getAllMapLocations(
       districts,
       counties,
@@ -72,4 +70,12 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   }
 
   return render()
+}
+
+const byIrnTableRefineFilter = ({ countyId, districtId, placeName }: IrnTableRefineFilter) => (irnPlace: IrnPlace) => {
+  return (
+    (isNil(districtId) || irnPlace.districtId === districtId) &&
+    (isNil(countyId) || irnPlace.countyId === countyId) &&
+    (isNil(placeName) || irnPlace.name === placeName)
+  )
 }

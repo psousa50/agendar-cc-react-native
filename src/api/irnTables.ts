@@ -1,5 +1,6 @@
 import { isNil, keys } from "ramda"
-import { IrnRepositoryTables, IrnTableResult } from "../irnTables/models"
+import { IrnTableResult } from "../irnTables/models"
+import { IrnTableMatchResult } from "../state/irnTablesSlice"
 import { IrnTableFilter } from "../state/models"
 import { fetchJson } from "../utils/fetch"
 import { apiUrl } from "./config"
@@ -16,6 +17,7 @@ const buildParams = (fieldValues: {}) => {
 const buildIrnTablesParams = (params: IrnTableFilter) =>
   buildParams({
     countyId: fromNumber(params.countyId),
+    date: fromDateOnly(params.date),
     districtId: fromNumber(params.districtId),
     endDate: fromDateOnly(params.endDate),
     endTime: fromTimeSlot(params.endTime),
@@ -27,8 +29,8 @@ const buildIrnTablesParams = (params: IrnTableFilter) =>
     startTime: fromTimeSlot(params.startTime),
   })
 
-export const fetchIrnTables = (params: IrnTableFilter) =>
-  fetchJson<IrnRepositoryTables>(`${apiUrl}/irnTables${buildIrnTablesParams(params)}`)
+export const fetchIrnTableMatch = (params: IrnTableFilter) =>
+  fetchJson<IrnTableMatchResult>(`${apiUrl}/irnTableMatch${buildIrnTablesParams(params)}`)
 
 const buildIrnTablesRequestOptionsParams = (params: IrnTableResult) =>
   buildParams({

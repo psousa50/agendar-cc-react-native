@@ -17,8 +17,8 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
 
   const dispatch = useDispatch()
 
-  const { irnTables, irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
-    irnTables: state.irnTablesData.irnTables,
+  const { irnTableMatchResult, irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
+    irnTableMatchResult: state.irnTablesData.irnTableMatchResult,
     irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))
@@ -38,7 +38,7 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   }
 
   const selectAnotherLocationViewProps = {
-    irnTables,
+    places: irnTableMatchResult.otherPlaces,
     refineLocation,
     irnPlacesProxy,
     referenceDataProxy,

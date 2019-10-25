@@ -3,33 +3,30 @@ import { task } from "fp-ts/lib/Task"
 import { fold } from "fp-ts/lib/TaskEither"
 import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
-import { fetchIrnTables } from "../api/irnTables"
-import { byIrnTableFilter, normalizeFilter } from "../irnTables/main"
-import { IrnRepositoryTables, IrnTableResult } from "../irnTables/models"
-import { currentUtcDateString } from "../utils/dates"
-import { filtersAreCompatible } from "../utils/filters"
+import { fetchIrnTableMatch } from "../api/irnTables"
+import { normalizeFilter } from "../irnTables/main"
+import { IrnTableResult, TimeSlot } from "../irnTables/models"
+import { currentUtcDateString, DateString } from "../utils/dates"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
-interface IrnTablesDataState {
-  filter: IrnTableFilter
-  refineFilter: IrnTableRefineFilter
-  irnTables: IrnRepositoryTables
-  filterCache?: IrnTableFilter
-  irnTablesCache?: IrnRepositoryTables
-  irnTablesCacheTimestamp?: number
-  error: string | undefined
-  loading: boolean
+export interface IrnTableMatchResult {
   irnTableResult?: IrnTableResult
+  otherDates: DateString[]
+  otherPlaces: string[]
+  otherTimeSlots: TimeSlot[]
+}
+
+interface IrnTablesDataState {
+  error: string | undefined
+  filter: IrnTableFilter
+  irnTableMatchResult: IrnTableMatchResult
+  loading: boolean
+  refineFilter: IrnTableRefineFilter
 }
 
 interface IrnTablesFetchSuccessfulPayload {
-  irnTables: IrnRepositoryTables
-  timestamp: number
-}
-interface UpdateIrnTablesPayload {
-  filter: IrnTableFilter
-  irnTables: IrnRepositoryTables
+  irnTableMatchResult: IrnTableMatchResult
 }
 
 export const initialState: IrnTablesDataState = {
@@ -46,7 +43,12 @@ export const initialState: IrnTablesDataState = {
     // onlyOnSaturdays: true,
   },
   refineFilter: {},
-  irnTables: [],
+  irnTableMatchResult: {
+    irnTableResult: undefined,
+    otherDates: [],
+    otherPlaces: [],
+    otherTimeSlots: [],
+  },
   error: undefined,
   loading: false,
 }
@@ -55,28 +57,19 @@ const irnTablesSlice = createSlice({
   slice: "irnTables",
   initialState,
   reducers: {
-    initIrnTablesFetch(state) {
+    initIrnTableMatchResultFetch(state) {
       state.error = undefined
       state.loading = true
     },
-    irnTablesFetchWasSuccessful(state, action: PayloadAction<IrnTablesFetchSuccessfulPayload>) {
-      const { irnTables, timestamp } = action.payload
+    irnTableMatchResultFetchSuccessful(state, action: PayloadAction<IrnTablesFetchSuccessfulPayload>) {
+      const { irnTableMatchResult } = action.payload
 
-      state.irnTables = irnTables
-      state.irnTablesCache = irnTables
-      state.irnTablesCacheTimestamp = timestamp
-      state.filterCache = state.filter
+      state.irnTableMatchResult = irnTableMatchResult
       state.error = undefined
       state.loading = false
     },
-    irnTablesFetchError(state, action: PayloadAction<string>) {
+    irnTableMatchResultFetchError(state, action: PayloadAction<string>) {
       state.error = action.payload
-      state.loading = false
-    },
-    updateIrnTables(state, action: PayloadAction<UpdateIrnTablesPayload>) {
-      const { filter, irnTables } = action.payload
-      state.filter = filter
-      state.irnTables = irnTables
       state.loading = false
     },
     updateFilter(state, action: PayloadAction<IrnTableFilter>) {
@@ -85,49 +78,33 @@ const irnTablesSlice = createSlice({
     setRefineFilter(state, action: PayloadAction<IrnTableRefineFilter>) {
       state.refineFilter = action.payload
     },
-    setIrnTableResult(state, action: PayloadAction<IrnTableResult>) {
-      state.irnTableResult = action.payload
-    },
   },
 })
 
-export const getIrnTables = (irnTablesDataState: IrnTablesDataState): AppThunk => async (dispatch: Dispatch) => {
-  const filter = irnTablesDataState.filter
-  const filterCache = irnTablesDataState.filterCache
-  const irnTablesCache = irnTablesDataState.irnTablesCache
+export const getIrnTableMatch = (irnTablesDataState: IrnTablesDataState): AppThunk => async (dispatch: Dispatch) => {
+  const { filter, refineFilter } = irnTablesDataState
 
-  const cacheIsValid =
-    irnTablesDataState.irnTablesCacheTimestamp &&
-    Date.now() - irnTablesDataState.irnTablesCacheTimestamp < 5 * 60 * 1000
-  const inCache = cacheIsValid && irnTablesCache && filterCache && filtersAreCompatible(filterCache, filter)
-
-  if (inCache && irnTablesCache) {
-    dispatch(updateIrnTables({ irnTables: irnTablesCache.filter(byIrnTableFilter(filter)), filter }))
-  } else {
-    dispatch(initIrnTablesFetch())
-    await pipe(
-      fetchIrnTables({ ...filter, startDate: filter.startDate || currentUtcDateString() }),
-      fold(
-        error => {
-          dispatch(irnTablesFetchError(error.message))
-          return task.of(undefined)
-        },
-        irnTables => {
-          dispatch(irnTablesFetchWasSuccessful({ irnTables, timestamp: Date.now() }))
-          return task.of(undefined)
-        },
-      ),
-    )()
-  }
+  dispatch(initIrnTableMatchResultFetch())
+  await pipe(
+    fetchIrnTableMatch({ ...filter, ...refineFilter, startDate: filter.startDate || currentUtcDateString() }),
+    fold(
+      error => {
+        dispatch(irnTableMatchResultFetchError(error.message))
+        return task.of(undefined)
+      },
+      irnTableMatchResult => {
+        dispatch(irnTableMatchResultFetchSuccessful({ irnTableMatchResult }))
+        return task.of(undefined)
+      },
+    ),
+  )()
 }
 
 export const {
   updateFilter,
   setRefineFilter,
-  initIrnTablesFetch,
-  irnTablesFetchWasSuccessful,
-  irnTablesFetchError,
-  updateIrnTables,
-  setIrnTableResult,
+  initIrnTableMatchResultFetch,
+  irnTableMatchResultFetchSuccessful,
+  irnTableMatchResultFetchError,
 } = irnTablesSlice.actions
 export const reducer = irnTablesSlice.reducer

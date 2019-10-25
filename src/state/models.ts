@@ -24,11 +24,13 @@ export interface IrnTableFilterLocation {
 }
 
 export interface IrnTableFilterDateTime {
+  date?: DateString
   endDate?: DateString
   endTime?: TimeSlot
   onlyOnSaturdays?: boolean
   startDate?: DateString
   startTime?: TimeSlot
+  timeSlot?: TimeSlot
 }
 
 export interface IrnTableRefineFilterLocation {

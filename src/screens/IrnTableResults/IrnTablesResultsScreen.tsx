@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
 import { AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
-import { IrnTableResult } from "../../irnTables/models"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { getIrnTables, setIrnTableResult } from "../../state/irnTablesSlice"
+import { getIrnTableMatch } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { enhancedNavigation } from "../screens"
@@ -16,9 +15,9 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const dispatch = useDispatch()
 
-  const { irnTables, filter, refineFilter, loading, irnPlacesProxy, referenceDataProxy } = useSelector(
+  const { irnTableMatchResult, filter, refineFilter, loading, irnPlacesProxy, referenceDataProxy } = useSelector(
     (state: RootState) => ({
-      irnTables: state.irnTablesData.irnTables,
+      irnTableMatchResult: state.irnTablesData.irnTableMatchResult,
       filter: state.irnTablesData.filter,
       refineFilter: state.irnTablesData.refineFilter,
       loading: state.irnTablesData.loading || state.referenceData.loading || state.irnPlacesData.loading,
@@ -29,21 +28,18 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   const irnTablesDataState = useSelector((state: RootState) => state.irnTablesData)
 
   useEffect(() => {
-    dispatch(getIrnTables(irnTablesDataState))
-  }, [filter])
+    dispatch(getIrnTableMatch(irnTablesDataState))
+  }, [filter, refineFilter])
 
   const irnTablesResultsViewProps = {
-    filter,
     refineFilter,
-    irnTables,
+    irnTableMatchResult,
     irnPlacesProxy,
     referenceDataProxy,
     onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
-    onSchedule: (irnTableResult: IrnTableResult) => {
-      dispatch(setIrnTableResult(irnTableResult))
-      navigation.goTo("ScheduleIrnTableScreen")
-    },
+    onSchedule: () => navigation.goTo("ScheduleIrnTableScreen"),
+
     onNewSearch: () => navigation.goBack(),
   }
 

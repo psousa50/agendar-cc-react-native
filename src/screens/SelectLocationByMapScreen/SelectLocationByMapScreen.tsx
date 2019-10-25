@@ -15,9 +15,6 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   const navigation = enhancedNavigation(props.navigation)
 
   const { irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
-    irnTables: state.irnTablesData.irnTables,
-    refineFilter: state.irnTablesData.refineFilter,
-    loading: state.irnTablesData.loading || state.referenceData.loading,
     irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))

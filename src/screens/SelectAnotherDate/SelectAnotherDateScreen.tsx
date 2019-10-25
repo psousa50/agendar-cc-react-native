@@ -13,10 +13,10 @@ export const SelectAnotherDateScreen: React.FC<AppScreenProps> = props => {
 
   const dispatch = useDispatch()
 
-  const irnTables = useSelector((state: RootState) => state.irnTablesData.irnTables)
+  const irnTableMatchResult = useSelector((state: RootState) => state.irnTablesData.irnTableMatchResult)
 
   const selectAnotherDateViewProps = {
-    irnTables,
+    dates: irnTableMatchResult.otherDates,
     onDateSelected: (date: DateString) => {
       dispatch(setRefineFilter({ date }))
       navigation.goBack()

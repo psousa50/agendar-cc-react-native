@@ -20,10 +20,7 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
   const dispatch = useDispatch()
 
   const { filter, irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
-    irnTables: state.irnTablesData.irnTables,
     filter: state.irnTablesData.filter,
-    refineFilter: state.irnTablesData.refineFilter,
-    loading: state.irnTablesData.loading || state.referenceData.loading,
     irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))
