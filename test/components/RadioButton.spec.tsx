@@ -3,7 +3,7 @@ import React from "react"
 import { fireEvent, render } from "react-native-testing-library"
 import { RadioButton } from "../../src/components/common/RadioButton"
 
-describe("RadioButtonj", () => {
+describe("RadioButton", () => {
   it("should render the label", () => {
     const label = "Some Label"
     const selected = true
