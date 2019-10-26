@@ -8,14 +8,12 @@ export const productionApi = {
   irnUrl: "https://agendar-cc.herokuapp.com",
 }
 
-const database = localApi
-
 const developmentConfig = {
-  ...database,
+  ...localApi,
 }
 
 const productionConfig = {
-  ...database,
+  ...productionApi,
 }
 
 export const config = __DEV__ ? developmentConfig : productionConfig
