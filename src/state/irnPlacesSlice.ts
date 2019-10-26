@@ -11,12 +11,14 @@ import { AppThunk } from "./store"
 interface IrnPlacesDataState {
   irnPlaces: IrnPlaces
   error: string | undefined
+  loaded: boolean
   loading: boolean
 }
 
 export const initialState: IrnPlacesDataState = {
   irnPlaces: [],
   error: undefined,
+  loaded: false,
   loading: false,
 }
 
@@ -38,6 +40,7 @@ const irnPlacesSlice = createSlice({
 
       state.irnPlaces = irnPlaces
       state.error = undefined
+      state.loaded = true
       state.loading = false
     },
     irnPlacesFetchError(state, action: PayloadAction<string>) {

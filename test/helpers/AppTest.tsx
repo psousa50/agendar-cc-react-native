@@ -1,11 +1,14 @@
 import React from "react"
+import { Provider } from "react-redux"
 import { configureStore } from "redux-starter-kit"
-import { AppContainer } from "../../src/App"
+import thunk from "redux-thunk"
 import { rootReducer } from "../../src/state/rootReducer"
 
-const store = configureStore({ reducer: rootReducer })
+export const testStore = () => configureStore({ reducer: rootReducer, middleware: [thunk] })
+type TestStore = ReturnType<typeof testStore>
 
-const props = {
-  store,
+interface AppTestProps {
+  store: TestStore
 }
-export const AppTest: React.FC = ({ children }) => <AppContainer {...props}>{children}</AppContainer>
+
+export const AppTest: React.FC<AppTestProps> = ({ children, store }) => <Provider store={store}>{children}</Provider>

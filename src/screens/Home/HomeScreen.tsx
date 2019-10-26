@@ -19,9 +19,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
 
   const dispatch = useDispatch()
 
-  const { filter, loading, referenceDataProxy } = useSelector((state: RootState) => ({
+  const { filter, loaded, loading, referenceDataProxy } = useSelector((state: RootState) => ({
     filter: state.irnTablesData.filter,
-    loading: state.irnTablesData.loading || state.referenceData.loading || state.irnPlacesData.loading,
+    loading: state.referenceData.loading || state.irnPlacesData.loading,
+    loaded: state.referenceData.loaded || state.irnPlacesData.loaded,
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))
 
@@ -54,7 +55,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   }
 
   return (
-    <AppScreen {...props} loading={loading} backgroundImage={appBackgroundImage}>
+    <AppScreen {...props} loading={!loaded && loading} backgroundImage={appBackgroundImage}>
       <HomeView {...homeViewProps} />
     </AppScreen>
   )

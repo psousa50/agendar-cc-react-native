@@ -15,6 +15,7 @@
     "lint": "tslint --project tsconfig.json"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/slider": "^2.0.1",
@@ -43,6 +44,7 @@
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
+    "redux-persist": "^6.0.0",
     "redux-starter-kit": "^0.7.0"
   },
   "devDependencies": {

@@ -6,3 +6,5 @@ jest.mock("react-navigation", () => ({
   createStackNavigator: jest.fn(),
   createAppContainer: jest.fn(),
 }))
+
+jest.mock("@react-native-community/async-storage", () => ({}))
