@@ -1,9 +1,9 @@
 import { Button, Text, View } from "native-base"
 import React from "react"
-import { ActivityIndicator, Dimensions } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { ActivityIndicator, Dimensions, StyleSheet } from "react-native"
 import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
 interface MessageBoxProps {
   lines: string[]
@@ -33,7 +33,7 @@ export const MessageBox: React.FC<MessageBoxProps> = ({ activityIndicator, backg
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
@@ -42,23 +42,23 @@ const styles = EStyleSheet.create({
   },
   message: {
     flexDirection: "column",
-    paddingHorizontal: "1.0rem",
-    paddingTop: "2.0rem",
-    paddingBottom: "1.0rem",
+    paddingHorizontal: rs(12),
+    paddingTop: rs(24),
+    paddingBottom: rs(12),
     backgroundColor: "white",
-    borderRadius: "0.6rem",
+    borderRadius: rfs(8),
     ...shadow,
   },
   text: {
-    paddingVertical: "1rem",
+    paddingVertical: rs(12),
     textAlign: "center",
   },
   button: {
     alignSelf: "flex-end",
-    paddingTop: "1rem",
-    paddingBottom: "1rem",
-    marginTop: "1rem",
-    marginBottom: "1rem",
+    paddingTop: rs(12),
+    paddingBottom: rs(12),
+    marginTop: rs(12),
+    marginBottom: rs(12),
   },
 })
 

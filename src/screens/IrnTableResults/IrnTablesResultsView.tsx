@@ -1,6 +1,6 @@
 import { Text, View } from "native-base"
 import React from "react"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
 import { i18n } from "../../localization/i18n"
 import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
@@ -8,6 +8,7 @@ import { IrnTableMatchResult } from "../../state/irnTablesSlice"
 import { IrnTableRefineFilter } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
+import { responsiveScale as rs } from "../../utils/responsive"
 import { MainButton } from "../Home/components/MainButton"
 import { IrnTableResultView } from "./IrnTableResultView"
 
@@ -46,6 +47,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
       </InfoCard>
       {irnTableResult && (
         <MainButton
+          style={{ marginTop: rs(50) }}
           onPress={() => onSchedule()}
           danger
           text={i18n.t("Results.Schedule")}
@@ -70,9 +72,9 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    marginTop: "0.5rem",
+    marginTop: rs(6),
     flexDirection: "column",
   },
   button: {

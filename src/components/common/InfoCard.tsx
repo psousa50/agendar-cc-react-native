@@ -1,9 +1,9 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet, TouchableOpacity } from "react-native"
 import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 import { IconType } from "./ToolbarIcons"
 
 const colorPrimary = appTheme.primaryText
@@ -28,42 +28,42 @@ export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress, ic
   </TouchableOpacity>
 )
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: "1.0rem",
-    paddingBottom: "0.5rem",
+    paddingHorizontal: rs(12),
+    paddingBottom: rs(5),
   },
   infoCard: {
     backgroundColor: "white",
-    marginTop: "-0.9rem",
-    marginLeft: "0.9rem",
-    marginRight: "0.9rem",
-    borderRadius: "0.6rem",
+    marginTop: rs(-12),
+    marginLeft: rs(12),
+    marginRight: rs(12),
+    borderRadius: rs(6),
     ...shadow,
   },
   infoCardContent: {
-    margin: "0.3rem",
-    padding: "0.3rem",
+    margin: rs(3),
+    padding: rs(3),
     backgroundColor: "white",
   },
   icon: {
-    padding: "0.3rem",
+    padding: rs(3),
     color: colorPrimary,
-    fontSize: "1.5rem",
+    fontSize: rfs(16),
   },
   titleBar: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: appTheme.brandPrimary,
-    borderRadius: "0.6rem",
-    paddingLeft: "1rem",
-    paddingTop: "0.3rem",
-    paddingBottom: "1.2rem",
+    borderRadius: rs(6),
+    paddingLeft: rs(12),
+    paddingTop: rs(3),
+    paddingBottom: rs(14),
   },
   titleBarText: {
     textAlignVertical: "top",
     color: appTheme.primaryText,
-    fontSize: "1.2rem",
+    fontSize: rfs(14),
     fontWeight: "bold",
   },
 })

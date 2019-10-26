@@ -1,11 +1,11 @@
 import { Text, View } from "native-base"
 import React from "react"
-import { Image, TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { Image, StyleSheet, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { ccImage, passportImage } from "../../../assets/images/images"
 import { i18n } from "../../../localization/i18n"
 import { appTheme } from "../../../utils/appTheme"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../../utils/responsive"
 
 const colorSecondary = appTheme.brandSecondary
 const colorSecondaryText = appTheme.secondaryText
@@ -75,26 +75,27 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   serviceImages: {
     flexDirection: "row",
-    paddingTop: 10,
+    paddingTop: rs(10),
   },
   serviceImageTouch: {
     flexDirection: "row",
     width: "50%",
     alignItems: "center",
-    paddingHorizontal: "0.5rem",
+    paddingHorizontal: rs(12),
   },
   serviceImage: {
-    width: "3rem",
-    height: "3rem",
+    width: rs(50),
+    height: rs(50),
   },
   cardText: {
     flex: 1,
     textAlign: "center",
-    marginTop: 5,
-    fontSize: "0.8rem",
+    marginTop: rs(5),
+    marginLeft: rs(5),
+    fontSize: rfs(10),
     flexWrap: "wrap",
   },
   cardSelectedText: {
@@ -115,6 +116,6 @@ const styles = EStyleSheet.create({
     borderColor: colorSecondary,
   },
   tabTextStyle: {
-    fontSize: "0.9rem",
+    fontSize: rfs(14),
   },
 })

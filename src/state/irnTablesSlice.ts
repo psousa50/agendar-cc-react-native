@@ -37,7 +37,7 @@ export const initialState: IrnTablesDataState = {
     // countyId: 44,
     // placeName: "Conservatória do Registo Civil, Predial e Comercial de Sobral de Monte Agraço",
     // startDate: toDateString("2019-12-16"),
-    // endDate: toDateString("2019-11-23"),
+    // endDate: toDateString("2019-12-23"),
     // startTime: "19:15",
     // endTime: "19:15",
     // onlyOnSaturdays: true,

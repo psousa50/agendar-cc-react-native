@@ -1,6 +1,7 @@
 import { Button, Icon } from "native-base"
 import React from "react"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet } from "react-native"
+import { responsiveFontScale as rfs } from "../../utils/responsive"
 
 export const editBackgroundColor = "gray"
 
@@ -49,8 +50,8 @@ export const ButtonIcons = {
 
 export const buttonIcons = (...buttons: ButtonIcons[]) => buttons
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   buttonIcon: {
-    fontSize: "1.3rem",
+    fontSize: rfs(16),
   },
 })

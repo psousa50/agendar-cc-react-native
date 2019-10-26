@@ -1,8 +1,8 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet, TouchableOpacity } from "react-native"
 import { appTheme } from "../../../utils/appTheme"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../../utils/responsive"
 
 interface PeriodRowProps {
   active: boolean
@@ -32,13 +32,13 @@ export const PeriodRow: React.FC<PeriodRowProps> = ({ active, value, title, onCl
   </View>
 )
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: "0.2rem",
-    paddingBottom: "1.0rem",
-    paddingHorizontal: "0.5rem",
+    paddingTop: rs(5),
+    paddingBottom: rs(10),
+    paddingHorizontal: rs(5),
     justifyContent: "space-between",
   },
   titleContainer: {
@@ -51,24 +51,23 @@ const styles = EStyleSheet.create({
     width: "60%",
   },
   title: {
-    fontSize: "0.7rem",
+    fontSize: rfs(12),
     color: appTheme.secondaryText,
   },
   inactiveTitle: {
-    fontSize: "0.7rem",
+    fontSize: rfs(12),
     color: appTheme.secondaryTextDimmed,
   },
   value: {
-    fontSize: "0.8rem",
-    fontWeight: "800",
+    fontSize: rfs(12),
     color: appTheme.secondaryText,
   },
   closeContainer: {
     width: "10%",
     alignItems: "flex-end",
-    paddingHorizontal: "0.5rem",
+    paddingHorizontal: rs(10),
   },
   closeIcon: {
-    fontSize: "1.3rem",
+    fontSize: rfs(16),
   },
 })

@@ -1,7 +1,6 @@
 import { Text, View } from "native-base"
 import React from "react"
-import { Switch, TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { ScrollView, StyleSheet, Switch, TouchableOpacity } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
 import { LocationView } from "../../components/common/LocationView"
 import { Separator } from "../../components/common/Separator"
@@ -9,6 +8,7 @@ import { i18n } from "../../localization/i18n"
 import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 import { AppScreenName } from "../screens"
 import { DatePeriodView } from "./components/DatePeriodView"
 import { MainButton } from "./components/MainButton"
@@ -45,7 +45,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
       </InfoCard>
@@ -72,27 +72,27 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </View>
       </InfoCard>
       <MainButton onPress={onSearch} text={i18n.t("SearchTimetables")} iconName={"search"} />
-    </View>
+    </ScrollView>
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "0.5rem",
+    marginTop: rs(5),
     flexDirection: "column",
     justifyContent: "space-between",
   },
   switchContainer: {
     flexDirection: "row",
-    paddingVertical: 5,
+    paddingVertical: rs(5),
     alignItems: "center",
     justifyContent: "space-between",
   },
   onlyOnSaturdays: {
-    fontSize: "0.7rem",
+    fontSize: rfs(12),
     textAlignVertical: "center",
-    paddingHorizontal: "0.5rem",
+    paddingHorizontal: rs(5),
     color: appTheme.secondaryText,
   },
   onlyOnSaturdaysDimmed: {

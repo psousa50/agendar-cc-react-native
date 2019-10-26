@@ -1,7 +1,8 @@
 import { Button, Icon, NativeBase, Text } from "native-base"
 import React from "react"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet } from "react-native"
 import { IconType } from "../../../components/common/ToolbarIcons"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../../utils/responsive"
 
 interface MainButtonProps extends NativeBase.Button {
   iconName?: string
@@ -10,9 +11,9 @@ interface MainButtonProps extends NativeBase.Button {
   color?: string
 }
 
-export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconType, text, ...props }) => (
+export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconType, text, style, ...props }) => (
   <Button
-    style={[styles.button, color ? { backgroundColor: color } : undefined]}
+    style={[styles.button, color ? { backgroundColor: color } : undefined, style]}
     iconLeft
     block
     success
@@ -24,10 +25,11 @@ export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconTyp
   </Button>
 )
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   button: {
-    marginTop: "0.2rem",
-    marginBottom: "0.8rem",
-    marginHorizontal: "1.0rem",
+    marginTop: rs(5),
+    marginBottom: rs(10),
+    marginHorizontal: rs(12),
+    fontSize: rfs(12),
   },
 })

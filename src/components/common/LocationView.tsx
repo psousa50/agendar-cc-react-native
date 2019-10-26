@@ -1,11 +1,10 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
-import { TouchableOpacity } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet, TouchableOpacity } from "react-native"
 import { IrnTableFilterLocation, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
-import { locationStyle } from "../../styles/location"
 import { getDistrictName } from "../../utils/location"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
 interface LocationViewProps {
   location: IrnTableFilterLocation
@@ -44,18 +43,36 @@ export const LocationView: React.FC<LocationViewProps> = ({
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
+  text: {
+    textAlign: "center",
+    paddingVertical: rs(5),
+  },
+  region: {
+    fontSize: rfs(18),
+    fontWeight: "600",
+  },
+  district: {
+    fontSize: rfs(16),
+    fontWeight: "600",
+  },
+  county: {
+    fontSize: rfs(12),
+    fontWeight: "600",
+  },
+  place: {
+    fontSize: rfs(10),
+  },
   container: {
     backgroundColor: "white",
   },
-  ...locationStyle,
   close: {
     position: "absolute",
     right: 0,
     top: 0,
-    paddingHorizontal: "0.5rem",
+    paddingHorizontal: rfs(12),
   },
   closeIcon: {
-    fontSize: "1.3rem",
+    fontSize: rfs(12),
   },
 })

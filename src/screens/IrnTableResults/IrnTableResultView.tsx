@@ -1,12 +1,12 @@
 import { Text, View } from "native-base"
 import React from "react"
-import EStyleSheet from "react-native-extended-stylesheet"
+import { StyleSheet } from "react-native"
 import { IrnTableResult } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
-import { locationStyle } from "../../styles/location"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { getDistrictName } from "../../utils/location"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
 interface IrnTableResultViewProps {
   irnTableResult: IrnTableResult
@@ -27,15 +27,25 @@ export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTable
   )
 }
 
-const styles = EStyleSheet.create({
-  ...locationStyle,
+const styles = StyleSheet.create({
+  text: {
+    textAlign: "center",
+    paddingVertical: rs(5),
+  },
+  district: {
+    fontSize: rfs(18),
+    fontWeight: "bold",
+  },
+  place: {
+    fontSize: rfs(14),
+  },
   date: {
-    fontSize: "1.3rem",
+    fontSize: rfs(17),
   },
   timeSlot: {
-    fontSize: "1.3rem",
+    fontSize: rfs(17),
   },
   table: {
-    fontSize: "1.0rem",
+    fontSize: rfs(13),
   },
 })

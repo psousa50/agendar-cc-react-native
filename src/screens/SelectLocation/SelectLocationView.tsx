@@ -9,7 +9,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { LocationView } from "../../components/common/LocationView"
 import { County } from "../../irnTables/models"
@@ -19,6 +18,7 @@ import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { getDistrictName, getFilteredLocations } from "../../utils/location"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 import { searchNormalizer } from "../../utils/strings"
 
 const colorSecondary = appTheme.brandSecondary
@@ -193,24 +193,24 @@ const buildSearchableCounties = (referenceDataProxy: ReferenceDataProxy): Search
   ]
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    marginTop: "0.5rem",
+    marginTop: rs(6),
     flexDirection: "column",
-    paddingHorizontal: "1rem",
+    paddingHorizontal: rs(12),
   },
   locationContainer: {
-    padding: "0.5rem",
-    marginVertical: "1.0rem",
+    padding: rs(6),
+    marginVertical: rs(12),
     backgroundColor: "white",
-    borderRadius: "0.6rem",
+    borderRadius: rs(7),
     ...shadow,
   },
   regionContainer: {
-    marginTop: "0.2rem",
-    padding: "0.6rem",
+    marginTop: rs(2),
+    padding: rs(7),
     backgroundColor: "white",
-    borderRadius: "0.6rem",
+    borderRadius: rs(7),
     ...shadow,
   },
   locationInputContainer: {
@@ -223,12 +223,12 @@ const styles = EStyleSheet.create({
     flex: 9,
     textAlign: "center",
     backgroundColor: "white",
-    fontSize: "1.2rem",
+    fontSize: rfs(15),
   },
   locationText: {
-    paddingHorizontal: "2rem",
-    paddingVertical: "0.6rem",
-    fontSize: "0.8rem",
+    paddingHorizontal: rs(16),
+    paddingVertical: rs(7),
+    fontSize: rfs(10),
     backgroundColor: "white",
   },
   separator: {
@@ -241,9 +241,9 @@ const styles = EStyleSheet.create({
     justifyContent: "flex-end",
   },
   icon: {
-    paddingHorizontal: "0.3rem",
-    margin: "0.5rem",
-    fontSize: "1rem",
+    paddingHorizontal: rs(3),
+    margin: rs(6),
+    fontSize: rfs(12),
     color: appTheme.secondaryTextDimmed,
   },
   activeTabStyle: {
@@ -256,8 +256,8 @@ const styles = EStyleSheet.create({
     borderColor: colorSecondary,
   },
   tabTextStyle: {
-    paddingVertical: "0.6rem",
-    fontSize: "1.0rem",
+    paddingVertical: rs(7),
+    fontSize: rfs(12),
     flexWrap: "wrap",
   },
 })
