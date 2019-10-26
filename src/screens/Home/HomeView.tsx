@@ -1,6 +1,6 @@
 import { Text, View } from "native-base"
 import React from "react"
-import { ScrollView, StyleSheet, Switch, TouchableOpacity } from "react-native"
+import { StyleSheet, Switch, TouchableOpacity } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
 import { LocationView } from "../../components/common/LocationView"
 import { Separator } from "../../components/common/Separator"
@@ -45,7 +45,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
         <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
       </InfoCard>
@@ -72,7 +72,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </View>
       </InfoCard>
       <MainButton onPress={onSearch} text={i18n.t("SearchTimetables")} iconName={"search"} />
-    </ScrollView>
+    </View>
   )
 }
 

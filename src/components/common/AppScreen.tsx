@@ -1,4 +1,4 @@
-import { Body, Container, Header, Left, Right, Title, View } from "native-base"
+import { Body, Container, Content, Header, Left, Right, Title, View } from "native-base"
 import React from "react"
 import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
@@ -32,7 +32,7 @@ export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children,
         </Header>
       ) : null}
       <StatusBar barStyle="light-content" translucent={true} />
-      <View style={styles.content}>{loading ? <LoadingPage /> : children}</View>
+      <Content style={styles.content}>{loading ? <LoadingPage /> : children}</Content>
     </Container>
   </ImageBackground>
 )

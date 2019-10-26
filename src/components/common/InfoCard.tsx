@@ -31,7 +31,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({ title, children, onPress, ic
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: rs(12),
-    paddingBottom: rs(5),
+    paddingBottom: rs(30),
   },
   infoCard: {
     backgroundColor: "white",
