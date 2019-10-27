@@ -60,7 +60,7 @@ export interface AppModalScreenProps extends AppNavigationScreenProps {
 }
 
 export const AppModalScreen: React.FC<AppModalScreenProps> = props => (
-  <AppScreen {...props} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
+  <AppScreen {...props} noScroll={true} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
 )
 
 const styles = StyleSheet.create({

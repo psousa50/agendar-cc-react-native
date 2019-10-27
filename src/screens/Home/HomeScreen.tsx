@@ -27,7 +27,15 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   }))
 
   const clearRefineFilter = () => {
-    setRefineFilter({})
+    dispatch(
+      setRefineFilter({
+        districtId: undefined,
+        countyId: undefined,
+        placeName: undefined,
+        date: undefined,
+        timeSlot: undefined,
+      }),
+    )
   }
 
   useEffect(() => {
@@ -41,6 +49,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     onEditLocation: () => navigation.goTo("SelectLocationScreen"),
     onLocationChange: (location: IrnTableFilterLocation) => dispatch(updateFilter(location)),
     onSearch: () => {
+      console.log("onSearch=====>")
       clearRefineFilter()
       navigation.goTo("IrnTablesResultsScreen")
     },
