@@ -14,9 +14,18 @@ export interface AppScreenProps extends AppNavigationScreenProps {
   left?: () => JSX.Element
   right?: () => JSX.Element
   title?: string
+  noScroll?: boolean
 }
 
-export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children, left, loading, right, title }) => (
+export const AppScreen: React.FC<AppScreenProps> = ({
+  backgroundImage,
+  children,
+  left,
+  loading,
+  right,
+  noScroll,
+  title,
+}) => (
   <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
     <Container>
       <View style={{ height: StatusBar.currentHeight || 20 }}></View>
@@ -32,7 +41,13 @@ export const AppScreen: React.FC<AppScreenProps> = ({ backgroundImage, children,
         </Header>
       ) : null}
       <StatusBar barStyle="light-content" translucent={true} />
-      <Content style={styles.content}>{loading ? <LoadingPage /> : children}</Content>
+      {loading ? (
+        <LoadingPage />
+      ) : noScroll ? (
+        <View style={styles.content}>{children}</View>
+      ) : (
+        <Content style={styles.content}>{children}</Content>
+      )}
     </Container>
   </ImageBackground>
 )

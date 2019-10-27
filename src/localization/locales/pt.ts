@@ -31,6 +31,8 @@ export const pt = {
     From: "A partir das",
     To: "Até às",
     Anytime: "Em qualquer horário",
+    Confirm: "Ok",
+    Cancel: "Cancelar",
   },
   Regions: {
     Mainland: "Continente",

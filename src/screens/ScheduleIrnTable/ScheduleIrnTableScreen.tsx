@@ -66,7 +66,7 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
       startInLoadingState={true}
     />
   ) : (
-    <AppScreen {...props} backgroundImage={appBackgroundImage}>
+    <AppScreen {...props} backgroundImage={appBackgroundImage} noScroll={true}>
       {error ? (
         <ErrorBox lines={[i18n.t("Schedule.Error1"), i18n.t("Schedule.Error2")]} onOk={goBack} />
       ) : (

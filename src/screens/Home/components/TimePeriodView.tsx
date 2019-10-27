@@ -68,6 +68,8 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
       onConfirm={confirmStartTime}
       is24Hour={true}
       minuteInterval={5}
+      confirmTextIOS={i18n.t("TimePeriod.Confirm")}
+      cancelTextIOS={i18n.t("TimePeriod.Cancel")}
       {...oldVersionProps}
     />
   )
@@ -81,6 +83,8 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
       onConfirm={confirmEndTime}
       is24Hour={true}
       minuteInterval={5}
+      confirmTextIOS={i18n.t("TimePeriod.Confirm")}
+      cancelTextIOS={i18n.t("TimePeriod.Cancel")}
       {...oldVersionProps}
     />
   )

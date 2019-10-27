@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
   message: {
     flexDirection: "column",
     paddingHorizontal: rs(12),
-    paddingTop: rs(24),
-    paddingBottom: rs(12),
+    paddingVertical: rs(24),
     backgroundColor: "white",
     borderRadius: rfs(8),
     ...shadow,
