@@ -1,9 +1,11 @@
 import { Dimensions, PixelRatio } from "react-native"
 
-const { width } = Dimensions.get("window")
+const { width, height } = Dimensions.get("window")
 
-const responsiveScale = (s: number) => s * PixelRatio.roundToNearestPixel((width / 320) * 0.8)
+const size = Math.min(width, height)
 
-const responsiveFontScale = (s: number) => s * PixelRatio.roundToNearestPixel((width / 320) * 0.8)
+const responsiveScale = (s: number) => s * PixelRatio.roundToNearestPixel((size / 320) * 0.8)
+
+const responsiveFontScale = (s: number) => s * PixelRatio.roundToNearestPixel((size / 320) * 0.8)
 
 export { responsiveScale, responsiveFontScale }

@@ -41,8 +41,8 @@ export const pt = {
     Closest: "Agendamento mais perto",
     Soonest: "Agendamento mais rápido",
     NoneTitle: "Sem Resultados",
-    None:
-      "Não foram encontrados resultados para os critérios de pesquisa que definiu. Tente um critério mais abrangente.",
+    None1: "Não foram encontrados resultados para os critérios de pesquisa que definiu.",
+    None2: "Por favor tente um critério mais abrangente.",
     Table: "Mesa",
     ChooseDate: "Escolher outra Data",
     ChooseLocation: "Escolher outro Local",

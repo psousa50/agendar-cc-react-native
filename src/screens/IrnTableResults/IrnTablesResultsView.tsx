@@ -41,7 +41,8 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           <IrnTableResultView irnTableResult={irnTableResult} referenceDataProxy={referenceDataProxy} />
         ) : (
           <View>
-            <Text>{i18n.t("Results.None")}</Text>
+            <Text style={styles.notFoundText}>{i18n.t("Results.None1")}</Text>
+            <Text style={styles.notFoundText}>{i18n.t("Results.None2")}</Text>
           </View>
         )}
       </InfoCard>
@@ -78,6 +79,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   button: {
-    marginTop: 20,
+    marginTop: rs(20),
+  },
+  notFoundText: {
+    paddingVertical: rs(20),
   },
 })
