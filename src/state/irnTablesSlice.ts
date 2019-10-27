@@ -7,6 +7,7 @@ import { fetchIrnTableMatch } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
 import { IrnTableResult, TimeSlot } from "../irnTables/models"
 import { currentUtcDateString, DateString } from "../utils/dates"
+import { removeUndefined } from "../utils/object"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
@@ -86,7 +87,11 @@ export const getIrnTableMatch = (irnTablesDataState: IrnTablesDataState): AppThu
 
   dispatch(initIrnTableMatchResultFetch())
   await pipe(
-    fetchIrnTableMatch({ ...filter, ...refineFilter, startDate: filter.startDate || currentUtcDateString() }),
+    fetchIrnTableMatch({
+      ...filter,
+      ...removeUndefined(refineFilter),
+      startDate: filter.startDate || currentUtcDateString(),
+    }),
     fold(
       error => {
         dispatch(irnTableMatchResultFetchError(error.message))
