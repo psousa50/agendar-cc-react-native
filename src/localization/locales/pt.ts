@@ -7,10 +7,13 @@ export const pt = {
   Where: {
     Name: "Onde",
     Region: "Região",
-    District: "Districto",
+    DistrictCounty: "Distrito - Concelho",
+    District: "Distrito",
     County: "Concelho",
     Place: "Local",
     AllCounties: "Todos os Concelhos",
+    LookDistrictCounty: "Procurar Distrito - Concelho",
+    LookPlace: "Procurar Local",
   },
   When: {
     Name: "Quando",

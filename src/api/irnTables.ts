@@ -1,7 +1,7 @@
 import { isNil, keys } from "ramda"
 import { IrnTableResult } from "../irnTables/models"
 import { IrnTableMatchResult } from "../state/irnTablesSlice"
-import { IrnTableFilter } from "../state/models"
+import { IrnTableApiFilter } from "../state/models"
 import { fetchJson } from "../utils/fetch"
 import { apiUrl } from "./config"
 import { fromBoolean, fromDateOnly, fromNumber, fromTimeSlot } from "./utils"
@@ -14,7 +14,7 @@ const buildParams = (fieldValues: {}) => {
 
   return p.length > 0 ? `?${p}` : ""
 }
-const buildIrnTablesParams = (params: IrnTableFilter) =>
+const buildIrnTablesParams = (params: IrnTableApiFilter) =>
   buildParams({
     countyId: fromNumber(params.countyId),
     date: fromDateOnly(params.date),
@@ -24,12 +24,16 @@ const buildIrnTablesParams = (params: IrnTableFilter) =>
     onlyOnSaturdays: fromBoolean(params.onlyOnSaturdays),
     placeName: params.placeName,
     region: params.region,
+    selectedDate: fromDateOnly(params.selected.date),
+    selectedDistrictId: fromNumber(params.selected.districtId),
+    selectedCountyId: fromNumber(params.selected.countyId),
+    selectedPlaceName: params.selected.placeName,
     serviceId: fromNumber(params.serviceId),
     startDate: fromDateOnly(params.startDate),
     startTime: fromTimeSlot(params.startTime),
   })
 
-export const fetchIrnTableMatch = (params: IrnTableFilter) =>
+export const fetchIrnTableMatch = (params: IrnTableApiFilter) =>
   fetchJson<IrnTableMatchResult>(`${apiUrl}/irnTableMatch${buildIrnTablesParams(params)}`)
 
 const buildIrnTablesRequestOptionsParams = (params: IrnTableResult) =>

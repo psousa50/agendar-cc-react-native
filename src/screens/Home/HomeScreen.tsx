@@ -49,7 +49,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     onEditLocation: () => navigation.goTo("SelectLocationScreen"),
     onLocationChange: (location: IrnTableFilterLocation) => dispatch(updateFilter(location)),
     onSearch: () => {
-      console.log("onSearch=====>")
       clearRefineFilter()
       navigation.goTo("IrnTablesResultsScreen")
     },

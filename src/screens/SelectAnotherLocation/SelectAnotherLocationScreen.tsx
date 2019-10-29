@@ -8,6 +8,7 @@ import { setRefineFilter } from "../../state/irnTablesSlice"
 import { IrnTableRefineFilterLocation } from "../../state/models"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
+import { normalizeLocation } from "../../utils/location"
 import { enhancedNavigation } from "../screens"
 import { SelectAnotherLocationView } from "./SelectAnotherLocationView"
 
@@ -24,11 +25,12 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   }))
 
   const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>) => {
-    if (newLocation.placeName !== undefined) {
-      dispatch(setRefineFilter(newLocation))
+    const normalizedLocation = normalizeLocation(referenceDataProxy, irnPlacesProxy)(newLocation)
+    if (normalizedLocation.placeName !== undefined) {
+      dispatch(setRefineFilter(normalizedLocation))
       navigation.goBack()
     } else {
-      setRefineLocation(newLocation)
+      setRefineLocation(normalizedLocation)
     }
   }
 

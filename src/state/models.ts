@@ -37,6 +37,7 @@ export interface IrnTableRefineFilterLocation {
   countyId?: number
   districtId?: number
   placeName?: string
+  region?: Region
 }
 
 export interface IrnTableRefineFilter extends IrnTableRefineFilterLocation {
@@ -46,6 +47,10 @@ export interface IrnTableRefineFilter extends IrnTableRefineFilterLocation {
 
 export interface IrnTableFilter extends IrnTableFilterLocation, IrnTableFilterDateTime {
   serviceId?: number
+}
+
+export interface IrnTableApiFilter extends IrnTableFilter {
+  selected: IrnTableRefineFilter
 }
 
 export interface TimeSlotsFilter {

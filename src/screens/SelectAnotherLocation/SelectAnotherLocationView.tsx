@@ -41,7 +41,12 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   const onLocationPress = (mapLocation: MapLocation) => {
     switch (mapLocation.locationType) {
       case "District":
-        checkOnlyOneResult({ ...refineLocation, districtId: mapLocation.id, countyId: undefined, placeName: undefined })
+        checkOnlyOneResult({
+          ...refineLocation,
+          districtId: mapLocation.id,
+          countyId: undefined,
+          placeName: undefined,
+        })
         break
       case "County":
         checkOnlyOneResult({ ...refineLocation, countyId: mapLocation.id, placeName: undefined })
@@ -53,11 +58,17 @@ export const SelectAnotherLocationView: React.FC<SelectAnotherLocationViewProps>
   }
 
   const render = () => {
+    const { countyId, districtId, placeName } = refineLocation
+    const location = {
+      countyId,
+      districtId,
+      placeName,
+    }
     const { districtLocations, countyLocations, irnPlacesLocations } = getAllMapLocations(
       districts,
       counties,
       irnPlaces,
-      refineLocation,
+      location,
     )
     const mapLocations =
       districtLocations.length !== 1

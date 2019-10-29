@@ -41,8 +41,11 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     location,
     irnPlacesProxy,
     referenceDataProxy,
-    onSelectLocationOnMap: () => {
-      navigation.goTo("SelectLocationByMapScreen", { location })
+    onSelectDistrictCountyOnMap: () => {
+      navigation.goTo("SelectLocationByMapScreen", { location: { region: location.region } })
+    },
+    onSelectIrnPlaceOnMap: () => {
+      navigation.goTo("SelectLocationByMapScreen", { location: { ...location, placeName: undefined } })
     },
     onLocationChange: (newLocation: IrnTableFilterLocation) => {
       setLocation(normalizeLocation(referenceDataProxy, irnPlacesProxy)(newLocation))

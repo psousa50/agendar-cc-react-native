@@ -46,7 +46,11 @@ export const getFilteredLocations = (
   irnPlaces: IrnPlaces,
   location: IrnTableFilterLocation,
 ) => {
-  const { districtId, countyId, placeName, region } = location
+  const { placeName, region } = location
+
+  const irnPlace = irnPlaces.find(p => !isNil(location.placeName) && p.name === location.placeName)
+  const districtId = irnPlace ? irnPlace.districtId : location.districtId
+  const countyId = irnPlace ? irnPlace.countyId : location.countyId
 
   const byRegionAndDistrict = (d: District) =>
     (isNil(region) || d.region === region) && (isNil(districtId) || d.districtId === districtId)
