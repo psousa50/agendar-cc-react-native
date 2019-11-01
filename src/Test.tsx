@@ -1,6 +1,27 @@
+import { Container, Content, Header, View } from "native-base"
 import React from "react"
-import { ErrorBox } from "./components/common/MessageBox"
+import { TextInput } from "react-native"
 
 export const Test = () => {
-  return <ErrorBox lines={["some text"]} />
+  return (
+    <Container>
+      <Header />
+      <Content>
+        <View>
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+          <TextInput style={{ borderWidth: 1 }} />
+        </View>
+      </Content>
+    </Container>
+  )
 }

@@ -39,8 +39,9 @@ export const AppScreen: React.FC<AppScreenProps> = ({
           )}
           <Right>{right ? right() : undefined}</Right>
         </Header>
-      ) : null}
-      <StatusBar barStyle="light-content" translucent={true} />
+      ) : (
+        <StatusBar barStyle="light-content" translucent={true} />
+      )}
       {loading ? (
         <LoadingPage />
       ) : noScroll ? (
@@ -60,7 +61,7 @@ export interface AppModalScreenProps extends AppNavigationScreenProps {
 }
 
 export const AppModalScreen: React.FC<AppModalScreenProps> = props => (
-  <AppScreen {...props} noScroll={true} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
+  <AppScreen {...props} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
 )
 
 const styles = StyleSheet.create({
