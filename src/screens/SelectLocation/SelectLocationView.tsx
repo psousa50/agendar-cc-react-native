@@ -1,6 +1,6 @@
 import { Text, View } from "native-base"
 import { isNil, sort } from "ramda"
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import { KeyboardAvoidingView, StyleSheet } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { SearchableItem, SearchableTextInputLocation } from "../../components/common/SearchableTextInputLocation"
@@ -10,7 +10,7 @@ import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { allRegions, IrnTableFilterLocation, Region, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
-import { getDistrictName } from "../../utils/location"
+import { getClosestLocation, getCurrentGpsLocation, getDistrictName } from "../../utils/location"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 import { searchNormalizer } from "../../utils/strings"
 
@@ -45,6 +45,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   onSelectDistrictCountyOnMap,
   onSelectIrnPlaceOnMap,
 }) => {
+  const [, setError] = useState<string | undefined>("")
   const { countyId, districtId, region } = location
 
   const searchableCounties = useMemo(() => buildSearchableCounties(referenceDataProxy), [])
@@ -94,6 +95,40 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
     onLocationChange({ placeName: item.displayText })
   }
 
+  const useGpsLocationForCounty = async () => {
+    try {
+      const gpsLocation = await getCurrentGpsLocation()
+      const closestCounty = getClosestLocation(referenceDataProxy.getCounties())(gpsLocation)
+      const newLocation = {
+        ...location,
+        ...(closestCounty
+          ? {
+              districtId: closestCounty.location.districtId,
+              countyId: closestCounty.location.countyId,
+              placeName: undefined,
+            }
+          : {}),
+      }
+      onLocationChange(newLocation)
+    } catch (error) {
+      setError("No GPS")
+    }
+  }
+
+  const useGpsLocationForIrnPlace = async () => {
+    try {
+      const gpsLocation = await getCurrentGpsLocation()
+      const closestIrnPlace = getClosestLocation(irnPlacesProxy.getIrnPlaces({}))(gpsLocation)
+      const newLocation = {
+        ...location,
+        ...(closestIrnPlace ? { placeName: closestIrnPlace.location.name } : {}),
+      }
+      onLocationChange(newLocation)
+    } catch (error) {
+      setError("No GPS")
+    }
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <Text style={styles.title}>{i18n.t("Where.Region")}</Text>
@@ -117,6 +152,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         onClear={clearCounty}
         onItemPressed={onCountyPressed}
         onSelectOnMap={onSelectDistrictCountyOnMap}
+        onUseGpsLocation={useGpsLocationForCounty}
       />
       <Text style={styles.title}>{i18n.t("Where.Place")}</Text>
       <SearchableTextInputLocation
@@ -127,6 +163,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         onClear={clearPlaceName}
         onItemPressed={onIrnPlacePressed}
         onSelectOnMap={selectedPlaceNames.length > 1 ? onSelectIrnPlaceOnMap : undefined}
+        onUseGpsLocation={useGpsLocationForIrnPlace}
       />
     </KeyboardAvoidingView>
   )

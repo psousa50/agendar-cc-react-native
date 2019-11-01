@@ -50,6 +50,7 @@ export const SelectLocationByMapScreen: React.FC<AppScreenProps> = props => {
   return (
     <AppModalScreen
       {...props}
+      noScroll={true}
       title={i18n.t("Title.SelectLocationByMap")}
       right={() => ButtonIcons.Checkmark(() => goBack())}
     >

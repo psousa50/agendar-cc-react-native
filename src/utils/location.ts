@@ -1,3 +1,4 @@
+import Geolocation from "@react-native-community/geolocation"
 import { isNil } from "ramda"
 import { MapLocations } from "../components/common/LocationsMap"
 import { Counties, County, District, Districts, GpsLocation, IrnPlace, IrnPlaces } from "../irnTables/models"
@@ -140,3 +141,17 @@ export const getDistrictName = (referenceDataProxy: ReferenceDataProxy) => (dist
   const districtName = district && `${properCase(district.name)}${separator}${countyName}`
   return districtName
 }
+
+export const getCurrentGpsLocation = () =>
+  new Promise<GpsLocation>((resolve, reject) =>
+    Geolocation.getCurrentPosition(
+      pos =>
+        pos && pos.coords
+          ? resolve({
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            })
+          : resolve(undefined),
+      error => reject(error),
+    ),
+  )

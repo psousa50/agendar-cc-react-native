@@ -18,6 +18,7 @@ interface SearchableTextInputLocationProps {
   onClear: () => void
   onItemPressed: (item: SearchableItem) => void
   onSelectOnMap?: () => void
+  onUseGpsLocation?: () => void
 }
 
 interface SearchableTextInputLocationState {
@@ -33,6 +34,7 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
   onClear,
   onItemPressed,
   onSelectOnMap,
+  onUseGpsLocation,
 }) => {
   const initialState: SearchableTextInputLocationState = {
     text: initialText || "",
@@ -84,11 +86,12 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
           onBlur={hideList}
         />
         <View style={styles.icons}>
-          {onSelectOnMap && (
-            <TouchableOpacity onPress={onSelectOnMap}>
-              <Icon style={styles.icon} type="MaterialIcons" name={"location-on"} />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={onUseGpsLocation}>
+            <Icon style={styles.icon} type={"MaterialIcons"} name={"my-location"} />
+          </TouchableOpacity>
+          <TouchableOpacity disabled={!onSelectOnMap} onPress={onSelectOnMap}>
+            <Icon style={styles.icon} type="MaterialIcons" name={"location-on"} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={clearText}>
             <Icon style={styles.icon} name={"close"} />
           </TouchableOpacity>

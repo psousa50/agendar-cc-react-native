@@ -58,6 +58,7 @@ export interface AppModalScreenProps extends AppNavigationScreenProps {
   loading?: boolean
   right?: () => JSX.Element
   title?: string
+  noScroll?: boolean
 }
 
 export const AppModalScreen: React.FC<AppModalScreenProps> = props => (

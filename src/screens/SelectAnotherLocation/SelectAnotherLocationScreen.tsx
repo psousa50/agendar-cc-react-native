@@ -49,8 +49,9 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
 
   return (
     <AppModalScreen
-      title={i18n.t("Title.SelectAnotherLocation")}
       {...props}
+      title={i18n.t("Title.SelectAnotherLocation")}
+      noScroll={true}
       right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}
     >
       <SelectAnotherLocationView {...selectAnotherLocationViewProps} />
