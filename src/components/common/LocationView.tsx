@@ -14,7 +14,7 @@ interface LocationViewProps {
   onEdit?: () => void
 }
 export const LocationView: React.FC<LocationViewProps> = ({
-  location: { districtId, countyId, placeName, region, distanceRadiusKm, gpsLocation },
+  location: { districtId, countyId, placeName, region, distanceRadiusKm },
   onClear,
   onEdit,
   referenceDataProxy,
@@ -35,7 +35,6 @@ export const LocationView: React.FC<LocationViewProps> = ({
                 {`${i18n.t("Where.UseRange")} ${distanceRadiusKm}Km`}
               </Text>
             )}
-            {gpsLocation && <Text style={[styles.text, styles.useGpsLocation]}>{i18n.t("Where.UseGpsLocation")}</Text>}
           </>
         ) : (
           regionName && <Text style={[styles.text, styles.region]}>{regionName}</Text>
@@ -72,10 +71,6 @@ const styles = StyleSheet.create({
   },
   distanceRadiusKm: {
     fontSize: rfs(12),
-    paddingVertical: rs(1),
-  },
-  useGpsLocation: {
-    fontSize: rfs(10),
     paddingVertical: rs(1),
   },
   container: {

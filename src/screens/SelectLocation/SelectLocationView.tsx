@@ -68,9 +68,17 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         sc.searchText.includes(searchNormalizer(text)),
     )
 
-  const onCountyPressed = (item: SearchableItem) => {
-    const sc = item as SearchableCounty
-    onLocationChange({ ...location, ...sc.item, placeName: undefined })
+  const onCountyPressed = (sc: SearchableItem) => {
+    const loc = (sc as SearchableCounty).item
+
+    onLocationChange({
+      ...location,
+      region: loc.region,
+      districtId: loc.districtId,
+      countyId: loc.countyId,
+      placeName: undefined,
+      gpsLocation: undefined,
+    })
   }
   const selectedDistricts = searchableCounties.filter(sc => sc.item.districtId === districtId)
   const selectedCounty =
@@ -94,7 +102,14 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
     )
 
   const onIrnPlacePressed = (item: SearchableItem) => {
-    onLocationChange({ ...location, placeName: item.displayText })
+    onLocationChange({
+      ...location,
+      region: undefined,
+      districtId: undefined,
+      countyId: undefined,
+      gpsLocation: undefined,
+      placeName: item.displayText,
+    })
   }
 
   const useGpsLocationForCounty = async () => {
