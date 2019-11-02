@@ -120,11 +120,16 @@ export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPla
     districtId: filteredDistricts.length === 1 ? filteredDistricts[0].districtId : location.districtId,
     countyId: filteredCounties.length === 1 ? filteredCounties[0].countyId : location.countyId,
     placeName: filteredIrnPlaces.length === 1 ? filteredIrnPlaces[0].name : location.placeName,
-    distanceRadiusKm: location.distanceRadiusKm,
     gpsLocation: location.gpsLocation,
   }
 
-  return normalizedLocation
+  const hasLocation =
+    !isNil(normalizedLocation.districtId) || !isNil(normalizedLocation.countyId) || !isNil(normalizedLocation.placeName)
+
+  return {
+    ...normalizedLocation,
+    distanceRadiusKm: hasLocation ? location.distanceRadiusKm : undefined,
+  }
 }
 
 export const getDistrictName = (referenceDataProxy: ReferenceDataProxy) => (districtId?: number, countyId?: number) => {

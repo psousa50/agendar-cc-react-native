@@ -6,6 +6,7 @@ export type AppScreenName =
   | "ScheduleIrnTableScreen"
   | "SelectAnotherDateScreen"
   | "SelectAnotherLocationScreen"
+  | "SelectAnotherTimeSlotScreen"
   | "SelectedIrnTableScreen"
   | "SelectLocationByMapScreen"
   | "SelectLocationScreen"

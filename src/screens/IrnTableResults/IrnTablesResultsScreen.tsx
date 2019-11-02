@@ -38,6 +38,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     referenceDataProxy,
     onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
+    onSearchTimeSlot: () => navigation.goTo("SelectAnotherTimeSlotScreen"),
     onSchedule: () => navigation.goTo("ScheduleIrnTableScreen"),
 
     onNewSearch: () => navigation.goBack(),

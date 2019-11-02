@@ -8,3 +8,7 @@ jest.mock("react-navigation", () => ({
 }))
 
 jest.mock("@react-native-community/async-storage", () => ({}))
+
+jest.mock("@react-native-community/geolocation", () => ({
+  getCurrentPosition: jest.fn(),
+}))

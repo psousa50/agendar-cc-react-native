@@ -19,6 +19,7 @@ interface IrnTablesResultsViewProps {
   irnPlacesProxy: IrnPlacesProxy
   onSearchLocation: () => void
   onSearchDate: () => void
+  onSearchTimeSlot: () => void
   onSchedule: () => void
   onNewSearch: () => void
 }
@@ -27,6 +28,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   referenceDataProxy,
   onSearchDate,
   onSearchLocation,
+  onSearchTimeSlot,
   onNewSearch,
   onSchedule,
 }) => {
@@ -67,6 +69,14 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
       )}
       {irnTableMatchResult.otherDates.length > 1 && (
         <MainButton onPress={onSearchDate} text={i18n.t("Results.ChooseDate")} iconName={"calendar"} />
+      )}
+      {irnTableMatchResult.otherTimeSlots.length > 1 && (
+        <MainButton
+          onPress={onSearchTimeSlot}
+          text={i18n.t("Results.ChooseTimeSlot")}
+          iconType={"Entypo"}
+          iconName={"time-slot"}
+        />
       )}
       <MainButton onPress={onNewSearch} info text={i18n.t("Results.NewSearch")} iconName={"search"} />
     </View>
