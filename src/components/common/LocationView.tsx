@@ -70,8 +70,7 @@ const styles = StyleSheet.create({
     fontSize: rfs(10),
   },
   distanceRadiusKm: {
-    fontSize: rfs(12),
-    paddingVertical: rs(1),
+    fontSize: rfs(10),
   },
   container: {
     backgroundColor: "white",

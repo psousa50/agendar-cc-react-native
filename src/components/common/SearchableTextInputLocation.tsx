@@ -100,10 +100,10 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
       {!state.hideUntilChanged && listItems.length > 0 ? (
         <View style={{ height: rs(200) }}>
           <FlatList
+            style={styles.itemList}
             keyboardShouldPersistTaps="handled"
             data={listItems}
             renderItem={renderItem}
-            ItemSeparatorComponent={Separator}
           />
         </View>
       ) : null}
@@ -111,13 +111,15 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
   )
 }
 
-const Separator = () => <View style={styles.separator} />
-
 const styles = StyleSheet.create({
   container: {
     marginTop: rs(6),
     flexDirection: "column",
     paddingHorizontal: rs(12),
+  },
+  itemList: {
+    marginTop: rs(5),
+    paddingHorizontal: rs(5),
   },
   locationInputContainer: {
     flexDirection: "row",
@@ -131,11 +133,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     fontSize: rfs(15),
     marginHorizontal: rs(20),
-    marginVertical: rs(10),
+    marginVertical: rs(5),
   },
   locationText: {
     paddingHorizontal: rs(16),
-    paddingVertical: rs(7),
+    paddingVertical: rs(10),
     fontSize: rfs(10),
     backgroundColor: "white",
   },

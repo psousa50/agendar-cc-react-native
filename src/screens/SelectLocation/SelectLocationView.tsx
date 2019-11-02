@@ -2,7 +2,7 @@ import Slider from "@react-native-community/slider"
 import { Text, View } from "native-base"
 import { isNil, sort } from "ramda"
 import React, { useMemo, useState } from "react"
-import { KeyboardAvoidingView, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { SearchableItem, SearchableTextInputLocation } from "../../components/common/SearchableTextInputLocation"
 import { County } from "../../irnTables/models"
@@ -160,7 +160,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.regionContainer}>
         <SegmentedControlTab
           activeTabStyle={styles.activeTabStyle}
@@ -195,7 +195,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
       <View style={styles.rangeDistanceContainer}>
         <View style={styles.rangeTextContainer}>
           <Text style={[styles.useRangeText, rangeValue === 0 ? styles.useRangeTextDimmed : undefined]}>
-            {i18n.t("Where.UseRange")}
+            {`${i18n.t("Where.UseRange")}:`}
           </Text>
           {rangeValue > 0 ? <Text style={styles.useRangeText}>{`${rangeValue} Km`}</Text> : null}
         </View>
@@ -209,7 +209,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           onSlidingComplete={onRangeComplete}
         />
       </View>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 

@@ -3,6 +3,8 @@ import React from "react"
 import { ImageBackground, StatusBar, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { appBackgroundImage } from "../../assets/images/images"
+import { appTheme } from "../../utils/appTheme"
+import { responsiveScale as rs } from "../../utils/responsive"
 import { LoadingPage } from "./LoadingPage"
 import { ButtonIcons } from "./ToolbarIcons"
 
@@ -40,7 +42,7 @@ export const AppScreen: React.FC<AppScreenProps> = ({
           <Right>{right ? right() : undefined}</Right>
         </Header>
       ) : (
-        <StatusBar barStyle="light-content" translucent={true} />
+        <StatusBar backgroundColor={appTheme.statusBarColor} barStyle="dark-content" translucent={true} />
       )}
       {loading ? (
         <LoadingPage />
@@ -76,6 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    borderWidth: 0,
+    height: rs(40),
   },
 })
