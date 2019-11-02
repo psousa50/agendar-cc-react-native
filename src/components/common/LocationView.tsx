@@ -80,9 +80,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     top: 0,
-    paddingHorizontal: rfs(12),
+    paddingTop: rs(5),
+    paddingHorizontal: rs(12),
   },
   closeIcon: {
-    fontSize: rfs(12),
+    fontSize: rfs(16),
   },
 })
