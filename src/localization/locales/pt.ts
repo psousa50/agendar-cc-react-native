@@ -11,6 +11,8 @@ export const pt = {
     District: "Distrito",
     County: "Concelho",
     Place: "Local",
+    UseRange: "Até uma distância de",
+    UseGpsLocation: "(Usar localização actual)",
     AllCounties: "Todos os Concelhos",
     LookDistrictCounty: "Procurar Distrito - Concelho",
     LookPlace: "Procurar Local",

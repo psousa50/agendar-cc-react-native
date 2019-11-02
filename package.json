@@ -18,7 +18,7 @@
     "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/geolocation": "^2.0.2",
-    "@react-native-community/slider": "^2.0.1",
+    "@react-native-community/slider": "^2.0.3",
     "babel-jest": "^24.9.0",
     "fp-ts": "^2.0.5",
     "i18n-js": "^3.3.0",

@@ -1,6 +1,7 @@
 import { Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet, TouchableOpacity } from "react-native"
+import { i18n } from "../../localization/i18n"
 import { IrnTableFilterLocation, regionNames } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { getDistrictName } from "../../utils/location"
@@ -13,7 +14,7 @@ interface LocationViewProps {
   onEdit?: () => void
 }
 export const LocationView: React.FC<LocationViewProps> = ({
-  location: { districtId, countyId, placeName, region },
+  location: { districtId, countyId, placeName, region, distanceRadiusKm, gpsLocation },
   onClear,
   onEdit,
   referenceDataProxy,
@@ -29,6 +30,12 @@ export const LocationView: React.FC<LocationViewProps> = ({
           <>
             {districtName && <Text style={[styles.text, styles.district]}>{`${districtName}`}</Text>}
             {placeName && <Text style={[styles.text, styles.place]}>{placeName}</Text>}
+            {distanceRadiusKm && (
+              <Text style={[styles.text, styles.distanceRadiusKm]}>
+                {`${i18n.t("Where.UseRange")} ${distanceRadiusKm}Km`}
+              </Text>
+            )}
+            {gpsLocation && <Text style={[styles.text, styles.useGpsLocation]}>{i18n.t("Where.UseGpsLocation")}</Text>}
           </>
         ) : (
           regionName && <Text style={[styles.text, styles.region]}>{regionName}</Text>
@@ -62,6 +69,14 @@ const styles = StyleSheet.create({
   },
   place: {
     fontSize: rfs(10),
+  },
+  distanceRadiusKm: {
+    fontSize: rfs(12),
+    paddingVertical: rs(1),
+  },
+  useGpsLocation: {
+    fontSize: rfs(10),
+    paddingVertical: rs(1),
   },
   container: {
     backgroundColor: "white",

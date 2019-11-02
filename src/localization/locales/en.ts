@@ -11,6 +11,8 @@ export const en = {
     District: "District",
     County: "County",
     Place: "Place",
+    UseRange: "For a range distance of",
+    UseGpsLocation: "(Use current location)",
     AllCounties: "All Counties",
     LookDistrictCounty: "Look for District - County",
     LookPlace: "Look for Local",

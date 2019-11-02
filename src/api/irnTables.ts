@@ -18,9 +18,12 @@ const buildIrnTablesParams = (params: IrnTableApiFilter) =>
   buildParams({
     countyId: fromNumber(params.countyId),
     date: fromDateOnly(params.date),
+    distanceRadiusKm: fromNumber(params.distanceRadiusKm),
     districtId: fromNumber(params.districtId),
     endDate: fromDateOnly(params.endDate),
     endTime: fromTimeSlot(params.endTime),
+    lat: params.gpsLocation && fromNumber(params.gpsLocation.latitude),
+    lng: params.gpsLocation && fromNumber(params.gpsLocation.longitude),
     onlyOnSaturdays: fromBoolean(params.onlyOnSaturdays),
     placeName: params.placeName,
     region: params.region,

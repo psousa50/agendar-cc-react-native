@@ -1,3 +1,4 @@
+import Slider from "@react-native-community/slider"
 import { Text, View } from "native-base"
 import { isNil, sort } from "ramda"
 import React, { useMemo, useState } from "react"
@@ -45,6 +46,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   onSelectDistrictCountyOnMap,
   onSelectIrnPlaceOnMap,
 }) => {
+  const [rangeValue, setRangeValue] = useState(location.distanceRadiusKm || 0)
   const [, setError] = useState<string | undefined>("")
   const { countyId, districtId, region } = location
 
@@ -68,7 +70,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
 
   const onCountyPressed = (item: SearchableItem) => {
     const sc = item as SearchableCounty
-    onLocationChange(sc.item)
+    onLocationChange({ ...location, ...sc.item, placeName: undefined })
   }
   const selectedDistricts = searchableCounties.filter(sc => sc.item.districtId === districtId)
   const selectedCounty =
@@ -92,7 +94,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
     )
 
   const onIrnPlacePressed = (item: SearchableItem) => {
-    onLocationChange({ placeName: item.displayText })
+    onLocationChange({ ...location, placeName: item.displayText })
   }
 
   const useGpsLocationForCounty = async () => {
@@ -103,11 +105,13 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         ...location,
         ...(closestCounty
           ? {
+              region: undefined,
               districtId: closestCounty.location.districtId,
               countyId: closestCounty.location.countyId,
               placeName: undefined,
             }
           : {}),
+        gpsLocation,
       }
       onLocationChange(newLocation)
     } catch (error) {
@@ -121,7 +125,10 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
       const closestIrnPlace = getClosestLocation(irnPlacesProxy.getIrnPlaces({}))(gpsLocation)
       const newLocation = {
         ...location,
-        ...(closestIrnPlace ? { placeName: closestIrnPlace.location.name } : {}),
+        ...(closestIrnPlace
+          ? { region: undefined, districtId: undefined, countyId: undefined, placeName: closestIrnPlace.location.name }
+          : {}),
+        gpsLocation,
       }
       onLocationChange(newLocation)
     } catch (error) {
@@ -129,9 +136,16 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
     }
   }
 
+  const onRangeChange = (value: number) => {
+    setRangeValue(value)
+  }
+
+  const onRangeComplete = (value: number) => {
+    onLocationChange({ ...location, distanceRadiusKm: value > 0 ? value : undefined })
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Text style={styles.title}>{i18n.t("Where.Region")}</Text>
       <View style={styles.regionContainer}>
         <SegmentedControlTab
           activeTabStyle={styles.activeTabStyle}
@@ -143,7 +157,6 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
           onTabPress={onRegionTabPress}
         />
       </View>
-      <Text style={styles.title}>{i18n.t("Where.DistrictCounty")}</Text>
       <SearchableTextInputLocation
         fontSize={rs(14)}
         initialText={districtCountyText}
@@ -154,7 +167,6 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         onSelectOnMap={onSelectDistrictCountyOnMap}
         onUseGpsLocation={useGpsLocationForCounty}
       />
-      <Text style={styles.title}>{i18n.t("Where.Place")}</Text>
       <SearchableTextInputLocation
         fontSize={rs(10)}
         initialText={location.placeName}
@@ -165,6 +177,23 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
         onSelectOnMap={selectedPlaceNames.length > 1 ? onSelectIrnPlaceOnMap : undefined}
         onUseGpsLocation={useGpsLocationForIrnPlace}
       />
+      <View style={styles.rangeDistanceContainer}>
+        <View style={styles.rangeTextContainer}>
+          <Text style={[styles.useRangeText, rangeValue === 0 ? styles.useRangeTextDimmed : undefined]}>
+            {i18n.t("Where.UseRange")}
+          </Text>
+          {rangeValue > 0 ? <Text style={styles.useRangeText}>{`${rangeValue} Km`}</Text> : null}
+        </View>
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={500}
+          step={10}
+          value={rangeValue}
+          onValueChange={onRangeChange}
+          onSlidingComplete={onRangeComplete}
+        />
+      </View>
     </KeyboardAvoidingView>
   )
 }
@@ -253,5 +282,27 @@ const styles = StyleSheet.create({
   title: {
     marginTop: rs(20),
     marginBottom: rs(10),
+  },
+  rangeDistanceContainer: {
+    flexDirection: "column",
+    paddingVertical: rs(10),
+    paddingHorizontal: rs(10),
+  },
+  rangeTextContainer: {
+    flexDirection: "row",
+    paddingVertical: rs(5),
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  slider: {},
+  useRangeText: {
+    fontSize: rfs(12),
+    color: appTheme.secondaryText,
+  },
+  useRangeTextDimmed: {
+    color: appTheme.secondaryTextDimmed,
+  },
+  switch: {
+    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
   },
 })
