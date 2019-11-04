@@ -4,7 +4,7 @@ import { appBackgroundImage } from "../../assets/images/images"
 import { AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { getIrnTableMatch } from "../../state/irnTablesSlice"
+import { clearRefineFilter, getIrnTableMatch } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { enhancedNavigation } from "../screens"
@@ -27,6 +27,10 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   )
   const irnTablesDataState = useSelector((state: RootState) => state.irnTablesData)
 
+  const onClearRefineFilter = () => {
+    dispatch(clearRefineFilter())
+  }
+
   useEffect(() => {
     dispatch(getIrnTableMatch(irnTablesDataState))
   }, [filter, refineFilter])
@@ -36,6 +40,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     irnTableMatchResult,
     irnPlacesProxy,
     referenceDataProxy,
+    onClearRefineFilter,
     onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
     onSearchTimeSlot: () => navigation.goTo("SelectAnotherTimeSlotScreen"),

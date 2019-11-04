@@ -75,8 +75,11 @@ const irnTablesSlice = createSlice({
     updateFilter(state, action: PayloadAction<IrnTableFilter>) {
       state.filter = normalizeFilter({ ...state.filter, ...action.payload })
     },
-    setRefineFilter(state, action: PayloadAction<IrnTableRefineFilter>) {
-      state.refineFilter = action.payload
+    updateRefineFilter(state, action: PayloadAction<IrnTableRefineFilter>) {
+      state.refineFilter = { ...state.refineFilter, ...action.payload }
+    },
+    clearRefineFilter(state) {
+      state.refineFilter = {}
     },
   },
 })
@@ -105,8 +108,9 @@ export const getIrnTableMatch = (irnTablesDataState: IrnTablesDataState): AppThu
 }
 
 export const {
+  clearRefineFilter,
   updateFilter,
-  setRefineFilter,
+  updateRefineFilter,
   initIrnTableMatchResultFetch,
   irnTableMatchResultFetchSuccessful,
   irnTableMatchResultFetchError,

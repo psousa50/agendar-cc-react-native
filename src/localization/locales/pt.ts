@@ -53,6 +53,7 @@ export const pt = {
     ChooseDate: "Escolher outra Data",
     ChooseLocation: "Escolher outro Local",
     ChooseTimeSlot: "Escolher outro Horário",
+    ClearFilters: "Limpar Filtros",
     Schedule: "Agendar",
     NewSearch: "Nova Pesquisa",
   },

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { TimeSlot } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
-import { setRefineFilter } from "../../state/irnTablesSlice"
+import { updateRefineFilter } from "../../state/irnTablesSlice"
 import { RootState } from "../../state/rootReducer"
 import { enhancedNavigation } from "../screens"
 import { SelectAnotherTimeSlotView } from "./SelectAnotherTimeSlotView"
@@ -18,7 +18,7 @@ export const SelectAnotherTimeSlotScreen: React.FC<AppScreenProps> = props => {
   const selectAnotherTimeSlotViewProps = {
     timeSlots: irnTableMatchResult.otherTimeSlots,
     onTimeSlotSelected: (timeSlot: TimeSlot) => {
-      dispatch(setRefineFilter({ timeSlot }))
+      dispatch(updateRefineFilter({ timeSlot }))
       navigation.goBack()
     },
   }

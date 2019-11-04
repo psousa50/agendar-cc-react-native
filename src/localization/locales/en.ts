@@ -51,6 +51,7 @@ export const en = {
     ChooseDate: "Select another date",
     ChooseLocation: "Select another place",
     ChooseTimeSlot: "Select another schedule",
+    ClearFilters: "Clear Filters",
     Schedule: "Schedule",
     NewSearch: "New Search",
   },

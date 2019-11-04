@@ -2,7 +2,7 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
-import { setRefineFilter } from "../../state/irnTablesSlice"
+import { updateRefineFilter } from "../../state/irnTablesSlice"
 import { RootState } from "../../state/rootReducer"
 import { DateString } from "../../utils/dates"
 import { enhancedNavigation } from "../screens"
@@ -18,7 +18,7 @@ export const SelectAnotherDateScreen: React.FC<AppScreenProps> = props => {
   const selectAnotherDateViewProps = {
     dates: irnTableMatchResult.otherDates,
     onDateSelected: (date: DateString) => {
-      dispatch(setRefineFilter({ date }))
+      dispatch(updateRefineFilter({ date }))
       navigation.goBack()
     },
   }

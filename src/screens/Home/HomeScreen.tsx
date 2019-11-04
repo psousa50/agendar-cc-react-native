@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
 import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { getIrnPlaces } from "../../state/irnPlacesSlice"
-import { setRefineFilter, updateFilter } from "../../state/irnTablesSlice"
+import { clearRefineFilter, updateFilter } from "../../state/irnTablesSlice"
 import { DatePeriod, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { buildReferenceDataProxy, getReferenceData } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
@@ -26,16 +26,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
   }))
 
-  const clearRefineFilter = () => {
-    dispatch(
-      setRefineFilter({
-        districtId: undefined,
-        countyId: undefined,
-        placeName: undefined,
-        date: undefined,
-        timeSlot: undefined,
-      }),
-    )
+  const onClearRefineFilter = () => {
+    dispatch(clearRefineFilter())
   }
 
   useEffect(() => {
@@ -49,11 +41,11 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     onEditLocation: () => navigation.goTo("SelectLocationScreen"),
     onLocationChange: (location: IrnTableFilterLocation) => dispatch(updateFilter(location)),
     onSearch: () => {
-      clearRefineFilter()
+      onClearRefineFilter()
       navigation.goTo("IrnTablesResultsScreen")
     },
     onSelectFilter: (filterScreen: AppScreenName) => {
-      clearRefineFilter()
+      onClearRefineFilter()
       navigation.goTo(filterScreen)
     },
     onServiceIdChange: (serviceId: number) => dispatch(updateFilter({ serviceId })),

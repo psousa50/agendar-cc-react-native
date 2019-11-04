@@ -4,7 +4,7 @@ import { AppModalScreen, AppScreenProps } from "../../components/common/AppScree
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { setRefineFilter } from "../../state/irnTablesSlice"
+import { updateRefineFilter } from "../../state/irnTablesSlice"
 import { IrnTableRefineFilterLocation } from "../../state/models"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
@@ -27,7 +27,7 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   const onLocationChange = (newLocation: Partial<IrnTableRefineFilterLocation>) => {
     const normalizedLocation = normalizeLocation(referenceDataProxy, irnPlacesProxy)(newLocation)
     if (normalizedLocation.placeName !== undefined) {
-      dispatch(setRefineFilter(normalizedLocation))
+      dispatch(updateRefineFilter(normalizedLocation))
       navigation.goBack()
     } else {
       setRefineLocation(normalizedLocation)
@@ -35,7 +35,7 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   }
 
   const updateRefineFilterAndGoBack = () => {
-    dispatch(setRefineFilter(refineLocation))
+    dispatch(updateRefineFilter(refineLocation))
     navigation.goBack()
   }
 

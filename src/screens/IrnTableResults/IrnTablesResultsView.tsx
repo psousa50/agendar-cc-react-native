@@ -1,4 +1,5 @@
 import { Text, View } from "native-base"
+import { keys } from "ramda"
 import React from "react"
 import { StyleSheet } from "react-native"
 import { InfoCard } from "../../components/common/InfoCard"
@@ -17,6 +18,7 @@ interface IrnTablesResultsViewProps {
   irnTableMatchResult: IrnTableMatchResult
   referenceDataProxy: ReferenceDataProxy
   irnPlacesProxy: IrnPlacesProxy
+  onClearRefineFilter: () => void
   onSearchLocation: () => void
   onSearchDate: () => void
   onSearchTimeSlot: () => void
@@ -26,6 +28,8 @@ interface IrnTablesResultsViewProps {
 export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   irnTableMatchResult,
   referenceDataProxy,
+  refineFilter,
+  onClearRefineFilter,
   onSearchDate,
   onSearchLocation,
   onSearchTimeSlot,
@@ -78,6 +82,13 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           iconName={"time-slot"}
         />
       )}
+      <MainButton
+        disabled={keys(refineFilter).length === 0}
+        onPress={onClearRefineFilter}
+        text={i18n.t("Results.ClearFilters")}
+        iconType={"FontAwesome"}
+        iconName={"filter"}
+      />
       <MainButton onPress={onNewSearch} info text={i18n.t("Results.NewSearch")} iconName={"search"} />
     </View>
   )
