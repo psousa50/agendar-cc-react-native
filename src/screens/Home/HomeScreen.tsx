@@ -55,7 +55,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   }
 
   return (
-    <AppScreen {...props} loading={!loaded && loading} backgroundImage={appBackgroundImage}>
+    <AppScreen {...props} noHeader={true} loading={!loaded && loading} backgroundImage={appBackgroundImage}>
       <HomeView {...homeViewProps} />
     </AppScreen>
   )

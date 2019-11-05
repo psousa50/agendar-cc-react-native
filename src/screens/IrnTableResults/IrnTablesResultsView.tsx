@@ -54,7 +54,6 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
       </InfoCard>
       {irnTableResult && (
         <MainButton
-          style={{ marginTop: rs(50) }}
           onPress={() => onSchedule()}
           danger
           text={i18n.t("Results.Schedule")}
@@ -89,7 +88,13 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
         iconType={"FontAwesome"}
         iconName={"filter"}
       />
-      <MainButton onPress={onNewSearch} info text={i18n.t("Results.NewSearch")} iconName={"search"} />
+      <MainButton
+        style={{ marginTop: rs(20) }}
+        onPress={onNewSearch}
+        info
+        text={i18n.t("Results.NewSearch")}
+        iconName={"search"}
+      />
     </View>
   )
 }
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   button: {
-    marginTop: rs(20),
+    marginTop: rs(30),
   },
   notFoundText: {
     paddingVertical: rs(20),

@@ -27,8 +27,7 @@ export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconTyp
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: rs(5),
-    marginBottom: rs(10),
+    marginTop: rs(10),
     marginHorizontal: rs(12),
     fontSize: rfs(12),
   },
