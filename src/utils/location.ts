@@ -120,6 +120,7 @@ export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPla
     districtId: filteredDistricts.length === 1 ? filteredDistricts[0].districtId : location.districtId,
     countyId: filteredCounties.length === 1 ? filteredCounties[0].countyId : location.countyId,
     placeName: filteredIrnPlaces.length === 1 ? filteredIrnPlaces[0].name : location.placeName,
+    distanceRadiusKm: location.distanceRadiusKm,
     gpsLocation: location.gpsLocation,
   }
 }
