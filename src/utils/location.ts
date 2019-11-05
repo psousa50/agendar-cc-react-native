@@ -115,20 +115,12 @@ export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPla
     location,
   )
 
-  const normalizedLocation = {
+  return {
     region: filteredDistricts.length > 0 ? filteredDistricts[0].region : location.region,
     districtId: filteredDistricts.length === 1 ? filteredDistricts[0].districtId : location.districtId,
     countyId: filteredCounties.length === 1 ? filteredCounties[0].countyId : location.countyId,
     placeName: filteredIrnPlaces.length === 1 ? filteredIrnPlaces[0].name : location.placeName,
     gpsLocation: location.gpsLocation,
-  }
-
-  const hasLocation =
-    !isNil(normalizedLocation.districtId) || !isNil(normalizedLocation.countyId) || !isNil(normalizedLocation.placeName)
-
-  return {
-    ...normalizedLocation,
-    distanceRadiusKm: hasLocation ? location.distanceRadiusKm : undefined,
   }
 }
 
