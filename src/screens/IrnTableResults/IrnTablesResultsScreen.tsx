@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
-import { AppScreen } from "../../components/common/AppScreen"
+import { AppErrorScreen, AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { clearRefineFilter, getIrnTableMatch } from "../../state/irnTablesSlice"
+import { clearRefineFilter, getIrnTableMatch, setError } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { enhancedNavigation } from "../screens"
@@ -16,7 +16,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const dispatch = useDispatch()
 
-  const { irnTableMatchResult, filter, refineFilter, loading, irnPlacesProxy, referenceDataProxy } = useSelector(
+  const { irnTableMatchResult, filter, refineFilter, loading, irnPlacesProxy, referenceDataProxy, error } = useSelector(
     (state: RootState) => ({
       irnTableMatchResult: state.irnTablesData.irnTableMatchResult,
       filter: state.irnTablesData.filter,
@@ -24,6 +24,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
       loading: state.irnTablesData.loading || state.referenceData.loading || state.irnPlacesData.loading,
       irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
       referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+      error: state.irnTablesData.error,
     }),
   )
   const irnTablesDataState = useSelector((state: RootState) => state.irnTablesData)
@@ -35,6 +36,11 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   useEffect(() => {
     dispatch(getIrnTableMatch(irnTablesDataState))
   }, [filter, refineFilter])
+
+  const clearErrorAndGoBack = () => {
+    dispatch(setError(undefined))
+    navigation.goBack()
+  }
 
   const irnTablesResultsViewProps = {
     refineFilter,
@@ -50,7 +56,9 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     onNewSearch: () => navigation.goBack(),
   }
 
-  return (
+  return error ? (
+    <AppErrorScreen {...props} lines={["Some error..."]} onOk={clearErrorAndGoBack} />
+  ) : (
     <AppScreen {...props} title={i18n.t("Results.Title")} loading={loading} backgroundImage={appBackgroundImage}>
       <IrnTablesResultsView {...irnTablesResultsViewProps} />
     </AppScreen>

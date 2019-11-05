@@ -58,17 +58,18 @@ const irnTablesSlice = createSlice({
   initialState,
   reducers: {
     initIrnTableMatchResultFetch(state) {
+      state.irnTableMatchResult = initialState.irnTableMatchResult
       state.error = undefined
       state.loading = true
     },
-    irnTableMatchResultFetchSuccessful(state, action: PayloadAction<IrnTablesFetchSuccessfulPayload>) {
+    irnTableMatchResultFetchWasSuccessful(state, action: PayloadAction<IrnTablesFetchSuccessfulPayload>) {
       const { irnTableMatchResult } = action.payload
 
       state.irnTableMatchResult = irnTableMatchResult
       state.error = undefined
       state.loading = false
     },
-    irnTableMatchResultFetchError(state, action: PayloadAction<string>) {
+    irnTableMatchResultFetchHasAnError(state, action: PayloadAction<string>) {
       state.error = action.payload
       state.loading = false
     },
@@ -80,6 +81,9 @@ const irnTablesSlice = createSlice({
     },
     clearRefineFilter(state) {
       state.refineFilter = {}
+    },
+    setError(state, action: PayloadAction<string | undefined>) {
+      state.error = action.payload
     },
   },
 })
@@ -96,11 +100,11 @@ export const getIrnTableMatch = (irnTablesDataState: IrnTablesDataState): AppThu
     }),
     fold(
       error => {
-        dispatch(irnTableMatchResultFetchError(error.message))
+        dispatch(irnTableMatchResultFetchHasAnError(error.message))
         return task.of(undefined)
       },
       irnTableMatchResult => {
-        dispatch(irnTableMatchResultFetchSuccessful({ irnTableMatchResult }))
+        dispatch(irnTableMatchResultFetchWasSuccessful({ irnTableMatchResult }))
         return task.of(undefined)
       },
     ),
@@ -112,7 +116,8 @@ export const {
   updateFilter,
   updateRefineFilter,
   initIrnTableMatchResultFetch,
-  irnTableMatchResultFetchSuccessful,
-  irnTableMatchResultFetchError,
+  irnTableMatchResultFetchWasSuccessful,
+  irnTableMatchResultFetchHasAnError,
+  setError,
 } = irnTablesSlice.actions
 export const reducer = irnTablesSlice.reducer

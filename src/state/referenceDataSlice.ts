@@ -50,7 +50,7 @@ const referenceDataSlice = createSlice({
       state.error = undefined
       state.loading = true
     },
-    fetchSuccessful(state, action: PayloadAction<SuccessfulFetchPayload>) {
+    fetchWasSuccessful(state, action: PayloadAction<SuccessfulFetchPayload>) {
       const { irnServices, districts, counties } = action.payload
       state.irnServices = irnServices
       state.districts = districts
@@ -59,9 +59,12 @@ const referenceDataSlice = createSlice({
       state.loading = false
       state.loaded = true
     },
-    fetchError(state, action: PayloadAction<string>) {
+    fetchHasAnError(state, action: PayloadAction<string>) {
       state.error = action.payload
       state.loading = false
+    },
+    setError(state, action: PayloadAction<string | undefined>) {
+      state.error = action.payload
     },
   },
 })
@@ -72,11 +75,11 @@ export const getReferenceData = (): AppThunk => async (dispatch: Dispatch) => {
     fetchReferenceData(),
     fold(
       error => {
-        dispatch(fetchError(error.message))
+        dispatch(fetchHasAnError(error.message))
         return task.of(undefined)
       },
       referenceData => {
-        dispatch(fetchSuccessful(referenceData))
+        dispatch(fetchWasSuccessful(referenceData))
         return task.of(undefined)
       },
     ),
@@ -106,5 +109,5 @@ export const buildReferenceDataProxy = (state: ReferenceDataState) => ({
   getCounty: getCounty(state),
 })
 
-export const { initFetch, fetchSuccessful, fetchError } = referenceDataSlice.actions
+export const { initFetch, fetchWasSuccessful, fetchHasAnError, setError } = referenceDataSlice.actions
 export const reducer = referenceDataSlice.reducer

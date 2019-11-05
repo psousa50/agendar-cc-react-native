@@ -43,9 +43,12 @@ const irnPlacesSlice = createSlice({
       state.loaded = true
       state.loading = false
     },
-    irnPlacesFetchError(state, action: PayloadAction<string>) {
+    irnPlacesFetchHasAnError(state, action: PayloadAction<string>) {
       state.error = action.payload
       state.loading = false
+    },
+    setError(state, action: PayloadAction<string | undefined>) {
+      state.error = action.payload
     },
   },
 })
@@ -56,7 +59,7 @@ export const getIrnPlaces = (): AppThunk => async (dispatch: Dispatch) => {
     fetchIrnPlaces(),
     fold(
       error => {
-        dispatch(irnPlacesFetchError(error.message))
+        dispatch(irnPlacesFetchHasAnError(error.message))
         return task.of(undefined)
       },
       irnPlaces => {
@@ -78,5 +81,10 @@ export const buildIrnPlacesProxy = (state: IrnPlacesDataState) => ({
   getIrnPlaces: getIrnPlaces2(state),
 })
 
-export const { initIrnPlacesFetch, irnPlacesFetchWasSuccessful, irnPlacesFetchError } = irnPlacesSlice.actions
+export const {
+  initIrnPlacesFetch,
+  irnPlacesFetchWasSuccessful,
+  irnPlacesFetchHasAnError,
+  setError,
+} = irnPlacesSlice.actions
 export const reducer = irnPlacesSlice.reducer

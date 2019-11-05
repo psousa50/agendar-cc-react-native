@@ -2,12 +2,16 @@ import React, { useEffect } from "react"
 import { Image } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage, appIcon } from "../../assets/images/images"
-import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { AppErrorScreen, AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
-import { getIrnPlaces } from "../../state/irnPlacesSlice"
+import { getIrnPlaces, setError as irnPlacesSetError } from "../../state/irnPlacesSlice"
 import { clearRefineFilter, updateFilter } from "../../state/irnTablesSlice"
 import { DatePeriod, IrnTableFilterLocation, TimePeriod } from "../../state/models"
-import { buildReferenceDataProxy, getReferenceData } from "../../state/referenceDataSlice"
+import {
+  buildReferenceDataProxy,
+  getReferenceData,
+  setError as referenceDataSetError,
+} from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { responsiveScale as rs } from "../../utils/responsive"
 import { AppScreenName, enhancedNavigation } from "../screens"
@@ -22,11 +26,12 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
 
   const dispatch = useDispatch()
 
-  const { filter, loaded, loading, referenceDataProxy } = useSelector((state: RootState) => ({
+  const { filter, loaded, loading, referenceDataProxy, error } = useSelector((state: RootState) => ({
     filter: state.irnTablesData.filter,
     loading: state.referenceData.loading || state.irnPlacesData.loading,
     loaded: state.referenceData.loaded || state.irnPlacesData.loaded,
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+    error: state.referenceData.error || state.irnPlacesData.error,
   }))
 
   const onClearRefineFilter = () => {
@@ -57,9 +62,17 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     referenceDataProxy,
   }
 
-  return (
+  const clearErrors = () => {
+    dispatch(referenceDataSetError(undefined))
+    dispatch(irnPlacesSetError(undefined))
+  }
+
+  return error ? (
+    <AppErrorScreen {...props} lines={["ERROR!"]} onOk={clearErrors} />
+  ) : (
     <AppScreen
       {...props}
+      noScroll={!!error}
       title={i18n.t("Search.Title")}
       loading={!loaded && loading}
       backgroundImage={appBackgroundImage}

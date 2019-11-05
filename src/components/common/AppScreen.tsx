@@ -4,6 +4,7 @@ import { ImageBackground, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { appBackgroundImage } from "../../assets/images/images"
 import { LoadingPage } from "./LoadingPage"
+import { ErrorBox, MessageBoxProps } from "./MessageBox"
 import { ButtonIcons } from "./ToolbarIcons"
 
 export interface AppNavigationScreenProps extends NavigationScreenProps {}
@@ -57,7 +58,13 @@ export interface AppModalScreenProps extends AppNavigationScreenProps {
 }
 
 export const AppModalScreen: React.FC<AppModalScreenProps> = props => (
-  <AppScreen {...props} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
+  <AppScreen {...props} noScroll={true} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
+)
+
+export const AppErrorScreen: React.FC<AppModalScreenProps & MessageBoxProps> = props => (
+  <AppModalScreen {...props}>
+    <ErrorBox {...props} />
+  </AppModalScreen>
 )
 
 const styles = StyleSheet.create({

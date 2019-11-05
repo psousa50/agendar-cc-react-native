@@ -5,7 +5,7 @@ import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
-interface MessageBoxProps {
+export interface MessageBoxProps {
   lines: string[]
   activityIndicator?: boolean
   backgroundColor?: string
@@ -32,6 +32,10 @@ export const MessageBox: React.FC<MessageBoxProps> = ({ activityIndicator, backg
     </View>
   )
 }
+
+export const ErrorBox: React.FC<MessageBoxProps> = props => (
+  <MessageBox backgroundColor={appTheme.secondaryColor} {...props} />
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -60,7 +64,3 @@ const styles = StyleSheet.create({
     marginBottom: rs(12),
   },
 })
-
-export const ErrorBox: React.FC<MessageBoxProps> = props => (
-  <MessageBox backgroundColor={appTheme.secondaryColor} {...props} />
-)
