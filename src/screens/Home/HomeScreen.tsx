@@ -1,12 +1,15 @@
 import React, { useEffect } from "react"
+import { Image } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import { appBackgroundImage } from "../../assets/images/images"
+import { appBackgroundImage, appIcon } from "../../assets/images/images"
 import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { i18n } from "../../localization/i18n"
 import { getIrnPlaces } from "../../state/irnPlacesSlice"
 import { clearRefineFilter, updateFilter } from "../../state/irnTablesSlice"
 import { DatePeriod, IrnTableFilterLocation, TimePeriod } from "../../state/models"
 import { buildReferenceDataProxy, getReferenceData } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
+import { responsiveScale as rs } from "../../utils/responsive"
 import { AppScreenName, enhancedNavigation } from "../screens"
 import { HomeView, HomeViewProps } from "./HomeView"
 
@@ -55,7 +58,13 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   }
 
   return (
-    <AppScreen {...props} noHeader={true} loading={!loaded && loading} backgroundImage={appBackgroundImage}>
+    <AppScreen
+      {...props}
+      title={i18n.t("Search.Title")}
+      loading={!loaded && loading}
+      backgroundImage={appBackgroundImage}
+      left={() => <Image source={appIcon} style={{ width: rs(32), height: rs(32) }} />}
+    >
       <HomeView {...homeViewProps} />
     </AppScreen>
   )

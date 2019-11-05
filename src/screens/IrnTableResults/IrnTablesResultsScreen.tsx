@@ -50,7 +50,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   }
 
   return (
-    <AppScreen {...props} noHeader={true} loading={loading} backgroundImage={appBackgroundImage}>
+    <AppScreen {...props} loading={loading} backgroundImage={appBackgroundImage}>
       <IrnTablesResultsView {...irnTablesResultsViewProps} />
     </AppScreen>
   )

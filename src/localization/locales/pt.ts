@@ -19,10 +19,12 @@ export const pt = {
   When: {
     Name: "Quando",
   },
+  Search: {
+    Title: "Procurar",
+  },
   CitizenCard: "Cartão de Cidadão",
   Passport: "Passaporte",
   SearchTimetables: "Procurar Agendamentos",
-  SelectOnMap: "Seleccionar no mapa",
   DatePeriod: {
     From: "A partir do dia",
     To: "Até ao dia",

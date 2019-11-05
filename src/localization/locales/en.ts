@@ -19,10 +19,12 @@ export const en = {
   When: {
     Name: "When",
   },
+  Search: {
+    Title: "Search",
+  },
   CitizenCard: "Citizen Card",
   Passport: "Passaport",
   SearchTimetables: "Search",
-  SelectOnMap: "Select on Map",
   DatePeriod: {
     From: "From",
     To: "To",

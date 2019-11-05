@@ -1,6 +1,6 @@
 import { Body, Container, Content, Header, Left, Right, Title, View } from "native-base"
 import React from "react"
-import { ImageBackground, StatusBar, StyleSheet } from "react-native"
+import { ImageBackground, StyleSheet } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { appBackgroundImage } from "../../assets/images/images"
 import { LoadingPage } from "./LoadingPage"
@@ -12,7 +12,6 @@ export interface AppScreenProps extends AppNavigationScreenProps {
   backgroundImage?: any
   loading?: boolean
   left?: () => JSX.Element
-  noHeader?: boolean
   right?: () => JSX.Element
   title?: string
   noScroll?: boolean
@@ -23,15 +22,13 @@ export const AppScreen: React.FC<AppScreenProps> = ({
   children,
   left,
   loading,
-  noHeader,
   right,
   noScroll,
   title,
 }) => (
   <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
     <Container>
-      <View style={{ height: StatusBar.currentHeight || 20 }}></View>
-      <Header iosBarStyle={"dark-content"} style={noHeader ? { height: 1 } : {}} transparent noShadow translucent>
+      <Header iosBarStyle={"light-content"}>
         <Left>{left ? left() : undefined}</Left>
         {title && (
           <Body>

@@ -3,3 +3,4 @@ export const ccImage = require("./ccImage.png")
 export const passportImage = require("./passportImage.png")
 
 export const appBackgroundImage = require("./appBackground.png")
+export const appIcon = require("./appIcon.png")
