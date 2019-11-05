@@ -46,8 +46,8 @@ export const pt = {
     Madeira: "Madeira",
   },
   Results: {
-    Closest: "Agendamento mais perto",
-    Soonest: "Agendamento mais rápido",
+    Title: "Agendar",
+    Schedule: "Agendamento",
     NoneTitle: "Sem Resultados",
     None1: "Não foram encontrados resultados para os critérios de pesquisa que definiu.",
     None2: "Por favor tente um critério mais abrangente.",
@@ -56,7 +56,7 @@ export const pt = {
     ChooseLocation: "Escolher outro Local",
     ChooseTimeSlot: "Escolher outro Horário",
     ClearFilters: "Limpar Filtros",
-    Schedule: "Agendar",
+    ToSchedule: "Agendar",
     NewSearch: "Nova Pesquisa",
   },
   Title: {
@@ -67,6 +67,7 @@ export const pt = {
     SelectLocationByMap: "Escolher Local",
   },
   Schedule: {
+    Title: "Agendar - IRN",
     Wait1: "A redirecionar para o site do IRN...",
     Wait2: " Por favor aguarde...",
     NotFound: "Este horário já não se encontra disponível. Seleccione outro ou altere os seus critérios de pesquisa.",

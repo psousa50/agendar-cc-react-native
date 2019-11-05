@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
 import { AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
+import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { clearRefineFilter, getIrnTableMatch } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
@@ -50,7 +51,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   }
 
   return (
-    <AppScreen {...props} loading={loading} backgroundImage={appBackgroundImage}>
+    <AppScreen {...props} title={i18n.t("Results.Title")} loading={loading} backgroundImage={appBackgroundImage}>
       <IrnTablesResultsView {...irnTablesResultsViewProps} />
     </AppScreen>
   )

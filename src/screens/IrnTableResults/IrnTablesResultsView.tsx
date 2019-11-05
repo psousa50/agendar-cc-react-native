@@ -38,7 +38,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
 }) => {
   const irnTableResult = irnTableMatchResult.irnTableResult
 
-  const title = irnTableResult ? i18n.t("Results.Soonest") : i18n.t("Results.NoneTitle")
+  const title = irnTableResult ? i18n.t("Results.Schedule") : i18n.t("Results.NoneTitle")
 
   return (
     <View style={styles.container}>
@@ -56,7 +56,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
         <MainButton
           onPress={() => onSchedule()}
           danger
-          text={i18n.t("Results.Schedule")}
+          text={i18n.t("Results.ToSchedule")}
           iconType={"MaterialIcons"}
           iconName={"schedule"}
           color={appTheme.secondaryColor}

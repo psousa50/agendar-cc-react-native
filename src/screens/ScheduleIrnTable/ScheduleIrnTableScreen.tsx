@@ -19,7 +19,7 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
   const irnPlace = irnTableResult && irnPlacesProxy.getIrnPlace(irnTableResult.placeName)
 
   return (
-    <AppModalScreen {...props} noScroll={true}>
+    <AppModalScreen {...props} title={i18n.t("Schedule.Title")} noScroll={true}>
       {irnTableResult && irnPlace ? (
         <WebView
           source={{ uri: "https://agendamento.irn.mj.pt/steps/step1.php" }}

@@ -46,8 +46,8 @@ export const en = {
     Madeira: "Madeira",
   },
   Results: {
-    Closest: "Closest Apointment",
-    Soonest: "Soonest Apointment",
+    Title: "Schedule",
+    Schedule: "Schedule",
     NoneTitle: "No Results",
     None1: "No result were found for your search criteria.",
     None2: "Try another search criteria.",
@@ -56,7 +56,7 @@ export const en = {
     ChooseLocation: "Select another place",
     ChooseTimeSlot: "Select another schedule",
     ClearFilters: "Clear Filters",
-    Schedule: "Schedule",
+    ToSchedule: "Schedule",
     NewSearch: "New Search",
   },
   Title: {
@@ -67,6 +67,7 @@ export const en = {
     SelectLocationByMap: "Select Location by Map",
   },
   Schedule: {
+    Title: "Schedule - IRN",
     Wait1: "Redirecting to IRN site...",
     Wait2: " PLease wait....",
     NotFound: "This schedule no longer exists. Please select another one or change your search criteria.",
