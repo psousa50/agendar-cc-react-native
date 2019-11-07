@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { i18n } from "../../../localization/i18n"
 import { DatePeriod } from "../../../state/models"
-import { DateString, toDateString, toUtcMaybeDate } from "../../../utils/dates"
+import { addDays, currentUtcDate, DateString, toDateString, toUtcMaybeDate } from "../../../utils/dates"
 import { formatDateLocale } from "../../../utils/formaters"
 import { PeriodRow } from "./PeriodRow"
 
@@ -58,10 +58,15 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ startDate, endDa
   const oldVersionProps = {
     headerTextIOS: "",
   }
+
+  const pickerStartDate = toUtcMaybeDate(startDate) || currentUtcDate()
+  const pickerMaximumDate = addDays(currentUtcDate(), 90)
   const renderStartDatePicker = () => (
     <DateTimePickerModal
       isVisible={state.showStartDatePickerModal}
-      date={toUtcMaybeDate(startDate)}
+      date={pickerStartDate}
+      minimumDate={currentUtcDate()}
+      maximumDate={pickerMaximumDate}
       mode={"date"}
       onCancel={hideStartDatePicker}
       onConfirm={confirmStartDate}
@@ -71,10 +76,13 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({ startDate, endDa
     />
   )
 
+  const pickerEndDate = toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate) || currentUtcDate()
   const renderEndDatePicker = () => (
     <DateTimePickerModal
       isVisible={state.showEndDatePickerModal}
-      date={toUtcMaybeDate(startDate) || toUtcMaybeDate(endDate)}
+      date={pickerEndDate}
+      minimumDate={pickerStartDate}
+      maximumDate={pickerMaximumDate}
       mode={"date"}
       onCancel={hideEndDatePicker}
       onConfirm={confirmEndDate}

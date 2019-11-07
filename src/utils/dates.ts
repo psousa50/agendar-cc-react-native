@@ -19,9 +19,11 @@ export const toDateString = (d: Date | string | undefined): DateString | undefin
 export const toExistingDateString = (d: Date | string): DateString =>
   typeof d === "string" ? (d as DateString) : (moment.utc(d).format(DateStringFormat) as DateString)
 
+export const currentUtcDate = () => moment.utc().toDate()
+
 export const toUtcMaybeDate = (d: DateString | undefined) => (d ? toUtcDate(d) : undefined)
 export const toUtcDate = (d: DateString) => moment.utc(d).toDate()
-export const currentUtcDateString = () => toExistingDateString(moment.utc().toDate())
+export const currentUtcDateString = () => toExistingDateString(currentUtcDate())
 export const currentUtcDateTime = () => moment.utc()
 
 export const dateFromTime = (time?: string, defaultTime: string = "") => new Date(`2000-01-01T${time || defaultTime}`)
