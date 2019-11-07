@@ -2,7 +2,6 @@ import React from "react"
 import WebView from "react-native-webview"
 import { useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
-import { MessageBox } from "../../components/common/MessageBox"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { RootState } from "../../state/rootReducer"
@@ -20,7 +19,7 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
 
   return (
     <AppModalScreen {...props} title={i18n.t("Schedule.Title")} noScroll={true}>
-      {irnTableResult && irnPlace ? (
+      {irnTableResult && irnPlace && (
         <WebView
           source={{ uri: "https://agendamento.irn.mj.pt/steps/step1.php" }}
           style={{ marginTop: 20 }}
@@ -28,8 +27,6 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
           javaScriptEnabled={true}
           startInLoadingState={true}
         />
-      ) : (
-        <MessageBox lines={[i18n.t("Schedule.Wait1"), i18n.t("Schedule.Wait2")]} activityIndicator={true} />
       )}
     </AppModalScreen>
   )

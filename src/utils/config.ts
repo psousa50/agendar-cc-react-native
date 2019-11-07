@@ -10,6 +10,7 @@ export const productionApi = {
 
 const developmentConfig = {
   ...localApi,
+  ...productionApi,
 }
 
 const productionConfig = {

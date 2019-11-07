@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { Image } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage, appIcon } from "../../assets/images/images"
-import { AppErrorScreen, AppScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { getIrnPlaces, setError as irnPlacesSetError } from "../../state/irnPlacesSlice"
 import { clearRefineFilter, updateFilter } from "../../state/irnTablesSlice"
@@ -13,6 +13,7 @@ import {
   setError as referenceDataSetError,
 } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
+import { useErrorCheck } from "../../utils/hooks"
 import { responsiveScale as rs } from "../../utils/responsive"
 import { AppScreenName, enhancedNavigation } from "../screens"
 import { HomeView, HomeViewProps } from "./HomeView"
@@ -43,6 +44,13 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     dispatch(getIrnPlaces())
   }, [dispatch])
 
+  const clearErrors = () => {
+    dispatch(referenceDataSetError(undefined))
+    dispatch(irnPlacesSetError(undefined))
+  }
+
+  useErrorCheck(error, clearErrors)
+
   const homeViewProps: HomeViewProps = {
     filter,
     onDatePeriodChange: (datePeriod: DatePeriod) => dispatch(updateFilter(datePeriod)),
@@ -62,17 +70,9 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     referenceDataProxy,
   }
 
-  const clearErrors = () => {
-    dispatch(referenceDataSetError(undefined))
-    dispatch(irnPlacesSetError(undefined))
-  }
-
-  return error ? (
-    <AppErrorScreen {...props} lines={["ERROR!"]} onOk={clearErrors} />
-  ) : (
+  return (
     <AppScreen
       {...props}
-      noScroll={!!error}
       title={i18n.t("Search.Title")}
       loading={!loaded && loading}
       backgroundImage={appBackgroundImage}

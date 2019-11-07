@@ -1,13 +1,15 @@
+import { isNil } from "ramda"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { appBackgroundImage } from "../../assets/images/images"
-import { AppErrorScreen, AppScreen } from "../../components/common/AppScreen"
 import { AppScreenProps } from "../../components/common/AppScreen"
+import { AppScreen } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { clearRefineFilter, getIrnTableMatch, setError } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
+import { useErrorCheck } from "../../utils/hooks"
 import { enhancedNavigation } from "../screens"
 import { IrnTablesResultsView } from "./IrnTablesResultsView"
 
@@ -42,6 +44,8 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     navigation.goBack()
   }
 
+  useErrorCheck(error, clearErrorAndGoBack)
+
   const irnTablesResultsViewProps = {
     refineFilter,
     irnTableMatchResult,
@@ -56,11 +60,9 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     onNewSearch: () => navigation.goBack(),
   }
 
-  return error ? (
-    <AppErrorScreen {...props} lines={["Some error..."]} onOk={clearErrorAndGoBack} />
-  ) : (
+  return (
     <AppScreen {...props} title={i18n.t("Results.Title")} loading={loading} backgroundImage={appBackgroundImage}>
-      <IrnTablesResultsView {...irnTablesResultsViewProps} />
+      {isNil(error) ? <IrnTablesResultsView {...irnTablesResultsViewProps} /> : null}
     </AppScreen>
   )
 }

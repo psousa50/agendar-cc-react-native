@@ -59,6 +59,10 @@ export const en = {
     ToSchedule: "Schedule",
     NewSearch: "New Search",
   },
+  Errors: {
+    Title: "Error",
+    Connect: "\nConnection error.\n\nCheck your Internet connection.",
+  },
   Title: {
     SelectAnotherDate: "Date",
     SelectAnotherLocation: "Location",

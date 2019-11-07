@@ -59,6 +59,10 @@ export const pt = {
     ToSchedule: "Agendar",
     NewSearch: "Nova Pesquisa",
   },
+  Errors: {
+    Title: "Erro",
+    Connect: "\nOcorreu um erro de ligacão.\n\nPor favor verifique a sua ligação à Internet.",
+  },
   Title: {
     SelectAnotherDate: "Data",
     SelectAnotherLocation: "Local",
