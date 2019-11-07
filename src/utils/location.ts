@@ -64,11 +64,12 @@ export const getFilteredLocations = (
     (isNil(countyId) || p.countyId === countyId) &&
     (isNil(placeName) || p.name === placeName)
 
-  const filteredDistricts = districts.filter(byRegionAndDistrict)
-  const filteredCounties = counties.filter(byDistrictsAndCounty(filteredDistricts))
-  const filteredIrnPlaces = irnPlaces
-    .filter(byDistrictsAndCounties(filteredDistricts, filteredCounties))
-    .filter(byDistrictAndCountyAndPlace)
+  const fd = districts.filter(byRegionAndDistrict)
+  const fc = counties.filter(byDistrictsAndCounty(fd))
+  const filteredIrnPlaces = irnPlaces.filter(byDistrictsAndCounties(fd, fc)).filter(byDistrictAndCountyAndPlace)
+
+  const filteredCounties = fc.filter(c => filteredIrnPlaces.some(p => p.countyId === c.countyId))
+  const filteredDistricts = fd.filter(d => filteredCounties.some(c => c.districtId === d.districtId))
 
   return {
     filteredDistricts,
