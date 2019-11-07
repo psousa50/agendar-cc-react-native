@@ -59,10 +59,12 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
   const oldVersionProps = {
     headerTextIOS: "",
   }
+
+  const pikcerStartTime = dateFromTime(startTime, "08:00")
   const renderStartTimePicker = () => (
     <DateTimePickerModal
       isVisible={state.showStartTimePickerModal}
-      date={dateFromTime(startTime, "08:00")}
+      date={pikcerStartTime}
       mode={"time"}
       onCancel={hideStartTimePicker}
       onConfirm={confirmStartTime}
@@ -78,6 +80,7 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
     <DateTimePickerModal
       isVisible={state.showEndTimePickerModal}
       date={dateFromTime(endTime, startTime || "20:00")}
+      minimumDate={pikcerStartTime}
       mode={"time"}
       onCancel={hideEndTimePicker}
       onConfirm={confirmEndTime}
