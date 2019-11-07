@@ -1,7 +1,7 @@
 import React from "react"
 import WebView from "react-native-webview"
 import { useSelector } from "react-redux"
-import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { AppScreen, AppScreenProps, leftBackButton } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { RootState } from "../../state/rootReducer"
@@ -18,7 +18,7 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
   const irnPlace = irnTableResult && irnPlacesProxy.getIrnPlace(irnTableResult.placeName)
 
   return (
-    <AppModalScreen {...props} title={i18n.t("Schedule.Title")} noScroll={true}>
+    <AppScreen {...props} title={i18n.t("Schedule.Title")} noScroll={true} {...leftBackButton(props.navigation.goBack)}>
       {irnTableResult && irnPlace && (
         <WebView
           source={{ uri: "https://agendamento.irn.mj.pt/steps/step1.php" }}
@@ -28,6 +28,6 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
           startInLoadingState={true}
         />
       )}
-    </AppModalScreen>
+    </AppScreen>
   )
 }

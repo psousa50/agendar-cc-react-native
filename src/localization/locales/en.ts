@@ -19,8 +19,8 @@ export const en = {
   When: {
     Name: "When",
   },
-  Search: {
-    Title: "Search",
+  Home: {
+    Title: "Schedule CC",
   },
   CitizenCard: "Citizen Card",
   Passport: "Passaport",
@@ -54,19 +54,20 @@ export const en = {
     Table: "Table",
     ChooseDate: "Select another date",
     ChooseLocation: "Select another place",
-    ChooseTimeSlot: "Select another schedule",
+    ChooseTimeSlot: "Select another time slot",
     ClearFilters: "Clear Filters",
     ToSchedule: "Schedule",
     NewSearch: "New Search",
   },
   Errors: {
     Title: "Error",
+    Ok: "Ok",
     Connect: "\nConnection error.\n\nCheck your Internet connection.",
   },
   Title: {
-    SelectAnotherDate: "Date",
-    SelectAnotherLocation: "Location",
-    SelectAnotherTimeSlot: "Schedule",
+    SelectAnotherDate: "Available Dates",
+    SelectAnotherLocation: "Available Locations",
+    SelectAnotherTimeSlot: "Available Time Slots",
     SelectLocation: "Select Location",
     SelectLocationByMap: "Select Location by Map",
   },

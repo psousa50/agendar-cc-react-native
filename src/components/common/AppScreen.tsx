@@ -29,9 +29,9 @@ export const AppScreen: React.FC<AppScreenProps> = ({
   <ImageBackground style={styles.background} resizeMode={"cover"} source={backgroundImage || appBackgroundImage}>
     <Container>
       <Header iosBarStyle={"light-content"}>
-        <Left>{left ? left() : undefined}</Left>
+        <Left style={styles.left}>{left ? left() : undefined}</Left>
         {title && (
-          <Body>
+          <Body style={styles.title}>
             <Title>{title}</Title>
           </Body>
         )}
@@ -56,8 +56,16 @@ export interface AppModalScreenProps extends AppNavigationScreenProps {
   noScroll?: boolean
 }
 
+export const leftCloseButton = (onPress: () => void) => ({
+  left: () => ButtonIcons.Close(() => onPress()),
+})
+
+export const leftBackButton = (onPress: () => void) => ({
+  left: () => ButtonIcons.ArrowBack(() => onPress()),
+})
+
 export const AppModalScreen: React.FC<AppModalScreenProps> = props => (
-  <AppScreen {...props} noScroll={true} left={() => ButtonIcons.Close(() => props.navigation.goBack())} />
+  <AppScreen {...props} noScroll={true} {...leftCloseButton(props.navigation.goBack)} />
 )
 
 const styles = StyleSheet.create({
@@ -69,5 +77,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  left: {
+    flex: 1,
+  },
+  title: {
+    flex: 5,
   },
 })

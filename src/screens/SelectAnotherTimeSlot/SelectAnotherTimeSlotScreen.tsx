@@ -1,6 +1,6 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { AppScreen, AppScreenProps, leftCloseButton } from "../../components/common/AppScreen"
 import { TimeSlot } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { updateRefineFilter } from "../../state/irnTablesSlice"
@@ -23,8 +23,8 @@ export const SelectAnotherTimeSlotScreen: React.FC<AppScreenProps> = props => {
     },
   }
   return (
-    <AppModalScreen title={i18n.t("Title.SelectAnotherTimeSlot")} {...props}>
+    <AppScreen title={i18n.t("Title.SelectAnotherTimeSlot")} {...props} {...leftCloseButton(props.navigation.goBack)}>
       <SelectAnotherTimeSlotView {...selectAnotherTimeSlotViewProps} />
-    </AppModalScreen>
+    </AppScreen>
   )
 }

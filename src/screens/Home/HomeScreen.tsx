@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { Image } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import { appBackgroundImage, appIcon } from "../../assets/images/images"
+import { appIcon } from "../../assets/images/images"
 import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { getIrnPlaces, setError as irnPlacesSetError } from "../../state/irnPlacesSlice"
@@ -73,9 +73,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   return (
     <AppScreen
       {...props}
-      title={i18n.t("Search.Title")}
+      title={i18n.t("Home.Title")}
       loading={!loaded && loading}
-      backgroundImage={appBackgroundImage}
       left={() => <Image source={appIcon} style={{ width: rs(32), height: rs(32) }} />}
     >
       <HomeView {...homeViewProps} />

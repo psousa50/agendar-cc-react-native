@@ -19,8 +19,8 @@ export const pt = {
   When: {
     Name: "Quando",
   },
-  Search: {
-    Title: "Procurar",
+  Home: {
+    Title: "Agendar CC",
   },
   CitizenCard: "Cartão de Cidadão",
   Passport: "Passaporte",
@@ -61,14 +61,15 @@ export const pt = {
   },
   Errors: {
     Title: "Erro",
+    Ok: "Ok",
     Connect: "\nOcorreu um erro de ligacão.\n\nPor favor verifique a sua ligação à Internet.",
   },
   Title: {
-    SelectAnotherDate: "Data",
-    SelectAnotherLocation: "Local",
-    SelectAnotherTimeSlot: "Horário",
-    SelectLocation: "Escolher Local",
-    SelectLocationByMap: "Escolher Local",
+    SelectAnotherDate: "Datas disponíveis",
+    SelectAnotherLocation: "Locais disponíveis",
+    SelectAnotherTimeSlot: "Horários  disponíveis",
+    SelectLocation: "Defenir Local",
+    SelectLocationByMap: "Defenir Local",
   },
   Schedule: {
     Title: "Agendar - IRN",

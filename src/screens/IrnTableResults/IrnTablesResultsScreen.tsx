@@ -1,8 +1,7 @@
 import { isNil } from "ramda"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { appBackgroundImage } from "../../assets/images/images"
-import { AppScreenProps } from "../../components/common/AppScreen"
+import { AppScreenProps, leftBackButton } from "../../components/common/AppScreen"
 import { AppScreen } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
@@ -61,7 +60,12 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
   }
 
   return (
-    <AppScreen {...props} title={i18n.t("Results.Title")} loading={loading} backgroundImage={appBackgroundImage}>
+    <AppScreen
+      {...props}
+      title={i18n.t("Results.Title")}
+      loading={loading}
+      {...leftBackButton(props.navigation.goBack)}
+    >
       {isNil(error) ? <IrnTablesResultsView {...irnTablesResultsViewProps} /> : null}
     </AppScreen>
   )

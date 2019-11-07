@@ -26,7 +26,7 @@ export const useCurrentGpsLocation = (callback: (gpsLocation?: GpsLocation) => v
 export const useErrorCheck = (error: string | undefined, onPress: () => void) => {
   useEffect(() => {
     if (error) {
-      Alert.alert(i18n.t("Errors.Title"), i18n.t("Errors.Connect"), [{ onPress }])
+      Alert.alert(i18n.t("Errors.Title"), i18n.t("Errors.Connect"), [{ text: i18n.t("Errors.Ok"), onPress }])
     }
   }, [error])
 }
