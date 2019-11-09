@@ -42,7 +42,7 @@ const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResu
     document.getElementById("data_input_3").value= "${date}"
     selectValueById("concelho", "${countyId}")
     document.getElementById("btnSeguinte").click()
-  }, 1000);
+  }, 2000);
 
   `
 
@@ -119,12 +119,15 @@ export const irnSiteInjectedJavascript = (irnTableResult: IrnTableResult, irnPla
 
     ${helperFunctions()}
 
+
     if (document.URL.includes("step1")) {
+      document.body.style.opacity = 0.2
       ${step1Javascript(irnTableResult)}
     }
 
     if (document.URL.includes("step2")) {
       ${step2Javascript(irnTableResult, irnPlace, user)}
+      document.body.style.opacity = 1
     }
 
   }
