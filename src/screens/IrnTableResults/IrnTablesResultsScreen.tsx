@@ -68,7 +68,6 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
     onSearchTimeSlot: () => navigation.goTo("SelectAnotherTimeSlotScreen"),
     onSchedule,
-
     onNewSearch: () => navigation.goBack(),
   }
 
