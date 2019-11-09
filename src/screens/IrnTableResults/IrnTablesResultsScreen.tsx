@@ -5,7 +5,13 @@ import { AppScreenProps, leftBackButton } from "../../components/common/AppScree
 import { AppScreen } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import { clearRefineFilter, getIrnTableMatch, setError } from "../../state/irnTablesSlice"
+import {
+  clearRefineFilter,
+  getIrnTableMatch,
+  IrnTableResult,
+  setError,
+  setSelectedIrnTableResult,
+} from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { useErrorCheck } from "../../utils/hooks"
@@ -43,6 +49,13 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     navigation.goBack()
   }
 
+  const onSchedule = (selectedIrnTableResult?: IrnTableResult) => {
+    if (selectedIrnTableResult) {
+      dispatch(setSelectedIrnTableResult(selectedIrnTableResult))
+      navigation.goTo("ScheduleIrnTableScreen")
+    }
+  }
+
   useErrorCheck(error, clearErrorAndGoBack)
 
   const irnTablesResultsViewProps = {
@@ -54,7 +67,7 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
     onSearchLocation: () => navigation.goTo("SelectAnotherLocationScreen"),
     onSearchDate: () => navigation.goTo("SelectAnotherDateScreen"),
     onSearchTimeSlot: () => navigation.goTo("SelectAnotherTimeSlotScreen"),
-    onSchedule: () => navigation.goTo("ScheduleIrnTableScreen"),
+    onSchedule,
 
     onNewSearch: () => navigation.goBack(),
   }

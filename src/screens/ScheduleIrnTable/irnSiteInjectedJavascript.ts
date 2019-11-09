@@ -1,5 +1,6 @@
-import { IrnPlace, IrnTableResult } from "../../irnTables/models"
+import { IrnPlace } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
+import { IrnTableResult } from "../../state/irnTablesSlice"
 import { UserDataState } from "../../state/userSlice"
 
 const helperFunctions = () => `

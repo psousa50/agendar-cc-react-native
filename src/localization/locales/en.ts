@@ -47,8 +47,8 @@ export const en = {
   },
   Results: {
     Title: "Schedule",
-    Schedule: "Schedule",
-    NoneTitle: "No Results",
+    Closest: "Closest",
+    Soonest: "Soonest",
     None1: "No result were found for your search criteria.",
     None2: "Try another search criteria.",
     Table: "Table",

@@ -1,8 +1,8 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
-import { IrnTableResult } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
+import { IrnTableResult } from "../../state/irnTablesSlice"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { getDistrictName } from "../../utils/location"
@@ -17,7 +17,7 @@ export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTable
   const districtName = getDistrictName(referenceDataProxy)(districtId, countyId)
 
   return (
-    <View>
+    <View style={styles.container}>
       {districtName && <Text style={[styles.text, styles.district]}>{districtName}</Text>}
       <Text style={[styles.text, styles.place]}>{placeName}</Text>
       <Text style={[styles.text, styles.date]}>{formatDateLocale(date)}</Text>
@@ -28,6 +28,10 @@ export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTable
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: rs(10),
+    backgroundColor: "white",
+  },
   text: {
     textAlign: "center",
     paddingVertical: rs(5),

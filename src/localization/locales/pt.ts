@@ -47,8 +47,8 @@ export const pt = {
   },
   Results: {
     Title: "Agendar",
-    Schedule: "Agendamento",
-    NoneTitle: "Sem Resultados",
+    Closest: "Mais perto",
+    Soonest: "Mais rápido",
     None1: "Não foram encontrados resultados para os critérios de pesquisa que definiu.",
     None2: "Por favor tente um critério mais abrangente.",
     Table: "Mesa",

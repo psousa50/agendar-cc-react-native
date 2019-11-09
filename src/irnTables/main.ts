@@ -1,11 +1,8 @@
-import { flatten, sort, uniq } from "ramda"
+import { flatten, uniq } from "ramda"
 import { IrnPlacesProxy } from "../state/irnPlacesSlice"
-import { IrnTableFilter, TimeSlotsFilter } from "../state/models"
-import { min } from "../utils/collections"
-import { DateString } from "../utils/dates"
-import { filterTimeSlots } from "../utils/filters"
+import { IrnTableFilter } from "../state/models"
 import { getClosestLocation } from "../utils/location"
-import { GpsLocation, IrnPlace, IrnPlaces, IrnRepositoryTables, IrnTableResult, TimeSlot } from "./models"
+import { GpsLocation, IrnPlaces, IrnRepositoryTables, TimeSlot } from "./models"
 
 export const sortTimes = (t1: TimeSlot, t2: TimeSlot) => t1.localeCompare(t2)
 
@@ -25,13 +22,6 @@ export const getIrnTableResultSummary = (irnTables: IrnRepositoryTables) => {
   }
 }
 
-const getIrnTablesByClosestDate = (irnTables: IrnRepositoryTables) => {
-  const closestDate = min(irnTables.map(t => t.date)) || irnTables[0].date
-  const irnTablesByClosestDate = irnTables.filter(t => t.date === closestDate)
-
-  return { closestDate, irnTablesByClosestDate }
-}
-
 export const getIrnTablesByClosestPlace = (irnPlacesProxy: IrnPlacesProxy) => (
   irnTables: IrnRepositoryTables,
   location?: GpsLocation,
@@ -47,63 +37,6 @@ export const getIrnTablesByClosestPlace = (irnPlacesProxy: IrnPlacesProxy) => (
   const irnTablesByClosestPlace = irnTables.filter(t => t.placeName === closestIrnPlace.name)
 
   return { closestIrnPlace, irnTablesByClosestPlace }
-}
-
-const getOneIrnTableResult = (
-  date: DateString,
-  irnPlace: IrnPlace,
-  irnTables: IrnRepositoryTables,
-  timeSlotsFilter: TimeSlotsFilter,
-): IrnTableResult => {
-  const selectedIrnTable = irnTables[0]
-
-  const timeSlots = sort(sortTimes, selectedIrnTable.timeSlots).filter(filterTimeSlots(timeSlotsFilter))
-  const earlierTimeSlot = timeSlots[0]
-
-  return {
-    serviceId: selectedIrnTable.serviceId,
-    countyId: selectedIrnTable.countyId,
-    date,
-    districtId: selectedIrnTable.districtId,
-    placeName: irnPlace.name,
-    tableNumber: selectedIrnTable.tableNumber,
-    timeSlot: earlierTimeSlot,
-  }
-}
-
-export const selectOneIrnTableResultByClosestDate = (irnPlacesProxy: IrnPlacesProxy) => (
-  irnTables: IrnRepositoryTables,
-  location?: GpsLocation,
-  timeSlotsFilter: TimeSlotsFilter = {},
-) => {
-  if (irnTables.length === 0) {
-    return undefined
-  }
-
-  const { closestDate, irnTablesByClosestDate } = getIrnTablesByClosestDate(irnTables)
-
-  const { closestIrnPlace, irnTablesByClosestPlace } = getIrnTablesByClosestPlace(irnPlacesProxy)(
-    irnTablesByClosestDate,
-    location,
-  )
-
-  return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestPlace, timeSlotsFilter)
-}
-
-export const selectOneIrnTableResultByClosestPlace = (irnPlacesProxy: IrnPlacesProxy) => (
-  irnTables: IrnRepositoryTables,
-  location: GpsLocation,
-  timeSlotsFilter: TimeSlotsFilter,
-) => {
-  if (irnTables.length === 0) {
-    return undefined
-  }
-
-  const { closestIrnPlace, irnTablesByClosestPlace } = getIrnTablesByClosestPlace(irnPlacesProxy)(irnTables, location)
-
-  const { closestDate, irnTablesByClosestDate } = getIrnTablesByClosestDate(irnTablesByClosestPlace)
-
-  return getOneIrnTableResult(closestDate, closestIrnPlace, irnTablesByClosestDate, timeSlotsFilter)
 }
 
 export const normalizeFilter = (filter: IrnTableFilter) => {

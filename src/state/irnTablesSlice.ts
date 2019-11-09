@@ -5,13 +5,27 @@ import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
 import { fetchIrnTableMatch } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
-import { IrnTableResult, TimeSlot } from "../irnTables/models"
+import { TimeSlot } from "../irnTables/models"
 import { currentUtcDateString, DateString } from "../utils/dates"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
 import { AppThunk } from "./store"
 
+export interface IrnTableResult {
+  serviceId: number
+  countyId: number
+  districtId: number
+  date: DateString
+  placeName: string
+  timeSlot: TimeSlot
+  tableNumber: string
+}
+export interface IrnTableMatchResults {
+  closest: IrnTableResult
+  soonest: IrnTableResult
+}
+
 export interface IrnTableMatchResult {
-  irnTableResult?: IrnTableResult
+  irnTableResults?: IrnTableMatchResults
   otherDates: DateString[]
   otherPlaces: string[]
   otherTimeSlots: TimeSlot[]
@@ -21,6 +35,7 @@ interface IrnTablesDataState {
   error: string | undefined
   filter: IrnTableFilter
   irnTableMatchResult: IrnTableMatchResult
+  selectedIrnTableResult?: IrnTableResult
   loading: boolean
   refineFilter: IrnTableRefineFilter
 }
@@ -44,11 +59,12 @@ export const initialState: IrnTablesDataState = {
   },
   refineFilter: {},
   irnTableMatchResult: {
-    irnTableResult: undefined,
+    irnTableResults: undefined,
     otherDates: [],
     otherPlaces: [],
     otherTimeSlots: [],
   },
+  selectedIrnTableResult: undefined,
   error: undefined,
   loading: false,
 }
@@ -82,6 +98,9 @@ const irnTablesSlice = createSlice({
     clearRefineFilter(state) {
       state.refineFilter = {}
     },
+    setSelectedIrnTableResult(state, action: PayloadAction<IrnTableResult | undefined>) {
+      state.selectedIrnTableResult = action.payload
+    },
     setError(state, action: PayloadAction<string | undefined>) {
       state.error = action.payload
     },
@@ -113,11 +132,12 @@ export const getIrnTableMatch = (irnTablesDataState: IrnTablesDataState): AppThu
 
 export const {
   clearRefineFilter,
+  initIrnTableMatchResultFetch,
+  irnTableMatchResultFetchHasAnError,
+  irnTableMatchResultFetchWasSuccessful,
+  setError,
+  setSelectedIrnTableResult,
   updateFilter,
   updateRefineFilter,
-  initIrnTableMatchResultFetch,
-  irnTableMatchResultFetchWasSuccessful,
-  irnTableMatchResultFetchHasAnError,
-  setError,
 } = irnTablesSlice.actions
 export const reducer = irnTablesSlice.reducer

@@ -55,13 +55,3 @@ export type IrnRepositoryTable = {
   timeSlots: TimeSlot[]
 }
 export type IrnRepositoryTables = IrnRepositoryTable[]
-
-export interface IrnTableResult {
-  serviceId: number
-  countyId: number
-  districtId: number
-  date: DateString
-  placeName: string
-  timeSlot: TimeSlot
-  tableNumber: string
-}
