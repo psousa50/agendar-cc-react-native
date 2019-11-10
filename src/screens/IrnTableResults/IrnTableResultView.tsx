@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native"
 import { i18n } from "../../localization/i18n"
 import { IrnTableResult } from "../../state/irnTablesSlice"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { shadow } from "../../styles/shadows"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { getDistrictName } from "../../utils/location"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
@@ -30,8 +31,13 @@ export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTable
 const styles = StyleSheet.create({
   container: {
     marginTop: rs(10),
+    marginBottom: rs(10),
     marginHorizontal: rs(5),
+    paddingVertical: rs(10),
+    paddingHorizontal: rs(20),
     backgroundColor: "white",
+    borderRadius: rs(6),
+    ...shadow,
   },
   text: {
     textAlign: "center",
