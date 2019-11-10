@@ -11,7 +11,7 @@ import { SelectAnotherDateScreen } from "./screens/SelectAnotherDate/SelectAnoth
 import { SelectAnotherLocationScreen } from "./screens/SelectAnotherLocation/SelectAnotherLocationScreen"
 import { SelectAnotherTimeSlotScreen } from "./screens/SelectAnotherTimeSlot/SelectAnotherTimeSlotScreen"
 import { SelectLocationScreen } from "./screens/SelectLocation/SelectLocationScreen"
-import { SelectLocationByMapScreen } from "./screens/SelectLocationByMapScreen/SelectLocationByMapScreen"
+import { SelectLocationByMapScreen } from "./screens/SelectLocationByMap/SelectLocationByMapScreen"
 import { Test } from "./Test"
 import { appTheme } from "./utils/appTheme"
 
