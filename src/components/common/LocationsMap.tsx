@@ -37,6 +37,12 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
 
   const validMapLocations = mapLocations.filter(l => !!l.gpsLocation) as MapLocation[]
 
+  const mapPadding = {
+    left: rs(60),
+    right: rs(60),
+    top: rs(60),
+    bottom: rs(60),
+  }
   return (
     <MapView
       ref={map}
@@ -47,6 +53,7 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
       toolbarEnabled={true}
       pitchEnabled={true}
       onMapReady={fitToElements}
+      mapPadding={mapPadding}
     >
       {validMapLocations.map((mapLocation, i) => (
         <Marker
