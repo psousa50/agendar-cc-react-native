@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
-import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { updateRefineFilter } from "../../state/irnTablesSlice"
@@ -34,11 +33,6 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
     }
   }
 
-  const updateRefineFilterAndGoBack = () => {
-    dispatch(updateRefineFilter(refineLocation))
-    navigation.goBack()
-  }
-
   const selectAnotherLocationViewProps = {
     places: irnTableMatchResult.otherPlaces,
     refineLocation,
@@ -48,12 +42,7 @@ export const SelectAnotherLocationScreen: React.FunctionComponent<AppScreenProps
   }
 
   return (
-    <AppModalScreen
-      {...props}
-      title={i18n.t("Title.SelectAnotherLocation")}
-      noScroll={true}
-      right={() => ButtonIcons.Checkmark(() => updateRefineFilterAndGoBack())}
-    >
+    <AppModalScreen {...props} title={i18n.t("Title.SelectAnotherLocation")} noScroll={true}>
       <SelectAnotherLocationView {...selectAnotherLocationViewProps} />
     </AppModalScreen>
   )
