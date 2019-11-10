@@ -13,9 +13,11 @@ import {
   setError as referenceDataSetError,
 } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
+import { setDisclaimerShown } from "../../state/userSlice"
 import { useErrorCheck } from "../../utils/hooks"
 import { responsiveScale as rs } from "../../utils/responsive"
 import { AppScreenName, enhancedNavigation } from "../screens"
+import { DisclaimerView } from "./DisclaimerView"
 import { HomeView, HomeViewProps } from "./HomeView"
 
 interface HomeScreenProps extends AppScreenProps {
@@ -27,10 +29,11 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
 
   const dispatch = useDispatch()
 
-  const { filter, referenceDataProxy, error } = useSelector((state: RootState) => ({
+  const { filter, referenceDataProxy, error, disclaimerShown } = useSelector((state: RootState) => ({
     filter: state.irnTablesData.filter,
     referenceDataProxy: buildReferenceDataProxy(state.referenceData),
     error: state.referenceData.error || state.irnPlacesData.error,
+    disclaimerShown: state.userData.disclaimerShown,
   }))
 
   const onClearRefineFilter = () => {
@@ -45,6 +48,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
   const clearErrors = () => {
     dispatch(referenceDataSetError(undefined))
     dispatch(irnPlacesSetError(undefined))
+  }
+
+  const onDisclaimerDismiss = () => {
+    dispatch(setDisclaimerShown())
   }
 
   useErrorCheck(error, clearErrors)
@@ -74,7 +81,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
       title={i18n.t("Home.Title")}
       left={() => <Image source={appIcon} style={{ width: rs(32), height: rs(32) }} />}
     >
-      <HomeView {...homeViewProps} />
+      {disclaimerShown ? <HomeView {...homeViewProps} /> : <DisclaimerView onDismiss={onDisclaimerDismiss} />}
     </AppScreen>
   )
 }

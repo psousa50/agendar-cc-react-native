@@ -5,6 +5,7 @@ export interface UserDataState {
   citizenCardNumber: string
   email: string
   phone: string
+  disclaimerShown: boolean
 }
 
 const initialState: UserDataState = {
@@ -12,12 +13,18 @@ const initialState: UserDataState = {
   citizenCardNumber: "",
   email: "",
   phone: "",
+  disclaimerShown: false,
 }
 
-const referenceDataSlice = createSlice({
+const userDataSlice = createSlice({
   slice: "User",
   initialState,
-  reducers: {},
+  reducers: {
+    setDisclaimerShown(state) {
+      state.disclaimerShown = true
+    },
+  },
 })
 
-export const reducer = referenceDataSlice.reducer
+export const { setDisclaimerShown } = userDataSlice.actions
+export const reducer = userDataSlice.reducer

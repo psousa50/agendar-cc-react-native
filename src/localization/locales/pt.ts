@@ -79,6 +79,18 @@ export const pt = {
     Error1: "Ocorreu um erro na ligação ao site do IRN.",
     Error2: "Por favor tente mais tarde.",
   },
+  Disclaimer: {
+    Title: "Isenção de Responsabilidade",
+    P1:
+      "O objectivo desta aplicação é ajudar os cidadãos portugueses a procurar o melhor dia, local e hora para agendar a renovação do cartão de cidadão ou passaporte.",
+    P2:
+      "A aplicação utiliza a informação presente no site do IRN e tenta manter essa informação sempre actualizada, no entanto existe sempre a possibilidade de a informação não ser a mais actual e não nos podemos responsabilizar por esse facto.",
+    P3:
+      "O agendamento final será sempre feito no próprio site do IRN, quer através da aplicação quer através da utilização de um browser.",
+    P4: "Esperamos que a aplicação ajude os cidadãos na tarefa cada vez mais difícil de agendar este tipo de serviços.",
+    Footer: "Obrigado.",
+    Ok: "Ok",
+  },
   date: {
     month_names: [
       null,
