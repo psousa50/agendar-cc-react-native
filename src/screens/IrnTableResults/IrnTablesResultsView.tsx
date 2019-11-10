@@ -50,23 +50,29 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
     )
   }
 
+  const resultsAreEqual =
+    irnTableMatchResult.irnTableResults &&
+    resultsEqual(irnTableMatchResult.irnTableResults.closest, irnTableMatchResult.irnTableResults.soonest)
+
   return (
     <View style={styles.container}>
       <View style={styles.results}>
-        <SegmentedControlTab
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          values={[i18n.t("Results.Closest"), i18n.t("Results.Soonest")]}
-          selectedIndex={
-            irnTableMatchResult.irnTableResults &&
-            selectedIrnTableResult === irnTableMatchResult.irnTableResults.closest
-              ? 0
-              : 1
-          }
-          onTabPress={onIrnTableResultTabPress}
-        />
+        {!resultsAreEqual && (
+          <SegmentedControlTab
+            activeTabStyle={styles.activeTabStyle}
+            activeTabTextStyle={styles.activeTabTextStyle}
+            tabStyle={styles.tabStyle}
+            tabTextStyle={styles.tabTextStyle}
+            values={[i18n.t("Results.Closest"), i18n.t("Results.Soonest")]}
+            selectedIndex={
+              irnTableMatchResult.irnTableResults &&
+              selectedIrnTableResult === irnTableMatchResult.irnTableResults.closest
+                ? 0
+                : 1
+            }
+            onTabPress={onIrnTableResultTabPress}
+          />
+        )}
         {selectedIrnTableResult ? (
           <IrnTableResultView irnTableResult={selectedIrnTableResult} referenceDataProxy={referenceDataProxy} />
         ) : (
@@ -122,6 +128,9 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
     </View>
   )
 }
+
+const resultsEqual = (r1: IrnTableResult, r2: IrnTableResult) =>
+  r1.districtId === r2.districtId && r1.countyId === r2.countyId && r1.placeName === r2.placeName && r1.date === r2.date
 
 const styles = StyleSheet.create({
   container: {
