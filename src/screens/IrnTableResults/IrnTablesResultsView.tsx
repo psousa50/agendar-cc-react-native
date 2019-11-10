@@ -8,6 +8,7 @@ import { IrnPlacesProxy } from "../../state/irnPlacesSlice"
 import { IrnTableMatchResult, IrnTableResult } from "../../state/irnTablesSlice"
 import { IrnTableRefineFilter } from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 import { MainButton } from "../Home/components/MainButton"
@@ -57,7 +58,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.results}>
-        {!resultsAreEqual && (
+        {irnTableResults && !resultsAreEqual && (
           <SegmentedControlTab
             activeTabStyle={styles.activeTabStyle}
             activeTabTextStyle={styles.activeTabTextStyle}
@@ -76,7 +77,7 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
         {selectedIrnTableResult ? (
           <IrnTableResultView irnTableResult={selectedIrnTableResult} referenceDataProxy={referenceDataProxy} />
         ) : (
-          <View>
+          <View style={styles.notFound}>
             <Text style={styles.notFoundText}>{i18n.t("Results.None1")}</Text>
             <Text style={styles.notFoundText}>{i18n.t("Results.None2")}</Text>
           </View>
@@ -111,13 +112,15 @@ export const IrnTablesResultsView: React.FC<IrnTablesResultsViewProps> = ({
           iconName={"time-slot"}
         />
       )}
-      <MainButton
-        disabled={keys(refineFilter).length === 0}
-        onPress={onClearRefineFilter}
-        text={i18n.t("Results.ClearFilters")}
-        iconType={"FontAwesome"}
-        iconName={"filter"}
-      />
+      {irnTableResults && (
+        <MainButton
+          disabled={keys(refineFilter).length === 0}
+          onPress={onClearRefineFilter}
+          text={i18n.t("Results.ClearFilters")}
+          iconType={"FontAwesome"}
+          iconName={"filter"}
+        />
+      )}
       <MainButton
         style={{ marginTop: rs(20) }}
         onPress={onNewSearch}
@@ -142,6 +145,15 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: rs(30),
+  },
+  notFound: {
+    marginTop: rs(10),
+    marginBottom: rs(20),
+    paddingVertical: rs(10),
+    paddingHorizontal: rs(20),
+    backgroundColor: "white",
+    borderRadius: rs(6),
+    ...shadow,
   },
   notFoundText: {
     paddingVertical: rs(20),
