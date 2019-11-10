@@ -1,7 +1,9 @@
+import { Icon, Text, View } from "native-base"
 import React, { useEffect, useRef } from "react"
 import { StyleSheet } from "react-native"
-import MapView, { Marker } from "react-native-maps"
+import MapView, { Callout, Marker } from "react-native-maps"
 import { GpsLocation } from "../../irnTables/models"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
 export type LocationsType = "District" | "County" | "Place"
 
@@ -50,10 +52,16 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
         <Marker
           key={i}
           coordinate={mapLocation.gpsLocation!}
-          title={mapLocation.name}
           pinColor={mapLocation.pinColor}
           onCalloutPress={() => onLocationPress(mapLocation)}
-        />
+        >
+          <Callout>
+            <View style={styles.callout}>
+              <Text>{mapLocation.name}</Text>
+              <Icon style={styles.calloutIcon} type="FontAwesome" name="angle-right" />
+            </View>
+          </Callout>
+        </Marker>
       ))}
     </MapView>
   )
@@ -62,5 +70,13 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
 const styles = StyleSheet.create({
   map: {
     flex: 1,
+  },
+  callout: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  calloutIcon: {
+    marginLeft: rs(10),
+    fontSize: rfs(20),
   },
 })
