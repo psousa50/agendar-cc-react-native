@@ -30,6 +30,7 @@ export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTable
 const styles = StyleSheet.create({
   container: {
     marginTop: rs(10),
+    marginHorizontal: rs(5),
     backgroundColor: "white",
   },
   text: {
