@@ -1,4 +1,4 @@
-package com.agendarcc;
+package com.ingrasoft.agendarcc;
 
 import android.content.Intent;
 import android.os.Bundle;

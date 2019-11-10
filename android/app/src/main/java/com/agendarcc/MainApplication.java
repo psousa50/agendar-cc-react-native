@@ -1,4 +1,4 @@
-package com.agendarcc;
+package com.ingrasoft.agendarcc;
 
 import android.app.Application;
 import android.util.Log;

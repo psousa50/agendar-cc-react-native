@@ -1,4 +1,4 @@
-package com.agendarcc;
+package com.ingrasoft.agendarcc;
 
 import com.facebook.react.ReactActivity;
 
