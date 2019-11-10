@@ -49,7 +49,7 @@ export const en = {
     Title: "Schedule",
     Closest: "Closest",
     Soonest: "Soonest",
-    None1: "No result were found for your search criteria.",
+    None1: "No results were found for your search criteria.",
     None2: "Try another search criteria.",
     Table: "Table",
     ChooseDate: "Select another date",

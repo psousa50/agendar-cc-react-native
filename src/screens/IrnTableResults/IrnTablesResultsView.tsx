@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   tabTextStyle: {
     paddingVertical: rs(7),
-    fontSize: rfs(12),
+    fontSize: rfs(14),
     flexWrap: "wrap",
   },
 })

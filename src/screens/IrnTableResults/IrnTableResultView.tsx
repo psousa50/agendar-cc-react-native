@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   },
   place: {
     fontSize: rfs(14),
+    minHeight: rfs(50),
   },
   date: {
     fontSize: rfs(17),

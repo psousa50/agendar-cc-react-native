@@ -15,7 +15,7 @@ export const MainButton: React.FC<MainButtonProps> = ({ color, iconName, iconTyp
   <Button
     style={[styles.button, color ? { backgroundColor: color } : undefined, style]}
     iconLeft
-    block
+    small
     success
     rounded
     {...props}
@@ -30,5 +30,6 @@ const styles = StyleSheet.create({
     marginTop: rs(10),
     marginHorizontal: rs(12),
     fontSize: rfs(12),
+    alignSelf: "center",
   },
 })
