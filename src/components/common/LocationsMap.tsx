@@ -30,9 +30,12 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLoca
   }
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       fitToElements()
     }, 200)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [mapLocations[0]])
 
   const validMapLocations = mapLocations.filter(l => !!l.gpsLocation) as MapLocation[]
