@@ -1,27 +1,48 @@
-import { Container, Content, Header, View } from "native-base"
-import React from "react"
-import { TextInput } from "react-native"
+import React, { useEffect } from "react"
+import { Button, View } from "react-native"
+import { createAppContainer, createStackNavigator, NavigationScreenProps } from "react-navigation"
 
-export const Test = () => {
+export const Test = () => <View></View>
+
+export const Test1: React.FC<NavigationScreenProps> = props => {
+  useEffect(() => {
+    console.log("Mount Test1")
+    return () => console.log("UnMount Test1")
+  })
+
+  const load = () => {
+    props.navigation.navigate("Test2")
+  }
+
   return (
-    <Container>
-      <Header />
-      <Content>
-        <View>
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-          <TextInput style={{ borderWidth: 1 }} />
-        </View>
-      </Content>
-    </Container>
+    <View>
+      <Button title="Hello" onPress={load} />
+    </View>
   )
 }
+
+const Test2: React.FC<NavigationScreenProps> = props => {
+  useEffect(() => {
+    console.log("Mount Test2")
+    return () => console.log("UnMount Test2")
+  })
+
+  return (
+    <View>
+      <Button title="Backl" onPress={() => props.navigation.goBack()} />
+    </View>
+  )
+}
+
+export const ContentNavigator = createStackNavigator(
+  {
+    Test1,
+    Test2,
+  },
+  {
+    initialRouteName: "Test1",
+    headerMode: "none",
+  },
+)
+
+export const AppContainer = () => createAppContainer(ContentNavigator)

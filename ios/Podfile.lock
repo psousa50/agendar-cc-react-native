@@ -60,7 +60,7 @@ PODS:
     - React
   - react-native-maps (0.25.0):
     - React
-  - react-native-slider (2.0.2):
+  - react-native-slider (2.0.3):
     - React
   - react-native-webview (7.4.3):
     - React
@@ -211,7 +211,7 @@ SPEC CHECKSUMS:
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-maps: 190c02ca533fddac5bb49cf17bdece3644612107
-  react-native-slider: 5d61590f26a51cf0a858bfd1543f6d6ec8b78a6e
+  react-native-slider: d580f445f51d7c49800e6b3d6c0d3b466b3743f1
   react-native-webview: 82d6456dfae1b3ef70c3939135536342afc96373
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
   React-RCTAnimation: 359ba1b5690b1e87cc173558a78e82d35919333e

@@ -67,4 +67,4 @@ keystore.jks
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+ios/Pods/
