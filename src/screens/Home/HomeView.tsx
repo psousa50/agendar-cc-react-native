@@ -5,10 +5,18 @@ import { InfoCard } from "../../components/common/InfoCard"
 import { LocationView } from "../../components/common/LocationView"
 import { Separator } from "../../components/common/Separator"
 import { i18n } from "../../localization/i18n"
-import { DatePeriod, IrnTableFilter, IrnTableFilterLocation, TimePeriod } from "../../state/models"
+import {
+  DatePeriod,
+  IrnTableFilter,
+  IrnTableFilterLocation,
+  TimePeriod,
+} from "../../state/models"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { appTheme } from "../../utils/appTheme"
-import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
+import {
+  responsiveFontScale as rfs,
+  responsiveScale as rs,
+} from "../../utils/responsive"
 import { AppScreenName } from "../screens"
 import { DatePeriodView } from "./components/DatePeriodView"
 import { MainButton } from "./components/MainButton"
@@ -19,6 +27,7 @@ export interface HomeViewProps {
   filter: IrnTableFilter
   referenceDataProxy: ReferenceDataProxy
   onDatePeriodChange: (dateOPeriod: DatePeriod) => void
+  onDatePeriodEdit: () => void
   onEditLocation: () => void
   onLocationChange: (location: IrnTableFilterLocation) => void
   onSearch: () => void
@@ -31,6 +40,7 @@ export interface HomeViewProps {
 export const HomeView: React.FC<HomeViewProps> = ({
   filter,
   onDatePeriodChange,
+  onDatePeriodEdit,
   onEditLocation,
   onLocationChange,
   onSearch,
@@ -42,14 +52,31 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const { serviceId, onlyOnSaturdays } = filter
 
   const onClearLocation = () =>
-    onLocationChange({ region: "Continente", districtId: undefined, countyId: undefined, placeName: undefined })
+    onLocationChange({
+      region: "Continente",
+      districtId: undefined,
+      countyId: undefined,
+      placeName: undefined,
+    })
 
   return (
     <View style={styles.container}>
-      <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
-        <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
+      <InfoCard
+        title={i18n.t("Service.Name")}
+        iconType={"AntDesign"}
+        iconName="idcard"
+      >
+        <SelectIrnServiceView
+          serviceId={serviceId}
+          onServiceIdChanged={onServiceIdChange}
+        />
       </InfoCard>
-      <InfoCard title={i18n.t("Where.Name")} iconType={"MaterialIcons"} iconName="location-on" onPress={onEditLocation}>
+      <InfoCard
+        title={i18n.t("Where.Name")}
+        iconType={"MaterialIcons"}
+        iconName="location-on"
+        onPress={onEditLocation}
+      >
         <LocationView
           location={filter}
           onClear={onClearLocation}
@@ -57,21 +84,42 @@ export const HomeView: React.FC<HomeViewProps> = ({
           referenceDataProxy={referenceDataProxy}
         />
       </InfoCard>
-      <InfoCard title={i18n.t("When.Name")} iconType={"AntDesign"} iconName="calendar">
-        <DatePeriodView {...filter} onDatePeriodChange={onDatePeriodChange} />
+      <InfoCard
+        title={i18n.t("When.Name")}
+        iconType={"AntDesign"}
+        iconName="calendar"
+      >
+        <DatePeriodView
+          {...filter}
+          onDatePeriodChange={onDatePeriodChange}
+          onDatePeriodEdit={onDatePeriodEdit}
+        />
         <Separator />
         <TimePeriodView {...filter} onTimePeriodChange={onTimePeriodChange} />
         <Separator />
         <View style={styles.switchContainer}>
           <TouchableOpacity onPress={() => onSaturdaysChange(!onlyOnSaturdays)}>
-            <Text style={[styles.onlyOnSaturdays, !onlyOnSaturdays && styles.onlyOnSaturdaysDimmed]}>
+            <Text
+              style={[
+                styles.onlyOnSaturdays,
+                !onlyOnSaturdays && styles.onlyOnSaturdaysDimmed,
+              ]}
+            >
               {i18n.t("DatePeriod.OnlyOnSaturdays")}
             </Text>
           </TouchableOpacity>
-          <Switch style={styles.switch} value={onlyOnSaturdays} onValueChange={onSaturdaysChange} />
+          <Switch
+            style={styles.switch}
+            value={onlyOnSaturdays}
+            onValueChange={onSaturdaysChange}
+          />
         </View>
       </InfoCard>
-      <MainButton onPress={onSearch} text={i18n.t("SearchTimetables")} iconName={"search"} />
+      <MainButton
+        onPress={onSearch}
+        text={i18n.t("SearchTimetables")}
+        iconName={"search"}
+      />
     </View>
   )
 }

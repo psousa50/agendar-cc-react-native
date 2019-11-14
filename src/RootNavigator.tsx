@@ -10,6 +10,7 @@ import { ScheduleIrnTableScreen } from "./screens/ScheduleIrnTable/ScheduleIrnTa
 import { SelectAnotherDateScreen } from "./screens/SelectAnotherDate/SelectAnotherDateScreen"
 import { SelectAnotherLocationScreen } from "./screens/SelectAnotherLocation/SelectAnotherLocationScreen"
 import { SelectAnotherTimeSlotScreen } from "./screens/SelectAnotherTimeSlot/SelectAnotherTimeSlotScreen"
+import { SelectDatePeriodScreen } from "./screens/SelectDatePeriod/SelectDatePeriodScreen"
 import { SelectLocationScreen } from "./screens/SelectLocation/SelectLocationScreen"
 import { SelectLocationByMapScreen } from "./screens/SelectLocationByMap/SelectLocationByMapScreen"
 import { Test } from "./Test"
@@ -42,13 +43,14 @@ const transitionConfig = () => {
 export const ContentNavigator = createStackNavigator(
   {
     HomeScreen,
-    SelectAnotherDateScreen,
     IrnTablesResultsScreen,
     ScheduleIrnTableScreen,
+    SelectAnotherDateScreen,
     SelectAnotherLocationScreen,
     SelectAnotherTimeSlotScreen,
-    SelectLocationScreen,
+    SelectDatePeriodScreen,
     SelectLocationByMapScreen,
+    SelectLocationScreen,
     Test,
   },
   {

@@ -4,9 +4,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { appIcon } from "../../assets/images/images"
 import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
-import { getIrnPlaces, setError as irnPlacesSetError } from "../../state/irnPlacesSlice"
+import {
+  getIrnPlaces,
+  setError as irnPlacesSetError,
+} from "../../state/irnPlacesSlice"
 import { clearRefineFilter, updateFilter } from "../../state/irnTablesSlice"
-import { DatePeriod, IrnTableFilterLocation, TimePeriod } from "../../state/models"
+import {
+  DatePeriod,
+  IrnTableFilterLocation,
+  TimePeriod,
+} from "../../state/models"
 import {
   buildReferenceDataProxy,
   getReferenceData,
@@ -29,12 +36,14 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
 
   const dispatch = useDispatch()
 
-  const { filter, referenceDataProxy, error, disclaimerShown } = useSelector((state: RootState) => ({
-    filter: state.irnTablesData.filter,
-    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
-    error: state.referenceData.error || state.irnPlacesData.error,
-    disclaimerShown: state.userData.disclaimerShown,
-  }))
+  const { filter, referenceDataProxy, error, disclaimerShown } = useSelector(
+    (state: RootState) => ({
+      filter: state.irnTablesData.filter,
+      referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+      error: state.referenceData.error || state.irnPlacesData.error,
+      disclaimerShown: state.userData.disclaimerShown,
+    }),
+  )
 
   const onClearRefineFilter = () => {
     dispatch(clearRefineFilter())
@@ -54,13 +63,20 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     dispatch(setDisclaimerShown())
   }
 
+  const onDatePeriodEdit = () => {
+    navigation.goTo("SelectDatePeriodScreen")
+  }
+
   useErrorCheck(error, clearErrors)
 
   const homeViewProps: HomeViewProps = {
     filter,
-    onDatePeriodChange: (datePeriod: DatePeriod) => dispatch(updateFilter(datePeriod)),
+    onDatePeriodChange: (datePeriod: DatePeriod) =>
+      dispatch(updateFilter(datePeriod)),
+    onDatePeriodEdit,
     onEditLocation: () => navigation.goTo("SelectLocationScreen"),
-    onLocationChange: (location: IrnTableFilterLocation) => dispatch(updateFilter(location)),
+    onLocationChange: (location: IrnTableFilterLocation) =>
+      dispatch(updateFilter(location)),
     onSearch: () => {
       onClearRefineFilter()
       navigation.goTo("IrnTablesResultsScreen")
@@ -69,9 +85,12 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
       onClearRefineFilter()
       navigation.goTo(filterScreen)
     },
-    onServiceIdChange: (serviceId: number) => dispatch(updateFilter({ serviceId })),
-    onTimePeriodChange: (timePeriod: TimePeriod) => dispatch(updateFilter(timePeriod)),
-    onSaturdaysChange: (onlyOnSaturdays: boolean) => dispatch(updateFilter({ onlyOnSaturdays })),
+    onServiceIdChange: (serviceId: number) =>
+      dispatch(updateFilter({ serviceId })),
+    onTimePeriodChange: (timePeriod: TimePeriod) =>
+      dispatch(updateFilter(timePeriod)),
+    onSaturdaysChange: (onlyOnSaturdays: boolean) =>
+      dispatch(updateFilter({ onlyOnSaturdays })),
     referenceDataProxy,
   }
 
@@ -79,9 +98,15 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
     <AppScreen
       {...props}
       title={i18n.t("Home.Title")}
-      left={() => <Image source={appIcon} style={{ width: rs(32), height: rs(32) }} />}
+      left={() => (
+        <Image source={appIcon} style={{ width: rs(32), height: rs(32) }} />
+      )}
     >
-      {disclaimerShown ? <HomeView {...homeViewProps} /> : <DisclaimerView onDismiss={onDisclaimerDismiss} />}
+      {disclaimerShown ? (
+        <HomeView {...homeViewProps} />
+      ) : (
+        <DisclaimerView onDismiss={onDisclaimerDismiss} />
+      )}
     </AppScreen>
   )
 }
