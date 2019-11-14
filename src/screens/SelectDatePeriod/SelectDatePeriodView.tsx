@@ -1,12 +1,15 @@
 import React from "react"
+import { StyleSheet, View } from "react-native"
 import { Calendar, DateObject } from "react-native-calendars"
 import { DatePeriod } from "../../state/models"
 import { appTheme } from "../../utils/appTheme"
 import {
   addDaysToDateString,
   createDateStringRange,
+  currentUtcDateString,
   toDateString,
 } from "../../utils/dates"
+import { responsiveScale as rs } from "../../utils/responsive"
 import { DatePeriodView } from "../Home/components/DatePeriodView"
 
 const selectedColor = appTheme.secondaryColor
@@ -68,9 +71,11 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <DatePeriodView {...datePeriod} onDatePeriodChange={onDatePeriodChange} />
       <Calendar
+        minDate={currentUtcDateString()}
+        maxDate={addDaysToDateString(currentUtcDateString(), 90)}
         current={dateRange[0]}
         markedDates={markedDates}
         markingType="period"
@@ -86,6 +91,14 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({
           },
         }}
       />
-    </>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    marginBottom: rs(20),
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+})
