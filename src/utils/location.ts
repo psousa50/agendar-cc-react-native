@@ -37,7 +37,10 @@ export const getClosestLocation = <T extends { gpsLocation?: GpsLocation }>(loca
           const newDistance = location.gpsLocation ? calcDistanceInKm(location.gpsLocation, locationToMatch) : null
           return newDistance && newDistance < acc.distance ? { location, distance: newDistance } : acc
         },
-        { location: locations[0], distance: calcDistanceInKm(locations[0].gpsLocation!, locationToMatch) },
+        {
+          location: locations[0],
+          distance: calcDistanceInKm(locations[0].gpsLocation!, locationToMatch),
+        },
       )
     : undefined
 
@@ -96,8 +99,15 @@ export const getAllMapLocations = (
     id: d.districtId,
     locationType: "District",
   }))
-  const countyLocations: MapLocations = filteredCounties.map(c => ({ ...c, id: c.countyId, locationType: "County" }))
-  const irnPlacesLocations: MapLocations = filteredIrnPlaces.map(p => ({ ...p, locationType: "Place" }))
+  const countyLocations: MapLocations = filteredCounties.map(c => ({
+    ...c,
+    id: c.countyId,
+    locationType: "County",
+  }))
+  const irnPlacesLocations: MapLocations = filteredIrnPlaces.map(p => ({
+    ...p,
+    locationType: "Place",
+  }))
 
   return {
     districtLocations,
@@ -118,8 +128,8 @@ export const normalizeLocation = (referenceDataProxy: ReferenceDataProxy, irnPla
 
   return {
     region: filteredDistricts.length > 0 ? filteredDistricts[0].region : location.region,
-    districtId: filteredDistricts.length === 1 ? filteredDistricts[0].districtId : location.districtId,
-    countyId: filteredCounties.length === 1 ? filteredCounties[0].countyId : location.countyId,
+    districtId: filteredIrnPlaces.length === 1 ? filteredDistricts[0].districtId : location.districtId,
+    countyId: filteredIrnPlaces.length === 1 ? filteredCounties[0].countyId : location.countyId,
     placeName: filteredIrnPlaces.length === 1 ? filteredIrnPlaces[0].name : location.placeName,
     distanceRadiusKm: location.distanceRadiusKm,
     gpsLocation: location.gpsLocation,
