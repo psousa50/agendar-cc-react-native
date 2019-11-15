@@ -1,6 +1,6 @@
 import { Button, Icon } from "native-base"
 import React from "react"
-import { Platform, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import { responsiveFontScale as rfs } from "../../utils/responsive"
 
 export const editBackgroundColor = "gray"
@@ -52,6 +52,6 @@ export const buttonIcons = (...buttons: ButtonIcons[]) => buttons
 
 const styles = StyleSheet.create({
   buttonIcon: {
-    fontSize: rfs(Platform.OS === "ios" ? 28 : 20),
+    fontSize: rfs(28),
   },
 })

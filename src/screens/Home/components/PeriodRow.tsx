@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: rs(2),
+    paddingVertical: rs(10),
     paddingHorizontal: rs(5),
     justifyContent: "space-between",
-    minHeight: rs(35),
+    minHeight: rs(45),
   },
   titleContainer: {
     width: "30%",
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   closeContainer: {
     width: "10%",
     alignItems: "center",
-    paddingHorizontal: rs(10),
+    paddingHorizontal: rs(5),
   },
   closeIcon: {
     fontSize: rfs(22),

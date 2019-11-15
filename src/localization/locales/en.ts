@@ -82,11 +82,11 @@ export const en = {
   Disclaimer: {
     Title: "Disclaimer",
     P1:
-      "The purpose of this App is to aid portuguese citizens to find the best day, place and time to schedule a renewal of their citizen card or passport",
+      "The purpose of this App is to aid portuguese citizens to find the best date, place and time to schedule a renewal of their citizen card or passport.",
     P2:
-      "The App use the information present on the IRN web site and tries to keep that information as updated as possible. However, we could not take responsability on the fact that the information may be sometimes out of date.",
+      "The App use the information present on the IRN web site and tries to keep that information as updated as possible. However, we could not take responsability on the fact that the information may sometimes be out of date.",
     P3: "The final scheduling will always take place at the IRN website, via the App or a Web browser.",
-    P4: "We hope this App will be useful to the portuguese citizens on the hard task of scheduling this services.",
+    P4: "We hope this App will help the portuguese citizens with the hard task of scheduling these services.",
     Footer: "Thank you.",
     Ok: "Ok",
   },

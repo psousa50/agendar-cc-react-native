@@ -87,7 +87,9 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({
           },
         }}
       />
-      <DatePeriodView {...datePeriod} onDatePeriodChange={onDatePeriodChange} />
+      <View style={styles.datePeriod}>
+        <DatePeriodView {...datePeriod} onDatePeriodChange={onDatePeriodChange} />
+      </View>
       <MainButton style={styles.button} onPress={onConfirm} text={i18n.t("DatePeriod.Confirm")} />
     </View>
   )
@@ -101,9 +103,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: rs(10),
   },
   calendar: {
-    paddingBottom: rs(30),
-    marginBottom: rs(20),
+    paddingBottom: rs(20),
+    marginBottom: rs(10),
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  datePeriod: {
+    paddingHorizontal: rs(20),
   },
   button: {
     marginBottom: rs(20),

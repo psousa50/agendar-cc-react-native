@@ -1,4 +1,5 @@
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { i18n } from "../../../localization/i18n"
 import { DatePeriod } from "../../../state/models"
 import { DateString } from "../../../utils/dates"
@@ -18,27 +19,23 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({
   onDatePeriodChange,
   onDatePeriodEdit,
 }) => {
-  const clearStartDate = () =>
-    onDatePeriodChange({ startDate: undefined, endDate })
-  const clearEndDate = () =>
-    onDatePeriodChange({ startDate, endDate: undefined })
+  const clearStartDate = () => onDatePeriodChange({ startDate: undefined, endDate })
+  const clearEndDate = () => onDatePeriodChange({ startDate, endDate: undefined })
 
   return (
-    <>
+    <TouchableOpacity disabled={!onDatePeriodEdit} onPress={onDatePeriodEdit}>
       <PeriodRow
         active={!!startDate}
         title={i18n.t("DatePeriod.From")}
         value={formatDateLocale(startDate)}
-        onEdit={onDatePeriodEdit}
         onClear={clearStartDate}
       />
       <PeriodRow
         active={!!endDate}
         title={i18n.t("DatePeriod.To")}
         value={formatDateLocale(endDate)}
-        onEdit={onDatePeriodEdit}
         onClear={clearEndDate}
       />
-    </>
+    </TouchableOpacity>
   )
 }
