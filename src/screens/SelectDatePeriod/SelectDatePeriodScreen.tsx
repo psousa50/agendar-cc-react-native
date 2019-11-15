@@ -1,10 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  AppModalScreen,
-  AppScreenProps,
-} from "../../components/common/AppScreen"
-import { ButtonIcons } from "../../components/common/ToolbarIcons"
+import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { normalizeFilter } from "../../irnTables/main"
 import { updateFilter } from "../../state/irnTablesSlice"
 import { DatePeriod } from "../../state/models"
@@ -23,7 +19,7 @@ export const SelectDatePeriodScreen: React.FC<AppScreenProps> = props => {
 
   const [datePeriod, setDatePeriod] = useState<DatePeriod>(filter)
 
-  const updateFilterAndGoBack = () => {
+  const onConfirm = () => {
     dispatch(updateFilter(datePeriod))
     navigation.goBack()
   }
@@ -33,14 +29,8 @@ export const SelectDatePeriodScreen: React.FC<AppScreenProps> = props => {
   }
 
   return (
-    <AppModalScreen
-      {...props}
-      right={() => ButtonIcons.Checkmark(() => updateFilterAndGoBack())}
-    >
-      <SelectDatePeriodView
-        datePeriod={datePeriod}
-        onDatePeriodChange={onDateChange}
-      />
+    <AppModalScreen {...props}>
+      <SelectDatePeriodView datePeriod={datePeriod} onDatePeriodChange={onDateChange} onConfirm={onConfirm} />
     </AppModalScreen>
   )
 }

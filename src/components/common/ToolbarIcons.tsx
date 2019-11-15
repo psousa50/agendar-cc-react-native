@@ -52,6 +52,6 @@ export const buttonIcons = (...buttons: ButtonIcons[]) => buttons
 
 const styles = StyleSheet.create({
   buttonIcon: {
-    fontSize: rfs(Platform.OS === "ios" ? 24 : 16),
+    fontSize: rfs(Platform.OS === "ios" ? 28 : 20),
   },
 })

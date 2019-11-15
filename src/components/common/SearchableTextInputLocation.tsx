@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   icon: {
     paddingHorizontal: rs(3),
     margin: rs(6),
-    fontSize: rfs(12),
+    fontSize: rfs(20),
     color: appTheme.secondaryTextDimmed,
   },
   separator: {

@@ -2,10 +2,7 @@ import { Icon, Text, View } from "native-base"
 import React from "react"
 import { StyleSheet, TouchableOpacity } from "react-native"
 import { appTheme } from "../../../utils/appTheme"
-import {
-  responsiveFontScale as rfs,
-  responsiveScale as rs,
-} from "../../../utils/responsive"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../../utils/responsive"
 
 interface PeriodRowProps {
   active: boolean
@@ -15,28 +12,16 @@ interface PeriodRowProps {
   onClear?: () => void
 }
 
-export const PeriodRow: React.FC<PeriodRowProps> = ({
-  active,
-  value,
-  title,
-  onClear,
-  onEdit,
-}) => (
+export const PeriodRow: React.FC<PeriodRowProps> = ({ active, value, title, onClear, onEdit }) => (
   <View style={styles.container}>
     <TouchableOpacity
       disabled={active || !onEdit}
       style={value ? styles.titleContainer : styles.titleContainerNoValue}
       onPress={onEdit}
     >
-      <Text style={active ? styles.title : styles.inactiveTitle}>{`${title}${
-        value ? ":" : ""
-      }`}</Text>
+      <Text style={active ? styles.title : styles.inactiveTitle}>{`${title}${value ? ":" : ""}`}</Text>
     </TouchableOpacity>
-    <TouchableOpacity
-      disabled={!onEdit}
-      style={styles.valueContainer}
-      onPress={onEdit}
-    >
+    <TouchableOpacity disabled={!onEdit} style={styles.valueContainer} onPress={onEdit}>
       <Text style={styles.value}>{value}</Text>
     </TouchableOpacity>
     {active && onClear && (
@@ -83,6 +68,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: rs(10),
   },
   closeIcon: {
-    fontSize: rfs(16),
+    fontSize: rfs(22),
   },
 })

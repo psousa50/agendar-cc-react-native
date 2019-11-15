@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: rs(12),
   },
   closeIcon: {
-    fontSize: rfs(16),
+    fontSize: rfs(22),
   },
 })
