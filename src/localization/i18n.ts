@@ -7,7 +7,7 @@ import { pt } from "./locales/pt"
 const locales = RNLocalize.getLocales()
 
 if (Array.isArray(locales)) {
-  I18n.locale = "pt" // locales[0].languageTag
+  I18n.locale = locales[0].languageTag
 }
 
 I18n.fallbacks = true
