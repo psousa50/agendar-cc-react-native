@@ -78,6 +78,9 @@ export const pt = {
     NotFound: "Este horário já não se encontra disponível. Seleccione outro ou altere os seus critérios de pesquisa.",
     Error1: "Ocorreu um erro na ligação ao site do IRN.",
     Error2: "Por favor tente mais tarde.",
+    Redirecting1: "A redireccionar para o site do IRN...",
+    Redirecting2: "Aguarde por favor...",
+    RedirectingError: "Ocorreu um erro no acesso ao site do IRN.",
   },
   Disclaimer: {
     Title: "Isenção de Responsabilidade",

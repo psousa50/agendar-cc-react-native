@@ -78,6 +78,9 @@ export const en = {
     NotFound: "This schedule no longer exists. Please select another one or change your search criteria.",
     Error1: "There was an error connecting with the IRN site.",
     Error2: "PLease try again later.",
+    Redirecting1: "Redirecting to IRN site...",
+    Redirecting2: "Please wait...",
+    RedirectingError: "An error ocurred trying to access IRN site.",
   },
   Disclaimer: {
     Title: "Disclaimer",

@@ -1,4 +1,6 @@
+import { Text, View } from "native-base"
 import React from "react"
+import { StyleSheet } from "react-native"
 import WebView from "react-native-webview"
 import { useSelector } from "react-redux"
 import { AppScreen, AppScreenProps, leftBackButton } from "../../components/common/AppScreen"
@@ -25,8 +27,26 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
           injectedJavaScript={irnSiteInjectedJavascript(selectedIrnTableResult, irnPlace, user)}
           javaScriptEnabled={true}
           startInLoadingState={true}
+          renderLoading={Loading}
         />
       )}
     </AppScreen>
   )
 }
+
+const Loading = () => (
+  <View style={styles.redirecting}>
+    <Text>{i18n.t("Schedule.Redirecting1")}</Text>
+  </View>
+)
+
+const styles = StyleSheet.create({
+  redirecting: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+  },
+})

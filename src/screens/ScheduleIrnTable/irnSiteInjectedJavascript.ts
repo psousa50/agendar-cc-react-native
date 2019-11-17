@@ -2,6 +2,41 @@ import { IrnPlace } from "../../irnTables/models"
 import { i18n } from "../../localization/i18n"
 import { IrnTableResult } from "../../state/irnTablesSlice"
 import { UserDataState } from "../../state/userSlice"
+import { replaceAll } from "../../utils/strings"
+
+const messageHtml = (message: string, fontSize: string) =>
+  replaceAll(
+    `
+    <div
+      style='
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);'
+>
+      <div style='background-color: #fefefe;
+                  margin: 15% auto;
+                  padding: 20px;
+                  border: 1px solid #888;
+                  width: 80%;
+                  text-align: center;
+      '>
+      <span style='font-size: ${fontSize};'>
+        ${message}
+      </span>
+      </div>
+  </div>
+`,
+    "\n",
+    "",
+  )
 
 const helperFunctions = () => `
   function replaceAll(s, searchValue, replaceValue) {
@@ -27,6 +62,7 @@ const helperFunctions = () => `
   `
 
 const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResult) => `
+
   var tok = document.getElementsByName("tok")[0].value
 
   selectValueById("servico", "${serviceId}")
@@ -119,15 +155,17 @@ export const irnSiteInjectedJavascript = (irnTableResult: IrnTableResult, irnPla
 
     ${helperFunctions()}
 
-
     if (document.URL.includes("step1")) {
-      document.body.style.opacity = 0.2
       ${step1Javascript(irnTableResult)}
+      document.body.innerHTML = "${messageHtml(i18n.t("Schedule.Redirecting2"), "20px")}" +  document.body.innerHTML
     }
 
     if (document.URL.includes("step2")) {
-      ${step2Javascript(irnTableResult, irnPlace, user)}
-      document.body.style.opacity = 1
+      if (document.body.innerHTML.trim().startsWith("<")) {
+        ${step2Javascript(irnTableResult, irnPlace, user)}
+      } else {
+        document.body.innerHTML = "${messageHtml(i18n.t("Schedule.RedirectingError"), "40px")}"
+      }
     }
 
   }
