@@ -74,5 +74,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>Schedule CC needs your location to locate the nearest place to schedule your Citizen Card or Passport</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Schedule CC needs your location to locate the nearest place to schedule your Citizen Card or Passport</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>Schedule CC needs your location to locate the nearest place to schedule your Citizen Card or Passport</string>
 </dict>
 </plist>
