@@ -3,10 +3,7 @@ import React, { useEffect, useRef } from "react"
 import { StyleSheet } from "react-native"
 import MapView, { Callout, Marker } from "react-native-maps"
 import { GpsLocation } from "../../irnTables/models"
-import {
-  responsiveFontScale as rfs,
-  responsiveScale as rs,
-} from "../../utils/responsive"
+import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
 export type LocationsType = "District" | "County" | "Place"
 
@@ -24,10 +21,7 @@ interface LocationsMapProps {
   onLocationPress: (mapLocation: MapLocation) => void
 }
 
-export const LocationsMap: React.FC<LocationsMapProps> = ({
-  mapLocations,
-  onLocationPress,
-}) => {
+export const LocationsMap: React.FC<LocationsMapProps> = ({ mapLocations, onLocationPress }) => {
   const map = useRef(null as MapView | null)
 
   const fitToElements = () => {
@@ -44,9 +38,7 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({
     }
   }, [mapLocations[0]])
 
-  const validMapLocations = mapLocations.filter(
-    l => !!l.gpsLocation,
-  ) as MapLocation[]
+  const validMapLocations = mapLocations.filter(l => !!l.gpsLocation) as MapLocation[]
 
   const mapPadding = {
     left: rs(60),
@@ -76,11 +68,7 @@ export const LocationsMap: React.FC<LocationsMapProps> = ({
           <Callout>
             <View style={styles.callout}>
               <Text>{mapLocation.name}</Text>
-              <Icon
-                style={styles.calloutIcon}
-                type="FontAwesome"
-                name="angle-right"
-              />
+              <Icon style={styles.calloutIcon} type="FontAwesome" name="angle-right" />
             </View>
           </Callout>
         </Marker>
