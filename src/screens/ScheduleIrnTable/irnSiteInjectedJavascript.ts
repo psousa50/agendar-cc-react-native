@@ -161,10 +161,12 @@ export const irnSiteInjectedJavascript = (irnTableResult: IrnTableResult, irnPla
     }
 
     if (document.URL.includes("step2")) {
-      if (document.body.innerHTML.trim().startsWith("<")) {
-        ${step2Javascript(irnTableResult, irnPlace, user)}
-      } else {
-        document.body.innerHTML = "${messageHtml(i18n.t("Schedule.RedirectingError"), "40px")}"
+      if (document.body) {
+        if (document.body.innerHTML.trim().startsWith("<")) {
+          ${step2Javascript(irnTableResult, irnPlace, user)}
+        } else {
+          document.body.innerHTML = "${messageHtml(i18n.t("Schedule.RedirectingError"), "40px")}"
+        }
       }
     }
 
