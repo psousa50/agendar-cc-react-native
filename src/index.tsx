@@ -4,6 +4,4 @@ import { App } from "./App"
 
 YellowBox.ignoreWarnings(["Warning: componentWillReceiveProps is deprecated"])
 
-// localeConfig.defaultLocale = "pt"
-
 AppRegistry.registerComponent("agendarCC", App)
