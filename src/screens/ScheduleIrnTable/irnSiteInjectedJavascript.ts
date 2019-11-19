@@ -157,7 +157,7 @@ export const irnSiteInjectedJavascript = (irnTableResult: IrnTableResult, irnPla
 
     if (document.URL.includes("step1")) {
       ${step1Javascript(irnTableResult)}
-      document.body.innerHTML = "${messageHtml(i18n.t("Schedule.Redirecting2"), "20px")}" +  document.body.innerHTML
+      document.body.insertAdjacentHTML("beforeend", "${messageHtml(i18n.t("Schedule.Redirecting2"), "20px")}")
     }
 
     if (document.URL.includes("step2")) {
