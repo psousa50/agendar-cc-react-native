@@ -46,7 +46,7 @@ export const en = {
     Madeira: "Madeira",
   },
   Results: {
-    Title: "Schedule",
+    Title: "Results",
     Closest: "Closest",
     Soonest: "Soonest",
     None1: "No results were found for your search criteria.",

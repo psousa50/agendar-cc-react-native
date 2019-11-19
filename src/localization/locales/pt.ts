@@ -46,7 +46,7 @@ export const pt = {
     Madeira: "Madeira",
   },
   Results: {
-    Title: "Agendar",
+    Title: "Resultados",
     Closest: "Mais perto",
     Soonest: "Mais rápido",
     None1: "Não foram encontrados resultados para os critérios de pesquisa que definiu.",
