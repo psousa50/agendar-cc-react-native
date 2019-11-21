@@ -33,8 +33,8 @@
   [[UIDatePicker appearance] setLocale:[[NSLocale alloc]initWithLocaleIdentifier:currentLanguage]];
 
   // force light theme to avoid white text in white background TextInput
-  if (@available(iOS 13.0, *)) {
-    rootView.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    if (@available(iOS 13.0, *)) {
+    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
   }
   
   return YES;
