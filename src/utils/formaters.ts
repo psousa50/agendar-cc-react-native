@@ -17,7 +17,10 @@ export const formatTimeSlot = (time?: TimeSlot, defaultTime: string = "--:--") =
   }
 }
 
-export const extractTime = (date: Date) => moment(date).format("HH:mm:00")
+export const extractTime = (date: Date) =>
+  moment(date)
+    .utc()
+    .format("HH:mm:00")
 
 export const properCase = (s: string) =>
   s
