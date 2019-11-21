@@ -3,8 +3,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { TimeSlot } from "../../../irnTables/models"
 import { i18n } from "../../../localization/i18n"
 import { TimePeriod } from "../../../state/models"
-import { dateFromTime } from "../../../utils/dates"
-import { extractTime, formatTimeSlot } from "../../../utils/formaters"
+import { dateFromTime, extractTime } from "../../../utils/dates"
+import { formatTimeSlot } from "../../../utils/formaters"
 import { PeriodRow } from "./PeriodRow"
 
 interface TimePeriodViewProps {

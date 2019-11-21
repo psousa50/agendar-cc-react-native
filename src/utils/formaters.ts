@@ -1,5 +1,3 @@
-import moment from "moment"
-
 import { TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
 import { dateFromTime, DateString, toUtcDate } from "./dates"
@@ -16,11 +14,6 @@ export const formatTimeSlot = (time?: TimeSlot, defaultTime: string = "--:--") =
     return defaultTime
   }
 }
-
-export const extractTime = (date: Date) =>
-  moment(date)
-    .utc()
-    .format("HH:mm:00")
 
 export const properCase = (s: string) =>
   s

@@ -26,7 +26,10 @@ export const toUtcDate = (d: DateString) => moment.utc(d).toDate()
 export const currentUtcDateString = () => toExistingDateString(currentUtcDate())
 export const currentUtcDateTime = () => moment.utc()
 
-export const dateFromTime = (time?: string, defaultTime: string = "") => new Date(`2000-01-01T${time || defaultTime}`)
+export const dateFromTime = (time?: string, defaultTime: string = "") =>
+  moment(`2000-01-01T${time || defaultTime}`).toDate()
+
+export const extractTime = (date: Date) => moment(date).format("HH:mm:00")
 
 export const addDaysToDateString = (dateStr: DateString, days: number) =>
   toExistingDateString(addDays(toUtcDate(dateStr), days))
