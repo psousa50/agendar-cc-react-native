@@ -83,7 +83,7 @@ export const pt = {
     RedirectingError: "Ocorreu um erro no acesso ao site do IRN.",
   },
   Disclaimer: {
-    Title: "Isenção de Responsabilidade",
+    Title: "Termo de Responsabilidade",
     P1:
       "O objectivo desta aplicação é ajudar os cidadãos portugueses a procurar o melhor dia, local e hora para agendar a renovação do seu cartão de cidadão ou passaporte.",
     P2:
