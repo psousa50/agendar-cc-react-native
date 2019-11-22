@@ -5,7 +5,10 @@ import * as Errors from "./errors"
 
 export const fetchAction = (input: Request | string, init?: RequestInit): ActionResult<Response> => {
   function coreFetch(): ActionResult<Response> {
-    return tryCatch(() => fetch(input, init), error => error as Error)
+    return tryCatch(
+      () => fetch(input, init),
+      error => error as Error,
+    )
   }
 
   function defaultErrorHandler(response: Response, message?: string): Error {
@@ -42,27 +45,30 @@ export const fetchAction = (input: Request | string, init?: RequestInit): Action
       return actionOf(response)
     } else {
       return pipe(
-        tryCatch(() => errorMessage(response), () => response),
+        tryCatch(
+          () => errorMessage(response),
+          () => response,
+        ),
         swap,
       )
     }
   }
 
-  return pipe(
-    coreFetch(),
-    chain(responseMapper),
-  )
+  return pipe(coreFetch(), chain(responseMapper))
 }
 
 export const extractText = (response: Response): ActionResult<string> =>
-  tryCatch(() => response.text(), e => new Errors.BadResponseError((e as Error).message))
+  tryCatch(
+    () => response.text(),
+    e => new Errors.BadResponseError((e as Error).message),
+  )
 
 export const extractJson = (response: Response): ActionResult<any> =>
-  tryCatch(() => response.json(), e => new Errors.BadResponseError((e as Error).message))
+  tryCatch(
+    () => response.json(),
+    e => new Errors.BadResponseError((e as Error).message),
+  )
 
 export function fetchJson<T>(input: Request | string, init?: RequestInit): ActionResult<T> {
-  return pipe(
-    fetchAction(input, init),
-    chain(extractJson),
-  )
+  return pipe(fetchAction(input, init), chain(extractJson))
 }
