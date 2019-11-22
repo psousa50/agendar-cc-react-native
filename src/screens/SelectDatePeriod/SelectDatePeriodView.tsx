@@ -1,26 +1,19 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
-import { Calendar, DateObject } from "react-native-calendars"
-import { i18n } from "../../localization/i18n"
+import { CalendarList, DateObject } from "react-native-calendars"
 import { DatePeriod } from "../../state/models"
 import { appTheme } from "../../utils/appTheme"
 import { addDaysToDateString, createDateStringRange, currentUtcDateString, toDateString } from "../../utils/dates"
 import { responsiveScale as rs } from "../../utils/responsive"
 import { DatePeriodView } from "../Home/components/DatePeriodView"
-import { MainButton } from "../Home/components/MainButton"
 
 const selectedColor = appTheme.secondaryColor
 
 interface SelectPeriodViewProps {
   datePeriod: DatePeriod
   onDatePeriodChange: (datePeriod: DatePeriod) => void
-  onConfirm: () => void
 }
-export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({
-  datePeriod,
-  onDatePeriodChange,
-  onConfirm,
-}) => {
+export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({ datePeriod, onDatePeriodChange }) => {
   const { startDate, endDate } = datePeriod
 
   const onDayPress = (dateObject: DateObject) => {
@@ -68,10 +61,14 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({
 
   return (
     <View style={styles.container}>
-      <Calendar
+      <View style={styles.datePeriod}>
+        <DatePeriodView {...datePeriod} onDatePeriodChange={onDatePeriodChange} />
+      </View>
+      <CalendarList
         style={styles.calendar}
         minDate={currentUtcDateString()}
         maxDate={addDaysToDateString(currentUtcDateString(), 90)}
+        futureScrollRange={3}
         current={dateRange[0]}
         markedDates={markedDates}
         markingType="period"
@@ -87,10 +84,6 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({
           },
         }}
       />
-      <View style={styles.datePeriod}>
-        <DatePeriodView {...datePeriod} onDatePeriodChange={onDatePeriodChange} />
-      </View>
-      <MainButton style={styles.button} onPress={onConfirm} text={i18n.t("DatePeriod.Confirm")} />
     </View>
   )
 }
@@ -99,7 +92,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     backgroundColor: "white",
-    borderTopWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: rs(10),
   },
   calendar: {
@@ -109,8 +101,6 @@ const styles = StyleSheet.create({
   },
   datePeriod: {
     paddingHorizontal: rs(20),
-  },
-  button: {
-    marginBottom: rs(20),
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 })

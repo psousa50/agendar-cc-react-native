@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { normalizeFilter } from "../../irnTables/main"
 import { updateFilter } from "../../state/irnTablesSlice"
 import { DatePeriod } from "../../state/models"
@@ -29,8 +30,8 @@ export const SelectDatePeriodScreen: React.FC<AppScreenProps> = props => {
   }
 
   return (
-    <AppModalScreen {...props}>
-      <SelectDatePeriodView datePeriod={datePeriod} onDatePeriodChange={onDateChange} onConfirm={onConfirm} />
+    <AppModalScreen {...props} right={() => ButtonIcons.Checkmark(onConfirm)}>
+      <SelectDatePeriodView datePeriod={datePeriod} onDatePeriodChange={onDateChange} />
     </AppModalScreen>
   )
 }
