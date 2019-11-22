@@ -1,14 +1,8 @@
-import { pipe } from "fp-ts/lib/pipeable"
-import { task } from "fp-ts/lib/Task"
-import { fold } from "fp-ts/lib/TaskEither"
-import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
-import { fetchIrnTableMatch } from "../api/irnTables"
 import { normalizeFilter } from "../irnTables/main"
 import { TimeSlot } from "../irnTables/models"
-import { currentUtcDateString, DateString } from "../utils/dates"
+import { DateString } from "../utils/dates"
 import { IrnTableFilter, IrnTableRefineFilter } from "./models"
-import { AppThunk } from "./store"
 
 export interface IrnTableResult {
   serviceId: number
@@ -31,7 +25,7 @@ export interface IrnTableMatchResult {
   otherTimeSlots: TimeSlot[]
 }
 
-interface IrnTablesDataState {
+export interface IrnTablesDataState {
   error: string | undefined
   filter: IrnTableFilter
   irnTableMatchResult: IrnTableMatchResult
@@ -106,29 +100,6 @@ const irnTablesSlice = createSlice({
     },
   },
 })
-
-export const getIrnTableMatch = (irnTablesDataState: IrnTablesDataState): AppThunk => async (dispatch: Dispatch) => {
-  const { filter, refineFilter } = irnTablesDataState
-
-  dispatch(initIrnTableMatchResultFetch())
-  await pipe(
-    fetchIrnTableMatch({
-      ...filter,
-      selected: refineFilter,
-      startDate: filter.startDate || currentUtcDateString(),
-    }),
-    fold(
-      error => {
-        dispatch(irnTableMatchResultFetchHasAnError(error.message))
-        return task.of(undefined)
-      },
-      irnTableMatchResult => {
-        dispatch(irnTableMatchResultFetchWasSuccessful({ irnTableMatchResult }))
-        return task.of(undefined)
-      },
-    ),
-  )()
-}
 
 export const {
   clearRefineFilter,

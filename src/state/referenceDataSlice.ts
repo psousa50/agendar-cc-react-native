@@ -1,13 +1,7 @@
-import { pipe } from "fp-ts/lib/pipeable"
-import { task } from "fp-ts/lib/Task"
-import { fold } from "fp-ts/lib/TaskEither"
 import { isNil } from "ramda"
-import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
-import { fetchReferenceData } from "../api/referenceData"
 import { Counties, County, District, Districts, IrnService, IrnServices } from "../irnTables/models"
 import { Region } from "./models"
-import { AppThunk } from "./store"
 
 interface ReferenceDataState {
   irnServices: IrnServices
@@ -68,23 +62,6 @@ const referenceDataSlice = createSlice({
     },
   },
 })
-
-export const getReferenceData = (): AppThunk => async (dispatch: Dispatch) => {
-  dispatch(initFetch())
-  await pipe(
-    fetchReferenceData(),
-    fold(
-      error => {
-        dispatch(fetchHasAnError(error.message))
-        return task.of(undefined)
-      },
-      referenceData => {
-        dispatch(fetchWasSuccessful(referenceData))
-        return task.of(undefined)
-      },
-    ),
-  )()
-}
 
 const getIrnServices = (state: ReferenceDataState) => () => state.irnServices
 const getIrnService = (state: ReferenceDataState) => (serviceId?: number) =>

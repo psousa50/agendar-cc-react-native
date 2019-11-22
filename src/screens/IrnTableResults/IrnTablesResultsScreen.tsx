@@ -1,17 +1,12 @@
 import { isNil } from "ramda"
-import React, { useEffect } from "react"
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppScreenProps, leftBackButton } from "../../components/common/AppScreen"
 import { AppScreen } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
+import { useFetchIrnTableMatch } from "../../state/fetchHooks"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
-import {
-  clearRefineFilter,
-  getIrnTableMatch,
-  IrnTableResult,
-  setError,
-  setSelectedIrnTableResult,
-} from "../../state/irnTablesSlice"
+import { clearRefineFilter, IrnTableResult, setError, setSelectedIrnTableResult } from "../../state/irnTablesSlice"
 import { buildReferenceDataProxy } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { useErrorCheck } from "../../utils/hooks"
@@ -23,26 +18,16 @@ export const IrnTablesResultsScreen: React.FunctionComponent<AppScreenProps> = p
 
   const dispatch = useDispatch()
 
-  const { irnTableMatchResult, filter, refineFilter, loading, irnPlacesProxy, referenceDataProxy, error } = useSelector(
-    (state: RootState) => ({
-      irnTableMatchResult: state.irnTablesData.irnTableMatchResult,
-      filter: state.irnTablesData.filter,
-      refineFilter: state.irnTablesData.refineFilter,
-      loading: state.irnTablesData.loading || state.referenceData.loading || state.irnPlacesData.loading,
-      irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
-      referenceDataProxy: buildReferenceDataProxy(state.referenceData),
-      error: state.irnTablesData.error,
-    }),
-  )
-  const irnTablesDataState = useSelector((state: RootState) => state.irnTablesData)
+  const { irnTableMatchResult, refineFilter, loading, error } = useFetchIrnTableMatch()
+
+  const { irnPlacesProxy, referenceDataProxy } = useSelector((state: RootState) => ({
+    irnPlacesProxy: buildIrnPlacesProxy(state.irnPlacesData),
+    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
+  }))
 
   const onClearRefineFilter = () => {
     dispatch(clearRefineFilter())
   }
-
-  useEffect(() => {
-    dispatch(getIrnTableMatch(irnTablesDataState))
-  }, [filter, refineFilter])
 
   const clearErrorAndGoBack = () => {
     dispatch(setError(undefined))

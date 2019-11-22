@@ -1,17 +1,14 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Image } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { appIcon } from "../../assets/images/images"
 import { AppScreen, AppScreenProps } from "../../components/common/AppScreen"
 import { i18n } from "../../localization/i18n"
-import { getIrnPlaces, setError as irnPlacesSetError } from "../../state/irnPlacesSlice"
+import { useFetchIrnPlaces, useFetchReferenceData } from "../../state/fetchHooks"
+import { setError as irnPlacesSetError } from "../../state/irnPlacesSlice"
 import { clearRefineFilter, updateFilter } from "../../state/irnTablesSlice"
 import { DatePeriod, IrnTableFilterLocation, TimePeriod } from "../../state/models"
-import {
-  buildReferenceDataProxy,
-  getReferenceData,
-  setError as referenceDataSetError,
-} from "../../state/referenceDataSlice"
+import { setError as referenceDataSetError } from "../../state/referenceDataSlice"
 import { RootState } from "../../state/rootReducer"
 import { setDisclaimerShown } from "../../state/userSlice"
 import { useErrorCheck } from "../../utils/hooks"
@@ -29,21 +26,18 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
 
   const dispatch = useDispatch()
 
-  const { filter, referenceDataProxy, error, disclaimerShown } = useSelector((state: RootState) => ({
+  const { filter, error, disclaimerShown } = useSelector((state: RootState) => ({
     filter: state.irnTablesData.filter,
-    referenceDataProxy: buildReferenceDataProxy(state.referenceData),
     error: state.referenceData.error || state.irnPlacesData.error,
     disclaimerShown: state.userData.disclaimerShown,
   }))
 
+  const { referenceDataProxy } = useFetchReferenceData()
+  useFetchIrnPlaces()
+
   const onClearRefineFilter = () => {
     dispatch(clearRefineFilter())
   }
-
-  useEffect(() => {
-    dispatch(getReferenceData())
-    dispatch(getIrnPlaces())
-  }, [dispatch])
 
   const clearErrors = () => {
     dispatch(referenceDataSetError(undefined))

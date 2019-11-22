@@ -1,12 +1,6 @@
-import { pipe } from "fp-ts/lib/pipeable"
-import { task } from "fp-ts/lib/Task"
-import { fold } from "fp-ts/lib/TaskEither"
 import { isNil } from "ramda"
-import { Dispatch } from "redux"
 import { createSlice, PayloadAction } from "redux-starter-kit"
-import { fetchIrnPlaces } from "../api/irnPlaces"
 import { DistrictAndCounty, IrnPlace, IrnPlaces } from "../irnTables/models"
-import { AppThunk } from "./store"
 
 interface IrnPlacesDataState {
   irnPlaces: IrnPlaces
@@ -52,23 +46,6 @@ const irnPlacesSlice = createSlice({
     },
   },
 })
-
-export const getIrnPlaces = (): AppThunk => async (dispatch: Dispatch) => {
-  dispatch(initIrnPlacesFetch())
-  await pipe(
-    fetchIrnPlaces(),
-    fold(
-      error => {
-        dispatch(irnPlacesFetchHasAnError(error.message))
-        return task.of(undefined)
-      },
-      irnPlaces => {
-        dispatch(irnPlacesFetchWasSuccessful(irnPlaces))
-        return task.of(undefined)
-      },
-    ),
-  )()
-}
 
 const getIrnPlace = (state: IrnPlacesDataState) => (place: string) => state.irnPlaces.find(p => p.name === place)
 const getIrnPlaces2 = (state: IrnPlacesDataState) => ({ districtId, countyId }: DistrictAndCounty = {}) =>
