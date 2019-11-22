@@ -23,6 +23,8 @@ interface SearchableTextInputLocationProps {
 
 interface SearchableTextInputLocationState {
   text: string
+  listItems: SearchableItem[]
+  invalid: boolean
   hideUntilChanged: boolean
 }
 
@@ -38,18 +40,23 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
 }) => {
   const initialState: SearchableTextInputLocationState = {
     text: initialText || "",
+    listItems: [],
+    invalid: false,
     hideUntilChanged: true,
   }
   const [state, setState] = useState(initialState)
-  const mergeState = (newState: Partial<SearchableTextInputLocationState>) =>
+  const mergeState = (newState: Partial<SearchableTextInputLocationState>) => {
     setState(oldState => ({ ...oldState, ...newState }))
+  }
 
   useEffect(() => {
     mergeState({ text: initialText || "" })
   }, [initialText])
 
   const changeText = (text: string) => {
-    mergeState({ text, hideUntilChanged: false })
+    const listItems = text.length > 0 ? fetchItems(text).slice(0, 20) : []
+    const invalid = text.length > 0 && listItems.length === 0
+    mergeState({ text, listItems, invalid, hideUntilChanged: false })
   }
   const clearText = () => {
     mergeState({ text: "" })
@@ -59,8 +66,6 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
   const hideList = () => {
     mergeState({ hideUntilChanged: true })
   }
-
-  const listItems = state.text.length > 0 ? fetchItems(state.text).slice(0, 20) : []
 
   const onListItemPressed = (item: SearchableItem) => {
     onItemPressed(item)
@@ -77,7 +82,7 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
     <View style={styles.container}>
       <View style={styles.locationInputContainer}>
         <TextInput
-          style={[styles.locationInput, { fontSize }]}
+          style={[styles.locationInput, { fontSize }, state.invalid ? styles.invalidInput : undefined]}
           placeholder={placeHolder}
           value={state.text}
           onChangeText={changeText}
@@ -97,12 +102,12 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
           </TouchableOpacity>
         </View>
       </View>
-      {!state.hideUntilChanged && listItems.length > 0 ? (
+      {!state.hideUntilChanged && state.listItems.length > 0 ? (
         <View style={{ height: rs(200) }}>
           <FlatList
             style={styles.itemList}
             keyboardShouldPersistTaps="handled"
-            data={listItems}
+            data={state.listItems}
             renderItem={renderItem}
           />
         </View>
@@ -122,6 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: rs(5),
   },
   locationInputContainer: {
+    marginTop: rs(30),
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
@@ -134,6 +140,8 @@ const styles = StyleSheet.create({
     fontSize: rfs(15),
     marginHorizontal: rs(20),
     marginVertical: rs(5),
+    minHeight: rs(32),
+    paddingHorizontal: rs(5),
   },
   locationText: {
     paddingHorizontal: rs(16),
@@ -141,13 +149,16 @@ const styles = StyleSheet.create({
     fontSize: rfs(10),
     backgroundColor: "white",
   },
+  invalidInput: {
+    color: "red",
+  },
   icons: {
     flexDirection: "row",
     justifyContent: "flex-end",
   },
   icon: {
     paddingHorizontal: rs(3),
-    margin: rs(6),
+    marginRight: rs(6),
     fontSize: rfs(20),
     color: appTheme.secondaryTextDimmed,
   },

@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
     marginBottom: rs(10),
   },
   rangeDistanceContainer: {
+    marginTop: rs(30),
     flexDirection: "column",
     paddingVertical: rs(10),
     paddingHorizontal: rs(10),
