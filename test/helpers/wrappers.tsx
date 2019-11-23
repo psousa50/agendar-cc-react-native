@@ -6,16 +6,15 @@ import { configureStore } from "redux-starter-kit"
 import { Environment, EnvironmentContext } from "../../src/environment/main"
 import { rootReducer, RootState } from "../../src/state/rootReducer"
 
+const createStore = (initialState?: DeepPartial<RootState>) =>
+  configureStore({ reducer: rootReducer, middleware: [], preloadedState: initialState })
+
 export const withEnvAndStore = (env: Environment, initialState?: DeepPartial<RootState>) => <P extends {}>(
   Component: ComponentType<P>,
-) => (props: P) => {
-  const store = configureStore({ reducer: rootReducer, middleware: [], preloadedState: initialState })
-
-  return (
-    <EnvironmentContext.Provider value={env}>
-      <Provider store={store}>
-        <Component {...props} />
-      </Provider>
-    </EnvironmentContext.Provider>
-  )
-}
+) => (props: P) => (
+  <EnvironmentContext.Provider value={env}>
+    <Provider store={createStore(initialState)}>
+      <Component {...props} />
+    </Provider>
+  </EnvironmentContext.Provider>
+)

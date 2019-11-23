@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native"
+import { fireEvent, render, wait, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { flatten, mergeAll } from "ramda"
 import React from "react"
 import { DeepPartial } from "redux"
@@ -28,6 +28,17 @@ const defaultState: DeepPartial<RootState> = {
 const mergeAllStyles = (styles: any) => mergeAll(flatten(styles))
 
 describe("HomeScreen", () => {
+  it("Renders disclaimer only on first render", () => {
+    const WrappedHome = withEnvAndStore(defaultEnv)(HomeScreen)
+    const { getByText, queryByText } = render(<WrappedHome navigation={{} as any} />)
+
+    expect(getByText(i18n.t("Disclaimer.Title"))).toBeDefined()
+
+    fireEvent.press(getByText("Ok"))
+
+    expect(queryByText(i18n.t("Disclaimer.Title"))).toBeNull()
+  })
+
   describe("Renders Select Service", () => {
     const getSelectedStylesFor = (serviceId: IrnServiceId) => {
       const state: DeepPartial<RootState> = {
