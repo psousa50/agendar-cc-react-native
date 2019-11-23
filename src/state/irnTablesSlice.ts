@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "redux-starter-kit"
 import { normalizeFilter } from "../irnTables/main"
 import { TimeSlot } from "../irnTables/models"
 import { DateString } from "../utils/dates"
-import { IrnTableFilter, IrnTableRefineFilter } from "./models"
+import { IrnServiceId, IrnTableFilter, IrnTableRefineFilter } from "./models"
 
 export interface IrnTableResult {
   serviceId: number
@@ -41,15 +41,7 @@ interface IrnTablesFetchSuccessfulPayload {
 export const initialState: IrnTablesDataState = {
   filter: {
     region: "Continente",
-    serviceId: 1,
-    // districtId: 12,
-    // countyId: 44,
-    // placeName: "Conservatória do Registo Civil, Predial e Comercial de Sobral de Monte Agraço",
-    // startDate: toDateString("2019-12-16"),
-    // endDate: toDateString("2019-12-23"),
-    // startTime: "19:15",
-    // endTime: "19:15",
-    // onlyOnSaturdays: true,
+    serviceId: IrnServiceId.getCC,
   },
   refineFilter: {},
   irnTableMatchResult: {
