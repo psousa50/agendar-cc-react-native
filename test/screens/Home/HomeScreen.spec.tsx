@@ -1,29 +1,14 @@
-import { fireEvent, render, wait, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, render } from "@testing-library/react-native"
 import { flatten, mergeAll } from "ramda"
 import React from "react"
 import { DeepPartial } from "redux"
-import { Environment } from "../../../src/environment/main"
 import { i18n } from "../../../src/localization/i18n"
 import { HomeScreen } from "../../../src/screens/Home/HomeScreen"
 import { IrnServiceId } from "../../../src/state/models"
 import { RootState } from "../../../src/state/rootReducer"
 import { appTheme } from "../../../src/utils/appTheme"
+import { defaultEnv, defaultState } from "../../helpers/defaults"
 import { withEnvAndStore } from "../../helpers/wrappers"
-
-const irnApiStub = {
-  fetchIrnPlaces: jest.fn(),
-  fetchReferenceData: jest.fn(),
-  fetchIrnTableMatch: jest.fn(),
-}
-const defaultEnv: Environment = {
-  irnApi: irnApiStub,
-}
-
-const defaultState: DeepPartial<RootState> = {
-  userData: {
-    disclaimerShown: true,
-  },
-}
 
 const mergeAllStyles = (styles: any) => mergeAll(flatten(styles))
 
@@ -73,24 +58,28 @@ describe("HomeScreen", () => {
           i18n.t("CitizenCard"),
         ])
       })
+
       it("for a pickup CC service", () => {
         expect(activeServiceElementsForHomeWith(IrnServiceId.pickCC)).toEqual([
           i18n.t("Service.Pickup"),
           i18n.t("CitizenCard"),
         ])
       })
+
       it("for a get Passport service", () => {
         expect(activeServiceElementsForHomeWith(IrnServiceId.getPassport)).toEqual([
           i18n.t("Service.Get_renew"),
           i18n.t("Passport"),
         ])
       })
+
       it("for a pickup Passport service", () => {
         expect(activeServiceElementsForHomeWith(IrnServiceId.pickPassport)).toEqual([
           i18n.t("Service.Pickup"),
           i18n.t("Passport"),
         ])
       })
+
       it("Changes serviceId on callback", () => {
         const state: DeepPartial<RootState> = {
           ...defaultState,
