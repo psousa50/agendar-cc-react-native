@@ -23,7 +23,7 @@ export const en = {
     Title: "Schedule CC",
   },
   CitizenCard: "Citizen Card",
-  Passport: "Passaport",
+  Passport: "Passport",
   SearchTimetables: "Search",
   DatePeriod: {
     From: "From",
