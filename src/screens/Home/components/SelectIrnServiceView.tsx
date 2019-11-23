@@ -4,6 +4,7 @@ import { Image, StyleSheet, TouchableOpacity } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { ccImage, passportImage } from "../../../assets/images/images"
 import { i18n } from "../../../localization/i18n"
+import { IrnServiceId } from "../../../state/models"
 import { appTheme } from "../../../utils/appTheme"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../../utils/responsive"
 
@@ -15,31 +16,36 @@ interface SelectIrnServiceViewProps {
   onServiceIdChanged: (serviceId: number) => void
 }
 
+export const getServices = [IrnServiceId.getCC, IrnServiceId.getPassport]
+export const pickServices = [IrnServiceId.pickCC, IrnServiceId.pickPassport]
+export const ccServices = [IrnServiceId.getCC, IrnServiceId.pickCC]
+export const passportServices = [IrnServiceId.getPassport, IrnServiceId.pickPassport]
+
 export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serviceId, onServiceIdChanged }) => {
   const onTabPress = (index: number) => {
     const oldServiceId = serviceId || 1
     const newServiceId =
-      index === 0 && [2, 4].includes(oldServiceId)
+      index === 0 && pickServices.includes(oldServiceId)
         ? oldServiceId - 1
-        : index === 1 && [1, 3].includes(oldServiceId)
+        : index === 1 && getServices.includes(oldServiceId)
         ? oldServiceId + 1
         : oldServiceId
     onServiceIdChanged(newServiceId)
   }
 
   const onImagePress = (index: number) => {
-    const oldServiceId = serviceId || 1
+    const oldServiceId = serviceId || IrnServiceId.getCC
     const newServiceId =
-      index === 0 && [3, 4].includes(oldServiceId)
+      index === 0 && passportServices.includes(oldServiceId)
         ? oldServiceId - 2
-        : index === 1 && [1, 2].includes(oldServiceId)
+        : index === 1 && ccServices.includes(oldServiceId)
         ? oldServiceId + 2
         : oldServiceId
     onServiceIdChanged(newServiceId)
   }
 
-  const serviceIsForCitizenCard = [1, 2].includes(serviceId || 1)
-  const serviceIsForPassport = [3, 4].includes(serviceId || 1)
+  const serviceIsForCitizenCard = ccServices.includes(serviceId || IrnServiceId.getCC)
+  const serviceIsForPassport = passportServices.includes(serviceId || IrnServiceId.getCC)
   return (
     <View>
       <SegmentedControlTab
@@ -48,7 +54,7 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
         tabStyle={styles.tabStyle}
         tabTextStyle={styles.tabTextStyle}
         values={[i18n.t("Service.Get_renew"), i18n.t("Service.Pickup")]}
-        selectedIndex={[1, 3].includes(serviceId || 1) ? 0 : 1}
+        selectedIndex={getServices.includes(serviceId || 1) ? 0 : 1}
         onTabPress={onTabPress}
       />
       <View style={styles.serviceImages}>

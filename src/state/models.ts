@@ -2,6 +2,13 @@ import { GpsLocation, TimeSlot } from "../irnTables/models"
 import { i18n } from "../localization/i18n"
 import { DateString } from "../utils/dates"
 
+export enum IrnServiceId {
+  getCC = 1,
+  pickCC = 2,
+  getPassport = 3,
+  pickPassport = 4,
+}
+
 export interface DatePeriod {
   endDate?: DateString
   startDate?: DateString
