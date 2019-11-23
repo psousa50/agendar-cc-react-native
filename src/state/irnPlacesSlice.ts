@@ -48,14 +48,14 @@ const irnPlacesSlice = createSlice({
 })
 
 const getIrnPlace = (state: IrnPlacesDataState) => (place: string) => state.irnPlaces.find(p => p.name === place)
-const getIrnPlaces2 = (state: IrnPlacesDataState) => ({ districtId, countyId }: DistrictAndCounty = {}) =>
+const getIrnPlaces = (state: IrnPlacesDataState) => ({ districtId, countyId }: DistrictAndCounty = {}) =>
   state.irnPlaces.filter(
     p => (isNil(districtId) || p.districtId === districtId) && (isNil(countyId) || p.countyId === countyId),
   )
 
 export const buildIrnPlacesProxy = (state: IrnPlacesDataState) => ({
   getIrnPlace: getIrnPlace(state),
-  getIrnPlaces: getIrnPlaces2(state),
+  getIrnPlaces: getIrnPlaces(state),
 })
 
 export const {
