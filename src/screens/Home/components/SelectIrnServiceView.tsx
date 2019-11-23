@@ -59,6 +59,7 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
       />
       <View style={styles.serviceImages}>
         <TouchableOpacity
+          accessibilityLabel={i18n.t("CitizenCard")}
           style={[styles.serviceImageTouch, serviceIsForCitizenCard ? styles.selectedCard : {}]}
           onPress={() => onImagePress(0)}
         >
@@ -68,6 +69,7 @@ export const SelectIrnServiceView: React.FC<SelectIrnServiceViewProps> = ({ serv
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          accessibilityLabel={i18n.t("Passport")}
           style={[styles.serviceImageTouch, serviceIsForPassport ? styles.selectedCard : {}]}
           onPress={() => onImagePress(1)}
         >
