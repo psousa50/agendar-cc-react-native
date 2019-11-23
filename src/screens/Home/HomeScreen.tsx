@@ -17,11 +17,7 @@ import { AppScreenName, enhancedNavigation } from "../screens"
 import { DisclaimerView } from "./DisclaimerView"
 import { HomeView, HomeViewProps } from "./HomeView"
 
-interface HomeScreenProps extends AppScreenProps {
-  loading: boolean
-}
-
-export const HomeScreen: React.FunctionComponent<HomeScreenProps> = props => {
+export const HomeScreen: React.FC<AppScreenProps> = props => {
   const navigation = enhancedNavigation(props.navigation)
 
   const dispatch = useDispatch()
