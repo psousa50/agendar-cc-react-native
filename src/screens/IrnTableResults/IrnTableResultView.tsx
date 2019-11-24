@@ -14,11 +14,13 @@ interface IrnTableResultViewProps {
   referenceDataProxy: ReferenceDataProxy
 }
 export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTableResult, referenceDataProxy }) => {
-  const { countyId, districtId, placeName, date, tableNumber, timeSlot } = irnTableResult
+  const { serviceId, countyId, districtId, placeName, date, tableNumber, timeSlot } = irnTableResult
   const districtName = getDistrictName(referenceDataProxy)(districtId, countyId)
 
+  const service = referenceDataProxy.getIrnService(serviceId)
   return (
     <View style={styles.container}>
+      {service && <Text style={[styles.text, styles.service]}>{service.name}</Text>}
       {districtName && <Text style={[styles.text, styles.district]}>{districtName}</Text>}
       <Text style={[styles.text, styles.place]}>{placeName}</Text>
       <Text style={[styles.text, styles.date]}>{formatDateLocale(date)}</Text>
@@ -42,6 +44,12 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     paddingVertical: rs(5),
+  },
+  service: {
+    fontSize: rfs(14),
+    textShadowColor: "#585858",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 10,
   },
   district: {
     fontSize: rfs(18),
