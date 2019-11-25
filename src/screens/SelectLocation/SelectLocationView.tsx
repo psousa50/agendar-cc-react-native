@@ -2,7 +2,7 @@ import Slider from "@react-native-community/slider"
 import { Text, View } from "native-base"
 import { isNil, sort } from "ramda"
 import React, { useMemo, useState } from "react"
-import { StyleSheet } from "react-native"
+import { Alert, StyleSheet } from "react-native"
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import { SearchableItem, SearchableTextInputLocation } from "../../components/common/SearchableTextInputLocation"
 import { County } from "../../irnTables/models"
@@ -47,7 +47,6 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   onSelectIrnPlaceOnMap,
 }) => {
   const [rangeValue, setRangeValue] = useState(location.distanceRadiusKm || 0)
-  const [, setError] = useState<string | undefined>("")
   const { countyId, districtId, region } = location
 
   const searchableCounties = useMemo(() => buildSearchableCounties(referenceDataProxy), [])
@@ -115,7 +114,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
   const useGpsLocationForCounty = async () => {
     try {
       const gpsLocation = await getCurrentGpsLocation()
-      const closestCounty = getClosestLocation(referenceDataProxy.getCounties())(gpsLocation)
+      const closestCounty = getClosestLocation(irnPlacesProxy.getIrnPlaces({}))(gpsLocation)
       const newLocation = {
         ...location,
         ...(closestCounty
@@ -130,7 +129,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
       }
       onLocationChange(newLocation)
     } catch (error) {
-      setError("No GPS")
+      Alert.alert(i18n.t("Where.NoGPS"))
     }
   }
 
@@ -147,7 +146,7 @@ export const SelectLocationView: React.FC<SelectLocationViewProps> = ({
       }
       onLocationChange(newLocation)
     } catch (error) {
-      setError("No GPS")
+      Alert.alert(i18n.t("Where.NoGPS"))
     }
   }
 

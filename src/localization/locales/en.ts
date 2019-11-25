@@ -15,6 +15,7 @@ export const en = {
     AllCounties: "All Counties",
     LookDistrictCounty: "District - County",
     LookPlace: "Place",
+    NoGPS: "It was not possible to obtain GPS coords.",
   },
   When: {
     Name: "When",

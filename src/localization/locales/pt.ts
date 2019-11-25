@@ -15,6 +15,7 @@ export const pt = {
     AllCounties: "Todos os Concelhos",
     LookDistrictCounty: "Distrito - Concelho",
     LookPlace: "Local",
+    NoGPS: "Não foi possível obter as coordenadas GPS.",
   },
   When: {
     Name: "Quando",
