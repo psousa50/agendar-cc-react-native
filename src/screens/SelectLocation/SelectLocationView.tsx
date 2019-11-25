@@ -318,7 +318,4 @@ const styles = StyleSheet.create({
   useRangeTextDimmed: {
     color: appTheme.secondaryTextDimmed,
   },
-  switch: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-  },
 })
