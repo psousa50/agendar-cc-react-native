@@ -63,6 +63,22 @@ const helperFunctions = () => `
 
 const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResult) => `
 
+  function modalIsOpen() {
+    return document.getElementById("myModal").style.display === "block"
+  }
+
+  function waitForModal() {
+    return new Promise(function (resolve) {
+
+      const interval = setInterval(function () {
+        if (!modalIsOpen()) {
+          clearInterval(interval)
+          resolve()
+        }
+      }, 1000);
+    })
+  }
+
   var tok = document.getElementsByName("tok")[0].value
 
   selectValueById("servico", "${serviceId}")
@@ -74,10 +90,13 @@ const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResu
   evt.initEvent("change");
   radioData.dispatchEvent(evt);
 
-  setTimeout(function() {
-    document.getElementById("data_input_3").value= "${date}"
-    selectValueById("concelho", "${countyId}")
-    document.getElementById("btnSeguinte").click()
+  setTimeout(async function() {
+    document.getElementById("data_input_3").value= "${date}";
+    selectValueById("concelho", "${countyId}");
+
+    await waitForModal();
+
+    document.getElementById("btnSeguinte").click();
   }, 2000);
 
   `
