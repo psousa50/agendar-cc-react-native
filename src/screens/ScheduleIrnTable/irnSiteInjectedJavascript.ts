@@ -97,7 +97,7 @@ const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResu
     await waitForModal();
 
     document.getElementById("btnSeguinte").click();
-  }, 2000);
+  }, 1000);
 
   `
 
