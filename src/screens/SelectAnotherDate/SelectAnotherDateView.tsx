@@ -5,12 +5,14 @@ import { StyleSheet } from "react-native"
 import { CalendarList, DateObject } from "react-native-calendars"
 import { max, min } from "../../utils/collections"
 import { DateString, toDateString } from "../../utils/dates"
+import { useDimensions } from "../../utils/hooks"
 
 interface SelectAnotherDateViewProps {
   dates: DateString[]
   onDateSelected: (date: DateString) => void
 }
 export const SelectAnotherDateView: React.FC<SelectAnotherDateViewProps> = ({ dates, onDateSelected }) => {
+  const dimensions = useDimensions()
   const minDate = min(dates)
   const maxDate = max(dates)
   const currentDate = minDate || new Date(Date.now())
@@ -32,6 +34,7 @@ export const SelectAnotherDateView: React.FC<SelectAnotherDateViewProps> = ({ da
   return (
     <View style={styles.container}>
       <CalendarList
+        calendarWidth={dimensions.width}
         current={currentDate}
         pastScrollRange={0}
         futureScrollRange={diffMonths}
