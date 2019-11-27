@@ -4,6 +4,7 @@ import { CalendarList, DateObject } from "react-native-calendars"
 import { DatePeriod } from "../../state/models"
 import { appTheme } from "../../utils/appTheme"
 import { addDaysToDateString, createDateStringRange, currentUtcDateString, toDateString } from "../../utils/dates"
+import { useDimensions } from "../../utils/hooks"
 import { responsiveScale as rs } from "../../utils/responsive"
 import { DatePeriodView } from "../Home/components/DatePeriodView"
 
@@ -14,6 +15,7 @@ interface SelectPeriodViewProps {
   onDatePeriodChange: (datePeriod: DatePeriod) => void
 }
 export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({ datePeriod, onDatePeriodChange }) => {
+  const dimensions = useDimensions()
   const { startDate, endDate } = datePeriod
 
   const onDayPress = (dateObject: DateObject) => {
@@ -31,6 +33,7 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({ datePeri
     startDate && endDate
       ? createDateStringRange(addDaysToDateString(startDate, 1), addDaysToDateString(endDate, -1))
       : []
+
   const markedDates = {
     ...(startDate
       ? {
@@ -66,6 +69,7 @@ export const SelectDatePeriodView: React.FC<SelectPeriodViewProps> = ({ datePeri
       </View>
       <CalendarList
         style={styles.calendar}
+        calendarWidth={dimensions.width}
         minDate={currentUtcDateString()}
         maxDate={addDaysToDateString(currentUtcDateString(), 90)}
         futureScrollRange={3}
