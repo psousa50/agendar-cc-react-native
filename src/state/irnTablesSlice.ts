@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "redux-starter-kit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { normalizeFilter } from "../irnTables/main"
 import { TimeSlot } from "../irnTables/models"
 import { DateString } from "../utils/dates"
@@ -56,7 +56,7 @@ export const initialState: IrnTablesDataState = {
 }
 
 const irnTablesSlice = createSlice({
-  slice: "irnTables",
+  name: "irnTables",
   initialState,
   reducers: {
     initIrnTableMatchResultFetch(state) {

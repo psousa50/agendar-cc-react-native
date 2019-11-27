@@ -1,5 +1,5 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { isNil } from "ramda"
-import { createSlice, PayloadAction } from "redux-starter-kit"
 import { DistrictAndCounty, IrnPlace, IrnPlaces } from "../irnTables/models"
 
 interface IrnPlacesDataState {
@@ -22,7 +22,7 @@ export interface IrnPlacesProxy {
 }
 
 const irnPlacesSlice = createSlice({
-  slice: "irnPlaces",
+  name: "irnPlaces",
   initialState,
   reducers: {
     initIrnPlacesFetch(state) {

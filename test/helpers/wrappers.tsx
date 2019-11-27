@@ -1,8 +1,8 @@
+import { configureStore } from "@reduxjs/toolkit"
 import React from "react"
 import { ComponentType } from "react"
 import { Provider } from "react-redux"
 import { DeepPartial } from "redux"
-import { configureStore } from "redux-starter-kit"
 import { Environment, EnvironmentContext } from "../../src/environment/main"
 import { rootReducer, RootState } from "../../src/state/rootReducer"
 

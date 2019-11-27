@@ -1,4 +1,4 @@
-import { createSlice } from "redux-starter-kit"
+import { createSlice } from "@reduxjs/toolkit"
 
 export interface UserDataState {
   name: string
@@ -17,7 +17,7 @@ const initialState: UserDataState = {
 }
 
 const userDataSlice = createSlice({
-  slice: "User",
+  name: "User",
   initialState,
   reducers: {
     setDisclaimerShown(state) {

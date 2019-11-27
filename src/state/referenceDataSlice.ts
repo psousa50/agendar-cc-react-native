@@ -1,5 +1,5 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { isNil } from "ramda"
-import { createSlice, PayloadAction } from "redux-starter-kit"
 import { Counties, County, District, Districts, IrnService, IrnServices } from "../irnTables/models"
 import { Region } from "./models"
 
@@ -37,7 +37,7 @@ export interface ReferenceDataProxy {
 }
 
 const referenceDataSlice = createSlice({
-  slice: "ReferenceData",
+  name: "ReferenceData",
   initialState,
   reducers: {
     initFetch(state) {

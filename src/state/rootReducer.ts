@@ -1,4 +1,4 @@
-import { combineReducers } from "redux-starter-kit"
+import { combineReducers } from "@reduxjs/toolkit"
 import { reducer as irnPlacesData } from "./irnPlacesSlice"
 import { reducer as irnTablesData } from "./irnTablesSlice"
 import { reducer as referenceData } from "./referenceDataSlice"
