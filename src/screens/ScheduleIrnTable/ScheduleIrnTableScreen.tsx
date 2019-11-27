@@ -23,7 +23,6 @@ export const ScheduleIrnTableScreen: React.FC<AppScreenProps> = props => {
       {selectedIrnTableResult && irnPlace && (
         <WebView
           source={{ uri: "https://agendamento.irn.mj.pt/steps/step1.php" }}
-          style={{ marginTop: 20 }}
           injectedJavaScript={irnSiteInjectedJavascript(selectedIrnTableResult, irnPlace, user)}
           javaScriptEnabled={true}
           startInLoadingState={true}
