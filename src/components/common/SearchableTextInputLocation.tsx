@@ -51,6 +51,7 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
 
   useEffect(() => {
     mergeState({ text: initialText || "" })
+    mergeState({ invalid: false })
   }, [initialText])
 
   const changeText = (text: string) => {
