@@ -13,8 +13,8 @@ export const en = {
     Place: "Place",
     UseRange: "On an area radius of",
     AllCounties: "All Counties",
-    LookDistrictCounty: "District - County",
-    LookPlace: "Place",
+    LookDistrictCounty: "District - County (ex: arruda)",
+    LookPlace: "Place (ex: boa hora)",
     NoGPS: "It was not possible to obtain GPS coords.",
   },
   When: {

@@ -13,8 +13,8 @@ export const pt = {
     Place: "Local",
     UseRange: "Num raio de",
     AllCounties: "Todos os Concelhos",
-    LookDistrictCounty: "Distrito - Concelho",
-    LookPlace: "Local",
+    LookDistrictCounty: "Distrito - Concelho (ex: arruda)",
+    LookPlace: "Local (ex: boa hora)",
     NoGPS: "Não foi possível obter as coordenadas GPS.",
   },
   When: {
