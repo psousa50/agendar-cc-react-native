@@ -55,8 +55,9 @@ export const SearchableTextInputLocation: React.FC<SearchableTextInputLocationPr
   }, [initialText])
 
   const changeText = (text: string) => {
-    const listItems = text.length > 0 ? fetchItems(text).slice(0, 20) : []
-    const invalid = text.length > 0 && listItems.length === 0
+    const trimedText = text.trim()
+    const listItems = trimedText.length > 0 ? fetchItems(trimedText).slice(0, 20) : []
+    const invalid = trimedText.length > 0 && listItems.length === 0
     mergeState({ text, listItems, invalid, hideUntilChanged: false })
   }
   const clearText = () => {
