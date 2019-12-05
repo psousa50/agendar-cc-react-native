@@ -27,16 +27,17 @@ export const en = {
   Passport: "Passport",
   SearchTimetables: "Search",
   DatePeriod: {
-    From: "From",
-    To: "To",
-    Asap: "As soon as possible",
+    From: "From:",
+    To: "To:",
     OnlyOnSaturdays: "Only on Saturdays",
     Confirm: "Ok",
     Cancel: "Cancel",
   },
   TimePeriod: {
-    From: "From",
-    To: "Until",
+    From: "From:",
+    FromPlaceHolder: "HH:MM",
+    To: "Until:",
+    ToPlaceHolder: "HH:MM",
     Anytime: "Anytime",
     Confirm: "Ok",
     Cancel: "Cancel",
@@ -96,6 +97,7 @@ export const en = {
   },
   date: {
     formats: {
+      pattern: "Month Day, Year",
       long: "%B %d, %Y",
     },
   },

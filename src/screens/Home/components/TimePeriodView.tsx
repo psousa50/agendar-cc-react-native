@@ -100,6 +100,7 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
         value={formatTimeSlot(startTime, "")}
         onEdit={showStartTimePicker}
         onClear={clearStartTime}
+        placeholder={i18n.t("TimePeriod.FromPlaceHolder")}
       />
       <PeriodRow
         active={!!endTime}
@@ -107,6 +108,7 @@ export const TimePeriodView: React.FC<TimePeriodViewProps> = ({ startTime, endTi
         value={formatTimeSlot(endTime, "")}
         onEdit={showEndTimePicker}
         onClear={clearEndTime}
+        placeholder={i18n.t("TimePeriod.ToPlaceHolder")}
       />
       {state.showStartTimePickerModal && renderStartTimePicker()}
       {state.showEndTimePickerModal && renderEndTimePicker()}

@@ -29,12 +29,14 @@ export const DatePeriodView: React.FC<DatePeriodViewProps> = ({
         title={i18n.t("DatePeriod.From")}
         value={formatDateLocale(startDate)}
         onClear={clearStartDate}
+        placeholder={i18n.t("date.formats.pattern")}
       />
       <PeriodRow
         active={!!endDate}
         title={i18n.t("DatePeriod.To")}
         value={formatDateLocale(endDate)}
         onClear={clearEndDate}
+        placeholder={i18n.t("date.formats.pattern")}
       />
     </TouchableOpacity>
   )

@@ -8,27 +8,22 @@ interface PeriodRowProps {
   active: boolean
   title: string
   value?: string
+  placeholder: string
   onEdit?: () => void
   onClear?: () => void
 }
 
-export const PeriodRow: React.FC<PeriodRowProps> = ({ active, value, title, onClear, onEdit }) => (
+export const PeriodRow: React.FC<PeriodRowProps> = ({ active, value, title, onClear, onEdit, placeholder }) => (
   <View style={styles.container}>
-    <TouchableOpacity
-      disabled={active || !onEdit}
-      style={value ? styles.titleContainer : styles.titleContainerNoValue}
-      onPress={onEdit}
-    >
+    <TouchableOpacity disabled={active || !onEdit} style={styles.titleContainer} onPress={onEdit}>
       <Text style={active ? styles.title : styles.inactiveTitle}>{`${title}${value ? ":" : ""}`}</Text>
     </TouchableOpacity>
     <TouchableOpacity disabled={!onEdit} style={styles.valueContainer} onPress={onEdit}>
-      <Text style={styles.value}>{value}</Text>
+      <Text style={value ? styles.value : styles.placeHolder}>{value || placeholder}</Text>
     </TouchableOpacity>
-    {active && onClear && (
-      <TouchableOpacity style={styles.closeContainer} onPress={onClear}>
-        <Icon style={styles.closeIcon} name="close" />
-      </TouchableOpacity>
-    )}
+    <TouchableOpacity disabled={!active || !onClear} style={styles.closeContainer} onPress={onClear}>
+      {active && onClear && <Icon style={styles.closeIcon} name="close" />}
+    </TouchableOpacity>
   </View>
 )
 
@@ -61,6 +56,11 @@ const styles = StyleSheet.create({
   value: {
     fontSize: rfs(12),
     color: appTheme.secondaryText,
+  },
+  placeHolder: {
+    fontSize: rfs(12),
+    fontStyle: "italic",
+    color: appTheme.secondaryTextDimmed,
   },
   closeContainer: {
     width: "10%",

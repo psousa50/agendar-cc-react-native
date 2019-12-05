@@ -27,9 +27,8 @@ export const pt = {
   Passport: "Passaporte",
   SearchTimetables: "Procurar Agendamentos",
   DatePeriod: {
-    From: "A partir do dia",
-    To: "Até ao dia",
-    Asap: "O mais depressa possível",
+    From: "A partir do dia:",
+    To: "Até ao dia:",
     OnlyOnSaturdays: "Só aos Sábados",
     Confirm: "Ok",
     Cancel: "Cancelar",
@@ -113,6 +112,7 @@ export const pt = {
       "Dezembro",
     ],
     formats: {
+      pattern: "Dia Mês Ano",
       long: " %d de %B de %Y",
     },
   },
