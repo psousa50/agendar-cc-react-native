@@ -5,6 +5,7 @@ import { i18n } from "../../localization/i18n"
 import { IrnTableResult } from "../../state/irnTablesSlice"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
 import { shadow } from "../../styles/shadows"
+import { appTheme } from "../../utils/appTheme"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { getDistrictName } from "../../utils/location"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
@@ -47,12 +48,11 @@ const styles = StyleSheet.create({
   },
   service: {
     fontSize: rfs(14),
-    textShadowColor: "#585858",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 10,
+    fontWeight: "bold",
+    color: appTheme.primaryColor,
   },
   district: {
-    fontSize: rfs(18),
+    fontSize: rfs(16),
     fontWeight: "bold",
   },
   place: {
