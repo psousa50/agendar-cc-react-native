@@ -27,13 +27,9 @@ target 'agendarCC' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-
-
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
@@ -46,6 +42,8 @@ target 'agendarCC' do
   pod 'RNLocalize', :path => '../node_modules/react-native-localize'
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
   target 'agendarCCTests' do
     inherit! :search_paths

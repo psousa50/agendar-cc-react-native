@@ -1,6 +1,6 @@
 import color from "color"
-
 import { Dimensions, PixelRatio, Platform } from "react-native"
+import DeviceInfo from "react-native-device-info"
 
 const PRIMARY_COLOR = "#0277bd"
 const PRIMARY_DARK_COLOR = "#004c8c"
@@ -13,7 +13,7 @@ const deviceHeight = Dimensions.get("window").height
 const deviceWidth = Dimensions.get("window").width
 const platform = Platform.OS
 const platformStyle = undefined
-const isIphoneX = platform === "ios" && deviceHeight === 812 && deviceWidth === 375
+const isIphoneX = DeviceInfo.hasNotch() // platform === "ios" && deviceHeight === 812 && deviceWidth === 375
 
 export const variables = {
   primaryColor: PRIMARY_COLOR,
