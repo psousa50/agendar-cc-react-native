@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { NavigationEvents } from "react-navigation"
 import { NavigationEventPayload } from "react-navigation"
 import { useDispatch, useSelector } from "react-redux"
-import { AppModalScreen, AppScreenProps } from "../../components/common/AppScreen"
+import { AppScreen, AppScreenProps, leftCloseButton } from "../../components/common/AppScreen"
 import { ButtonIcons } from "../../components/common/ToolbarIcons"
 import { i18n } from "../../localization/i18n"
 import { buildIrnPlacesProxy } from "../../state/irnPlacesSlice"
@@ -56,13 +56,14 @@ export const SelectLocationScreen: React.FC<AppScreenProps> = props => {
     },
   }
   return (
-    <AppModalScreen
+    <AppScreen
       {...props}
       title={i18n.t("Title.SelectLocation")}
+      {...leftCloseButton(navigation.goBack)}
       right={() => ButtonIcons.Checkmark(() => updateGlobalFilterAndGoBack())}
     >
       <NavigationEvents onWillFocus={onWillFocus} />
       <SelectLocationView {...selectLocationViewProps} />
-    </AppModalScreen>
+    </AppScreen>
   )
 }
