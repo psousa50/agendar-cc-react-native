@@ -12,7 +12,7 @@ import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/r
 import { AppScreenName } from "../screens"
 import { DatePeriodView } from "./components/DatePeriodView"
 import { MainButton } from "./components/MainButton"
-import { SelectIrnServiceView } from "./components/SelectIrnServiceView"
+import { SelectIrnServicePicker } from "./components/SelectIrnServicePicker"
 import { TimePeriodView } from "./components/TimePeriodView"
 
 export interface HomeViewProps {
@@ -54,7 +54,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <View style={styles.container}>
       <InfoCard title={i18n.t("Service.Name")} iconType={"AntDesign"} iconName="idcard">
-        <SelectIrnServiceView serviceId={serviceId} onServiceIdChanged={onServiceIdChange} />
+        <SelectIrnServicePicker
+          services={referenceDataProxy.getIrnServices()}
+          serviceId={serviceId}
+          onServiceIdChanged={onServiceIdChange}
+        />
       </InfoCard>
       <InfoCard title={i18n.t("Where.Name")} iconType={"MaterialIcons"} iconName="location-on" onPress={onEditLocation}>
         <LocationView
