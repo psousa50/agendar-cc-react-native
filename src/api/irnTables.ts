@@ -31,7 +31,7 @@ const buildIrnTablesParams = (params: IrnTableApiFilter) =>
     selectedCountyId: fromNumber(params.selected.countyId),
     selectedPlaceName: params.selected.placeName,
     selectedTimeSlot: params.selected.timeSlot,
-    serviceId: fromNumber(params.serviceId),
+    serviceId: 1, // fromNumber(params.serviceId),
     startDate: fromDateOnly(params.startDate),
     startTime: fromTimeSlot(params.startTime),
   })

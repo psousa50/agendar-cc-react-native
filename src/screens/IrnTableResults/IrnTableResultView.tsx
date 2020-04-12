@@ -1,13 +1,16 @@
 import { Text, View } from "native-base"
 import React from "react"
 import { StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
 import { i18n } from "../../localization/i18n"
 import { IrnTableResult } from "../../state/irnTablesSlice"
 import { ReferenceDataProxy } from "../../state/referenceDataSlice"
+import { RootState } from "../../state/rootReducer"
 import { shadow } from "../../styles/shadows"
 import { appTheme } from "../../utils/appTheme"
 import { formatDateLocale, formatTimeSlot } from "../../utils/formaters"
 import { getDistrictName } from "../../utils/location"
+import { serviceName } from "../../utils/names"
 import { responsiveFontScale as rfs, responsiveScale as rs } from "../../utils/responsive"
 
 interface IrnTableResultViewProps {
@@ -17,11 +20,12 @@ interface IrnTableResultViewProps {
 export const IrnTableResultView: React.FC<IrnTableResultViewProps> = ({ irnTableResult, referenceDataProxy }) => {
   const { serviceId, countyId, districtId, placeName, date, tableNumber, timeSlot } = irnTableResult
   const districtName = getDistrictName(referenceDataProxy)(districtId, countyId)
+  const filter = useSelector((state: RootState) => state.irnTablesData.filter)
 
-  const service = referenceDataProxy.getIrnService(serviceId)
+  const service = referenceDataProxy.getIrnService(filter.serviceId || serviceId)
   return (
     <View style={styles.container}>
-      {service && <Text style={[styles.text, styles.service]}>{service.name}</Text>}
+      {service && <Text style={[styles.text, styles.service]}>{serviceName(service.serviceId)}</Text>}
       {districtName && <Text style={[styles.text, styles.district]}>{districtName}</Text>}
       <Text style={[styles.text, styles.place]}>{placeName}</Text>
       <Text style={[styles.text, styles.date]}>{formatDateLocale(date)}</Text>

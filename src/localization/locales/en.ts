@@ -4,6 +4,13 @@ export const en = {
     Get_renew: "Get / Renew",
     Pickup: "Pick up",
   },
+  Services: {
+    1:  "CC urgent or extremely urgent",
+    2:  "1º CC urgent or extremely urgent",
+    3:  "CC for under 25 urgent or extremely urgent",
+    4:  "CC temporary",
+    5:  "CC with changes urgent or extremely urgent",
+  },
   Where: {
     Name: "Where",
     Region: "Region",
@@ -89,9 +96,11 @@ export const en = {
     P1:
       "The purpose of this App is to aid portuguese citizens to find the best date, place and time to schedule a renewal of their citizen card or passport.",
     P2:
-      "The App use the information present on the IRN web site and tries to keep that information as updated as possible. However, we could not take responsability on the fact that the information may sometimes be out of date.",
-    P3: "The final scheduling will always take place at the IRN website, via the App or a Web browser.",
-    P4: "We hope this App will help the portuguese citizens with the hard task of scheduling these services.",
+      "The devoloper of this App does not have any personal or profesional relationship with the institution 'Instituto dos Registos e do Notariado (IRN)'.",
+    P3:
+      "The App use the information present on the IRN web site and tries to keep that information as updated as possible. However, we can not take responsability on the fact that the information may sometimes be out of date.",
+    P4: "The final scheduling will always take place at the IRN website, via the App or a Web browser.",
+    P5: "We hope this App will help the portuguese citizens with the hard task of scheduling these services.",
     Footer: "Thank you.",
     Ok: "Ok",
   },

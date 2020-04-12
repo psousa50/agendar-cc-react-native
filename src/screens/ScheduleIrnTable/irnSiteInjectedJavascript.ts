@@ -61,7 +61,7 @@ const helperFunctions = () => `
 
   `
 
-const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResult) => `
+const step1Javascript = ({ districtId, countyId, date }: IrnTableResult) => `
 
   function modalIsOpen() {
     return document.getElementById("myModal").style.display === "block"
@@ -81,7 +81,7 @@ const step1Javascript = ({ serviceId, districtId, countyId, date }: IrnTableResu
 
   var tok = document.getElementsByName("tok")[0].value
 
-  selectValueById("servico", "${serviceId}")
+  selectValueById("servico", "${1}")
   selectValueById("distrito", "${districtId}")
 
   var radioData = document.getElementById("outra_data")
