@@ -5,11 +5,10 @@ export const en = {
     Pickup: "Pick up",
   },
   Services: {
-    1:  "CC urgent or extremely urgent",
-    2:  "1º CC urgent or extremely urgent",
-    3:  "CC for under 25 urgent or extremely urgent",
-    4:  "CC temporary",
-    5:  "CC with changes urgent or extremely urgent",
+    1: "Renew Citizen Card",
+    2: "Pick up Citizen Card",
+    3: "Renew Passaport",
+    4: "Pick up Passaport",
   },
   Where: {
     Name: "Where",

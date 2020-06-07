@@ -5,11 +5,10 @@ export const pt = {
     Pickup: "Levantar",
   },
   Services: {
-    1:  "CC urgente ou extremo urgente",
-    2:  "1º CC urgente ou extremo urgente",
-    3:  "CC para menores de 25 anos urgente ou extremo urgente",
-    4:  "CC provisório",
-    5:  "CC com alterações de dados urgente ou extremo urgente",
+    1: "Pedir / Renovar o Cartão de Cidadão",
+    2: "Levantar o Cartão de Cidadão",
+    3: "Pedir o Passaporte Electrónico",
+    4: "Levantar o Passaporte Electrónico",
   },
   Where: {
     Name: "Onde",
