@@ -24,7 +24,7 @@
     "fp-ts": "^2.0.5",
     "i18n-js": "^3.3.0",
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "moment-with-locales-es6": "^1.0.1",
     "native-base": "^2.13.7",
